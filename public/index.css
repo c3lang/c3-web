@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.projects {  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.card {
+  width: 30%
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 90%
+  }
+}

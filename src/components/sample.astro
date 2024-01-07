@@ -1,0 +1,114 @@
+<main>
+  <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
+      <div>
+        <h1
+          class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white"
+        >
+          The
+          <span
+            class="bg-clip-text bg-gradient-to-tl from-blue-600 to-violet-600 text-transparent"
+            >C3</span
+          >
+          Programming Language
+        </h1>
+        <p class="mt-3 text-lg text-gray-800 dark:text-gray-400 mb-5">
+          Simple, fast, safe, compiled. For developing maintainable software.
+        </p>
+        <div class="mt-5 gap-3">
+          <div class="">
+            <button
+              type="button"
+              class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-l-md border font-medium text-gray-700 dark:text-gray-400 shadow-sm bg-white dark:bg-stone-950 hover:bg-blue-500 dark:hover:bg-blue-950 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:hover:text-white dark:focus:ring-offset-gray-800"
+            >
+              Download for Windows
+            </button>
+            <div
+              class="mr-5 hs-dropdown relative inline-flex [--placement:bottom-right]"
+            >
+              <button
+                id="hs-split-dropdown"
+                type="button"
+                class="bg-white hover:bg-blue-500 dark:hover:bg-blue-950 dark:bg-stone-950 hs-dropdown-toggle relative -ml-[.3125rem] py-3 px-4 inline-flex justify-center items-center gap-2 h-[2.875rem] w-[2.875rem] rounded-r-md border font-medium text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+              >
+                <span class="sr-only">Toggle Dropdown</span>
+                <svg
+                  class="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"></path>
+                </svg>
+              </button>
+
+              <div
+                class="hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-stone-950 dark:border dark:border-gray-700 dark:divide-gray-700"
+                aria-labelledby="hs-split-dropdown"
+              >
+                <a
+                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  href="#"
+                >
+                  Windows
+                </a>
+                <a
+                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  href="#"
+                >
+                  Macos
+                </a>
+                <a
+                  class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                  href="#"
+                >
+                  Linux
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="flex items-center justify-center">
+          <div
+            class="lg:w-10/12 dark:bg-stone-950 shadow-2xl rounded-lg overflow-hidden"
+          >
+            <div id="header-buttons" class="py-3 px-4 flex">
+              <div class="rounded-full w-3 h-3 bg-red-500 mr-2"></div>
+              <div class="rounded-full w-3 h-3 bg-yellow-500 mr-2"></div>
+              <div class="rounded-full w-3 h-3 bg-green-500"></div>
+            </div>
+            <div id="code-area" class="mt-1 text-white text-xl">
+              <div class="mb-2">
+                <code
+                  is:raw
+                  class="text-xl sm:text-xl inline-flex text-left items-center space-x-4 text-stone-950 dark:text-white rounded-lg p-10"
+                >
+                  <span> <span class="text-blue-500">module</span> <span
+                  class="text-red-400">hello_world</span>;<br /> <span
+                  class="text-blue-500">import</span> <span
+                  class="text-red-400">std</span>::<span
+                  class="text-red-400">io</span >;<br /> <br /> <span
+                  class="text-blue-500">fn</span> <span
+                  class="text-red-400">void</span> <span
+                  class="text-orange-400">main</span>() { <br /> <span
+                  class="ml-5"> <span class="text-red-400">io</span>::<span
+                  class="text-red-400">println</span>(<span
+                  class="text-green-500">"Hello, world!"</span>); </span> <br />
+                  }<br /> </span>
+                </code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

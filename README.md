@@ -1,2 +1,38 @@
-# c3-web
-The website for C3 made with Astro!
+<img align="right" src="public/logo.svg" alt="Essence logo">
+
+<h1 style="font-size: 36px">C3-Web</h1>
+
+The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/), [Preline](https://preline.co/) and [Starlight](https://starlight.astro.build/).
+
+<h1 style="font-size: 24px;">Get Started</h1>
+
+After cloning the repository with `git clone`, you can run `npm run dev` and thats it!
+
+<h1 style="display: flex; align-items: center; font-size: 24px;">Project Structure</h1>
+  
+```
+📦c3
+ ┣ 📂public
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┣ 📂content
+ ┃ ┃ ┣ 📂docs
+ ┃ ┃ ┃ ┗ 📂guide
+ ┃ ┃ ┗ 📜config.js
+ ┃ ┣ 📂pages
+ ┃ ┃ ┗ 📜index.astro
+ ┃ ┗ 📜env.d.ts
+ ┣ 📜.gitignore
+ ┣ 📜astro.config.mjs
+ ┣ 📜package.json
+ ┣ 📜tailwind.config.cjs
+ ┗ 📜tsconfig.json
+```
+
+# Contribution
+
+If you want to contribute to this project, you can do so by forking this repository and creating a pull request.
+
+## Contributions to the Docs
+
+The documentation is located in the `src/content/docs/guide` folder. If you want to contribute to the documentation, you can do so by creating a new file in the `src/content/docs/guide` folder. Please visit the [Starlight Docs](https://starlight.astro.build/) for more info.

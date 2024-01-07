@@ -1,0 +1,39 @@
+---
+import Hero from "../components/hero.astro";
+import Sample from "../components/sample.astro";
+import Features from "../components/features.astro";
+import Community from "../components/community.astro";
+
+
+
+---
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="description" content="Youtuber and Web Developer from Türkiye" />
+  <meta name="author" content="Onrir" />
+  <meta name="keywords" content="Onrir"/>
+  <meta name="theme-color" content="#a7a1fa" />
+  <meta property="og:title" content="Onrir" />
+  <meta property="og:description" content="Youtuber and Web Developer from Türkiye" />
+  <meta property="og:image" content="/logo.png" />
+
+  <title>Onrir</title>
+  <script>
+    import "boxicons";
+    import "../../public/preline.min.js"
+  </script>
+</head>
+
+<body class="dark:bg-stone-950 bg-white">
+  <div style="height: auto" >
+    <Hero />
+    <Sample />
+    <Features />
+    <Community />
+  </div>
+  <link rel="stylesheet" href="/index.css" />
+
+</body>
