@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://onrirr.github.io',
+  site: 'https://c3-web.github.io',
   base: '/c3-web',
   integrations: [tailwind(), starlight({
     title: "The C3 Handbook"
