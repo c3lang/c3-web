@@ -33,6 +33,21 @@ After cloning the repository with `git clone`, you can run `npm run dev` and tha
 
 If you want to contribute to this project, you can do so by forking this repository and creating a pull request.
 
-## Contributions to the Docs
+## Adding Documentation content
+Navigate to one of the following folders:
+`src/content/docs/guide`
+or 
+`src/content/docs/references`
 
-The documentation is located in the `src/content/docs/guide` folder. If you want to contribute to the documentation, you can do so by creating a new file in the `src/content/docs/guide` folder. Please visit the [Starlight Docs](https://starlight.astro.build/) for more info.
+create a file ending in `.mdx` (or `.md`) (or edit one that already exists)
+
+and lastly add a little bit of a header on top of whatever markdown content you have, one that looks like this (for SEO and visibility on the website)
+```astro
+---
+title: the C3 Handbook
+description: A guide to the C3 Programming Language
+---
+aand after the `---` everything else is just plain old markdown!
+```
+
+Please visit the [Starlight Docs](https://starlight.astro.build/) for more info.
