@@ -13,6 +13,7 @@
     "@astrojs/starlight": "^0.15.2",
     "@astrojs/svelte": "^5.0.2",
     "@astrojs/tailwind": "^5.0.4",
+    "@preline/overlay": "^2.0.2",
     "astro": "^4.0.7",
     "boxicons": "^2.1.4",
     "preline": "^2.0.3",

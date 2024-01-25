@@ -9,7 +9,14 @@
     ".vscode": true,
     ".github": true,
     ".astro": true,
-    "node_modules": true
+    "node_modules": true,
+    "pnpm-lock.yaml": true
   },
-  "hide-files.files": [".vscode", ".github", ".astro", "node_modules"]
+  "hide-files.files": [
+    ".vscode",
+    ".github",
+    ".astro",
+    "node_modules",
+    "pnpm-lock.yaml"
+  ]
 }

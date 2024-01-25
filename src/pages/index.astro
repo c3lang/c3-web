@@ -8,24 +8,30 @@ import Community from "../components/community.astro";
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
-  <meta name="description" content="C3 is a simple, fast, and modern programming language." />
+  <meta
+    name="description"
+    content="C3 is a simple, fast, and modern programming language."
+  />
   <meta name="og:title" content="C3" />
-  <meta name="og:description" content="C3 is a simple, fast, and modern programming language." />
+  <meta
+    name="og:description"
+    content="C3 is a simple, fast, and modern programming language."
+  />
   <meta name="og:image" content="/logo.svg" />
   <title>C3</title>
   <script>
     import "boxicons";
-    import "../../public/preline.min.js"
+    import "../../public/preline.min.js";
+    import "../../public/overlay.min.js";
   </script>
 </head>
 
 <body class="dark:bg-stone-950 bg-white">
-  <div style="height: auto" >
+  <div style="height: auto">
     <Hero />
     <Sample />
     <Features />
     <Community />
   </div>
   <link rel="stylesheet" href="/index.css" />
-
 </body>
