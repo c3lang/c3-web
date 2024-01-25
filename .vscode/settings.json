@@ -5,7 +5,11 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true
+    "**/Thumbs.db": true,
+    ".vscode": true,
+    ".github": true,
+    ".astro": true,
+    "node_modules": true
   },
-  "hide-files.files": []
+  "hide-files.files": [".vscode", ".github", ".astro", "node_modules"]
 }

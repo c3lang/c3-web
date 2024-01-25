@@ -19,9 +19,10 @@
             Full C ABI Compatibility
           </h3>
           <p class="mt-1 text-gray-600 dark:text-gray-400">
-            C3 fits right into your C/C++ application with full C ABI compatibility
-            out of the box: no need for special "C compatible" types or functions,
-            no limitations on what C3 features you can use from C.
+            C3 fits right into your C/C++ application with full C ABI
+            compatibility out of the box: no need for special "C compatible"
+            types or functions, no limitations on what C3 features you can use
+            from C.
           </p>
         </div>
       </div>
@@ -43,8 +44,8 @@
             Module System
           </h3>
           <p class="mt-1 text-gray-600 dark:text-gray-400">
-            A simple and straightforward module system that doesn't get into
-            the way with defaults that makes sense.
+            A simple and straightforward module system that doesn't get into the
+            way with defaults that makes sense.
           </p>
         </div>
       </div>
@@ -110,97 +111,196 @@
     </div>
   </div>
 </div>
+<!-- Icon Blocks -->
 <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 items-center gap-12">
-    <div class="text-center">
-      <div
-        class="flex justify-center items-center w-12 h-12 bg-gray-50 border border-gray-200 rounded-full mx-auto dark:bg-gray-800 dark:border-gray-700"
-      >
-        <box-icon
-          class="text-slate-800 dark:text-white"
-          name="bug-alt"
-          color="currentColor"
-          fill="currentColor"></box-icon>
-      </div>
-      <div class="mt-3">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
-          Zero Overhead Errors
-        </h3>
-        <p class="mt-1 text-gray-600 dark:text-gray-400">
-          Combining the best parts of "Result-style" error handling with the easy
-          use of exceptions, C3 adds a novel system for error handling that
-          integrates seamlessly with C code.
-        </p>
-      </div>
-    </div>
+  <div class="mx-auto">
+    <!-- Grid -->
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-12">
+      <div class="space-y-6 lg:space-y-10">
+        <!-- Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            type="solid"
+            name="pen"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
 
-    <div class="text-center">
-      <div
-        class="flex justify-center items-center w-12 h-12 bg-gray-50 border border-gray-200 rounded-full mx-auto dark:bg-gray-800 dark:border-gray-700"
-      >
-        <box-icon
-          class="text-slate-800 dark:text-white"
-          name="buildings"
-          color="currentColor"
-          fill="currentColor"></box-icon>
-      </div>
-      <div class="mt-3">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
-          Extendable type methods
-        </h3>
-        <p class="mt-1 text-gray-600 dark:text-gray-400">
-          Extend any type with function and macro methods invoked ".method()" style,
-          even built-in types or types you didn't define.
-        </p>
-      </div>
-    </div>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Gradual Contracts
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              C3 brings programming-by-contract to the mainstream with
+              unobtrusive contracts that are used to express both runtime and
+              compile-time constraints.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
 
-    <div class="text-center">
-      <div
-        class="flex justify-center items-center w-12 h-12 bg-gray-50 border border-gray-200 rounded-full mx-auto dark:bg-gray-800 dark:border-gray-700"
-      >
-        <box-icon
-          class="text-slate-800 dark:text-white"
-          name="bracket"
-          color="currentColor"
-          fill="currentColor"></box-icon>
-      </div>
-      <div class="mt-3">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
-          Slices with array operations
-        </h3>
-        <p class="mt-1 text-gray-600 dark:text-gray-400">
-          A slice is a built-in, safe alternative to "pointer + length" in C.
-          But the advantages do not stop there: slices also support copying and
-          direct comparison of the underlying data without the need for
-          `memcpy` or `memcmp`.
-        </p>
-      </div>
-    </div>
+        <!-- Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="comment-error"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Zero Overhead Errors
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              Error handling that combines the best parts of "Result" errors
+              with the easy use of exceptions and integrates seamlessly with C.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
 
-    <div class="text-center">
-      <div
-        class="flex justify-center items-center w-12 h-12 bg-gray-50 border border-gray-200 rounded-full mx-auto dark:bg-gray-800 dark:border-gray-700"
-      >
-        <box-icon
-          class="text-slate-800 dark:text-white"
-          name="text"
-          color="currentColor"
-          fill="currentColor"></box-icon>
+        <!-- Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="bracket"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Built-in slices and slicing
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              Slices are type safe "pointer + length" types which natively
+              supports copying and comparison.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="package"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Generic modules
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              C3 generic modules offer superior simplicity and clarity for
+              creating generic types.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
       </div>
-      <div class="mt-3">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
-          Generic modules
-        </h3>
-        <p class="mt-1 text-gray-600 dark:text-gray-400">
-          Generic modules is a variant of generics that works similar
-          to macro based generics in C. This provides the standard library
-          with commonly used containers such as hash maps and dynamic lists.
-        </p>
+      <!-- End Col -->
+
+      <div class="space-y-6 lg:space-y-10">
+        <!-- Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="refresh"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Runtime and compile reflection
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              Type introspection is available both at compile time and runtime,
+              powering flexible macros and functions
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
+
+        <!-- Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="code"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Inline Assembly
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              Write asm as regular inline code without using strings or cryptic
+              constraints.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="bug"
+            type="solid"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Debug with safety checks
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              Feel confident in your code's correctness: in debug mode the
+              compiler inserts extensive runtime bounds checks and value checks,
+              which together with contracts will let you catch bugs early.
+            </p>
+          </div>
+        </div>
+        <!-- End Icon Block -->
+        <div class="flex">
+          <box-icon
+            class="text-black dark:text-white"
+            name="code"
+            color="currentColor"
+            fill="currentColor"
+            size="24px"></box-icon>
+          <div class="ms-5 sm:ms-8">
+            <h3
+              class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200"
+            >
+              Detailed stacktraces
+            </h3>
+            <p class="mt-1 text-gray-600 dark:text-gray-400">
+              No more anonymous "segmentation fault" errors: the C3 standard
+              library enables detailed stacktraces out of the box for your debug
+              builds.
+            </p>
+          </div>
+        </div>
       </div>
+      <!-- End Col -->
     </div>
+    <!-- End Grid -->
   </div>
 </div>
+
 <hr
   class="w-96 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-900"
 />
