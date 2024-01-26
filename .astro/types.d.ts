@@ -192,6 +192,13 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".mdx"] };
+"guide/my-first-project/index.mdx": {
+	id: "guide/my-first-project/index.mdx";
+  slug: "guide/my-first-project";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".mdx"] };
 "references/build-system/commands.md": {
 	id: "references/build-system/commands.md";
   slug: "references/build-system/commands";
@@ -479,6 +486,41 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"references/getting-started/allfeatures.md": {
+	id: "references/getting-started/allfeatures.md";
+  slug: "references/getting-started/allfeatures";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"references/getting-started/firstproject.md": {
+	id: "references/getting-started/firstproject.md";
+  slug: "references/getting-started/firstproject";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"references/getting-started/prebuilt-binaries.md": {
+	id: "references/getting-started/prebuilt-binaries.md";
+  slug: "references/getting-started/prebuilt-binaries";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"references/getting-started/primer.md": {
+	id: "references/getting-started/primer.md";
+  slug: "references/getting-started/primer";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"references/getting-started/setup.md": {
+	id: "references/getting-started/setup.md";
+  slug: "references/getting-started/setup";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "references/index.mdx": {
 	id: "references/index.mdx";
   slug: "references";
@@ -486,34 +528,6 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".mdx"] };
-"references/installing/allfeatures.md": {
-	id: "references/installing/allfeatures.md";
-  slug: "references/installing/allfeatures";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"references/installing/firstproject.md": {
-	id: "references/installing/firstproject.md";
-  slug: "references/installing/firstproject";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"references/installing/primer.md": {
-	id: "references/installing/primer.md";
-  slug: "references/installing/primer";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"references/installing/setup.md": {
-	id: "references/installing/setup.md";
-  slug: "references/installing/setup";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
 };
 
 	};
