@@ -17,9 +17,7 @@ You can use one of the precompiled binaries or [Build the compiler from source](
 2. Unzip it into a folder
 3.  If you don't have Visual Studio 17 installed you can either install it or follow the next two steps.
 
-4. Run the `install_win_reqs.bat` file. 
-
-5. Run the `msvc_build_libraries.py` Python script which will download the necessary files to compile on Windows.
+4. Run the `msvc_build_libraries.py` Python script which will download the necessary files to compile on Windows.
 
 :::note[Running the Python script]
 
@@ -31,17 +29,16 @@ afterwards you can double click the python file and pick "python" from the list.
 
 :::
 
-
-6. copy the folder
-7. navigate to `C:\Program Files`
-8. paste the folder here
-9. navigate inside the folder you've pasted
-10. copy the path of the folder
-11. search for "edit the system environment variables" on your computer
-12. click on the "environment variables" button on the bottom right
-13. under "user variables" double click on "path"
-14. click on "new" and paste the path to the folder
-15. run `c3c` on anywhere in your computer!
+5. copy the folder
+6. navigate to `C:\Program Files`
+7. paste the folder here
+8. navigate inside the folder you've pasted
+9. copy the path of the folder
+10. search for "edit the system environment variables" on your computer
+11. click on the "environment variables" button on the bottom right
+12. under "user variables" double click on "path"
+13. click on "new" and paste the path to the folder
+14. run `c3c` on anywhere in your computer!
 
 ## Installing on Debian
 1. Download tar file: [https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz)
