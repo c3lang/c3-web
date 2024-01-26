@@ -41,6 +41,9 @@ afterwards you can double click the python file and pick "python" from the list.
 12. under "user variables" double click on "path"
 13. click on "new" and paste the path to the folder
 14. run `c3c` on anywhere in your computer!
+```sh
+c3c compile ./hello.c3c
+```
 
 ## Installing on Debian
 1. Download tar file: [https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz)
