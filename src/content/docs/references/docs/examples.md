@@ -5,7 +5,7 @@ sidebar:
     order: 102
 ---
 
-#####if-statement
+#### if-statement
 ```
 fn void if_example(int a) 
 {
@@ -20,7 +20,7 @@ fn void if_example(int a)
 }
 ```
 
-#####for-loop
+#### for-loop
 ```
 fn void example_for() 
 {
@@ -38,7 +38,7 @@ fn void example_for()
 }
 ```
 
-#####foreach-loop
+#### foreach-loop
 ```
 fn void example_foreach(float[] values) 
 {
@@ -50,7 +50,7 @@ fn void example_foreach(float[] values)
 ```
 
 
-#####while-loop
+#### while-loop
 
 ```
 fn void example_while() 
@@ -70,7 +70,7 @@ fn void example_while()
 }
 ```
 
-#####enum + switch
+#### enum + switch
 
 Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
 
@@ -164,7 +164,7 @@ const uint HIGHEST = State.max;
 State start = State.values[0];
 ```
 
-#####defer
+#### defer
 
 Defer will be invoked on scope exit.
 
@@ -208,7 +208,7 @@ test(0); // Prints "!XA"
 test(1); // Prints "FOOBA" and returns a FooError
 ```
 
-#####struct types
+#### struct types
 
 ```
 def Callback = fn int(char c);
@@ -259,7 +259,7 @@ struct MyData
 ```
 
 
-#####Function pointers
+#### Function pointers
 
 ```
 module demo;
@@ -280,7 +280,7 @@ fn void example_cb()
 }
 ```
 
-#####Error handling
+#### Error handling
 
 Errors are handled using optional results, denoted with a '!' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
@@ -327,12 +327,13 @@ fn void main()
 ```
 
 ```
-fn void printFile(String filename)
+fn void print_file(String filename)
 {
     String! file = io::load_file(filename);
 
-    // The following function is not executed on error.
-    io::printfn("Loaded %s and got:\n%s", filename, file);
+    // The following function is not called on error,
+    // so we must explicitly discard it with a void cast.
+    (void)io::printfn("Loaded %s and got:\n%s", filename, file);
 
     if (catch err = file)
     {
@@ -342,11 +343,31 @@ fn void printFile(String filename)
             io::printfn("Could not load %s.", filename);
     }
 }
+
+// Note that the above is only illustrating how Optionals may skip 
+// call invocation. A more normal implementation would be:
+
+fn void print_file2(String filename)
+{
+    String! file = io::load_file(filename);
+
+    if (catch err = file)
+    {
+        // Print the error 
+        io::printfn("Failed to load %s: %s", filename, err);
+        // We return, so that below 'file' will be unwrapped.
+        return;
+    }    
+    // No need for a void cast here, 'file' is unwrappeed to 'String'.
+    io::printfn("Loaded %s and got:\n%s", filename, file);
+}
 ```
+
+
 
 Read more about optionals and error handling [here](../optionals).
 
-##### Contracts
+#### Contracts
 
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
 ```
@@ -374,7 +395,7 @@ fn int getLastElement(int* array, int length)
 
 Read more about contracts [here](../contracts).
 
-##### Macros
+#### Macros
 
 Macro arguments may be immediately evaluated.
 ```
@@ -451,7 +472,7 @@ fn void test()
 
 Read more about macros [here](../macros).
 
-##### Methods
+#### Methods
 
 It's possible to namespace functions with a union, struct or enum type to enable "dot syntax" calls:
 
@@ -476,7 +497,7 @@ fn void test()
 }
 ```
 
-##### Compile time reflection and execution
+#### Compile time reflection and execution
 
 Access type information and loop over values at compile time:
 
@@ -529,7 +550,7 @@ Macros with only compile time variables are completely evaluated at compile time
 
 Read more about compile time execution [here](../compiletime).
 
-##### Generic modules
+#### Generic modules
 
 Generic modules implements a generic system.
 
@@ -591,7 +612,7 @@ fn void test()
 
 Read more about generic modules [here](../generics)
 
-##### Dynamic calls
+#### Dynamic calls
 
 Runtime dynamic dispatch through interfaces:
 
