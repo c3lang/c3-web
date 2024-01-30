@@ -15,7 +15,7 @@ fn void main()
 }
 ```
 
-The `import` statement imports other modules, and we want `println` which
+The `import` statement imports other modules, and we want `printn` which
 is in `std::io`. Import is always recursive, so `import std::io` actually
 imports both `std::io` and its sub-modules, such as `std::io::path` (which 
 handles file paths).
