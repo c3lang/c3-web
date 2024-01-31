@@ -7,7 +7,7 @@ sidebar:
 
 Let's start with a simple "Hello World" program. The simplest Hello World you can write in C3 looks like this:
 
-```cpp
+```c3
 import std::io;
 
 fn void main()
