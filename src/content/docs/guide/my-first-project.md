@@ -16,7 +16,7 @@ You can follow [this link](/c3-web/references/getting-started/prebuilt-binaries/
 
 The `c3c init` comamnd will create a new directory containing your project structure.
 
-```sh
+```bash
 $ c3c init <project-name>
 ```
 

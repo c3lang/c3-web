@@ -14,6 +14,9 @@ dependencies:
   '@astrojs/tailwind':
     specifier: ^5.0.4
     version: 5.1.0(astro@4.2.4)(tailwindcss@3.4.1)
+  '@preline/overlay':
+    specifier: ^2.0.2
+    version: 2.0.2
   astro:
     specifier: ^4.0.7
     version: 4.2.4(typescript@5.3.3)
@@ -811,6 +814,10 @@ packages:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
+  /@preline/overlay@2.0.2:
+    resolution: {integrity: sha512-X3Lw6zRsgxqEnjAqHUYnJD/88NAb2+Q3OlXmvepNmADfUPnWb+rxem2k/M56qiWfP767sZuhDvNeXTlQnGZciA==}
+    dev: false
+
   /@rollup/rollup-android-arm-eabi@4.9.6:
     resolution: {integrity: sha512-MVNXSSYN6QXOulbHpLMKYi60ppyO13W9my1qogeiAqtjb2yR4LSmfU2+POvDkLzhjYLXz9Rf9+9a3zFHW1Lecg==}
     cpu: [arm]
@@ -1352,6 +1359,7 @@ packages:
       react-interactive: 0.8.3(react@16.14.0)
       react-router-dom: 4.3.1(react@16.14.0)
     dev: false
+    bundledDependencies: false
 
   /brace-expansion@2.0.1:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
@@ -3853,6 +3861,7 @@ packages:
       react: 16.14.0
       scheduler: 0.19.1
     dev: false
+    bundledDependencies: false
 
   /react-interactive@0.8.3(react@16.14.0):
     resolution: {integrity: sha512-mmRvA9aKP7zu9kVfP1AX1egX8tFlnE3DDXq92z0JTZezfOpmeQBzr77O1+mTV54OOmn+M2t6c5kFD5VnuFoM7A==}
@@ -3906,6 +3915,7 @@ packages:
       object-assign: 4.1.1
       prop-types: 15.8.1
     dev: false
+    bundledDependencies: false
 
   /read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}

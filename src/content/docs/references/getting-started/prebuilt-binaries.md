@@ -41,7 +41,7 @@ afterwards you can double click the python file and pick "python" from the list.
 12. under "user variables" double click on "path"
 13. click on "new" and paste the path to the folder
 14. run `c3c` on anywhere in your computer!
-```sh
+```bash
 c3c compile ./hello.c3c
 ```
 
@@ -64,14 +64,14 @@ There is an AUR package for the c3c compiler : [c3c-git](https://aur.archlinux.o
 Due to some issues with the LLVM packaged for Arch Linux, the AUR package will download and use LLVM 16 for Ubuntu-23.04 to compile the c3c compiler.
 
 You can use your AUR package manager:
-```sh
+```bash
 paru -S c3c-git
 # or yay -S c3c-git
 # or aura -A c3c-git
 ```
 
 Or clone it manually:
-```sh
+```bash
 git clone https://aur.archlinux.org/c3c-git.git
 cd c3c-git
 makepkg -si
