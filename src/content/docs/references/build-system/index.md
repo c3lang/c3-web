@@ -1,6 +1,6 @@
 ---
 title: Build System
-description: Build System
+description: How the build system works in C3
 sidebar:
     order: 200
 ---
