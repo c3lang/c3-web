@@ -13,6 +13,7 @@ export default defineConfig({
     }),
     starlight({
       title: "The C3 Handbook",
+      customCss: ["./src/content/docs.css"],
       expressiveCode: {
         shiki: {
           langs: [JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))],
