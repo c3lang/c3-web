@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-You can use one of the precompiled binaries or [Build the compiler from source](/c3-web/references/getting-started/setup).
+You can use one of the precompiled binaries or [Build the compiler from source](references/getting-started/setup).
 
 # Prebuilt binaries
 - Windows x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip), [install instructions](https://github.com/c3lang/c3c#installing-on-windows-with-precompiled-binaries).
