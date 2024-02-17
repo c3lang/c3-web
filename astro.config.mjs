@@ -5,7 +5,7 @@ import fs from "node:fs";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://c3-web.github.io",
+  site: "https://c3-lang.org",
   base: "/c3-web",
   integrations: [
     tailwind({
