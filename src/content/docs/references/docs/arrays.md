@@ -34,9 +34,9 @@ When you want to initialize a fixed array without specifying the size, use the [
 
 
 
-## Subarray
+## Slice
 
-The final type is the subarray `<type>[]`  e.g. `int[]`. A subarray is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers:
+The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers:
     
     int[4] a = { 1, 2, 3, 4};
     int[] b = &a; // Implicit conversion is always ok.
@@ -49,7 +49,7 @@ The final type is the subarray `<type>[]`  e.g. `int[]`. A subarray is a view in
 
 ### Slicing arrays
 
-It's possible to use a range syntax to create subarrays from pointers, arrays, vararrays and other subarrays. They either use range syntax:
+It's possible to use a range syntax to create slices from pointers, arrays and other slicess. They either use range syntax:
 `arr[<start index>..<end index>]` (the end index is included in the final result) or start + len syntax: `arr[<start index> : len]`
 
     

@@ -46,7 +46,7 @@ The following operations cause undefined behaviour in release builds of C3:
 | dereference `null` | Yes |
 | dereferencing memory not allocated | Possible\* |
 | dereferencing memory outside of its lifetime | Possible\* |
-| casting pointer to the incorrect array or vararray | Possible\* |
+| casting pointer to the incorrect array | Possible\* |
 | violating pre or post conditions | Yes |
 | violating asserts | Yes |
 | reaching `unreachable()` code | Yes |

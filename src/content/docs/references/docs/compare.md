@@ -24,7 +24,7 @@ C3 adds features, but also removes a few.
 - Associated enum data
 - Distinct types and subtypes
 - Optional contracts
-- Built-in subarrays
+- Built-in slices
 - Foreach for iteration over arrays and types
 - Dynamic calls and types
 
@@ -58,7 +58,7 @@ different from how C++ does things.
 - Error handling
 - Defer
 - Associated enum data
-- Built-in subarrays
+- Built-in slices
 - Dynamic calls
 
 ## Rust
@@ -70,9 +70,9 @@ pattern matching to mention a few.
 Error handling is handled using `Result` and `Optional` which is similar to 
 how C3 works.
 
-C3 compares to Rust much like C, although the presence of built-in subarrays and 
+C3 compares to Rust much like C, although the presence of built-in slices and 
 strings reduces the places where C3 is unsafe. Rust provides arrays and strings,
-but they are not built in. Subarrays are the same as Rust's slices.
+but they are not built in.
 
 ##### In Rust but not in C3
 

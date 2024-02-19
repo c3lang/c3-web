@@ -260,7 +260,7 @@ sidebar:
 
 ##### Revision 2019-12-25
 - Changes how generic modules work.
-- Switched so that vararrays use `Type[*]` and sub arrays use `Type[]`.
+- Switched so that vararrays use `Type[*]` and slices use `Type[]`.
 - Added submodule granularity, partial imports (only importing selected functions and types), removal of `local`, extended aliasing. See [modules](../modules).
 - Updated "changes from C" with removal of multiple declarations.
 

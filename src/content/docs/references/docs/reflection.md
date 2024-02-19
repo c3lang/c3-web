@@ -136,7 +136,7 @@ Returns the minimum value of the type (only valid for integer and float types).
 
 #### names
 
-Returns a subarray containing the names of an enum or fault.
+Returns a slice containing the names of an enum or fault.
 
     enum FooEnum
     {
@@ -192,7 +192,7 @@ Returns the typeid for the given type. `def`s will return the typeid of the unde
 
 #### values
 
-Returns a subarray containing the values of an enum or fault.
+Returns a slice containing the values of an enum or fault.
 
     enum FooEnum
     {

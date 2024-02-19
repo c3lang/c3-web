@@ -137,11 +137,11 @@ char* data2 = malloc(8, .using = my_allocator);
 
 The first form allocates a single element of $Type, returning the pointer,
 the second form allocates a slice with `elements` number of elements, returning
-a subarray of the given length. Elements are not initialized.
+a slice of the given length. Elements are not initialized.
 
 ```c
 int* int = malloc(int);
-int[] ints = new_array(int, 100); // Allocated int[100] on the heap.
+int[] ints = mem::new_array(int, 100); // Allocated int[100] on the heap.
 ```
 
 ```c

@@ -467,9 +467,9 @@ int[<2>] c = { a[0] * b[0], a[1] * b[1] };
 
 An array has the alignment of its elements. An array must have at least one element.
 
-### Subarray types
+### Slice types
 
-The subarray consist of a pointer, followed by an usz length, having the alignment of pointers.
+The slice consist of a pointer, followed by an usz length, having the alignment of pointers.
 
 ### Pointer types
 
@@ -744,7 +744,7 @@ int d = (int)((int*)1); // Invalid, not constant
 
 ### Subscript operator
 
-The subscript operator may take as its left side a pointer, array, subarray or vararray. The index may be of any integer
+The subscript operator may take as its left side a pointer, array or slice. The index may be of any integer
 type. TODO
 *NOTE* The subscript operator is not symmetrical as in C. For example in C3 `array[n] = 33` is allowed, but
 not `n[array] = 33`. This is a change from C.
@@ -1447,7 +1447,7 @@ Modifying the index variable will not affect the foreach iteration.
 
 #### Foreach support
 
-Foreach is natively supported for any subarray, array, pointer to an array, vector and pointer to a vector.
+Foreach is natively supported for any slice, array, pointer to an array, vector and pointer to a vector.
 These types support both iteration by value and reference.
 
 In addition, a type with **operator overload** for `len` and `[]` will support iteration by value,
