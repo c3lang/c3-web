@@ -1,6 +1,6 @@
 ---
 title: My first C3 Project
-description: Learn to create your first c3 project
+description: Learn to create your first C3 project
 sidebar:
   order: 2
 ---

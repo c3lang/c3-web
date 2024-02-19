@@ -1,6 +1,6 @@
 ---
 title: My first Hello World
-description: Let's write our first hello world program in c3
+description: Let's write our first hello world program in C3
 sidebar:
   order: 3
 ---
