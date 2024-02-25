@@ -42,7 +42,7 @@ afterwards you can double click the python file and pick "python" from the list.
 13. click on "new" and paste the path to the folder
 14. run `c3c` on anywhere in your computer!
 ```bash
-c3c compile ./hello.c3c
+c3c compile ./hello.c3
 ```
 
 ## Installing on Debian
