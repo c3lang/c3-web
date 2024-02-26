@@ -6,7 +6,7 @@ sidebar:
 ---
 
 #### if-statement
-```
+```c3
 fn void if_example(int a) 
 {
     if (a > 0) 
@@ -21,7 +21,7 @@ fn void if_example(int a)
 ```
 
 #### for-loop
-```
+```c3
 fn void example_for() 
 {
     // the for-loop is the same as C99. 
@@ -39,7 +39,7 @@ fn void example_for()
 ```
 
 #### foreach-loop
-```
+```c3
 fn void example_foreach(float[] values) 
 {
     foreach (index, value : values) 
@@ -52,7 +52,7 @@ fn void example_foreach(float[] values)
 
 #### while-loop
 
-```
+```c3
 fn void example_while() 
 {
     // again exactly the same as C
@@ -74,7 +74,7 @@ fn void example_while()
 
 Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
 
-```
+```c3
 enum Height : uint
 {
     LOW,
@@ -151,7 +151,7 @@ Enums are always namespaced.
 
 Enums also define `.min` and `.max`, returning the minimum and maximum value for the enum values. `.values` returns an array with all enums.
 
-```
+```c3
 enum State : uint 
 {
     START,
@@ -168,7 +168,7 @@ State start = State.values[0];
 
 Defer will be invoked on scope exit.
 
-```
+```c3
 fn void test(int x)
 {
     defer io::printn();
@@ -192,7 +192,7 @@ fn void main()
 Because it's often relevant to run different defers when having an error return there is also a way to create an error defer, by using the `catch` keyword directly after the defer.
 Similarly using `defer try` to execute of success.
 
-```
+```c3
 fn void! test(int x)
 {
     defer io::printn("");
@@ -210,7 +210,7 @@ test(1); // Prints "FOOBA" and returns a FooError
 
 #### struct types
 
-```
+```c3
 def Callback = fn int(char c);
 
 enum Status : int
@@ -261,7 +261,7 @@ struct MyData
 
 #### Function pointers
 
-```
+```c3
 module demo;
 
 def Callback = fn int(char* text, int value);
@@ -285,7 +285,7 @@ fn void example_cb()
 Errors are handled using optional results, denoted with a '!' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
 
-```
+```c3
 fault MathError
 {
     DIVISION_BY_ZERO
@@ -326,7 +326,7 @@ fn void main()
 }
 ```
 
-```
+```c3
 fn void print_file(String filename)
 {
     String! file = io::load_file(filename);
@@ -370,7 +370,7 @@ Read more about optionals and error handling [here](../optionals).
 #### Contracts
 
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
-```
+```c3
 /**
  * @param foo "the number of foos" 
  * @require foo > 0, foo < 1000
@@ -398,7 +398,7 @@ Read more about contracts [here](../contracts).
 #### Macros
 
 Macro arguments may be immediately evaluated.
-```
+```c3
 macro foo(a, b)
 {
     return a(b);
@@ -421,7 +421,7 @@ fn int test()
 
 Macro arguments may have deferred evaluation, which is basically text expansion using `#var` syntax.
 
-```
+```c3
 macro foo(#a, b, #c)
 {
     c = a(b) * b;
@@ -452,7 +452,7 @@ fn int test2()
 ```
 
 Improve macro errors with preconditions:
-```
+```c3
 /**
  * @param x "value to square"
  * @require types::is_numeric($typeof(x)) "cannot multiply"
@@ -476,7 +476,7 @@ Read more about macros [here](../macros).
 
 It's possible to namespace functions with a union, struct or enum type to enable "dot syntax" calls:
 
-```
+```c3
 struct Foo
 {
     int i;
@@ -501,28 +501,30 @@ fn void test()
 
 Access type information and loop over values at compile time:
 
-    import std::io;
+```c3
+import std::io;
 
-    struct Foo
-    {
-        int a;
-        double b;
-        int* ptr;
-    }
+struct Foo
+{
+    int a;
+    double b;
+    int* ptr;
+}
 
-    macro print_fields($Type)
-    {
-        $foreach ($field : $Type.membersof)
-            io::printfn("Field %s, offset: %s, size: %s, type: %s", 
-                    $field.nameof, $field.offsetof, $field.sizeof, $field.typeid.nameof);
-        $endforeach
-    }
+macro print_fields($Type)
+{
+    $foreach ($field : $Type.membersof)
+        io::printfn("Field %s, offset: %s, size: %s, type: %s", 
+                $field.nameof, $field.offsetof, $field.sizeof, $field.typeid.nameof);
+    $endforeach
+}
 
 
-    fn void main()
-    {
-        print_fields(Foo);
-    }
+fn void main()
+{
+    print_fields(Foo);
+}
+```
 
 This prints on x64:
 
@@ -536,17 +538,19 @@ Field ptr, offset: 16, size: 8, type: int*
 
 Macros with only compile time variables are completely evaluated at compile time:
 
-    macro long @fib(long $n)
-    {
-        $if $n <= 1:
-            return $n;
-        $else
-            return @fib($n - 1) + @fib($n - 2);
-        $endif
-    }
+```c3
+macro long @fib(long $n)
+{
+    $if $n <= 1:
+        return $n;
+    $else
+        return @fib($n - 1) + @fib($n - 2);
+    $endif
+}
 
-    const long FIB19 = @fib(19); 
-    // Same as const long FIB19 = 4181;
+const long FIB19 = @fib(19); 
+// Same as const long FIB19 = 4181;
+```
 
 Read more about compile time execution [here](../compiletime).
 
@@ -554,7 +558,7 @@ Read more about compile time execution [here](../compiletime).
 
 Generic modules implements a generic system.
 
-```
+```c3
 module stack(<Type>);
 struct Stack
 {
@@ -588,7 +592,7 @@ fn bool Stack.empty(Stack* this)
 
 Testing it out:
 
-```
+```c3
 def IntStack = Stack(<int>);
 
 fn void test()
@@ -616,45 +620,47 @@ Read more about generic modules [here](../generics)
 
 Runtime dynamic dispatch through interfaces:
 
-    import std::io;
+```c3
+import std::io;
 
-    // Define a dynamic interface
-    interface MyName
+// Define a dynamic interface
+interface MyName
+{
+    fn String myname();
+}
+
+struct Bob (MyName) { int x; }
+
+// Required implementation as Bob implements MyName
+fn String Bob.myname(Bob*) @dynamic { return "I am Bob!"; }
+
+// Ad hoc implementation
+fn String int.myname(int*) @dynamic { return "I am int!"; }
+
+fn void whoareyou(any* a)
+{
+    MyName* b = (MyName*)a;
+    if (!&b.myname)
     {
-        fn String myname();
+        io::printn("I don't know who I am.");
+        return;
     }
-    
-    struct Bob (MyName) { int x; }
+    io::printn(b.myname());
+}
 
-    // Required implementation as Bob implements MyName
-    fn String Bob.myname(Bob*) @dynamic { return "I am Bob!"; }
-    
-    // Ad hoc implementation
-    fn String int.myname(int*) @dynamic { return "I am int!"; }
+fn void main()
+{
+    int i = 1;
+    double d = 1.0;
+    Bob bob;
 
-    fn void whoareyou(any* a)
-    {
-        MyName* b = (MyName*)a;
-        if (!&b.myname)
-        {
-            io::printn("I don't know who I am.");
-            return;
-        }
-        io::printn(b.myname());
-    }
-
-    fn void main()
-    {
-        int i = 1;
-        double d = 1.0;
-        Bob bob;
-
-	    any* a = &i;
-	    whoareyou(a);
-	    a = &d;
-	    whoareyou(a);
-	    a = &bob;
-	    whoareyou(a);
-    }
+    any* a = &i;
+    whoareyou(a);
+    a = &d;
+    whoareyou(a);
+    a = &bob;
+    whoareyou(a);
+}
+```
 
 Read more about dynamic calls [here](../anyinterfaces).
