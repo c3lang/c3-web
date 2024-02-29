@@ -149,7 +149,9 @@ fn void demo_enum(Height h)
 
 Enums are always namespaced.
 
-Enums also define `.min` and `.max`, returning the minimum and maximum value for the enum values. `.values` returns an array with all enums.
+Enum support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
+of enum values, `.inner` returns the storage type. `.names` returns an array with the names of all enums. `.associated`
+returns an array of the typeids of the associated values for the enum.
 
 ```c3
 enum State : uint 
@@ -158,10 +160,9 @@ enum State : uint
     STOP,
 }
 
-const uint LOWEST = State.min;
-const uint HIGHEST = State.max;
-
 State start = State.values[0];
+usz enums = State.elements;   // 2
+String[] names = State.names; // [ "START", "STOP" ] 
 ```
 
 #### defer
@@ -198,7 +199,7 @@ fn void! test(int x)
     defer io::printn("");
     defer io::printn("A");
     defer try io::printn("X");
-    defer catch io::printn("B")
+    defer catch io::printn("B");
     defer catch (err) io::printfn("%s", err.message);
     if (x == 1) return FooError!;
     print("!")
