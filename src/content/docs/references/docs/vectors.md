@@ -16,9 +16,11 @@ A vector is declared similar to an array but uses `[<>]` rather than `[]`, e.g. 
 Vectors support all arithmetics and other operations supported by its underlying type. The operations are
 always performed elementwise.
 
-    int[<2>] a = { 23, 11 };
-    int[<2>] b = { 2, 1 };
-    int[<2>] c = a * b;     // c = { 46, 11 }
+```c3
+int[<2>] a = { 23, 11 };
+int[<2>] b = { 2, 1 };
+int[<2>] c = a * b;     // c = { 46, 11 }
+```
 
 For integer and boolean types, bit operations such as `^ | & << >>` are available, and for pointers, pointer arithmetic
 is supported.
@@ -27,9 +29,11 @@ is supported.
 
 Scalar values will implicitly widen to vectors when used with vectors:
 
-    int[<2>] d = { 21, 14 };
-    int[<2>] e = d / 7;      // e = { 3, 2 }
-    int[<2>] f = 4;          // f = { 4, 4 }
+```c3
+int[<2>] d = { 21, 14 };
+int[<2>] e = d / 7;      // e = { 3, 2 }
+int[<2>] f = 4;          // f = { 4, 4 }
+```
 
 ## Additional operations
 
@@ -54,14 +58,17 @@ Dot methods available for scalar values, such as `ceil`, `fma` etc are in genera
 
 ## Swizzling
 
-Swizzling using dot notation is supported, using x, y, z, w:
+Swizzling using dot notation is supported, using x, y, z, w *or* r, g, b, a:
 
-    int[<3>] a = { 11, 22, 33 };
-    int[<4>] b = a.xxzx;         // b = { 11, 11, 33, 11 }
-    int c = b.w;                 // c = 11;
+```c3
+int[<3>] a = { 11, 22, 33 };
+int[<4>] b = a.xxzx;                         // b = { 11, 11, 33, 11 }
+int c = b.w;                                 // c = 11;
+char[<4>] color = { 0x11, 0x22, 0x33, 0xFF };
+char red = color.r;                          // red = 0x11
+```
 
 ## Array-like operations
 
 Like arrays, it's possible to make slices and iterate over vectors. It should be noted that the storage alignment of
-vectors are often different from arrays, which should be taken into account when storing them in vectors.
-
+vectors are often different from arrays, which should be taken into account when storing vectors.
