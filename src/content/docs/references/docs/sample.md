@@ -7,7 +7,7 @@ sidebar:
 
 Here is a bit of code manually converted to C3 from C.
 
-```
+```c3
 const uint OFFSET = 8;
 const uint BIN_COUNT = 9;
 const uint BIN_MAX_IDX = BIN_COUNT - 1;
@@ -46,54 +46,54 @@ struct Heap
 
 
 /**
- * @require heap != null, start > 0
+ * @require start > 0
  */
-fn void Heap.init(Heap* heap, uptr start)
+fn void Heap.init(&heap, uptr start)
 {
     Node* init_region = (Node*)start;
     init_region.hole = 1;
     init_region.size = HEAP_INIT_SIZE - Node.sizeof - Footer.sizeof;
 
-    init_region.createFoot();
+    init_region.create_foot();
 
-    heap.bins[get_bin_index(init_region.size)].addNode(init_region);
+    heap.bins[get_bin_index(init_region.size)].add_node(init_region);
 
     heap.start = start;
     heap.end = start + HEAP_INIT_SIZE;
 }
 
-fn void* Heap.alloc(Heap* heap, uint size)
+fn void* Heap.alloc(&heap, uint size)
 {
     uint index = get_bin_index(size);
-    Bin* temp = (Bin*)heap.bins[index];
-    Node* found = temp.getBestFit(size);
+    Bin* temp = heap.bins[index];
+    Node* found = temp.get_best_fit(size);
 
     while (!found)
     {
         temp = heap.bins[++index];
-        found = temp.getBestFit(size);
+        found = temp.get_best_fit(size);
     }
 
-    if ((found.size - size) > (OVERHEAD + MIN_ALLOC_SZ))
+    if (found.size - size > OVERHEAD + MIN_ALLOC_SZ)
     {
-        Node* split = (Node*)((char*)found + Node.sizeof + Footer.sizeof) + size;
+        Node* split = (Node*)((void*)found + Node.sizeof + Footer.sizeof) + size;
         split.size = found.size - size - (uint)Node.sizeof - (uint)Footer.sizeof;
         split.hole = 1;
 
-        split.createFoot();
+        split.create_foot();
 
         uint new_idx = get_bin_index(split.size);
 
-        heap.bins[new_idx].addNode(split);
+        heap.bins[new_idx].add_node(split);
 
         found.size = size;
-        found.createFoot();
+        found.create_foot();
     }
 
     found.hole = 0;
-    heap.bins[index].removeNode(found);
+    heap.bins[index].remove_node(found);
 
-    Node* wild = heap.getWilderness();
+    Node* wild = heap.get_wilderness();
     if (wild.size < MIN_WILDERNESS)
     {
         if (!heap.expand(0x1000)) return null;
@@ -109,32 +109,32 @@ fn void* Heap.alloc(Heap* heap, uint size)
 }
 
 /**
- * @require p != null
+ * @param [&inout] p
  */
-fn void Heap.free(Heap* heap, void *p)
+fn void Heap.free(&heap, void* p)
 {
-    Bin* list;
-    Footer* new_foot, old_foot;
 
-    Node* head = (Node*)((char*)p - OFFSET);
-    if (head == (Node*)((uptr)heap.start))
+    Node* head = (void*)p - OFFSET;
+    if (head == (Node*)heap.start)
     {
         head.hole = 1;
-        heap.bins[get_bin_index(head.size)].addNode(head);
+        heap.bins[get_bin_index(head.size)].add_node(head);
         return;
     }
 
-    Node* next = (Node*)((char*)head.getFoot() + Footer.sizeof);
-    Footer* f = (Footer*)((char*)(head) - Footer.sizeof);
+    Node* next = (void*)head.get_foot() + Footer.sizeof;
+    Footer* f = (void*)head - Footer.sizeof;
     Node* prev = f.header;
 
+    Bin* list;
+    Footer* new_foot;
     if (prev.hole)
     {
         list = heap.bins[get_bin_index(prev.size)];
-        list.removeNode(prev);
+        list.remove_node(prev);
 
         prev.size += OVERHEAD + head.size;
-        new_foot = head.getFoot();
+        new_foot = head.get_foot();
         new_foot.header = prev;
 
         head = prev;
@@ -143,29 +143,29 @@ fn void Heap.free(Heap* heap, void *p)
     if (next.hole)
     {
         list = heap.bins[get_bin_index(next.size)];
-        list.removeNode(next);
+        list.remove_node(next);
 
         head.size += OVERHEAD + next.size;
 
-        old_foot = next.getFoot();
+        Footer* old_foot = next.get_foot();
         old_foot.header = null;
         next.size = 0;
         next.hole = 0;
 
-        new_foot = head.getFoot();
+        new_foot = head.get_foot();
         new_foot.header = head;
     }
 
     head.hole = 1;
-    heap.bins[get_bin_index(head.size)].addNode(head);
+    heap.bins[get_bin_index(head.size)].add_node(head);
 }
 
-fn uint Heap.expand(Heap* heap, usz sz)
+fn uint Heap.expand(&heap, usz sz)
 {
     return 0;
 }
 
-fn void Heap.contract(Heap* heap, usz sz)
+fn void Heap.contract(&heap, usz sz)
 {
     return;
 }
@@ -182,26 +182,26 @@ fn uint get_bin_index(usz sz)
     return index;
 }
 
-fn void Node.createFoot(Node* head)
+fn void Node.create_foot(&head)
 {
-    Footer* foot = head.getFoot();
+    Footer* foot = head.get_foot();
     foot.header = head;
 }
 
-fn Footer* Node.getFoot(Node* node)
+fn Footer* Node.get_foot(&node)
 {
-    return (Footer*)((char*)node + Node.sizeof + node.size);
+    return (void*)node + Node.sizeof + node.size;
 }
 
-fn Node* Heap.getWilderness(Heap* heap)
+fn Node* Heap.get_wilderness(&heap)
 {
-    Footer* wild_foot = (Footer*)((char*)heap.end - Footer.sizeof);
+    Footer* wild_foot = (void*)heap.end - Footer.sizeof;
     return wild_foot.header;
 }
 
-fn void Bin.removeNode(Bin* bin, Node* node)
+fn void Bin.remove_node(&bin, Node* node)
 {
-	if (!bin.head) return;
+  if (!bin.head) return;
     if (bin.head == node)
     {
         bin.head = bin.head.next;
@@ -228,7 +228,7 @@ fn void Bin.removeNode(Bin* bin, Node* node)
     }
 }
 
-fn void Bin.addNode(Bin* bin, Node* node)
+fn void Bin.add_node(&bin, Node* node)
 {
     node.next = null;
     node.prev = null;
@@ -274,7 +274,7 @@ fn void Bin.addNode(Bin* bin, Node* node)
     }
 }
 
-fn Node* Bin.getBestFit(Bin* bin, usz size)
+fn Node* Bin.get_best_fit(&bin, usz size)
 {
     if (!bin.head) return null;
 
