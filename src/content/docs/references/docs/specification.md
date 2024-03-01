@@ -1604,6 +1604,35 @@ to the evaluation of the attribute parameters in the list.
 A user defined attribute can contain other user defined attributes. The definition
 may not be cyclic.
 
+## Methods
+
+#### Operator overloading
+
+`@operator` overloads may only be added to user defined types (distinct, unions, struct, enum and fault).
+
+##### Indexing operator ([])
+
+This requires a return type and a method parameter, which is the index.
+
+##### Reference indexing operator (&[])
+
+This requires a return type and a method parameter, which is the index. If `[]` is implemented,
+it should return a pointer to `[]`.
+
+##### Assigning index operator (=[])
+
+This has a void return type, and index should match that of `[]` and `&[]`. Value should match that 
+of `[]` and be the pointee of the result of `&[]`.
+
+##### Len operator (len)
+
+This must have an integer return type.
+
+#### Dynamic methods
+
+`@dynamic` may be used on methods for any type except `any` and interfaces.
+
+
 ## Modules
 
 Module paths are hierarchal, with each sub-path appended with '::' + the name:
