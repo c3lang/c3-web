@@ -10,7 +10,7 @@ Let's create our first C3 project. We will create a simple calculator app that w
 But before that we need to install C3C, the compiler for C3. 
 
 :::note[Haven't installed C3C yet?]
-You can follow [this link](references/getting-started/prebuilt-binaries/) to install the compiler on Mac, Windows and Linux.
+You can follow [this link](/references/getting-started/prebuilt-binaries/) to install the compiler on Mac, Windows and Linux.
 :::
 ## Creating a new project
 

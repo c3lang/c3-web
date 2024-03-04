@@ -1544,7 +1544,7 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | @bigendian    | bitstruct only                                                                    |
 | @builtin      | macro, fn, global, constant                                                       |
 | @callconv     | fn, call                                                                          |
-| @deprecated   | fn, macro, variables, constants, user-defined types, struct member                |
+| @deprecated   | fn, macro, interface, variables, constants, user-defined types, struct member     |
 | @dynamic      | fn                                                                                |
 | @export       | fn, globals, constants, struct, union, enum, fault                                |
 | @extern       | fn, globals, constants, user-defined types                                        |
@@ -1562,6 +1562,7 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | @nostrip      | fn, globals, constants, struct, union, enum, fault                                |
 | @obfuscate    | enum, fault                                                                       |
 | @operator     | fn, macro                                                                         |
+| @optional     | interface methods                                                                 |
 | @overlap      | bitstruct only                                                                    |
 | @packed       | struct, union                                                                     |
 | @priority     | initializer/finalizer                                                             |
@@ -1575,6 +1576,27 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | @used         | all except call and initializer/finalizers                                        |
 | @weak         | fn, globals, constants                                                            |
 | @winmain      | fn                                                                                |
+
+#### @deprecated
+
+Takes an optional constant string. 
+If the node is in use, print the deprecation and add the optional string if present.
+
+#### @optional
+
+Marks an *interface* method as optional, and so does not need to be implemented by
+a conforming type.
+
+#### @winmain
+
+Marks a `main` function as a win32 winmain function, which is the entrypoint for a windowed 
+application on Windows. This allows the main function to take a different set of 
+arguments than usual.
+
+#### @callconv
+
+`@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv` 
+is applied to a function or call, the last one takes precedence.
 
 ### User defined attributes
 
