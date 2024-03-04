@@ -123,41 +123,42 @@ whereas `malloc_checked` and `malloc_aligned` returns an optional value.
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
 the normal `free` or memory corruption may result.
 
-These calls takes an optional `using` parameter, replacing the default
-allocator with a custom one.
-
 ```c
 char* data = malloc(8);
 char*! data2 = malloc_checked(8);
 int[<16>]*! data3 = malloc_aligned(16 * int.sizeof), 128);
-char* data2 = malloc(8, .using = my_allocator);  
 ```
 
-### new($Type), new_array($Type, usz elements)
+### new($Type, #initializer), new_aligned($Type, #initializer)
 
-The first form allocates a single element of $Type, returning the pointer,
-the second form allocates a slice with `elements` number of elements, returning
-a slice of the given length. Elements are not initialized.
+This allocates a single element of $Type, returning the pointer. An optional initializer may be added, which
+immediately initializes the value to that of the initializer.
 
-```c
-int* int = malloc(int);
-int[] ints = mem::new_array(int, 100); // Allocated int[100] on the heap.
+If no initializer is provided, it is zero initialized. `new_aligned` works the same but for overaligned types, such allocations
+must be freed using `free_aligned`
+
+```c3
+int* a = mem::new(int);
+Foo* foo = mem::new(Foo, { 1, 2 });
 ```
 
-```c
-struct Abc
-{
-    int header;
-    char[*] data;
-}
+### alloc($Type), alloc_aligned($Type)
 
-...
+Allocates a single element of $Type, same as `new`, but without initializing the data.
 
-// Allocate a "Type" but add "data_len" bytes
-// for the flexible array member "data":
-Type* t = new(Abc, .end_padding = data_len);
+### new_array($Type, usz elements), new_array_aligned($Type, usz elements)
+
+Allocates a slice of `elements` number of elements, returning
+a slice of the given length. Elements are zero initialized. `new_array_aligned` is used for 
+types that exceed standard alignment.
+
+```c3
+int[] ints = mem::new_array(int, 100); // Allocated int[100] on the heap, zero initialized.
 ```
 
+### alloc_array($Type, usz elements), alloc_array_aligned($Type, usz elements)
+
+Same as `new_array` but without initialization.
 
 ### calloc, calloc_checked, calloc_aligned
 
@@ -173,7 +174,6 @@ pointers created using `calloc_aligned` or `alloc_aligned`.
 
 Frees memory allocated using `malloc` or `calloc`. Any memory allocated using "_aligned" variants
 must be freed using `free_aligned`.
-
 
 ### @scoped(Allocator* allocator; @body())
 
@@ -211,6 +211,10 @@ Same as `tmalloc` but clears the memory.
 
 `realloc` but on memory received using `tcalloc` or `tmalloc`.
 
+### temp_new, temp_alloc, temp_new_array, temp_alloc_array
+
+Same as the `new`, `alloc`, `new_array` and `alloc_array` respectively.
+
 ### void @pool(;@body)
 
 Opens a temporary memory scope.
@@ -221,7 +225,6 @@ Opens a temporary memory scope.
     // This allocation uses the dynamic arena 
     Foo* f = talloc(Foo);
 };
-
 ```
 
 
