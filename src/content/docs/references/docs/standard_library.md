@@ -215,8 +215,8 @@ Same as `tmalloc` but clears the memory.
 
 Opens a temporary memory scope.
 
-```c
-@poo() 
+```c3
+@pool() 
 {
     // This allocation uses the dynamic arena 
     Foo* f = talloc(Foo);
@@ -229,7 +229,7 @@ Opens a temporary memory scope.
 
 Returns the value in `x` using a volatile load.
 
-```c
+```c3
 // Both loads will always happen:
 int y = @volatile_load(my_global);
 y = @volatile_load(my_global);
@@ -240,7 +240,7 @@ y = @volatile_load(my_global);
 
 Store the value `y` in `x` using a volatile store.
 
-```c
+```c3
 // Both stores will always happen:
 @volatile_store(y, 1);
 @volatile_store(y, 1);
@@ -264,8 +264,7 @@ Copies bytes from one pointer to another. It may optionally be set as volatile,
 in which case the copy may not be optimized away. Furthermore the source
 and destination alignment may be used.
 
-```c
-
+```c3
 Foo* f = talloc(data_size);
 mem::copy(f, slice.ptr, size); 
 ```
