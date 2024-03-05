@@ -186,16 +186,16 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id, 
 e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
 
-### The `any*` type
+### The `any` type
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
 It is possible to cast the any pointer to any pointer type, which will return `null` if the types don't match,
 or the pointer value otherwise.
 
     int x;
-    any* y = &x;
+    any y = &x;
     double *z = (double*)y; // Returns null
-    int* w = (int*)x; // Returns the pointer to x
+    int* w = (int*)y; // Returns the pointer to x
 
 Switching over the `any` type is another method to unwrap the pointer inside:
 
