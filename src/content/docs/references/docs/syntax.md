@@ -29,8 +29,8 @@ var         while
 ```
 
 ```
-$alignof    $assert     $case       $checks
-$default    $defined    $echo       $exec
+$alignof    $assert     $case       $default    
+$defined    $echo       $embed      $exec
 $else       $endfor     $endforeach $endif      
 $endswitch  $eval       $evaltype   $error      
 $extnameof  $for        $foreach    $if         

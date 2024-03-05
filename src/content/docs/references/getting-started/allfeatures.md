@@ -252,19 +252,18 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 4. `$for` and `$foreach` to loop over compile time variables and data.
 5. `$typeof` determines an expression type without evaluating it.
 6. Type properties may be accessed at compile time.
-7. `$checks` determines if something may type check.
-8. `$define` returns true if the variable, function or type exists.
-9. `$error` emits an error if encountered.
-10. `$embed` includes a file as binary data.
-11. `$include` includes a file as text.
-12. `$exec` includes the output of a program as code.
-13. `$evaltype` takes a compile time string and turns it into a type.
-14. `$eval` takes a string and turns it into an identifier.
-15. `$extnameof` turns an identifier into its string external name.
-16. `$nameof` turns an identifier into its local string name.
-17. `$qnameof` turns an identifier into its local string name with the module prefixed.
-18. Compile time constant values are always compile time folded for arithmetic operations and casts.
-19. `$$FUNCTION` returns the current function as an identifier.
+7. `$define` returns true if the variable, function or type exists.
+8. `$error` emits an error if encountered.
+9. `$embed` includes a file as binary data.
+10. `$include` includes a file as text.
+11. `$exec` includes the output of a program as code.
+12. `$evaltype` takes a compile time string and turns it into a type.
+13. `$eval` takes a string and turns it into an identifier.
+14. `$extnameof` turns an identifier into its string external name.
+15. `$nameof` turns an identifier into its local string name.
+16. `$qnameof` turns an identifier into its local string name with the module prefixed.
+17. Compile time constant values are always compile time folded for arithmetic operations and casts.
+18. `$$FUNCTION` returns the current function as an identifier.
 
 ### Changed
 

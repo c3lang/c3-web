@@ -206,7 +206,6 @@ Returns a slice containing the values of an enum or fault.
 There are several built-in functions to inspect the code during compile time.
 
 - `$alignof`
-- `$checks`
 - `$defined`
 - `$eval`
 - `$evaltype`
