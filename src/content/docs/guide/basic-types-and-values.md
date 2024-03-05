@@ -225,16 +225,16 @@ The pointer type has a special literal called `null`, which is an invalid, empty
 The `void*` type is a special pointer which implicitly converts to any other pointer. It is not "a pointer to void",
 but rather a wildcard pointer which matches any other pointer.
 
-### The `typeid` type
+## The `typeid` type
 
-C3 retains some type information at runtime, in particular, each type has an identifier that uniquely
+For advanced usage, C3 retains some type information at runtime, in particular, each type has an identifier that uniquely
 defines it. Typicallu `Type.typeid` is used to convert a type to its unique runtime id, e.g. 
 `typeid a = Foo.typeid;`. The type itself is pointer-sized.
 
-### The `any` type
+## The `any` type
 
-`any` can be seen as a typed counterpart to `void*`, it is essentially a struct a `typeid` plus a `void*` pointer
-to a value. The `any` may *unsafely* be cast to any pointer.
+Another type mostly for advanced usage, `any` can be seen as a typed counterpart to `void*`, 
+it is essentially a struct a `typeid` plus a `void*` pointer to a value. The `any` may *unsafely* be cast to any pointer.
 
 ```c3
 int x;
