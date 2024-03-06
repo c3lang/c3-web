@@ -224,3 +224,85 @@ The pointer type has a special literal called `null`, which is an invalid, empty
 
 The `void*` type is a special pointer which implicitly converts to any other pointer. It is not "a pointer to void",
 but rather a wildcard pointer which matches any other pointer.
+
+## Printing values
+
+Printing values can be done using `io::print`, `io::printn`, `io::printf` and `io::printfn`. This requires
+importing the module `std::io`. 
+
+:::note
+The `n` variants of the print functions will add a newline after printing, which is what we'll often 
+use in the examples, but `print` and `printf` work the same way.
+
+:::
+
+```c3
+import std::io; // Get the io functions.
+
+fn void main()
+{
+    int a = 1234;
+    ulong b = 0xFFAABBCCDDEEFF;
+    double d = 13.03e-04;
+    char[*] hex = x"4865 6c6c 6f20 776f 726c 6421";
+    io::printn(a);
+    io::printn(b);
+    io::printn(d);
+    io::printn(hex);
+}
+```
+
+If you run this program you will get:
+
+```
+1234
+71963842633920255
+0.001303
+[72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100, 33]
+```
+
+To get more control we can format the output using `printf` and `printfn`:
+
+```c3
+import std::io;
+fn void main()
+{
+    int a = 1234;
+    ulong b = 0xFFAABBCCDDEEFF;
+    double d = 13.03e-04;
+    char[*] hex = x"4865 6c6c 6f20 776f 726c 6421";
+    io::printfn("a was:                        %d", a);
+    io::printfn("b in hex was:                 %x", b);
+    io::printfn("d in scientific notation was: %e", d);
+    io::printfn("Bytes as string:              %s", (String)&hex);
+}
+```
+
+We can apply the [standard printf formatting rules](https://en.cppreference.com/w/c/io/fprintf), but 
+unlike in C/C++ there is no need to indicate the type when using `%d` - it will print unsigned and 
+signed up to `int128`, in fact there is no support for `%u`, `%lld` etc in `io::printf`. Furthermore,
+`%s` works not just on strings but on any type:
+
+```c3
+import std::io;
+
+enum Foo
+{
+    ABC,
+    BCD,
+    EFG,
+}
+fn void main()
+{
+    int a = 1234;
+    uint128 b = 0xFFEEDDCC_BBAA9988_77665544_33221100;
+    Foo foo = BCD;
+    io::printfn("a: %s, b: %d, foo: %s", a, b, foo);
+}
+```
+
+This prints:
+
+```
+a: 1234, b: 340193404210632335760508365704335069440, foo: BCD
+```
