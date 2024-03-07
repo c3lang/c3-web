@@ -162,10 +162,10 @@ new temp allocator aware of the external temp allocator:
 
 **Q:** How do I call a C function from C3?
 
-**A:** Just copy the C function definition and prefix it with `external` (and don't forget the `fn` as well). 
+**A:** Just copy the C function definition and prefix it with `extern` (and don't forget the `fn` as well).
 
 Imagine for example that you have the function `double test(int a, void* b)`. To call it from C3 just declare
-`extern fn double test(int a, void* b)` in the C3 code.
+`extern fn double test(CInt a, void* b)` in the C3 code.
 
 **Q:** My C function / global has a name that doesn't conform to the C3 name requirements, just `extern fn` doesn't 
 work.
