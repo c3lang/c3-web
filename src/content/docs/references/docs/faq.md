@@ -66,34 +66,44 @@ a pointer + length. It is a struct containing a pointer + a length.
 Given an array, pointer or another slice you use either `[start..end]`
 or `[start:len]` to create it:
 
-    int[100] a;
-    int[] b = a[3..6]; // Or a[3:4]
-    b[0] = 1;          // Same as a[3] = 1
+```c3
+int[100] a;
+int[] b = a[3..6]; // Or a[3:4]
+b[0] = 1;          // Same as a[3] = 1
+```
 
 You can also just pass a pointer to an array:
 
-    b = &a; // Same as b = a[0..99];
+```c3
+b = &a; // Same as b = a[0..99];
+```
 
 The start and/or end may be omitted:
 
-    a[..6]; // a[0..6]
-    a[1..]; // a[1..99]
-    a[..];  // a[0..99];
+```c3
+a[..6]; // a[0..6]
+a[1..]; // a[1..99]
+a[..];  // a[0..99];
+```
 
 It is possible to use ranges to assign:
 
-    a[1..2] = 5;         // Assign 5 to a[1] and a[2]
-    a[1..3] = a[11..13]; // Copy 11-13 to 1-3
+```c3
+a[1..2] = 5;         // Assign 5 to a[1] and a[2]
+a[1..3] = a[11..13]; // Copy 11-13 to 1-3
+```
 
 It is important to remember that the *lifetime* of a slice is the same
 as the lifetime of its underlying pointer:
 
-    fn int[] buggy_code()
-    {
-        int[3] a;
-        int[] b = a[0..1];
-        return b; // returning a pointer to a!
-    }
+```c3
+fn int[] buggy_code()
+{
+    int[3] a;
+    int[] b = a[0..1];
+    return b; // returning a pointer to a!
+}
+```
 
 **Q:** What are vectors?
 
@@ -101,18 +111,24 @@ as the lifetime of its underlying pointer:
 be of integer, float, bool or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetics
 available on the element type is available on the vector and is done element wise:
 
-    int[<2>] pos = { 1, 3 };
-    int[<2>] speed = { 5, 7 };
-    pos += speed;              // pos is now { 6, 10 }
+```c3
+int[<2>] pos = { 1, 3 };
+int[<2>] speed = { 5, 7 };
+pos += speed;              // pos is now { 6, 10 }
+```
 
 Swizzling is also supported:
 
-    int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
+```c3
+int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
+```
 
 Any scalar value will be expanded to the vector size:
 
-    // Same as speed = speed * { 2, 2 }    
-    speed = speed * 2;
+```c3
+// Same as speed = speed * { 2, 2 }    
+speed = speed * 2;
+```
 
 ## Memory management
 
@@ -120,7 +136,31 @@ Any scalar value will be expanded to the vector size:
 
 **A:** There is `malloc`, `calloc` and `free` just like in C. The main difference is that these will invoke whatever
 the current heap allocator is, which does not need to be the allocator provided by libc. You can get the current heap
-allocator using `mem::heap()` and do allocations directly. There is also a temporary allocator.
+allocator using `allocator::heap()` and do allocations directly. There is also a temporary allocator.
+
+Convenience functions are available for allocating particular types: `mem::new(Type)` would allocate a single `Type`
+on the heap and zero initialize it. `mem::alloc(Type)` does the same but without zero initialization.
+
+Alternatively, `mem::new` can take a second initializer argument:
+
+```c3
+Foo* f1 = malloc(Foo.sizeof);                   // No initialization
+Foo* f2 = calloc(Foo.sizeof);                   // Zero initialization
+Foo* f3 = mem::new(Foo);                        // Zero initialization
+Foo* f4 = mem::alloc(Foo);                      // No initialization
+Foo* f5 = mem::new(Foo, { 4, 10.0, .a = 123 }); // Initialized to argument
+```
+
+For arrays `mem::new_array` and `mem::alloc_array` works in corresponding ways:
+
+```c3
+Foo* foos1 = malloc(Foo.sizeof * len);    // No initialization
+Foo* foos2 = calloc(Foo.sizeof * len);    // Zero initialization
+Foo[] foos3 = mem::new_array(Foo, len);   // Zero initialization
+Foo[] foos4 = mem::alloc_array(Foo, len); // No initialization
+```
+
+Regardless of how they are allocated, they can be freed using `free()`
 
 **Q:** How does the temporary allocator work?
 
@@ -129,12 +169,17 @@ allocator using `mem::heap()` and do allocations directly. There is also a tempo
 objects are released. You use the `@pool()` macro to create a temporary allocation scope. When execution exits
 this scope, the temporary objects are all freed:
 
-    @pool()
-    {
-        void* some_mem = talloc(128);
-        foo(some_mem);
-    }; 
-    // Temporary allocations are automatically freed here.
+```c3
+@pool()
+{
+    void* some_mem = talloc(128);
+    foo(some_mem);
+}; 
+// Temporary allocations are automatically freed here.
+```
+
+Similar to the heap allocator, there is also `mem::temp_new`, `mem::temp_alloc`, `mem::temp_new_array` and `mem::temp_alloc_array`,
+which all work like their heap counterparts.
 
 **Q:** How can I return a temporarily allocated object from inside a temporary allocation scope?
 
@@ -142,21 +187,21 @@ this scope, the temporary objects are all freed:
 using that allocator. In addition, you need to pass this temp allocator to `@pool` to make the
 new temp allocator aware of the external temp allocator:
 
-    // Store the temp allocator
-    Allocator* temp = mem::temp();
-    @pool(temp)
-    {
-        // Note, 'mem::temp() != temp' here!
-        void* some_mem = talloc(128);
-        // Allocate this on the external temp allocator
-        Foo* foo = temp.new(Foo); 
-        foo.z = foo(some_mem);
-        // Now "some_mem" will be released,
-        // but the memory pointed to by "foo" is still valid.
-        return foo;
-    };
-
-
+```c3
+// Store the temp allocator
+Allocator* temp = allocator::temp();
+@pool(temp)
+{
+    // Note, 'allocator::temp() != temp' here!
+    void* some_mem = talloc(128);
+    // Allocate this on the external temp allocator
+    Foo* foo = temp.new(Foo); 
+    foo.z = foo(some_mem);
+    // Now "some_mem" will be released,
+    // but the memory pointed to by "foo" is still valid.
+    return foo;
+};
+```
 
 ## Interfacing with C code
 
@@ -200,23 +245,27 @@ Function and variable names use `snake_case` (all lower case with `_` separating
 
 Imagine you have two methods:
 
-    fn void Obj.func1(&self, String... args) @private {} // varargs variant
-    fn void Obj.func2(&self, Foo* pf) @private {} // Foo pointer variant
+```c3
+fn void Obj.func1(&self, String... args) @private {} // varargs variant
+fn void Obj.func2(&self, Foo* pf) @private {} // Foo pointer variant
+```
 
 We can now create a macro method on `Obj` which compiles to different calls depending on arguments:
 
-    // The macro must be vararg, since the functions take different amount of arguments
-    macro void Obj.func(&self, ...)
-    {
-        // Does it have a single argument of type 'Foo*'?
-        $if $vacount == 1 && @typeis($vaarg(0), Foo*):
-            // If so, dispatch to func2
-            return self.func2($vaarg(0));
-        $else
-            // Otherwise, dispatch all varargs to func1 
-            return self.func1($vasplat());
-        $endif
-    }
+```c3
+// The macro must be vararg, since the functions take different amount of arguments
+macro void Obj.func(&self, ...)
+{
+    // Does it have a single argument of type 'Foo*'?
+    $if $vacount == 1 && @typeis($vaarg(0), Foo*):
+        // If so, dispatch to func2
+        return self.func2($vaarg(0));
+    $else
+        // Otherwise, dispatch all varargs to func1 
+        return self.func1($vasplat());
+    $endif
+}
+```
 
 The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`.
 
