@@ -4,7 +4,7 @@ description: Macros
 sidebar:
     order: 119
 ---
-The macro capabilities of C3 reaches across several constructs: macros (prefixed with `@` at invocation), [generic functions](../generics/#generic-functions), [generic modules](../generics/#generic-modules), compile time variables (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
+The macro capabilities of C3 reaches across several constructs: macros (prefixed with `@` at invocation), [generic functions](/references/docs/generics/#generic-functions), [generic modules](/references/docs/generics/#generic-modules), compile time variables (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
 ## A quick comparison of C and C3 macros
 
@@ -247,7 +247,7 @@ Similar to regular *methods* a macro may also be associated with a particular ty
     Foo f;
     f.generate();
 
-See the chapter on [functions](../functions) for more details.
+See the chapter on [functions](/references/docs/functions) for more details.
 
 ## Capturing a trailing block
 

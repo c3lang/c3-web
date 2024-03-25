@@ -116,7 +116,7 @@ Substructs may be used in place of its parent structs in many cases. The rule is
 
 ## Pointer conversions
 
-Pointer conversion between types usually need explicit casts. The exception is `void *` which any type may implicitly convert *to* or *from*. Conversion rules from and to arrays are detailed under [arrays](../arrays)
+Pointer conversion between types usually need explicit casts. The exception is `void *` which any type may implicitly convert *to* or *from*. Conversion rules from and to arrays are detailed under [arrays](/references/docs/arrays)
 
 ## Vector conversions
 

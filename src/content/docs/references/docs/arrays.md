@@ -181,4 +181,4 @@ by implementing "len" and "[]" methods and annotating them using the `@operator`
         io::printfn("%d", i);
     }
 
-For more information, see [operator overloading](../operators)
+For more information, see [operator overloading](/references/docs/operators)

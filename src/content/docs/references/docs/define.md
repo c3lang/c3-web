@@ -99,7 +99,7 @@ and variables:
      def int_max_foo = generic_foo::max_foo(<int>);
      def double_max_foo = generic_foo::max_foo(<double>);
 
-For more information, see the chapter on [generics](../generics).
+For more information, see the chapter on [generics](/references/docs/generics).
 
 ## Function pointer default arguments and named parameters
 

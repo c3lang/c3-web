@@ -366,7 +366,7 @@ fn void print_file2(String filename)
 
 
 
-Read more about optionals and error handling [here](../optionals).
+Read more about optionals and error handling [here](/references/docs/optionals).
 
 #### Contracts
 
@@ -394,7 +394,7 @@ fn int getLastElement(int* array, int length)
 }
 ```
 
-Read more about contracts [here](../contracts).
+Read more about contracts [here](/references/docs/contracts).
 
 #### Macros
 
@@ -471,7 +471,7 @@ fn void test()
 }
 ```
 
-Read more about macros [here](../macros).
+Read more about macros [here](/references/docs/macros).
 
 #### Methods
 
@@ -553,7 +553,7 @@ const long FIB19 = @fib(19);
 // Same as const long FIB19 = 4181;
 ```
 
-Read more about compile time execution [here](../compiletime).
+Read more about compile time execution [here](/references/docs/compiletime).
 
 #### Generic modules
 
@@ -615,7 +615,7 @@ fn void test()
 }
 ```
 
-Read more about generic modules [here](../generics)
+Read more about generic modules [here](/references/docs/generics)
 
 #### Dynamic calls
 
@@ -664,4 +664,4 @@ fn void main()
 }
 ```
 
-Read more about dynamic calls [here](../anyinterfaces).
+Read more about dynamic calls [here](/references/docs/anyinterfaces).

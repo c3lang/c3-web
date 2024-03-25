@@ -86,12 +86,12 @@ Arrays are trivially copyable:
     int[3] x = ...;
     int[3] y = x;
 
-See more [here](../arrays).
+See more [here](/references/docs/arrays).
 
 #### Undefined behaviour
 
 C3 has less undefined behaviour, in particular integers are defined as using 2s
-complement and signed overflow is wrapping. See more [here](../undefinedbehaviour).
+complement and signed overflow is wrapping. See more [here](/references/docs/undefinedbehaviour).
 
 #### Functions
 
@@ -103,7 +103,7 @@ Functions are declared like C, but you need to put `fn` in front:
     // C3
     fn int foo(Foo* b, int x, void* z) { ... }
 
-See more about functions, like named and default arguments [here](../functions).
+See more about functions, like named and default arguments [here](/references/docs/functions).
 
 #### Calling C functions
 
@@ -215,7 +215,7 @@ For convenience, assigning to a struct will infer the type even if it's not an i
     ...
     println(my_excellent_string);
 
-Read more about `def` [here](../define).
+Read more about `def` [here](/references/docs/define).
 
 #### Basic types
 
@@ -243,7 +243,7 @@ Several C types that would be variable sized are fixed size, and others changed 
     iptr i;     // Same as intptr_t depends on target
     uptr j;     // Same as uintptr_t depends on target
 
-Read more about types [here](../types).
+Read more about types [here](/references/docs/types).
 
 #### Instead of #include: Modules and import
 
@@ -275,7 +275,7 @@ The `/* */` comments are nesting
 ```
 
 Note that doc comments, starting with `/**` has special rules for parsing it, and is
-not considered a regular comment. See [contracts](../contracts) for more information.
+not considered a regular comment. See [contracts](/references/docs/contracts) for more information.
 
 #### Type qualifiers
 
@@ -433,27 +433,27 @@ struct Flags : char
 }
 ```
 
-For more information see [the section on bitstructs](../types/#bitstructs).
+For more information see [the section on bitstructs](/references/docs/types/#bitstructs).
 
 #### Other changes
 
 The following things are enhancements to C, that does not have a direct counterpart in
 C.
 
-- [Expression blocks](../statements)
+- [Expression blocks](/references/docs/statements)
 - Defer
-- [Methods](../functions)
-- [Optionals](../optionals)
-- [Semantic macros](../macros)
-- [Generic modules](../generics)
-- [Contracts](../contracts)
-- [Compile time evaluation](../compiletime)
-- [Reflection](../reflection)
-- [Operator overloading](../operators)
+- [Methods](/references/docs/functions)
+- [Optionals](voptionals)
+- [Semantic macros](/references/docs/macros)
+- [Generic modules](/references/docs/generics)
+- [Contracts](/references/docs/contracts)
+- [Compile time evaluation](vcompiletime)
+- [Reflection](/references/docs/reflection)
+- [Operator overloading](/references/docs/operators)
 - Macro methods
-- [Static initialize and finalize functions](../functions#static-initializer-and-finalizers)
-- [Dynamic interfaces](../anyinterfaces)
+- [Static initialize and finalize functions](/references/docs/functions#static-initializer-and-finalizers)
+- [Dynamic interfaces](/references/docs/anyinterfaces)
 
-**For the full list of all new features** see the [feature list](../allfeatures).
+**For the full list of all new features** see the [feature list](/references/docs/allfeatures).
 
-Finally, the [FAQ](../faq) answers many questions you might have as you start out.
+Finally, the [FAQ](/references/docs/faq) answers many questions you might have as you start out.

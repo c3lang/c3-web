@@ -49,4 +49,4 @@ Finally, a custom annotation, "@mycustom" is added. The compiler is free to sile
 | @ensure     |     `@ensure <expre1>, <expr2>, ...` |
 | @pure       |                              `@pure` |
     
-See [contracts](../contracts) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
+See [contracts](/references/docs/contracts) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.

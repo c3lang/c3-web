@@ -29,7 +29,7 @@ This would for example affect generated C headers.
 Unlike C, C3 does not use type qualifiers. `const` exists, 
 but is a storage class modifier, not a type qualifier. 
 Instead of `volatile`, volatile loads and stores are used. 
-In order to signal restrictions on parameter usage, parameter [preconditions](../preconditions/) are used.
+In order to signal restrictions on parameter usage, parameter [preconditions](/references/docs/preconditions/) are used.
 `typedef` has a slightly different syntax and renamed `def`.
 
 C3 also requires all function pointers to be used with an alias, so:
@@ -229,7 +229,7 @@ the raw `void*` pointer.
 ### Array types
 
 Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
-from the initializer. See the chapter on [arrays](../arrays).
+from the initializer. See the chapter on [arrays](/references/docs/arrays).
 
 ### Vector types
 
@@ -332,7 +332,7 @@ Using `inline` in the `distinct` declaration allows a distinct type to implicitl
     // Inline type definition
     MyList<Foo> bcd = MyList(<Foo>);
 
-Read more about generic types on [the page about generics](../generics).
+Read more about generic types on [the page about generics](/references/docs/generics).
 
 ## Enum
 
@@ -442,7 +442,7 @@ Only variables and return variables may be optionals. Function and macro paramet
     int! x = 0; // Ok!
 
 
-Read more about the optional types on the page about [optionals and error handling](../optionals).
+Read more about the optional types on the page about [optionals and error handling](/references/docs/optionals).
 
 
 ## Struct types
@@ -470,7 +470,7 @@ A struct's members may be accessed using dot notation, even for pointers to stru
 
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
 
-To change alignment and packing, optional [attributes](../attributes) such as `@packed` may be used.
+To change alignment and packing, optional [attributes](/references/docs/attributes) such as `@packed` may be used.
 
 ## Struct subtyping
 
