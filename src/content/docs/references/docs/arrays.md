@@ -5,7 +5,8 @@ sidebar:
     order: 109
 ---
 
-Arrays has a central role in programming. C3 offers 2 built-in types of arrays:
+Arrays has a central role in programming. C3 offers build-in arrays, slices and [vectors](/references/docs/vectors/).
+The standard library enhances this further with dynamically sized arrays and other collections.
 
 ## Fixed arrays
 
@@ -31,8 +32,6 @@ When you want to initialize a fixed array without specifying the size, use the [
 
     int[3] a = { 1, 2, 3 };
     int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
-
-
 
 ## Slice
 
@@ -107,18 +106,19 @@ Note that all casts above are inherently unsafe and will only work if the type c
 
 For example:
 
-    int[4] a;
-    int[4]* b = &a;
-    int* c = b;
-    // Safe cast:
-    int[4]* d = (int[4]*)c; 
-    int e = 12;
-    int* f = &e;
-    // Incorrect, but not checked
-    int[4]* g = (int[4]*)f;
-    // Also incorrect but not checked.
-    int[] h = f[0..2];
-
+```c3
+int[4] a;
+int[4]* b = &a;
+int* c = b;
+// Safe cast:
+int[4]* d = (int[4]*)c; 
+int e = 12;
+int* f = &e;
+// Incorrect, but not checked
+int[4]* g = (int[4]*)f;
+// Also incorrect but not checked.
+int[] h = f[0..2];
+```
 
 #### Internals
 
@@ -126,59 +126,97 @@ Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; usz 
 
 There is a built-in struct `std::core::runtime::SubArrayContainer` which has the exact data layout of the fat array pointers. It is defined to be
 
-    struct SubArrayContainer
-    {
-        void* ptr;
-        usz len;
-    }
+```c3
+struct SubArrayContainer
+{
+    void* ptr;
+    usz len;
+}
+```
 
 ## Iteration over arrays
 
-Slices, fixed and variable arrays may all be iterated over using `foreach (Type x : array)`:
+You may iterate over slices, arrays and vectors using `foreach (Type x : array)`:
 
-    int[4] a = { 1, 2, 3, 5 };
-    foreach (int x : a)
-    {
-        ...
-    }
+```c3
+int[4] a = { 1, 2, 3, 5 };
+foreach (int x : a)
+{
+    ...
+}
+```
 
 Using `&` it is possible to get an element by reference rather than by copy.
 Furthermore, by providing two variable name, the first is assumed to be the
 index:
 
-    Foo[4] a = { ... }
-    foreach (int idx, Foo* &f : a)
-    {
-        f.abc = idx; // Mutates the array element
-    }
-
+```c3
+Foo[4] a = { ... };
+foreach (int idx, Foo* &f : a)
+{
+    f.abc = idx; // Mutates the array element
+}
+```
 It is possible to enable foreach on any type 
 by implementing "len" and "[]" methods and annotating them using the `@operator` attribute:
 
-    struct Vector
-    {
-        usz size;
-        int* elements;
-    }
+```c3
+struct DynamicArray
+{
+    usz count;
+    usz capacity;
+    int* elements;
+}
 
-    macro int Vector.get(Vector* vector, usz element) @operator([])
-    {
-        return vector.elements[element];
-    }
+macro int DynamicArray.get(DynamicArray* arr, usz element) @operator([])
+{
+    return arr.elements[element];
+}
 
-    macro usz Vector.size(Vector* vector) @operator(len)
-    {
-        return vector.size;
-    }
+macro usz DynamicArray.count(DynamicArray* arr) @operator(len)
+{
+    return arr.count;
+}
 
-    Vector v;
-    v.add(3);
-    v.add(7);
+fn void DynamicArray.push(DynamicArray* arr, int value)
+{
+    arr.ensure_capacity(arr.count + 1);  // Function not shown in example.
+    arr.elements[arr.count++] = value;
+}
+
+fn void test()
+{
+    DynamicArray v;
+    v.push(3);
+    v.push(7);
 
     // Will print 3 and 7
     foreach (int i : v)
     {
         io::printfn("%d", i);
     }
+}
+```
 
 For more information, see [operator overloading](/references/docs/operators)
+
+## Dynamic arrays and lists
+
+The standard library offers dynamic arrays and other collections in the `std::collections` module.
+
+```c3
+fn void test()
+{
+    List(<String>) list;
+    list.new_init();     // Initialize the list on the heap.
+    list.push("Hello");  // Add the string "Hello"
+    list.push("World");
+    foreach (s : list)
+    {
+        io::printn(s);   // Prints "Hello", then "World"
+    }
+    String s = list[1]; // s is "World"
+    list.free();        // Free all memory associated with list.
+}
+```
+
