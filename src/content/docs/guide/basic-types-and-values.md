@@ -81,6 +81,16 @@ The following integer suffixes are available:
 
 Note how `uint` also has the `u` suffix.
 
+## Booleans
+
+A `bool` will be either `true` or `false`. Although a bool is only a single bit of data, 
+it should be noted that it is stored in a byte.
+
+```c
+bool b = true;
+bool f = false;
+```
+
 ### Character literals
 
 A character literal is a value enclosed in `'``'`. Its value is intepreted as being its 
