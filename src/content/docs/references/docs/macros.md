@@ -277,7 +277,7 @@ Here's an example to illustrate its use:
         @foreach(a; int index, double value)
         {
             io::printfn("a[%d] = %f", index, value);
-        }
+        };
     }
     
     // Expands to code similar to:
