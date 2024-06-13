@@ -5,13 +5,12 @@ sidebar:
     order: 122
 ---
 
-## Working with the type of `any*` at runtime.
+## Working with the type of `any` at runtime.
 
-The `any*` type is recommended for writing code that is polymorphic at runtime where macros are not appropriate.
-It can be thought of as a typed `void*`. Note that it is a fat pointer and is two pointers wide (unlike `void*`).
-It cannot be dereferenced.
+The `any` type is recommended for writing code that is polymorphic at runtime where macros are not appropriate.
+It can be thought of as a typed `void*`.
 
-An `any*` can be created by assigning any pointer to it. You can then query the `any*` type for the typeid of 
+An `any` can be created by assigning any pointer to it. You can then query the `any` type for the typeid of 
 the enclosed type (the type the pointer points to) using the `type` field.
 
 This allows switching over the typeid, either using a normal switch:
@@ -24,7 +23,7 @@ This allows switching over the typeid, either using a normal switch:
             ...
     }
 
-Or the special `any*`-version of the switch:
+Or the special `any`-version of the switch:
 
     switch (my_any)
     {
@@ -36,7 +35,7 @@ Or the special `any*`-version of the switch:
 
 Sometimes one needs to manually construct an any-pointer, which
 is typically done using the `any_make` function: `any_make(ptr, type)`
-will create an `any*` pointing to `ptr` and with typeid `type`.
+will create an `any` pointing to `ptr` and with typeid `type`.
 
 Since the runtime `typeid` is available, we can query for any runtime `typeid` property available
 at runtime, for example the size, e.g. `my_any.typeid.sizeof`. This allows us to do a lot of work
@@ -81,7 +80,7 @@ more challenging to evolve over time.
 As an alternative there are languages (such as Objective-C) which instead use message passing to dynamically typed
 objects, where the availability of a certain functionality may be queried at runtime.
 
-C3 provides this latter functionality over the `any*` type using *interfaces*.
+C3 provides this latter functionality over the `any` type using *interfaces*.
 
 ### Defining an interface
 
@@ -105,29 +104,12 @@ To declare that a type implements an interface, add it after the type name:
     }
 
     // Note how the first argument differs from the interface.
-    fn String Baz.myname(Baz* self) @dynamic 
+    fn String Baz.myname(Baz self) @dynamic 
     { 
         return "I am Baz!"; 
     }
 
-If a type declares an interface but does not implement its methods, then that is compile time error. However,
-methods marked `@optional` does not need to be implemented:
-
-    interface VeryOptional
-    {
-        fn void test();
-        fn void do_something(int x, void* ptr) @optional;
-    }
-
-    struct Foo (VeryOptional)
-    {
-        int z;
-    }
-    
-    fn void Foo.test(&self) { }
-
-This example is would compile, despite not implementing both functions, as the second method is marked `@optional`.
-
+If a type declares an interface but does not implement its methods, then that is compile time error.
 A type may implement multiple interfaces, by placing them all inside of `()` e.g. `struct Foo (VeryOptional, MyName) { ... }`
 
 A limitation is that only user-defined types may declare they are implementing interfaces. To make existing types
@@ -136,9 +118,9 @@ implement interfaces is possible but does not provide compile time checks.
 One of the interfaces available in the standard library is Printable, which contains `to_format` and `to_new_string`.
 If we implemented it for our struct above it might look like this:
 
-    fn String Baz.to_new_string(Baz* baz, Allocator* using) @dynamic
+    fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
     {
-        return string::printf("Baz(%d)", baz.x, .using = using);
+        return string::printf("Baz(%d)", baz.x, .allocator = allocator);
     }
 
 ### "@dynamic" methods
@@ -157,33 +139,33 @@ from the `any` type.
 
 ### Referring to an interface by pointer
 
-A pointer to an interface e.g. `MyName*` is can be cast back and forth to `any*`, but only types which 
-implement the interface completely may implicitly be cast to the interface pointer.
+An interface e.g. `MyName` is can be cast back and forth to `any`, but only types which 
+implement the interface completely may implicitly be cast to the interface.
 
 So for example:
 
     Bob b = { 1 };
     double d = 0.5;
     int i = 3;
-    MyName* a = &b;          // Valid, Bob implements MyName.
-    // MyName* c = &d;       // Error, double does not implement MyName.
-    MyName* c = (MyName*)&d; // Would break at runtime as double doesn't implement MyName
-    // MyName* z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
-    MyName* z = (MyName*)&i; // Explicit conversion works and is safe at runtime if int implements "myname"    
+    MyName a = &b;          // Valid, Bob implements MyName.
+    // MyName c = &d;       // Error, double does not implement MyName.
+    MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
+    // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
+    MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"    
 
 ### Calling dynamic methods
 
 Methods implementing interfaces are like normal methods, and if called directly, they are just normal function calls. The
 difference is that they may be invoked through the interface:
 
-    fn void whoareyou(MyName* a)
+    fn void whoareyou(MyName a)
     {
         io::printn(a.myname());
     }
 
 If we have an optional method we should first check that it is implemented:
 
-    fn void do_something(VeryOptional* z)
+    fn void do_something(VeryOptional z)
     {
         if (&z.do_something)
         {
@@ -194,9 +176,9 @@ If we have an optional method we should first check that it is implemented:
 We first query if the method exists on the value. If it does we actually run it.
 
 Here is another example, showing how the correct function will be called depending on type, checking
-for methods on an `any*`:
+for methods on an `any`:
 
-    fn void whoareyou2(any* a)
+    fn void whoareyou2(any a)
     {
         // Query if the function exists
         if (!&a.myname)
@@ -205,7 +187,7 @@ for methods on an `any*`:
             return;
         }
         // Dynamically call the function
-        io::printn(((MyName*)a).myname());
+        io::printn(((MyName)a).myname());
     }
 
     fn void main()
@@ -214,7 +196,7 @@ for methods on an `any*`:
         double d;
         Bob bob;
 
-        any* a = &i; 
+        any a = &i; 
 	    whoareyou2(a); // Prints "I am int!"
 	    a = &d;
 	    whoareyou2(a); // Prints "I don't know who I am."
@@ -237,7 +219,7 @@ It is possible to retrieve any `@dynamic` function by name and invoke it:
     fn void main()
     {
         int z = 321;
-        any* a = &z;
+        any a = &z;
         VoidMethodFn test_func = a.reflect("test_something");
         test_func(a); // Will print "Testing: 321"
     }

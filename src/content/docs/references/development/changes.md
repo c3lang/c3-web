@@ -5,6 +5,10 @@ sidebar:
     order: 205
 ---
 
+##### Revision 2024-06-13
+- Updated enum syntax
+- `any` -> `any*`
+
 ##### Revision 2023-10-24
 - Removal of `$checks` and `@checked`
 - Additional chapter on vectors.

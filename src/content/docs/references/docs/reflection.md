@@ -56,10 +56,10 @@ Returns the alignment in bytes needed for the type.
 *Only available for enums.*
 Returns an array containing the types of associated values if any.
 
-    enum Foo : int(double d, String s)
+    enum Foo : int (double d, String s)
     {
-        BAR(1.0, "normal"),
-        BAZ(2.0, "exceptional")
+        BAR = { 1.0, "normal" },
+        BAZ = { 2.0, "exceptional" }
     }
     String s = Foo.associated[0].nameof; // "double"
 

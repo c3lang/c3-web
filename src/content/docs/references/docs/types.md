@@ -388,9 +388,9 @@ It is possible to associate each enum value with a static value.
 
     enum State : int (String state_desc, bool active) 
     {
-        PENDING("pending start", false),
-        RUNNING("running", true),
-        TERMINATED("ended", false)
+        PENDING = { "pending start", false },
+        RUNNING = { "running", true },
+        TERMINATED = { "ended", false }
     }
 
     ...

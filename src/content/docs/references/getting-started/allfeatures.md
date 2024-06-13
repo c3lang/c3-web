@@ -50,7 +50,7 @@ Changes relating to literals, identifiers etc.
 10. Optional types are formed using the `!` suffix.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
-13. `any*` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
+13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
 14. `anyfault` holds any `fault` value (see below).
 
 ### Changed
@@ -81,7 +81,7 @@ Changes relating to literals, identifiers etc.
 11. Using `inline` on a distinct type allows it to be implicitly converted *to* its base type (but not vice versa).
 12. Types may add operator overloading to support `foreach` and subscript operations.
 13. Generic types through generic modules, using `(< ... >)` for the generic parameter list (e.g. `List(<int>) list;`).
-14. Interface types, `any*` types which allows dynamic invocation of methods.
+14. Interface types, `any` types which allows dynamic invocation of methods.
 
 ### Changed
 
@@ -114,7 +114,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 3. `?:` operator, returning the first value if it can be converted to a boolean true, otherwise the second value is returned.
 4. Orelse `??` returning the first value if it is a result, the second if the first value was an optional value.
 5. Rethrow `!` suffix operator with an implicit `return` the value if it was an optional value.
-6. Dynamic calls, allowing calls to be made on the `any*` and interfaces dispatched using a dynamic mechanism.
+6. Dynamic calls, allowing calls to be made on the `any` and interfaces dispatched using a dynamic mechanism.
 7. Create a slice using a range subscript (e.g. `a[4..8]` to form a slice from element 4 to element 8).
 8. Two range subscript methods: `[start..inclusive_end]` and `[start:length]`. Start, end and length may be omitted for default values.
 9. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
@@ -129,7 +129,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 18. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
 19. Structs may implicitly convert to their `inline` member if they have one.
 20. Pointers to arrays may implicitly convert to slices.
-21. Any pointer may implicitly convert to an `any*` with type being the pointee.
+21. Any pointer may implicitly convert to an `any` with type being the pointee.
 22. Optional values will implicitly invoke "flatmap" on an expression it is a subexpression of.
 23. Swizzling for arrays and vectors.
 
@@ -156,7 +156,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(.name = a, .len = 2)`.
 2. Typed varargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
 3. It is possible to "splat" an array or slice into the location of a typed vararg using `...`: `foo(a, b, ...list)`
-4. `any*` varargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any*` type.
+4. `any` varargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
 5. The function declaration may have `@inline` or `@noinline` as a default.
 6. Using `@inline` or `@noinline` on a function call expression will override the function default.
 7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`, they can be invoked using dot syntax.
@@ -212,7 +212,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 1. Match-style variant of the `switch` statement, allows each `case` to hold an expression to test.
 2. Switching over type with `typeid`.
-3. Unpack `any*` to the underlying type with an `any`-switch.
+3. Unpack `any` to the underlying type with an `any`-switch.
 4. `nextcase` to fallthrough to the next case.
 5. `nextcase <expr>` to jump to the case with the expression value (this may be an expression evaluated at runtime).
 6. `nextcase default` to jump to the `default` clause.
@@ -305,7 +305,7 @@ Some features are provided by builtins, and appears as normal functions and macr
 but nonetheless provided unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.
-2. `@anycast(...)` casts an `any*` with an optional result.
+2. `@anycast(...)` casts an `any` with an optional result.
 3. `unreachable(...)` marks a path as unreachable with a panic in safe mode.
 4. `unsupported(...)` similar to unreachable but for functionality not implemented.
 5. `@expect(...)` expect a certain value with an optional probability for the optimizer.

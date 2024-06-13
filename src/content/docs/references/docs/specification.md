@@ -545,9 +545,9 @@ alignment.
 
 The typeid is a pointer sized value which uniquely identifies a type.
 
-### Any* type
+### Any type
 
-The `any*` is a fat pointer (2 pointers wide) holding a pointer to a value and its corresponding [typeid](#typeid-type).
+The `any` is a fat pointer (2 pointers wide) holding a pointer to a value and its corresponding [typeid](#typeid-type).
 It cannot be dereferenced.
 
 #### Fields
@@ -1251,8 +1251,8 @@ be evaluated in order after the cond expression has been evaluated (if it exists
 
 #### Any-switch
 
-If the cond expression is an `any*` type, the switch is handled as if switching was done over the `type`
-field of the `any*`. This field has the type of [typeid](#typeid-type), and the cases follows the rules
+If the cond expression is an `any` type, the switch is handled as if switching was done over the `type`
+field of the `any`. This field has the type of [typeid](#typeid-type), and the cases follows the rules
 for [switching over typeid](#switching-over-typeid).
 
 If the cond expression is a variable, then this variable is implicitly converted to a pointer with
@@ -1261,7 +1261,7 @@ the pointee type given by the case statement.
 Example:
 
 ```c
-any* a = abc();
+any a = abc();
 switch (a)
 {
     case int:
