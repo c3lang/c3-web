@@ -116,7 +116,7 @@ The result of an embed work similar to a string literal and can implicitly conve
 
 It's possible to limit the length of included with the optional second parameter.
 
-    char[4] my_data = $embed("foo.txt", 4];
+    char[4] my_data = $embed("foo.txt", 4);
 
 ##### Failure to load at compile time and defaults
 
