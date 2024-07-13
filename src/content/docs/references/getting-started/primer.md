@@ -55,17 +55,17 @@ You will probably prefer slices to pointers when passing data around:
     int x[100] = ...;
     int y[30] = ...;
     int z[15] = ...;
-    sortMyArray(x, 100);
-    sortMyArray(y, 30);
+    sort_my_array(x, 100);
+    sort_my_array(y, 30);
     // Sort part of the array!
-    sortMyArray(z + 1, 10);
+    sort_my_array(z + 1, 10);
 
     // C3
     int[100] x = ...;
     int[30] y = ...;
-    sortMyArray(&x); // Implicit conversion from int[100]* -> int[]
-    sortMyArray(&y); // Implicit conversion from int[30]* -> int[]
-    sortMyArray(z[1..10]; // Inclusive ranges!
+    sort_my_array(&x); // Implicit conversion from int[100]* -> int[]
+    sort_my_array(&y); // Implicit conversion from int[30]* -> int[]
+    sort_my_array(z[1..10]); // Inclusive ranges!
 
 Note that declaring an array of inferred size will look different in C3:
 
