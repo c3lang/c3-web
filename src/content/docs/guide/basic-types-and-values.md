@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointer. On top of this it 
+C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointers. On top of this it 
 expands on this set by adding slices and vectors, as well as the `any` and `typeid` types for advanced use. 
 
 ## Integers
