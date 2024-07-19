@@ -40,16 +40,16 @@ int[<2>] f = 4;          // f = { 4, 4 }
 
 ## Additional operations
 
-The `std::math` module contains a wealth of additional operations available on vectors using dot-method syntax:
+The `std::math` module contains a wealth of additional operations available on vectors using dot-method syntax.
 
 - `.sum()` - sum all vector elements.
 - `.product()` - multiply all vector elements.
 - `.max()` - get the maximum element.
 - `.min()` - get the minimum element.
 - `.dot(other)` - return the dot product with the other vector.
-- `.length(other)` - return the square root of the dot product.
-- `.distance(other)` - return the length of the difference of the two vectors.
-- `.normalize()` - return a normalized vector.
+- `.length(other)` - return the square root of the dot product (not available on integer vectors).
+- `.distance(other)` - return the length of the difference of the two vectors (not available on integer vectors).
+- `.normalize()` - return a normalized vector (not available on integer vectors).
 - `.comp_lt(other)` - return a boolean vector with a component wise "<" 
 - `.comp_le(other)` - return a boolean vector with a component wise "<="  
 - `.comp_eq(other)` - return a boolean vector with a component wise "=="  
