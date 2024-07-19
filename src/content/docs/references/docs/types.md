@@ -189,13 +189,18 @@ e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
 ### The `any` type
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
-It is possible to cast the any pointer to any pointer type, which will return `null` if the types don't match,
-or the pointer value otherwise.
+While it is possible to cast the `any` pointer to any pointer type,
+it is recommended to use the `anycast` macro or checking the type explicitly first.
 
     int x;
     any y = &x;
-    double *z = (double*)y; // Returns null
-    int* w = (int*)y; // Returns the pointer to x
+    int* w = (int*)y;                // Returns the pointer to x
+    double* z_bad = (double*)y;      // Don't do this!
+    double! z = anycast(y, double);  // The safe way to get a value
+    if (y.type == int.typeid)
+    {
+        // Do something if y contains an int*
+    }
 
 Switching over the `any` type is another method to unwrap the pointer inside:
 
@@ -220,6 +225,18 @@ Switching over the `any` type is another method to unwrap the pointer inside:
         {
             case int:
                 // w is int here
+        }
+        // Finally, if we just want to deal with the case
+        // where it is a single specific type:
+        if (z.type == int.typeid)
+        {
+            // This is safe here:
+            int* a = (int*)z;
+        }
+        if (try b = *anycast(z, int))
+        {
+            // b is an int:
+            foo(b * 3);
         }
     }
 
