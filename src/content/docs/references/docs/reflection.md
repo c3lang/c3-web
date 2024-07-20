@@ -116,8 +116,11 @@ Returns the maximum value of the type (only valid for integer and float types).
 
 *Only available for bitstruct, struct and union types.*
 
-Returns an array containing the fields in a bitstruct, struct or union. The
-elements have the *compile time only* type of `member_ref`,
+Returns a *compile time* list containing the fields in a bitstruct, struct or union. The
+elements have the *compile time only* type of `member_ref`. 
+
+*Note: As the list is an "untyped" list, you are limited to iterating and accessing it at 
+compile time.*
 
     struct Baz
     {
