@@ -195,12 +195,12 @@ fn void test()
 {
     // The following line is either prints a value less than 0.2
     // or does not print at all:
-    io::printf("%d\n", test_error());
+    io::printfn("%d", test_error());
     
     double x = (test_error() + test_error()) ?? 100;
     
     // This prints either a value less than 0.4 or 100:
-    io::printf("%d\n", x);
+    io::printfn("%d", x);
 }
 ```
 
@@ -216,21 +216,21 @@ fn void print_input_with_explicit_checks()
         int! val = line.to_int();
         if (try val)
         {
-            io::printf("You typed the number %d\n", val);
+            io::printfn("You typed the number %d", val);
             return;
         }
     }
-    io::printf("You didn't type an integer :(\n");
+    io::printn("You didn't type an integer :(");
 }
 
 fn void print_input_with_chaining()
 {
     if (try int val = io::readline().to_int())
     {
-        io::printf("You typed the number %d\n", val);
+        io::printfn("You typed the number %d", val);
         return;
     }
-    io::printf("You didn't type an integer :(\n");
+    io::printn("You didn't type an integer :(");
 }
 ```
 
