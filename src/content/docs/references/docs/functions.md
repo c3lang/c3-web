@@ -94,35 +94,45 @@ There are four types of varargs:
 
 Examples:
 
-    fn void va_singletyped(int... args)
-    {
-        /* args has type int[] */
-    }
+```c3
+fn void va_singletyped(int... args)
+{
+    /* args has type int[] */
 
-    fn void va_variants_explicit(any*... args)
-    {
-        /* args has type any*[] */
-    }
+fn void va_variants_explicit(any*... args)
+{
+    /* args has type any*[] */
 
-    fn void va_variants_implicit(args...)
-    {
-        /* args has type any*[] */
-    }
+fn void va_variants_implicit(args...)
+{
+    /* args has type any*[] */
+}
+
+extern fn void va_untyped(...); // only used for extern C functions
+
+fn void test()
+{
+    va_singletyped(1, 2, 3);
     
-    extern fn void va_untyped(...); // only used for extern C functions
+    int x = 1;
+    any* v = &x;
+    va_variants_explicit(&&1, &x, v); // pass references for non-any arguments
     
-    fn void test()
-    {
-        va_singletyped(1, 2, 3);
-        
-        int x = 1;
-        any* v = &x;
-        va_variants_explicit(&&1, &x, v); // pass references for non-any arguments
-        
-        va_variants_implicit(1, x, "foo"); // arguments are implicitly converted to anys
-        
-        va_untyped(1, x, "foo"); // extern C-function
-    }
+    va_variants_implicit(1, x, "foo"); // arguments are implicitly converted to anys
+    
+    va_untyped(1, x, "foo"); // extern C-function
+}
+```
+
+For typed varargs, we can pass a slice instead of the arguments, by using the `...` operator:
+
+```c3
+fn void test_splat()
+{
+   int[] x = { 1, 2, 3 };
+   va_singletyped(...x);
+}   
+```
 
 ### Functions and optional returns
 
