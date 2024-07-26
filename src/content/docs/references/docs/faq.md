@@ -239,6 +239,21 @@ that other resources (such as file handles) are released. In some cases `close` 
 
 Function and variable names use `snake_case` (all lower case with `_` separating words).
 
+**Q:** How do I use WASM?
+
+**A:** Currently WASM support is really incomplete.
+
+You can try this:
+
+`compile --reloc=none --target wasm32 -g0 --link-libc=no --no-entry mywasm.c3`
+
+This should yield an `out.wasm` file, but there is no CI running on the WASM code
+and no one is really using it yet, so the quality is low.
+
+We do want WASM to be working really well, so if you're interested in 
+writing something in WASM - please reach out to the developer team and we'll
+help you get things working.
+
 **Q:** How do I create overloaded methods?
 
 **A:** This can be achieved with macro methods.
