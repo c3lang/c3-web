@@ -40,6 +40,7 @@ fn void example_for()
 
 #### foreach-loop
 ```c3
+// Prints the values in the slice.
 fn void example_foreach(float[] values) 
 {
     foreach (index, value : values) 
@@ -47,7 +48,19 @@ fn void example_foreach(float[] values)
         io::printfn("%d: %f", index, value);
     }
 }
+
+// Updates each value in the slice
+// by multiplying it by 2.
+fn void example_foreach_by_ref(float[] values) 
+{
+    foreach (&value : values) 
+    {
+        *value *= 2;
+    }
+}
 ```
+
+
 
 
 #### while-loop
