@@ -93,7 +93,7 @@ bool f = false;
 
 ### Character literals
 
-A character literal is a value enclosed in `'``'`. Its value is intepreted as being its 
+A character literal is a value enclosed in `'`&nbsp;`'`. Its value is intepreted as being its 
 ASCII value for a single character. 
 
 It is also possible to use 2, 4 or 8 character wide character literals. Such are interpreted
@@ -187,12 +187,12 @@ Vector initialization and literals work the same way as arrays, using `{ ... }`
 
 ## String literals
 
-Like C, string literals is text enclosed in `" ... "` just like in C. These support
+Like C, string literals is text enclosed in `"`&nbsp;`"` just like in C. These support
 escape sequences like `\n` for line break and need to use `\"` for any `"` inside of the
 string.
 
-C3 also offers *raw strings* which are enclosed in \` \`. 
-Inside of a raw string, no escapes are available, and to write a \`, simply double the character:
+C3 also offers *raw strings* which are enclosed in `` ` ``&nbsp;`` ` ``. 
+Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
 char* foo = `C:\foo\bar.dll`;
