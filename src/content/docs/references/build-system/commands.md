@@ -32,9 +32,9 @@ Create a new project structure in the current directory.
 
 Use the `--template` to select a template. The following are built in:
 
-- `default` - the default template, produces an executable.
-- `lib` - template for producing a library.
-- `staticlib` - template for producing a static library.
+- `exe` - the default template, produces an executable.
+- `static-lib` - template for producing a static library.
+- `dynamic-lib` - template for producing a dynamic library.
 
 It is also possible to give the path to a custom template.
 
