@@ -284,6 +284,26 @@ macro void Obj.func(&self, ...)
 
 The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`.
 
+**Q:** How do I conditionally compile based on compiler flags?
+
+**A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key
+in the project file.
+
+You can then test for them using `$feature(FLAG_NAME)`:
+
+```c3
+int my_var @if($feature(USE_MY_VAR));
+
+fn int test()
+{
+    $if $feature(USE_MY_VAR):
+        return my_var;
+    $else
+        return 0;
+    $endif
+}
+```
+
 ## Syntax & Language design
 
 **Q:** Why does C3 require that types start with upper case but functions with lower case?
