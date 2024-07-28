@@ -187,12 +187,12 @@ Vector initialization and literals work the same way as arrays, using `{ ... }`
 
 ## String literals
 
-Like C, string literals is text enclosed in `" ... "` just like in C. These support
+Like C, string literals is text enclosed in `" "` just like in C. These support
 escape sequences like `\n` for line break and need to use `\"` for any `"` inside of the
 string.
 
-C3 also offers *raw strings* which are enclosed in \` \`. 
-Inside of a raw string, no escapes are available, and to write a \`, simply double the character:
+C3 also offers *raw strings* which are enclosed in `` ` ` ``. 
+Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
 char* foo = `C:\foo\bar.dll`;
