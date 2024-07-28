@@ -18,7 +18,7 @@ between two pointer. For each signed integer type there is a corresponding unsig
 
 | type    | signed? | min    | max       | bits   |
 |---------|---------|--------|-----------|--------|
-| ichar   | yes     | -128   | 128       | 8      |
+| ichar   | yes     | -128   | 127       | 8      |
 | short   | yes     | -32768 | 32767     | 16     |
 | int     | yes     | -2^31  | 2^31 - 1  | 32     |
 | long    | yes     | -2^63  | 2^63 - 1  | 64     |
