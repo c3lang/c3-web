@@ -215,3 +215,128 @@ String foo_name = Foo.nameof;
 
 To read more about all the fields available at compile time, see the page on [reflection](../reflection).
 
+## Compile time functions
+
+A set of compile time functions are available at compile time:
+
+### `$alignof`
+
+Get the alignment of something. See [reflection](../reflection).
+
+### `$and`
+
+Evaluate a list of constant boolean expressions at compile time, stopping
+evaluation if a `false` result is found.
+
+### `$append`
+
+Append a compile time constant to a compile time array or untyped list.
+
+### `$assert`
+
+Check a condition at compile time.
+
+### `$assignable`
+
+Check if an expression is assignable to the given type, e.g. `Type x = expr;` would be valid.
+
+### `$concat`
+
+Concatenate two constant arrays, strings or untyped lists at compile time.
+
+### `$defined`
+
+Returns true if a type or identifier is defined. See [reflection](../reflection).
+
+### `$echo`
+
+Print a message to stdout when compiling the code.
+
+### `$embed`
+
+Embed binary data from a file. See [expressions](../expressions).
+
+### `$error`
+
+When this is compiled, issue a compile time error.
+
+### `$eval`
+
+Converts a compile time string to the corresponding variable or function. See [reflection](../reflection).
+
+### `$evaltype`
+
+Converts a compile time string to the corresponding type. See [reflection](../reflection).
+
+### `$exec`
+
+Execute a script at compile time and include the result in the source code.
+
+### `$extnameof`, `$qnameof` and `$nameof`
+
+Get the external name of a symbol. See [reflection](../reflection).
+
+### `$feature`
+
+Check if a given feature is enabled.
+
+### `$is_const`
+
+Check if the expression is constant at compile time.
+
+### `$nameof`
+
+Get the local name of a symbol. See [reflection](../reflection).
+
+### `$offsetof`
+
+Get the offset of a member. See [reflection](../reflection).
+
+### `$or`
+
+Evaluate a list of constant boolean expressions at compile time, stopping
+evaluation if a `true` result is found.
+
+### `$qnameof`
+
+Get the qualified name of a symbol. See [reflection](../reflection).
+
+### `$vacount`
+
+Return the number of macro vaarg arguments
+
+### `$vaconst`
+
+Return a vaarg as a `$constant` parameter.
+
+### `$vaexpr`
+
+Return a vaarg as an `#expr` parameter.
+
+### `$varef`
+
+Return a vaarg as a `&ref` parameter.
+
+### `$vasplat`
+
+Expand the vaargs in an initializer list or function call.
+
+### `$vatype`
+
+Get a vaarg as a `$Type` parameter.
+
+### `$sizeof`
+
+Return the size of an expression.
+
+### `$stringify`
+
+Turn an expression into a string.
+
+### `$typeof`
+
+Get the type of an expression (without evaluating it).
+
+### `$typefrom`
+
+Get a type from a compile time constant `typeid`.
