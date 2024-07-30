@@ -59,7 +59,7 @@ pointers may both be read from and written to without checks.
 However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
 
 ```
-fn void badFunc(int* i)
+fn void bad_func(int* i)
 {
     *i = 2;
 }
@@ -67,15 +67,15 @@ fn void badFunc(int* i)
 /**
  * @param [in] i
  */
-fn void lyingFunc(int* i)
+fn void lying_func(int* i)
 {
-    badFunc(i); // The compiler might not check this!
+    bad_func(i); // The compiler might not check this!
 }
 
 fn void test()
 {
     int a = 1;
-    lyingFunc(&a);
+    lying_func(&a);
     io::printf("%d", a); // Might print 1!
 }
 ```
@@ -86,7 +86,7 @@ However, compilers will usually detect this:
 /**
  * @param [in] i
  */
-fn void badFunc(int* i)
+fn void bad_func(int* i)
 {
     *i = 2; // <- Compiler error: cannot write to "in" parameter
 }
@@ -94,45 +94,46 @@ fn void badFunc(int* i)
 
 ### Pure in detail
 
-The `pure` annotation allows a program to make assumptions in regard to how the function treats global variables. Unlike for `const`, a pure function is not allowed to call a function which is known to be impure.
+The `pure` annotation allows a program to make assumptions in regard to how the function treats global variables. 
+Unlike for `const`, a pure function is not allowed to call a function which is known to be impure.
 
-However, just like for `const` the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
+However, just like for `const` the compiler might not detect whether the annotation 
+is correct or not! This program might compile, but will behave strangely:
 
-```
+```c3
 int i = 0;
 
-type Secretfn fn void();
+def SecretFn = fn void();
 
-fn void badFunc()
+fn void bad_func()
 {
     i = 2;
 }
 
-Secretfn foo = nil;
-
 /**
  * @pure
  */
-fn void lyingFunc()
+fn void lying_func(SecretFn f)
 {
-    SecretFunc(); // The compiler cannot reason about this!
+    f(); // The compiler cannot reason about this!
 }
 
-fn void test()
+fn void main()
 {
-    foo = &badFunc;
     i = 1;
-    lyingFunc();
-    io::printf("%d", a); // Might print 1!
+    lying_func(&bad_func);
+    io::printf("%d", i); // Might print 1!
 }
 ```
 
 However, compilers will usually detect this:
 
-```
+```c3
 int i = 0;
 
-fn void badFunc()
+def SecretFn = fn void();
+
+fn void bad_func()
 {
     i = 2;
 }
@@ -140,9 +141,16 @@ fn void badFunc()
 /**
  * @pure
  */
-fn void lyingFunc()
+fn void lying_func(SecretFn f)
 {
-    badFunc(); // Error! Calling an impure function
+    f(); // <- ERROR: Only '@pure' functions may be called. 
+}
+
+fn void main()
+{
+    i = 1;
+    lying_func(&bad_func);
+    io::printf("%d", i); // Might print 1!
 }
 ```
 
@@ -155,13 +163,13 @@ In order to check macros, it's often useful to use the builtin `$defined`
 function which returns true if the code inside would pass semantic checking.
 
 
-```
+```c3
 /**
  * @require $and($defined(resource.open), $defined(resource.open()) `Expected resource to have an "open" function`
  * @require resource != nil
  * @require $assignable(resource.open(), void*)
  **/
-macro openResource(resource)
+macro open_resource(resource)
 {
     return resource.open();
 }
