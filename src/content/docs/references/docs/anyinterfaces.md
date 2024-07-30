@@ -15,7 +15,7 @@ the enclosed type (the type the pointer points to) using the `type` field.
 
 This allows switching over the typeid, either using a normal switch:
 
-    switch (my_any.typeid)
+    switch (my_any.type)
     {
         case Foo.typeid:
             ...
