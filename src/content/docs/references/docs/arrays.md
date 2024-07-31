@@ -24,7 +24,7 @@ Unlike C, fixed arrays do not decay into pointers, instead an `int[4]*` may be i
     // C3
     fn int foo(int *a) { ... }
 
-    int x[3] = { 1, 2, 3 };
+    int[3] x = { 1, 2, 3 };
     foo(&x);
 
 
