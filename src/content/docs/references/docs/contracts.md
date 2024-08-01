@@ -46,7 +46,9 @@ fn uint checkFoo(Foo* foo)
 `@param` supports `[in]` `[out]` and `[inout]`. These are only applicable
 for pointer arguments. `[in]` disallows writing to the variable,
 `[out]` disallows reading from the variable. Without an annotation,
-pointers may both be read from and written to without checks. 
+pointers may both be read from and written to without checks. If an `&` is placed
+in front of the annotation (e.g. `[&in]`), then this means the pointer must be non-null
+and is checked for `null`.
 
 | Type          | readable? | writable? | use as "in"? | use as "out"? | use as "inout" |
 |---------------|:---------:|:---------:|:------------:|:-------------:|:--------------:|
@@ -54,7 +56,6 @@ pointers may both be read from and written to without checks.
 | `in`          |    Yes    |    No     |     Yes      |      No       |       No       |
 | `out`         |    No     |    Yes    |      No      |      Yes      |       No       |
 | `inout`       |    Yes    |    Yes    |     Yes      |      Yes      |      Yes       |
-
 
 However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
 
@@ -65,7 +66,7 @@ fn void bad_func(int* i)
 }
 
 /**
- * @param [in] i
+ * @param [&in] i
  */
 fn void lying_func(int* i)
 {
@@ -84,7 +85,7 @@ However, compilers will usually detect this:
 ```
 
 /**
- * @param [in] i
+ * @param [&in] i
  */
 fn void bad_func(int* i)
 {
