@@ -331,7 +331,32 @@ while C3 isn't the best, no real better alternative has come along.
 Java for example, resolves this by not having free functions at all. C3 solves it by not having static methods (nor
 static variables). Consequently more functions becomes part of the module rather than the type.
 
-**Q:** Why does only macros have ref arguments?
+**Q:** Why do macros with trailing bodies require `;` at the end?
+
+```c3
+@test()
+{
+   // code
+}; // <- Why is this needed?
+```
+
+**A:** All macro calls, including those with a trailing body, are expressions, so it would be ambiguous
+to let them terminate a statement without a much more complicated grammar. An example:
+
+```c3
+// How can the parser determine that the 
+// last `}` ends the expression? (And does it?)
+int a = @test() {} + @test() {}
+*b = 123;
+// In comparison, the grammar for this is easy:
+int a = @test() {} + @test() {};
+*b = 123;
+```
+
+C3 strives for a simple grammar, and so the trade-off having to use `;` was a fairly
+low prices to pay for this feature.
+
+**Q:** Why do only macros have ref arguments?
 
 **A:** Ref arguments break the general contract of a call: what looks like a pass-by-value 
 may suddenly be passed by reference. This makes code reading much harder, but is popular 
