@@ -331,3 +331,18 @@ while C3 isn't the best, no real better alternative has come along.
 Java for example, resolves this by not having free functions at all. C3 solves it by not having static methods (nor
 static variables). Consequently more functions becomes part of the module rather than the type.
 
+**Q:** Why does only macros have ref arguments?
+
+**A:** Ref arguments break the general contract of a call: what looks like a pass-by-value 
+may suddenly be passed by reference. This makes code reading much harder, but is popular 
+in C++ because: (1) No need for `->` (2) It prevents passing of null pointers. Neither
+of these are required in C3 (`->` is not needed, and `&` in the parameter contract will
+prevent nulls).
+
+This leaves the case where there is a benefit for the user to create an implicit `&` 
+on a call. These cases should be rare, and in C3, it's not a problem creating a wrapper
+macro in those cases.
+
+Note that macros that violate the call contract, such as ones using ref arguments, need
+to have the `@` name prefix to indicate that it is indeed possibly violating 
+"value is passed by value" semantics.
