@@ -43,7 +43,7 @@ The macro capabilities of C3 reaches across several constructs: macros (prefixed
     def UInt32 = uint;
     
     // Use:
-    int y = @m(foo() + 2);
+    int y = m(foo() + 2);
     UInt32 b = y;
 
 ### Dynamic scoping
@@ -68,12 +68,12 @@ in C3 the captured argument isn't automatically dereferenced)
     M(x, 3);
 
     // C3
-    macro m(&x, y)
+    macro @m(&x, y)
     {
         *x = 2 * y;
     }
     ...
-    m(x, 3);
+    @m(x, 3);
 
 
 ### First class types
@@ -122,7 +122,7 @@ in C3 the captured argument isn't automatically dereferenced)
     #define offsetof(T, field) (size_t)(&((T*)0)->field)
     
     // C3
-    macro usz offset($Type, #field)
+    macro usz @offset($Type, #field)
     {
         $Type* t = null;
         return (usz)(uptr)&t.#field;
@@ -155,7 +155,7 @@ in C3 the captured argument isn't automatically dereferenced)
     #define CHECK(x) do { if (!x) abort(#x); } while(0)
     
     // C3
-    macro fn check(#expr)
+    macro @check(#expr)
     {
        if (!#expr) abort($stringify(#expr));
     }
