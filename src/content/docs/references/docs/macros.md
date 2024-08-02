@@ -73,7 +73,7 @@ in C3 the captured argument isn't automatically dereferenced)
         *x = 2 * y;
     }
     ...
-    m(x, 3);
+    @m(x, 3);
 
 
 ### First class types
