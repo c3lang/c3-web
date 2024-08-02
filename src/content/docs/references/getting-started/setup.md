@@ -70,7 +70,7 @@ A `c3c` executable will be found under `bin/`.
 # Building on OS X using Homebrew
 
 2. Install CMake: `brew install cmake`
-3. Install LLVM 15: `brew install llvm`
+3. Install LLVM 17+: `brew install llvm`
 4. Clone the C3C github repository: `git clone https://github.com/c3lang/c3c.git`
 5. Enter the C3C directory `cd c3c`.
 6. Create a build directory `mkdir build`
