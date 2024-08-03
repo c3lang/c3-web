@@ -157,21 +157,20 @@ It is possible to type a floating point by adding a suffix:
 
 For C compatibility the following types are also defined in std::core::cinterop
 
-| Name         | c type             |
-| ------------ | ------------------:|
-| CChar        | char               |
-| CShort       | short int          |
-| CUShort      | unsigned short int |
-| CInt         | int                |
-| CUInt        | unsigned int       |
-| CLong        | long int           |
-| CULong       | unsigned long int  |
-| CLongLong    | long long          |
-| CULongLong   | unsigned long long |
-| CFloat       | float              |
-| CDouble      | double             |
-| CLongDouble  | long double        |
+| Name        | c type             |
+|-------------| ------------------:|
+| CChar       | char               |
+| CShort      | short int          |
+| CUShort     | unsigned short int |
+| CInt        | int                |
+| CUInt       | unsigned int       |
+| CLong       | long int           |
+| CULong      | unsigned long int  |
+| CLongLong   | long long          |
+| CULongLong  | unsigned long long |
+| CLongDouble | long double        |
 
+`float` and `double` will always match their C counterparts.
     
 Note that signed C char and unsigned char will correspond to `ichar` and `char`. `CChar` is only available to match the default signedness of `char` on the platform.
 
