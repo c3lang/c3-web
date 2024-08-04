@@ -1,7 +1,7 @@
 <script lang="js">
   if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
+    localStorage["starlight-theme"] === "dark" ||
+    (!(["starlight-theme"] in localStorage) &&
       window.matchMedia("(prefers-color-scheme: dark)").matches)
   ) {
     document.documentElement.classList.add("dark");
