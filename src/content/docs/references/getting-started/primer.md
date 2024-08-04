@@ -408,7 +408,7 @@ Note that we can jump to an arbitrary case using C3:
         return false;
     }
 
-#### Bitfields are replace by explicit bitstructs
+#### Bitfields are replaced by explicit bitstructs
 
 A bitstruct has an explicit container type, and each field has an exact bit range.
 
