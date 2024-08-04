@@ -16,7 +16,7 @@
   const HSThemeAppearance = {
     init() {
       const defaultTheme = "default";
-      let theme = localStorage.getItem("hs_theme") || defaultTheme;
+      let theme = localStorage.getItem("starlight-theme") || defaultTheme;
 
       if (document.querySelector("html").classList.contains("dark")) return;
       this.setAppearance(theme);
@@ -32,7 +32,7 @@
       const $resetStylesEl = this._resetStylesOnLoad();
 
       if (saveInStore) {
-        localStorage.setItem("hs_theme", theme);
+        localStorage.setItem("starlight-theme", theme);
       }
 
       if (theme === "auto") {
@@ -70,7 +70,7 @@
     },
     getOriginalAppearance() {
       const defaultTheme = "default";
-      return localStorage.getItem("hs_theme") || defaultTheme;
+      return localStorage.getItem("starlight-theme") || defaultTheme;
     },
   };
   HSThemeAppearance.init();
@@ -238,7 +238,7 @@
         </div>
 
         <a
-          class="hs-dark-mode-active:hidden block hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
+          class="hs-dark-mode-active:hidden hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
           href="#!"
           data-hs-theme-click-value="dark"
         >
@@ -256,7 +256,7 @@
           </svg>
         </a>
         <a
-          class="hs-dark-mode-active:block hs-dark-mode hidden group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
+          class="hs-dark-mode-active:block hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
           href="#!"
           data-hs-theme-click-value="light"
         >

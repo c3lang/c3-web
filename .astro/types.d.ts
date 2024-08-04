@@ -165,11 +165,11 @@ declare module 'astro:content' {
 			? {
 					collection: C;
 					slug: ValidContentEntrySlug<C>;
-				}
+			  }
 			: {
 					collection: C;
 					id: keyof DataEntryMap[C];
-				}
+			  }
 	>;
 	// Allow generic `string` to avoid excessive type errors in the config
 	// if `dev` is not running to update as you edit.
@@ -185,6 +185,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"docs": {
+"guide/basic-types-and-values.md": {
+	id: "guide/basic-types-and-values.md";
+  slug: "guide/basic-types-and-values";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "guide/index.mdx": {
 	id: "guide/index.mdx";
   slug: "guide";
@@ -454,6 +461,13 @@ declare module 'astro:content' {
 "references/docs/statements.md": {
 	id: "references/docs/statements.md";
   slug: "references/docs/statements";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"references/docs/stdlib_refcard.md": {
+	id: "references/docs/stdlib_refcard.md";
+  slug: "references/docs/stdlib_refcard";
   body: string;
   collection: "docs";
   data: InferEntrySchema<"docs">
