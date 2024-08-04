@@ -1,11 +1,7 @@
----
-
----
-
 <script lang="js">
   if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
+    localStorage["starlight-theme"] === "dark" ||
+    (!(["starlight-theme"] in localStorage) &&
       window.matchMedia("(prefers-color-scheme: dark)").matches)
   ) {
     document.documentElement.classList.add("dark");
@@ -16,7 +12,7 @@
   const HSThemeAppearance = {
     init() {
       const defaultTheme = "default";
-      let theme = localStorage.getItem("hs_theme") || defaultTheme;
+      let theme = localStorage.getItem("starlight-theme") || defaultTheme;
 
       if (document.querySelector("html").classList.contains("dark")) return;
       this.setAppearance(theme);
@@ -32,7 +28,7 @@
       const $resetStylesEl = this._resetStylesOnLoad();
 
       if (saveInStore) {
-        localStorage.setItem("hs_theme", theme);
+        localStorage.setItem("starlight-theme", theme);
       }
 
       if (theme === "auto") {
@@ -70,7 +66,7 @@
     },
     getOriginalAppearance() {
       const defaultTheme = "default";
-      return localStorage.getItem("hs_theme") || defaultTheme;
+      return localStorage.getItem("starlight-theme") || defaultTheme;
     },
   };
   HSThemeAppearance.init();
