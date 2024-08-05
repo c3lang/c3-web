@@ -14,7 +14,7 @@ You can follow [this link](/references/getting-started/prebuilt-binaries/) to in
 :::
 ## Creating a new project
 
-The `c3c init` comamnd will create a new directory containing your project structure.
+The `c3c init` command will create a new directory containing your project structure.
 
 ```bash
 $ c3c init <project-name>

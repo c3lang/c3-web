@@ -642,7 +642,7 @@ Bitstruct backing types may be integers or char arrays. The difference in layout
     for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints ABCD789A
     io::printn();
 
-Bitstructs can be made to have ovelapping bit fields. This is useful when modelling
+Bitstructs can be made to have overlapping bit fields. This is useful when modelling
 a layout which has multiple different layouts depending on flag bits:
 
     bitstruct Foo : char @overlap

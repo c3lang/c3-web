@@ -6,7 +6,7 @@ The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://ta
 
 <h1 style="font-size: 24px;">Get Started</h1>
 
-After cloning the repository with `git clone`, you can run `npm run dev` and thats it!
+After cloning the repository with `git clone`, you can run `npm run dev` and that's it!
 
 <h1 style="display: flex; align-items: center; font-size: 24px;">Project Structure</h1>
   

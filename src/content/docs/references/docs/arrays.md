@@ -48,7 +48,7 @@ The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into eit
 
 ### Slicing arrays
 
-It's possible to use a range syntax to create slices from pointers, arrays and other slicess. They either use range syntax:
+It's possible to use a range syntax to create slices from pointers, arrays and other slices. They either use range syntax:
 `arr[<start index>..<end index>]` (the end index is included in the final result) or start + len syntax: `arr[<start index> : len]`
 
     
