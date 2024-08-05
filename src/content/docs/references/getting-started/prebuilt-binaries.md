@@ -29,7 +29,7 @@ afterwards you can double click the python file and pick "python" from the list.
 
 :::
 
-### optional: set c3c as a global enviornment variable
+### optional: set c3c as a global environment variable
 
 5. copy the folder
 6. navigate to `C:\Program Files`

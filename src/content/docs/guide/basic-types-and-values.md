@@ -93,7 +93,7 @@ bool f = false;
 
 ### Character literals
 
-A character literal is a value enclosed in `'``'`. Its value is intepreted as being its 
+A character literal is a value enclosed in `'``'`. Its value is interpreted as being its 
 ASCII value for a single character. 
 
 It is also possible to use 2, 4 or 8 character wide character literals. Such are interpreted
