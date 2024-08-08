@@ -19,6 +19,8 @@ C3 differs in some crucial respects when it comes to number conversions and prom
 
 C3 uses two's complement arithmetic for all integer math.
 
+*Please note: the abbreviations "lhs" for "left hand side" and "rhs" for "right hand side" are used in the text below. 
+
 ## Target type
 
 The left hand side of an assignment, or the parameter type in a call is known as the *target type* the target type is used for implicit widening and inferring struct initialization.
