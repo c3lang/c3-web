@@ -216,7 +216,7 @@ The above being equivalent to:
 ### Testing for a result without unwrapping
 
 The `@ok` macro will return `true` if an Optional is a result and `false`
-if is a fault. Functionally it is equivalent to `!@catch`
+if it is a fault. Functionally this is equivalent to `!@catch`
 
     int! a = ...
 
