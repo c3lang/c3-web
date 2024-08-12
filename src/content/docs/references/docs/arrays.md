@@ -5,14 +5,14 @@ sidebar:
     order: 109
 ---
 
-Arrays has a central role in programming. C3 offers build-in arrays, slices and [vectors](/references/docs/vectors/).
+Arrays have a central role in programming. C3 offers built-in arrays, slices and [vectors](/references/docs/vectors/).
 The standard library enhances this further with dynamically sized arrays and other collections.
 
 ## Fixed arrays
 
-`<type>[<size>]` e.g. `int[4]`. These are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`. 
+These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`. 
 
-Unlike C, fixed arrays do not decay into pointers, instead an `int[4]*` may be implicitly converted into an `int*`.
+Unlike C, fixed arrays do not decay into pointers. Instead, an `int[4]*` may be implicitly converted into an `int*`.
 
 
     // C
@@ -48,8 +48,9 @@ The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into eit
 
 ### Slicing arrays
 
-It's possible to use a range syntax to create slices from pointers, arrays and other slices. They either use range syntax:
-`arr[<start index>..<end index>]` (the end index is included in the final result) or start + len syntax: `arr[<start index> : len]`
+It's possible to use the range syntax to create slices from pointers, arrays, and other slices. This is written
+`arr[<start index>..<end index>]`, where the end index is inclusive.
+You can also use the start + len syntax: `arr[<start index> : len]`.
 
     
     int[5] a = { 1, 20, 50, 100, 200 };
@@ -58,9 +59,9 @@ It's possible to use a range syntax to create slices from pointers, arrays and o
     int[] c = a[2..3]; // { 50, 100 }
     int[] c2 = a[2:2]; // Same as above.
 
-It's possible to omit the first and last index in ranges, and the start index for start + len.
+It's possible to omit the first and last indices of a range, and the start index for start + len.
 Omitting the start index will default it to 0, omitting the end index will set it to the last valid
-index (this is not allowed on pointers). Length cannot be omitted in start + len syntax.
+index (this is not allowed on pointers). The length cannot be omitted in start + len syntax.
 
 The following are all equivalent:
 
@@ -72,14 +73,14 @@ The following are all equivalent:
     int[] f = a[0:5];
     int[] g = a[:5];
 
-One may also slice from the end. Again this is not allowed for pointers.
+One may also slice from the end. Again, this is not allowed for pointers.
 
     int[5] a = { 1, 20, 50, 100, 200 };
     int[] b = a[1..^2]; // { 20, 50, 100 }
     int[] c = a[^3..]; // { 50, 100, 200 }
     int[] d = a[^3:2]; // { 50, 100 }
 
-One may also use assign to slices:
+One may also assign to slices:
 
     int[3] a = { 1, 20, 50 };
     a[1..2] = 0; // a = { 1, 0, 0}
