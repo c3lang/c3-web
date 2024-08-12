@@ -284,7 +284,7 @@ fn bool State.may_open(State state)
 
 ### Implicit first parameters
 
-Because the type of the first method is known, it may be left out. To indicate a pointer `&` is used.
+Because the type of the first argument is known, it may be left out. To indicate a pointer `&` is used.
 
 ```c3
 fn int Foo.test(&self) { /* ... */ }
