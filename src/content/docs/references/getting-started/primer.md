@@ -146,8 +146,8 @@ Name standards are enforced:
     const int FOOBAR = 123;
     enum Test
     {
-      STATE_A = 0,
-      STATE_B = 2
+      STATE_A,
+      STATE_B
     }
 
 #### Variable declaration
