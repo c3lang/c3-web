@@ -25,15 +25,15 @@ int b = 5;
 io::printfn("%d", a); // Prints 5
 ```
 
-### varcast(any* v, $Type)
+### anycast(any v, $Type)
 
-Optionally cast the value `v` to type `$Type*` on failure returns `VarCastResult.TYPE_MISMATCH`.
+Optionally cast the value `v` to type `$Type*` on failure returns `CastResult.TYPE_MISMATCH`.
 
 ```c
 int b;
-any* a = &b;
-float*! c = varcast(a, float); // Will return TYPE_MISMATCH
-int*! d = varcast(a, int);     // Works!
+any a = &b;
+float*! c = anycast(a, float); // Will return TYPE_MISMATCH
+int*! d = anycast(a, int);     // Works!
 ```
 
 ### void unreachable($string = "Unreachable statement reached.")
@@ -103,7 +103,7 @@ are implemented.
 
 - `IteratorResult` returned when reaching the end of an iterator.
 - `SearchResult` used when a search fails.
-- `AnyCastResult` when a any cast fails.
+- `CastResult` when an anycast fails.
 
 ## std::core::env
 
