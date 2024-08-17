@@ -104,7 +104,7 @@ To declare that a type implements an interface, add it after the type name:
     }
 
     // Note how the first argument differs from the interface.
-    fn String Baz.myname(Baz self) @dynamic 
+    fn String Baz.myname(Baz* self) @dynamic 
     { 
         return "I am Baz!"; 
     }
