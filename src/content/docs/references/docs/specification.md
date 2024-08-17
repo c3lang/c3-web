@@ -771,6 +771,30 @@ Taking the address of a compound literal will yield a pointer to stack allocated
 
 ### Function calls
 
+#### Function argument resolution
+
+Call slots are in order: regular slots, vaarg slot, name-only slots.
+
+No regular slots may appear after the vaarg slot, however there may be named parameters with default values 
+after the vaarg slot if it's not a raw vaarg.
+
+These "name-only" slots need to have a parameter name and a default value, and may only be called as named 
+arguments.
+
+Named arguments may never be *splat* expressions.
+
+1. Step through all the arguments, resolve the named arguments and determine if there are any regular arguments.
+2. If there are regular arguments, then named arguments may only be in name-only slots, otherwise it is an error.
+3. If there are named arguments in the regular slots, all slots not provided arguments must have default values.
+4. Proceed with evaluation of arguments from left to right in call invocation order.
+6. Regular arguments are placed in the regular slots from left to right.
+7. If a regular argument is a *splat* expression, evaluate it *without inference* and determine if it is an array, vector, untyped list or slice with a known size, otherwise it is an error.
+8. A regular argument *splat* will be expanded into as many slots as its length, this may expand into vaarg arguments.
+9. In the vaarg slot, *splatting* a slice will *forward* it.
+10. In the vaarg slot, *splatting* an array, vector or untyped list will expand its elements as if they were provided as arguments.
+11. A named argument may never appear more than once.
+12. The vaarg slot may never be accessed using named arguments.
+
 #### Varargs
 
 For varargs, a `bool` or *any integer* smaller than what the C ABI specifies for the c `int` type is cast to `int`. Any
