@@ -45,7 +45,7 @@ For example, this would make a copy of the data and place it in the variable `an
 
     void* data = malloc(a.type.sizeof);
 	mem::copy(data, a.ptr, a.type.sizeof);
-    any* any_copy = any_make(data, a.type);    
+    any any_copy = any_make(data, a.type);    
 
 ## Variable argument functions with implicit `any`
 

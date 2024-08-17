@@ -651,9 +651,9 @@ fn String Bob.myname(Bob*) @dynamic { return "I am Bob!"; }
 // Ad hoc implementation
 fn String int.myname(int*) @dynamic { return "I am int!"; }
 
-fn void whoareyou(any* a)
+fn void whoareyou(any a)
 {
-    MyName* b = (MyName*)a;
+    MyName b = (MyName)a;
     if (!&b.myname)
     {
         io::printn("I don't know who I am.");
@@ -668,7 +668,7 @@ fn void main()
     double d = 1.0;
     Bob bob;
 
-    any* a = &i;
+    any a = &i;
     whoareyou(a);
     a = &d;
     whoareyou(a);
