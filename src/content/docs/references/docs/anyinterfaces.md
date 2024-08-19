@@ -38,7 +38,7 @@ is typically done using the `any_make` function: `any_make(ptr, type)`
 will create an `any` pointing to `ptr` and with typeid `type`.
 
 Since the runtime `typeid` is available, we can query for any runtime `typeid` property available
-at runtime, for example the size, e.g. `my_any.typeid.sizeof`. This allows us to do a lot of work
+at runtime, for example the size, e.g. `my_any.type.sizeof`. This allows us to do a lot of work
 on with the enclosed data without knowing the details of its type.
 
 For example, this would make a copy of the data and place it in the variable `any_copy`:
