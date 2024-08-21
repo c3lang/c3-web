@@ -421,17 +421,19 @@ It is possible to associate each enum value with a static value.
 `fault` defines a set of optional result values, that are similar to enums, but are used for 
 optional returns.
 
-    fault IOResult
-    {
-      IO_ERROR,
-      PARSE_ERROR
-    }   
+```c3
+fault IOResult
+{
+    IO_ERROR,
+    PARSE_ERROR
+}   
 
-    fault MapResult
-    {
-      NOT_FOUND
-    }
-  
+fault MapResult
+{
+    NOT_FOUND
+}
+```
+
 Like the typeid, the constants are pointer sized and each value is globally unique, even when 
 compared to other faults. For example the underlying value of `MapResult.NOT_FOUND` is guaranteed
 to be different from `IOResult.IO_ERROR`. This is true even if they are separately compiled.
@@ -446,17 +448,19 @@ An *optional result type* is created by taking a type and appending `!`.
 An optional result type is a tagged union containing either the *expected result* or *an optional result value* 
 (which is a fault).
 
-    int! i;
-    i = 5; // Assigning a real value to i.
-    i = IOResult.IO_ERROR?; // Assigning an optional result to i.
-
+```c3
+int! i;
+i = 5; // Assigning a real value to i.
+i = IOResult.IO_ERROR?; // Assigning an optional result to i.
+```
 
 Only variables and return variables may be optionals. Function and macro parameters may not be optionals.
 
-    fn Foo*! getFoo() { ... } // Ok!
-    fn void processFoo(Foo*! f) { ... } // Error
-    int! x = 0; // Ok!
-
+```c3
+fn Foo*! getFoo() { /* ... */ } // Ok!
+fn void processFoo(Foo*! f) { /* ... */ } // Error
+int! x = 0; // Ok!
+```
 
 Read more about the optional types on the page about [optionals and error handling](/references/docs/optionals).
 
@@ -465,25 +469,31 @@ Read more about the optional types on the page about [optionals and error handli
 
 Structs are always named:
 
-    struct Person  
-    {
-        char age;
-        String name;
-    }
+```c3
+struct Person  
+{
+    char age;
+    String name;
+}
+```
 
 A struct's members may be accessed using dot notation, even for pointers to structs.
 
+```c3
+fn void test()
+{
     Person p;
     p.age = 21;
     p.name = "John Doe";
 
-    libc::printf("%s is %d years old.", p.age, p.name);
+    io::printfn("%s is %d years old.", p.name, p.age);
 
-    Person* pPtr = &p;
-    pPtr.age = 20; // Ok!
+    Person* person_ref = &p;
+    person_ref.age = 20; // Ok!
 
-    libc::printf("%s is %d years old.", pPtr.age, pPtr.name);
-
+    io::printfn("%s is %d years old.", person_ref.name, person_ref.age);
+}
+```
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
 
 To change alignment and packing, optional [attributes](/references/docs/attributes) such as `@packed` may be used.
@@ -492,39 +502,48 @@ To change alignment and packing, optional [attributes](/references/docs/attribut
 
 C3 allows creating struct subtypes using `inline`:
 
-    struct ImportantPerson 
-    {
-        inline Person person;
-        String title;
-    }
+```c3
+struct ImportantPerson 
+{
+    inline Person person;
+    String title;
+}
 
-    fn void printPerson(Person p)
-    {
-        libc::printf("%s is %d years old.", p.age, p.name);
-    }
+fn void print_person(Person p)
+{
+    io::printfn("%s is %d years old.", p.name, p.age);
+}
 
 
+fn void test()
+{
     ImportantPerson important_person;
     important_person.age = 25;
     important_person.name = "Jane Doe";
     important_person.title = "Rockstar";
-    printPerson(important_person); // Only the first part of the struct is copied.
-
+    print_person(important_person); // Only the first part of the struct is copied.
+}
+```
 
 ## Union types
 
 Union types are defined just like structs and are fully compatible with C.
 
-    union Integral  
-    {
-        byte as_byte;
-        short as_short;
-        int as_int;
-        long as_long;
-    }
+```c3
+union Integral  
+{
+    char as_byte;
+    short as_short;
+    int as_int;
+    long as_long;
+}
+```
 
 As usual unions are used to hold one of many possible values:
 
+```c3
+fn void test()
+{
     Integral i;
     i.as_byte = 40; // Setting the active member to as_byte
 
@@ -532,8 +551,9 @@ As usual unions are used to hold one of many possible values:
 
     // Undefined behaviour: as_byte is not the active member, 
     // so this will probably print garbage.
-    libc::printf("%d\n", i.as_byte); 
-
+    io::printfn("%d\n", i.as_byte);
+} 
+```
 
 Note that unions only take up as much space as their largest member, so `Integral.sizeof` is equivalent to `long.sizeof`.
 
@@ -543,21 +563,23 @@ Note that unions only take up as much space as their largest member, so `Integra
 Just like in C99 and later, nested anonymous sub-structs / unions are allowed. Note that
 the placement of struct / union names is different to match the difference in declaration.
 
-    struct Person  
+```c3
+struct Person  
+{
+    char age;
+    String name;
+    union 
     {
-        char age;
-        String name;
-        union 
-        {
-            int employee_nr;
-            uint other_nr;
-        }
-        union subname 
-        {
-            bool b;
-            Callback cb;
-        }
+        int employee_nr;
+        uint other_nr;
     }
+    union subname 
+    {
+        bool b;
+        Callback cb;
+    }
+}
+```
 
 ## Bitstructs
 
@@ -568,15 +590,16 @@ The main differences is that the bitstruct has a *backing type* and each field
 has a specific bit range. In addition, it's not possible *to take the address* of a
 bitstruct field.
 
-    bitstruct Foo : char
-    {
-        int a : 0..2;
-        int b : 4..6;
-        bool c : 7;
-    }
+```c3
+bitstruct Foo : char
+{
+    int a : 0..2;
+    int b : 4..6;
+    bool c : 7;
+}
 
-    ...
-    
+fn void test()
+{   
     Foo f;
     f.a = 2;
     char x = (char)f;
@@ -585,18 +608,20 @@ bitstruct field.
     io::printfn("%d", (char)f); // prints 18 
     f.c = true;
     io::printfn("%d", (char)f); // prints 146
-
+}    
+```
 
 The bitstruct will follow the endianness of the underlying type:
 
-    bitstruct Test : uint
-    {
-        ushort a : 0..15;
-        ushort b : 16..31;
-    }
+```c3
+bitstruct Test : uint
+{
+    ushort a : 0..15;
+    ushort b : 16..31;
+}
 
-    ...
-
+fn void test()
+{
     Test t;
     t.a = 0xABCD;
     t.b = 0x789A;
@@ -604,33 +629,38 @@ The bitstruct will follow the endianness of the underlying type:
     io::printfn("%X", (uint)t); // Prints 789AABCD
     for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints CDAB9A78
     io::printn();
+}    
+```
 
 It is however possible to pick a different endianness, in which case the entire representation
 will internally assume big endian layout:
 
-    bitstruct Test : uint @bigendian
-    {
-        ushort a : 0..15;
-        ushort b : 16..31;
-    }
+```c3
+bitstruct Test : uint @bigendian
+{
+    ushort a : 0..15;
+    ushort b : 16..31;
+}
+```
 
 In this case the same example yields `CDAB9A78` and `789AABCD` respectively.
 
 Bitstruct backing types may be integers or char arrays. The difference in layout is somewhat subtle:
 
-    bitstruct Test1 : char[4]
-    {
-        ushort a : 0..15;
-        ushort b : 16..31;
-    }
-    bitstruct Test2 : char[4] @bigendian
-    {
-        ushort a : 0..15;
-        ushort b : 16..31;
-    }
+```c3
+bitstruct Test1 : char[4]
+{
+    ushort a : 0..15;
+    ushort b : 16..31;
+}
+bitstruct Test2 : char[4] @bigendian
+{
+    ushort a : 0..15;
+    ushort b : 16..31;
+}
 
-    ...
-
+fn void test()
+{
     Test1 t1;
     Test2 t2;
     t1.a = t2.a = 0xABCD;
@@ -641,13 +671,16 @@ Bitstruct backing types may be integers or char arrays. The difference in layout
     c = (char*)&t2;
     for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints ABCD789A
     io::printn();
+}
+```
 
 Bitstructs can be made to have overlapping bit fields. This is useful when modelling
 a layout which has multiple different layouts depending on flag bits:
 
-    bitstruct Foo : char @overlap
-    {
-        int a : 2..5;
-        int b : 1..3; // Only valid due to the @overlap attribute
-    }
-
+```c3
+bitstruct Foo : char @overlap
+{
+    int a : 2..5;
+    int b : 1..3; // Only valid due to the @overlap attribute
+}
+```
