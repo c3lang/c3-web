@@ -13,16 +13,16 @@ All user defined types in C3 starts with upper case. So `MyStruct` or `Mystruct`
 This naming requirement ensures that the language is easy to parse for tools.
 It is possible to use attributes to change the external name of a type:
 
-```
+```c3
 struct Stat @extern("stat")
 {
     // ...
 } 
 
-fn CInt stat(const char* pathname, Stat* buf);
+fn CInt stat(char* pathname, Stat* buf);
 ```
 
-This would for example affect generated C headers.
+This would affect things like generated C headers.
 
 ##### Differences from C
 
@@ -34,13 +34,14 @@ In order to signal restrictions on parameter usage, parameter [preconditions](/r
 
 C3 also requires all function pointers to be used with an alias, so:
 
-    def Callback = fn void();
-    Callback a = null; // Ok!
-    fn Callback getCallback() { ... } // Ok!
-    
-    // fn fn void() getCallback() { ... } - ERROR!
-    // fn void() a = null; - ERROR!```
+```c3
+def Callback = fn void();
+Callback a = null; // Ok!
+fn Callback getCallback() { /* ... */ } // Ok!
 
+// fn fn void() getCallback() { /* ... */ } - ERROR!
+// fn void() a = null; - ERROR!
+```
 
 ## Basic types
 
@@ -48,23 +49,23 @@ Basic types are divided into floating point types, and integer types. Integer ty
 
 ##### Integer types
 
-| Name         | bit size | signed |
-| :----------- | --------:|:------:|
-| bool*        | 1        | no     |
-| ichar        | 8        | yes    |
-| char         | 8        | no     |
-| short        | 16       | yes    |
-| ushort       | 16       | no     |
-| int          | 32       | yes    |
-| uint         | 32       | no     |
-| long         | 64       | yes    |
-| ulong        | 64       | no     |
-| int128       | 128      | yes    |
-| uint128      | 128      | no     |
-| iptr**       | varies   | yes    |
-| uptr**       | varies   | no     |
-| isz**        | varies   | yes    |
-| usz**        | varies   | no     |
+| Name        | bit size | signed |
+|:------------| --------:|:------:|
+| `bool`\*    | 1        | no     |
+| `ichar`     | 8        | yes    |
+| `char`      | 8        | no     |
+| `short`     | 16       | yes    |
+| `ushort`    | 16       | no     |
+| `int`       | 32       | yes    |
+| `uint`      | 32       | no     |
+| `long`      | 64       | yes    |
+| `ulong`     | 64       | no     |
+| `int128`    | 128      | yes    |
+| `uint128`   | 128      | no     |
+| `iptr`\*\*  | varies   | yes    |
+| `uptr`\*\*  | varies   | no     |
+| `isz`\*\*   | varies   | yes    |
+| `usz`\*\*   | varies   | no     |
 
 \* `bool` will be stored as a byte.  
 \*\* size, pointer and pointer sized types depend on platform.
@@ -106,7 +107,7 @@ In our case we could encode `b64'Rk9PQkFSMTE='` as `'FOOBAR11'`.
 
 Base64 and hex data literals initializes to arrays of the char type:
 
-```
+```c3
 char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
 char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ```
@@ -117,7 +118,7 @@ Regular string literals is text enclosed in `" ... "` just like in C. C3 also of
 
 Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
 
-```
+```c3
 char* foo = `C:\foo\bar.dll`;
 char* bar = `"Say ``hello``"`;
 // Same as
@@ -127,14 +128,15 @@ char* bar = "\"Say `hello`\"";
      
 ##### Floating point types
 
-| Name         | bit size |
-| ------------ | --------:|
-| float16*     | 16       |
-| float        | 32       |
-| double       | 64       |
-| float128*    | 128      |
+| Name        | bit size |
+|-------------| --------:|
+| `bfloat16`* | 16       |
+| `float16`*  | 16       |
+| `float`     | 32       |
+| `double`    | 64       |
+| `float128`* | 128      |
 
-*support depends on platform
+*support is still incomplete.
 
 ##### Floating point constants
 
@@ -144,14 +146,13 @@ Floating point values may be written in decimal or hexadecimal. For decimal, the
 
 It is possible to type a floating point by adding a suffix:
 
-| Suffix       | type     |
-| ------------ | --------:|
-| f16          | float16  |
-| f32 *or f*   | float    |
-| f64          | double   |
-| f128         | float128 |
-
-    
+| Suffix     |     type |
+|------------|---------:|
+| bf16       | bfloat16 |
+| f16        |  float16 |
+| f32 *or f* |    float |
+| f64        |   double |
+| f128       | float128 |
 
 ### C compatibility
 
@@ -159,16 +160,16 @@ For C compatibility the following types are also defined in std::core::cinterop
 
 | Name        | c type             |
 |-------------| ------------------:|
-| CChar       | char               |
-| CShort      | short int          |
-| CUShort     | unsigned short int |
-| CInt        | int                |
-| CUInt       | unsigned int       |
-| CLong       | long int           |
-| CULong      | unsigned long int  |
-| CLongLong   | long long          |
-| CULongLong  | unsigned long long |
-| CLongDouble | long double        |
+| `CChar`       | char               |
+| `CShort`      | short int          |
+| `CUShort`     | unsigned short int |
+| `CInt`        | int                |
+| `CUInt`       | unsigned int       |
+| `CLong`       | long int           |
+| `CULong`      | unsigned long int  |
+| `CLongLong`   | long long          |
+| `CULongLong`  | unsigned long long |
+| `CLongDouble` | long double        |
 
 `float` and `double` will always match their C counterparts.
     
@@ -191,6 +192,9 @@ C3 contains a built-in variant type, which is essentially struct containing a `t
 While it is possible to cast the `any` pointer to any pointer type,
 it is recommended to use the `anycast` macro or checking the type explicitly first.
 
+```c3
+fn void main()
+{
     int x;
     any y = &x;
     int* w = (int*)y;                // Returns the pointer to x
@@ -200,44 +204,48 @@ it is recommended to use the `anycast` macro or checking the type explicitly fir
     {
         // Do something if y contains an int*
     }
+}
+```
 
 Switching over the `any` type is another method to unwrap the pointer inside:
 
-    fn void test(any z)
+```c3
+fn void test(any z)
+{
+    // Unwrapping switch
+    switch (z)
     {
-        // Unwrapping switch
-        switch (z)
-        {
-            case int: 
-                // z is unwrapped to int* here
-            case double:
-                // z is unwrapped to double* here
-        }
-        // Assignment switch
-        switch (y = z)
-        {
-            case int:
-                // y is int* here
-        }
-        // Direct unwrapping to a value is also possible:
-        switch (w = *z)
-        {
-            case int:
-                // w is int here
-        }
-        // Finally, if we just want to deal with the case
-        // where it is a single specific type:
-        if (z.type == int.typeid)
-        {
-            // This is safe here:
-            int* a = (int*)z;
-        }
-        if (try b = *anycast(z, int))
-        {
-            // b is an int:
-            foo(b * 3);
-        }
+        case int: 
+            // z is unwrapped to int* here
+        case double:
+            // z is unwrapped to double* here
     }
+    // Assignment switch
+    switch (y = z)
+    {
+        case int:
+            // y is int* here
+    }
+    // Direct unwrapping to a value is also possible:
+    switch (w = *z)
+    {
+        case int:
+            // w is int here
+    }
+    // Finally, if we just want to deal with the case
+    // where it is a single specific type:
+    if (z.type == int.typeid)
+    {
+        // This is safe here:
+        int* a = (int*)z;
+    }
+    if (try b = *anycast(z, int))
+    {
+        // b is an int:
+        foo(b * 3);
+    }
+}
+```
 
 `any.type` returns the underlying pointee typeid of the contained value. `any.ptr` returns 
 the raw `void*` pointer.
@@ -258,22 +266,26 @@ of integers, floats and booleans. Similar to arrays, wildcard can be used to inf
 
 Like in C, C3 has a "typedef" construct, `def <typename> = <type>`
 
-    def Int32 = int;
-    def Vector2 = float[<2>];
+```c3
+def Int32 = int;
+def Vector2 = float[<2>];
 
-    ...
+/* ... */
 
-    Int32 a = 1;
-    int b = a;    
+Int32 a = 1;
+int b = a;    
+```
 
 ### Function pointer types
 
 Function pointers are always used through a `def`:
 
-    def Callback = fn void(int value);
-    Callback callback = &test;
+```c3
+def Callback = fn void(int value);
+Callback callback = &test;
 
-    fn void test(int a) { ... }
+fn void test(int a) { /* ... */ }
+```
 
 To form a function pointer, write a normal function declaration but skipping the function name. `fn int foo(double x)` ->
 `fn int(double x)`.
@@ -281,19 +293,21 @@ To form a function pointer, write a normal function declaration but skipping the
 Function pointers can have default arguments, e.g. `def Callback = fn void(int value = 0)` but default arguments
 and parameter names are not taken into account when determining function pointer assignability:
 
-    def Callback = fn void(int value = 1);
-    fn void test(int a = 0) { ... }
+```c3
+def Callback = fn void(int value = 1);
+fn void test(int a = 0) { /* ... */ }
 
-    Callback callback = &main; // Ok
-    
-    fn void main()
-    {
-      callback(); // Works, same as test(0);
-      test(); // Works, same as test(1);
-      callback(.value = 3); // Works, same as test(3)
-      test(.a = 4); // Works, same as test(4)
-      // callback(.a = 3); ERROR!
-    }
+Callback callback = &main; // Ok
+
+fn void main()
+{
+    callback(); // Works, same as test(0);
+    test(); // Works, same as test(1);
+    callback(.value = 3); // Works, same as test(3)
+    test(.a = 4); // Works, same as test(4)
+    // callback(.a = 3); ERROR!
+}
+```
 
 ### Distinct types
 

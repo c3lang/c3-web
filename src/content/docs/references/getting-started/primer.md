@@ -440,17 +440,17 @@ For more information see [the section on bitstructs](/references/docs/types/#bit
 The following things are enhancements to C, that does not have a direct counterpart in
 C.
 
-- [Expression blocks](/references/docs/statements)
-- Defer
-- [Methods](/references/docs/functions)
-- [Optionals](voptionals)
+- [Expression blocks](/references/docs/statements/#expression-blocks)
+- [Defer](/references/docs/examples/#defer)
+- [Methods](/references/docs/functions/#methods)
+- [Optionals](references/docs/optionals)
 - [Semantic macros](/references/docs/macros)
 - [Generic modules](/references/docs/generics)
 - [Contracts](/references/docs/contracts)
-- [Compile time evaluation](vcompiletime)
+- [Compile time evaluation](/references/docs/compiletime)
 - [Reflection](/references/docs/reflection)
 - [Operator overloading](/references/docs/operators)
-- Macro methods
+- [Macro methods](/references/docs/macros/#macro-methods)
 - [Static initialize and finalize functions](/references/docs/functions#static-initializer-and-finalizers)
 - [Dynamic interfaces](/references/docs/anyinterfaces)
 
