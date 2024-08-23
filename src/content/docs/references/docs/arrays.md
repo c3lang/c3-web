@@ -41,15 +41,16 @@ The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into eit
 fn void test() 
 {
     int[4] arr = { 1, 2, 3, 4 };
+    int[4]* ptr = &arr;
     
-    // Asignments to slices
+    // Assignments to slices
     int[] slice1 = &arr;                // Implicit conversion
-    int[] slice2 = (int[4]*)slice1;     // Implicit conversion
+    int[] slice2 = ptr;                 // Implicit conversion
 
     // Assignments from slices
     int[] slice3 = slice1;              // Assign slices from other slices
-    int* intPtr = slice1;               // Assign from slice
-    int[4]* arrPtr = (int[4]*)slice1;   // Cast from slice
+    int* int_ptr = slice1;              // Assign from slice
+    int[4]* arr_ptr = (int[4]*)slice1;  // Cast from slice
 }
 ```
 
@@ -57,33 +58,33 @@ fn void test()
 
 It's possible to use the range syntax to create slices from pointers, arrays, and other slices.
 
-This is written `arr[<start index>..<end index>]`, where the `end index` is inclusive. 
+This is written `arr[<start-index> .. <end-index>]`, where the `end-index` is *inclusive*. 
 ```c3
 fn void test() 
 {
     int[5] a = { 1, 20, 50, 100, 200 };
 
-    int[] b = a[0..4]; // The whole array as a slice.
-    int[] c = a[2..3]; // { 50, 100 }
+    int[] b = a[0 .. 4]; // The whole array as a slice.
+    int[] c = a[2 .. 3]; // { 50, 100 }
 }
 ```  
 
-You can also use the `arr[<start index>:<slice length>]`
+You can also use the `arr[<start index> : <slice length>]`
 ```c3
 fn void test()
 {
     int[5] a = { 1, 20, 50, 100, 200 };
     
-    int[] b2 = a[0:5]; // { 1, 20, 50, 100, 200 } Start index 0, slice length 5
-    int[] c2 = a[1:2]; // { 50, 100 } Start index 2, slice length 2
+    int[] b2 = a[0 : 5]; // { 1, 20, 50, 100, 200 } Start index 0, slice length 5
+    int[] c2 = a[1 : 2]; // { 50, 100 } Start index 2, slice length 2
 }
 ```
 
 It’s possible to omit the first and last indices of a range:
-- `arr[..<end index>]` Omitting the start index will default it to 0
-- `arr[<start index>..]` Omitting the `end index` will set `arr.len()` (this is not allowed on pointers)
+- `arr[..<end-index>]` Omitting the start index will default it to 0
+- `arr[<start-index>..]` Omitting the `end-index` will set `arr.len()` (this is not allowed on pointers)
 
-Equivalently with index offset `arr[:<slice length>]` you can omit the `start index` 
+Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index` 
 
 The following are all equivalent and slice the whole array
 
@@ -92,12 +93,12 @@ fn void test()
 {
     int[5] a = { 1, 20, 50, 100, 200 };
 
-    int[] b = a[0..4];
+    int[] b = a[0 .. 4];
     int[] c = a[..4];
     int[] d = a[0..];
     int[] e = a[..];
     
-    int[] f = a[0:5];
+    int[] f = a[0 : 5];
     int[] g = a[:5];
 }
 ```
@@ -107,26 +108,26 @@ You can also slice in reverse from the end with `^i` where the index is `len-i` 
 - `^2` means `len-2`
 - `^3` means `len-3`
 
-Again, this is not allowed for pointers.
+Again, this is not allowed for pointers since the length is unknown.
 
 ```c3
 fn void test() 
 {
     int[5] a = { 1, 20, 50, 100, 200 };
 
-    int[] b1 = a[1..^1]; // { 20, 50, 100, 200 } a[1..(len-1)]
-    int[] b2 = a[1..^2]; // { 20, 50, 100 }      a[1..(len-2)]
-    int[] b3 = a[1..^3]; // { 20, 50 }           a[1..(len-3)]
+    int[] b1 = a[1 .. ^1]; // { 20, 50, 100, 200 } a[1 .. (len-1)]
+    int[] b2 = a[1 .. ^2]; // { 20, 50, 100 }      a[1 .. (len-2)]
+    int[] b3 = a[1 .. ^3]; // { 20, 50 }           a[1 .. (len-3)]
 
     int[] c1 = a[^1..]; // { 200 }               a[(len-1)..]
     int[] c2 = a[^2..]; // { 100, 200 }          a[(len-2)..]
     int[] c3 = a[^3..]; // { 50, 100, 200 }      a[(len-3)..]
 
-    int[] d = a[^3:2];  // { 50, 100 }           a[(len-3)..2]
+    int[] d = a[^3 : 2];  // { 50, 100 }           a[(len-3) : 2]
     
     // Slicing a whole array, the inclusive index of : gives the difference
-    int[] e = a[0..^1]; // a[0..len-1]
-    int[] f = a[0:^0];  // a[0:len]
+    int[] e = a[0 .. ^1]; // a[0 .. len-1]
+    int[] f = a[0 : ^0];  // a[0 : len]
 
 }
 ```
@@ -144,8 +145,7 @@ int[3] b = { 2, 4, 5 }
 a[1..2] = b[0..1]; // a = { 1, 2, 4}
 ```
 
-Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is undefined behaviour.
-
+Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is unspecified behaviour.
     
 ### Conversion list
 
@@ -193,10 +193,13 @@ struct SubArrayContainer
 You may iterate over slices, arrays and vectors using `foreach (Type x : array)`:
 
 ```c3
-int[4] a = { 1, 2, 3, 5 };
-foreach (int x : a)
+fn void test()
 {
-    ...
+    int[4] a = { 1, 2, 3, 5 };
+    foreach (int x : a)
+    {
+        /* ... */
+    }
 }
 ```
 
@@ -205,10 +208,14 @@ Furthermore, by providing two variable name, the first is assumed to be the
 index:
 
 ```c3
-Foo[4] a = { ... };
-foreach (int idx, Foo* &f : a)
+
+fn void test()
 {
-    f.abc = idx; // Mutates the array element
+    Foo[4] a = { /* ... */ };
+    foreach (int idx, Foo* &f : a)
+    {
+        f.abc = idx; // Mutates the array element
+    }
 }
 ```
 It is possible to enable foreach on any type 
