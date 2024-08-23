@@ -40,16 +40,16 @@ The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into eit
 ```c3
 fn void test() 
 {
-    int[3] a = { 1, 2, 3 };
+    int[4] arr = { 1, 2, 3, 4 };
+    
+    // Asignments to slices
+    int[] slice1 = &arr;                // Implicit conversion
+    int[] slice2 = (int[4]*)slice1;     // Implicit conversion
 
-    int[4]* b = (int[4]*)&a;    // Explicit cast required
-    int[4]* b = &a;             // ERROR no implicit conversion
-
-    int* c = a;     // ERROR
-
-    int* d = &a;    // Valid implicit conversion
-    int* e = b;     // Valid implicit conversion
-    int[3] f = a;   // Copy by value!
+    // Assignments from slices
+    int[] slice3 = slice1;              // Assign slices from other slices
+    int* intPtr = slice1;               // Assign from slice
+    int[4]* arrPtr = (int[4]*)slice1;   // Cast from slice
 }
 ```
 
@@ -102,10 +102,10 @@ fn void test()
 }
 ```
 
-You can also slice referencing the last index, where
-- `^1` is the end
-- `^2` is one before the end
-- `^3` is two before the end 
+You can also slice in reverse from the end with `^i` where the index is `len-i` for example:
+- `^1` means `len-1`
+- `^2` means `len-2`
+- `^3` means `len-3`
 
 Again, this is not allowed for pointers.
 
@@ -114,15 +114,20 @@ fn void test()
 {
     int[5] a = { 1, 20, 50, 100, 200 };
 
-    int[] b1 = a[1..^1]; // { 20, 50, 100, 200 }
-    int[] b2 = a[1..^2]; // { 20, 50, 100 }
-    int[] b3 = a[1..^3]; // { 20, 50 }
+    int[] b1 = a[1..^1]; // { 20, 50, 100, 200 } a[1..(len-1)]
+    int[] b2 = a[1..^2]; // { 20, 50, 100 }      a[1..(len-2)]
+    int[] b3 = a[1..^3]; // { 20, 50 }           a[1..(len-3)]
 
-    int[] c1 = a[^1..]; // { 200 }
-    int[] c2 = a[^2..]; // { 100, 200 }
-    int[] c3 = a[^3..]; // { 50, 100, 200 }
+    int[] c1 = a[^1..]; // { 200 }               a[(len-1)..]
+    int[] c2 = a[^2..]; // { 100, 200 }          a[(len-2)..]
+    int[] c3 = a[^3..]; // { 50, 100, 200 }      a[(len-3)..]
 
-    int[] d = a[^3:2]; // { 50, 100 }
+    int[] d = a[^3:2];  // { 50, 100 }           a[(len-3)..2]
+    
+    // Slicing a whole array, the inclusive index of : gives the difference
+    int[] e = a[0..^1]; // a[0..len-1]
+    int[] f = a[0:^0];  // a[0:len]
+
 }
 ```
 
