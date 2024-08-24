@@ -334,41 +334,104 @@ moving the output pointer 1 or 2 steps.
 
 ## std::io
 
+### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
+Read from a stream (default is stdin) to the next "\n" or to the end of the stream, whatever comes first.<br>
+`\r` will be filtered from the String.
+
+### String! treadline(stream = io::stdin())
+Same as `readline` but uses the temporary allocator.
+
+### void print(x), void printn(x = "")
+Print any value to stdout.<br>
+The `printn` variant appends a newline.
+
+### void eprint(x), void eprintn(x)
+Print any value to stderr.<br>
+The `eprintn` variant appends a newline.
+
 ### usz! printf(String format, args...) @maydiscard
-Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
-Will also print enums and vectors.
+Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.<br>
+Will also print enums and vectors.<br>
+Also available as `printfn` which appends a newline.<br>
+`eprintf` and its matching function `eprintfn` print to stderr.
+
+### char[]! bprintf(char[] buffer, String format, args...) @maydiscard
+Prints using a 'printf'-style formatting string, to a string buffer.<br>
+Returns a slice of the `buffer` argument with the resulting length.
+
+### usz! fprint(out, x), usz! fprintn(out, x = "")
+Print a value to a stream. `out` must implement `OutStream`.
+The `fprintn` variant appends a newline.
+
+### usz! fprintf(OutStream out, String format, args...)
+Prints to the specified OutStream using a 'printf'-style formatting string.<br>
+Returns the number of characters printed.<br>
+`fprintfn` appends a newline.
+
+### void putchar(char c) @inline
+Libc `putchar`, prints a single character to stdout.
 
 ### usz! DString.appendf(DString* str, String format, args...) @maydiscard
 Same as printf but on dynamic strings.
 
-### usz! File.printf(File file, String format, args...) @maydiscard
-Same as printf but on files.
-
-### void! File.open(File* file, String filename, String mode)
-Open a file with the given file name with the given mode (r, w etc)
-
-### void! File.seek(File *file, long offset, Seek seekMode = Seek.SET)
-Seek in a file. Based on the libc function.
-
-### void! File.close(File *file) @inline
-Close a file, based on the libc function.
-
-### bool File.eof(File* file) @inline
-True if EOF has been reached. Based on the libc function.
-
-### void! File.putc(File *file, char c)
-Write a single byte to a file. See the libc function.
-
-### usz File.read(File* file, void* buffer, usz items, usz element_size = 1)
-Read into a buffer, based on the libc function.
-
-### usz File.write(File* file, void* buffer, usz items, usz element_size = 1)
-Write to a buffer, based on the libc function.
-
-### stdout(), stdin(), stderr()
+### File* stdout(), File* stdin(), File* stderr()
 Return stdout, stdin and stderr respectively.
 
-## std::collections::list(<Type>)
+## std::io::file
+
+### File! open(String filename, String mode)
+Open a file with the given file name with the given mode (r, w etc)
+
+### File! open_path(Path path, String mode)
+Open a file pointed to by a Path struct, with the given mode.
+
+### bool is_file(String path)
+See whether the given path is a file.
+
+### usz! get_size(String path)
+Get the size of a file.
+
+### void! delete(String filename)
+Delete a file.
+
+### void! File.reopen(&self, String filename, String mode)
+Reopen a file with a new filename and mode.
+
+### usz! File.seek(&self, isz offset, Seek seek_mode = Seek.SET)
+Seek in a file. Based on the libc function.
+
+### void! File.write_byte(&self, char c) @dynamic
+Write a single byte to a file.
+
+### void! File.close(&self) @inline @dynamic
+Close a file, based on the libc function.
+
+### bool File.eof(&self) @inline
+True if EOF has been reached. Based on the libc function.
+
+### usz! File.read(&self, char[] buffer)
+Read into a buffer, based on the libc function.
+
+### usz! File.write(&self, char[] buffer)
+Write to a buffer, based on the libc function.
+
+### char! File.read_byte(&self) @dynamic
+Read a single byte from a file.
+
+### char[]! load_buffer(String filename, char[] buffer)
+Load up to buffer.len characters into the buffer.<br>
+Returns IoError.OVERFLOW if the file is longer than the buffer.
+
+### char[]! load_new(String filename, Allocator allocator = allocator::heap())
+Load the entire file into a new buffer.
+
+### char[]! load_temp(String filename)
+Load the entire file into a buffer allocated using the temporary allocator.
+
+### void! File.flush(&self) @dynamic
+Flush a file, based on the libc function.
+
+## std::collections::list(\<Type\>)
 
 Generic list module, elements are of `Type`.
 
