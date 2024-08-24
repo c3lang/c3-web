@@ -223,7 +223,7 @@ Opens a temporary memory scope.
 @pool() 
 {
     // This allocation uses the dynamic arena 
-    Foo* f = talloc(Foo);
+    Foo* f = tmalloc(Foo);
 };
 ```
 
@@ -268,7 +268,7 @@ in which case the copy may not be optimized away. Furthermore the source
 and destination alignment may be used.
 
 ```c3
-Foo* f = talloc(data_size);
+Foo* f = tmalloc(data_size);
 mem::copy(f, slice.ptr, size); 
 ```
 
