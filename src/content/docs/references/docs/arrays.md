@@ -82,7 +82,7 @@ fn void test()
 
 It’s possible to omit the first and last indices of a range:
 - `arr[..<end-index>]` Omitting the start index will default it to 0
-- `arr[<start-index>..]` Omitting the `end-index` will set `arr.len()` (this is not allowed on pointers)
+- `arr[<start-index>..]` Omitting the `end-index` will set `arr.len()-1` (this is not allowed on pointers)
 
 Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index` 
 
