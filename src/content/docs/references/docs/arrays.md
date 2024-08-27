@@ -69,19 +69,19 @@ fn void test()
 }
 ```  
 
-You can also use the `arr[<start index> : <slice length>]`
+You can also use the `arr[<start-index> : <slice-length>]`
 ```c3
 fn void test()
 {
     int[5] a = { 1, 20, 50, 100, 200 };
     
-    int[] b2 = a[0 : 5]; // { 1, 20, 50, 100, 200 } Start index 0, slice length 5
-    int[] c2 = a[1 : 2]; // { 50, 100 } Start index 2, slice length 2
+    int[] b2 = a[0 : 5]; // { 1, 20, 50, 100, 200 } start-index 0, slice-length 5
+    int[] c2 = a[1 : 2]; // { 50, 100 } start-index 2, slice-length 2
 }
 ```
 
 It’s possible to omit the first and last indices of a range:
-- `arr[..<end-index>]` Omitting the start index will default it to 0
+- `arr[..<end-index>]` Omitting the `start-index` will default it to 0
 - `arr[<start-index>..]` Omitting the `end-index` will assign it to `arr.len()-1` (this is not allowed on pointers)
 
 Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index` 
