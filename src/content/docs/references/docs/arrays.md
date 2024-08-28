@@ -76,13 +76,13 @@ fn void test()
     int[5] a = { 1, 20, 50, 100, 200 };
     
     int[] b2 = a[0 : 5]; // { 1, 20, 50, 100, 200 } start-index 0, slice-length 5
-    int[] c2 = a[1 : 2]; // { 50, 100 } start-index 2, slice-length 2
+    int[] c2 = a[2 : 2]; // { 50, 100 } start-index 2, slice-length 2
 }
 ```
 
 It’s possible to omit the first and last indices of a range:
 - `arr[..<end-index>]` Omitting the `start-index` will default it to 0
-- `arr[<start-index>..]` Omitting the `end-index` will assign it to `arr.len()-1` (this is not allowed on pointers)
+- `arr[<start-index>..]` Omitting the `end-index` will assign it to `arr.len-1` (this is not allowed on pointers)
 
 Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index` 
 
@@ -115,19 +115,19 @@ fn void test()
 {
     int[5] a = { 1, 20, 50, 100, 200 };
 
-    int[] b1 = a[1 .. ^1]; // { 20, 50, 100, 200 } a[1 .. (len-1)]
-    int[] b2 = a[1 .. ^2]; // { 20, 50, 100 }      a[1 .. (len-2)]
-    int[] b3 = a[1 .. ^3]; // { 20, 50 }           a[1 .. (len-3)]
+    int[] b1 = a[1 .. ^1];  // { 20, 50, 100, 200 } a[1 .. (a.len-1)]
+    int[] b2 = a[1 .. ^2];  // { 20, 50, 100 }      a[1 .. (a.len-2)]
+    int[] b3 = a[1 .. ^3];  // { 20, 50 }           a[1 .. (a.len-3)]
 
-    int[] c1 = a[^1..]; // { 200 }                 a[(len-1)..]
-    int[] c2 = a[^2..]; // { 100, 200 }            a[(len-2)..]
-    int[] c3 = a[^3..]; // { 50, 100, 200 }        a[(len-3)..]
+    int[] c1 = a[^1..];     // { 200 }              a[(a.len-1)..]
+    int[] c2 = a[^2..];     // { 100, 200 }         a[(a.len-2)..]
+    int[] c3 = a[^3..];     // { 50, 100, 200 }     a[(a.len-3)..]
 
-    int[] d = a[^3 : 2];  // { 50, 100 }           a[(len-3) : 2]
+    int[] d = a[^3 : 2];    // { 50, 100 }          a[(a.len-3) : 2]
     
     // Slicing a whole array, the inclusive index of : gives the difference
-    int[] e = a[0 .. ^1]; // a[0 .. len-1]
-    int[] f = a[0 : ^0];  // a[0 : len]
+    int[] e = a[0 .. ^1];   // a[0 .. a.len-1]
+    int[] f = a[0 : ^0];    // a[0 : a.len]
 
 }
 ```
@@ -135,14 +135,14 @@ fn void test()
 One may also assign to slices:
 ```c3
 int[3] a = { 1, 20, 50 };
-a[1..2] = 0; // a = { 1, 0, 0}
+a[1..2] = 0; // a = { 1, 0, 0 }
 ```
 
 Or copy slices to slices:
 ```c3
 int[3] a = { 1, 20, 50 };
-int[3] b = { 2, 4, 5 }
-a[1..2] = b[0..1]; // a = { 1, 2, 4}
+int[3] b = { 2, 4, 5 };
+a[1..2] = b[0..1]; // a = { 1, 2, 4 }
 ```
 
 Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is unspecified behaviour.
