@@ -45,9 +45,9 @@ fn void test()
 ```c3
 import std::io;
 
-fn char[]! fileReader(String filename, char[] buffer)
+fn char[]! file_read(String filename, char[] buffer)
 {   
-    io::File! file = file::open(filename, "r")!; // return if fault opening file
+    File! file = file::open(filename, "r")!; // return if fault opening file
     defer { 
         io::printn("File was found, close the file"); 
         if (catch fault = file.close()) io::printfn("Fault closing file: %s", fault); 
@@ -58,7 +58,7 @@ fn char[]! fileReader(String filename, char[] buffer)
 }
 ```
 
-If the `file` named `filename` is found the function will read the content into a buffer, `defer` will then make sure that any open `File` handlers are closed. 
+If the file named `filename` is found the function will read the content into a buffer, `defer` will then make sure that any open `File` handlers are closed. 
 Note that if a scope exit happens before the `defer` declaration, the `defer` will not run, this a useful property because if the file failed to open, we don't need to close it.
 
 
