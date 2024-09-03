@@ -112,7 +112,6 @@ defer catch { ... }
 
 ```c3
 defer (catch fault) { ... };
-
 ```
 When the fault is captured this is convenient for logging the fault:
 ```c3
