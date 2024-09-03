@@ -204,7 +204,7 @@ fn void main()
 ```
 
 Because it's often relevant to run different defers when having an error return there is also a way to create an error defer, by using the `catch` keyword directly after the defer.
-Similarly using `defer try` to execute of success.
+Similarly using `defer try` can be used to only run if the scope exits in a regular way.
 
 ```c3
 fn void! test(int x)
