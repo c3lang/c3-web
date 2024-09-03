@@ -10,12 +10,9 @@ sidebar:
 A `defer` *always* runs at the [end of a scope](#end-of-a-scope) at any point *after* it is declared, `defer` is commonly used to simplify code that needs clean-up; like closing unix file descriptors, freeing dynamically allocated memory or closing database connections.
 
 ### End of a scope
-The end of a scope also includes `return`, `break`, `continue` or `!` rethrow. Rethrow `!` unwraps the optional, making it a normal variable again if [successful](../optionals) or if unsuccessful returns the [fault](../optionals) from the function back to the caller.
+The end of a scope also includes `return`, `break`, `continue` or `!` rethrow. 
 
-### Defer Execution order
-When there are multiple `defer` statements they are executed in reverse order of their declaration, last-to-first decalared. 
-
-### Examples
+[Rethrow](../optionals/#rethrow) `!` unwraps the optional, making it a normal variable again if [successful](../optionals) or if unsuccessful returns the [fault](../optionals) from the function back to the caller.
 
 ```c3
 fn void test() 
@@ -25,9 +22,24 @@ fn void test()
     io::printn("print second");
     return;
 }
-
 ```
 The `defer` runs **after** the other print statments, at the function return.
+
+### Defer Execution order
+When there are multiple `defer` statements they are executed in reverse order of their declaration, last-to-first decalared. 
+
+
+```c3
+fn void test() 
+{
+    io::printn("print first");
+    defer io::printn("print third, defers execute in reverse order");
+    defer io::printn("print second, defers execute in reverse order");
+    return;
+}
+```
+
+### Example defer
 
 
 ```c3
@@ -38,7 +50,7 @@ fn char[]! fileReader(String filename, char[] buffer)
     io::File! file = file::open(filename, "r")!; // return if fault opening file
     defer { 
         io::printn("File was found, close the file"); 
-        if (catch err = file.close()) io::printfn("Error closing file: %s", err); 
+        if (catch fault = file.close()) io::printfn("Fault closing file: %s", fault); 
     }
 
     file.read(buffer)!; // return if fault reading the file into the buffer
@@ -60,18 +72,32 @@ A `defer try` is called at [end of a scope](#end-of-a-scope) when exiting exitin
 ```c3
 fn void test() 
 {
-    defer try io::printn("defer try was run, a success was returned"); 
+    defer try io::printn("✅ defer try was run, a success was returned"); 
     return;
 }
-```
 
-```c3
-fn void !test() 
+fn void! main(String[] args) 
 {
-    defer try io::printn("defer try not run, a fault was returned");
-    return IoError.FILE_NOT_FOUND?;
+    test();
 }
 ```
+Function returns a [successful](../optionals) value, `defer try` runs on [scope exit](#end-of-a-scope).
+
+```c3
+fn void! test() 
+{
+    defer try io::printn("❌ defer try not run, a fault was returned");
+    return IoError.FILE_NOT_FOUND?;
+}
+
+fn void! main(String[] args) 
+{
+    if (catch fault = test()) {
+        io::printfn("test() returned a fault: %s", fault);
+    }
+}
+```
+Function returns a [fault](../optionals), `defer try` does not run on [scope exit](#end-of-a-scope).
 
 
 
@@ -80,18 +106,17 @@ fn void !test()
 A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting exiting with a [fault](../optionals), and is helpful for cleanup and freeing resources.
  
 
-
 ```c3
 defer catch { ... }
 ```
 
-
 ```c3
-defer (catch err) { ... };
+defer (catch fault) { ... };
+
 ```
 When the fault is captured this is convenient for logging the fault:
 ```c3
-defer (catch err) io::printfn("error found: %s", err)
+defer (catch fault) io::printfn("fault found: %s", fault)
 ```
 ### Memory allocation example
 
@@ -100,17 +125,17 @@ defer (catch err) io::printfn("error found: %s", err)
 fn String! test()
 {
     char[] data = mem::new_array(char, 12)!;
-    defer (catch err) 
+    defer (catch fault) 
     {
-        io::printfn("error found: %s", err)
+        io::printfn("fault found: %s", fault)
         (void)free(data);
     }
     return IoError.FILE_NOT_FOUND?; // returns fault, memory gets freed
 }
 ```
 
-## Safety warning
-If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code re-throwing before the `defer catch` declaration.
+## Pitfalls with defer and defer catch
+If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing](../optionals/#rethrow) `!` before the `defer catch` declaration. 
 
 ```c3
 fn void! function_throws() 
