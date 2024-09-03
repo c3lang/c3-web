@@ -12,7 +12,7 @@ A `defer` *always* runs at the [end of a scope](#end-of-a-scope) at any point *a
 ### End of a scope
 The end of a scope also includes `return`, `break`, `continue` or `!` rethrow. 
 
-[Rethrow](../optionals/#rethrow) `!` unwraps the optional, making it a normal variable again if [successful](../optionals) or if unsuccessful returns the [fault](../optionals) from the function back to the caller.
+[Rethrow](../optionals/#rethrow) `!` unwraps the optional, making it a normal variable again if [successful](../optionals), and if unsuccessful it returns the [fault](../optionals) from the function back to the caller.
 
 ```c3
 fn void test() 
@@ -50,7 +50,7 @@ fn char[]! file_read(String filename, char[] buffer)
     File! file = file::open(filename, "r")!; // return if fault opening file
     defer { 
         io::printn("File was found, close the file"); 
-        if (catch fault = file.close()) io::printfn("Fault closing file: %s", fault); 
+        if (catch err = file.close()) io::printfn("Fault closing file: %s", fault); 
     }
 
     file.read(buffer)!; // return if fault reading the file into the buffer
@@ -64,7 +64,7 @@ Note that if a scope exit happens before the `defer` declaration, the `defer` wi
 
 ## Defer try
 
-A `defer try` is called at [end of a scope](#end-of-a-scope) when exiting exiting with a [successful](../optionals) value.
+A `defer try` is called at [end of a scope](#end-of-a-scope) when exiting with a [successful](../optionals) value.
 
 
 ### Examples
@@ -92,8 +92,8 @@ fn void! test()
 
 fn void! main(String[] args) 
 {
-    if (catch fault = test()) {
-        io::printfn("test() returned a fault: %s", fault);
+    if (catch err = test()) {
+        io::printfn("test() returned a fault: %s", err);
     }
 }
 ```
@@ -111,11 +111,11 @@ defer catch { ... }
 ```
 
 ```c3
-defer (catch fault) { ... };
+defer (catch err) { ... };
 ```
 When the fault is captured this is convenient for logging the fault:
 ```c3
-defer (catch fault) io::printfn("fault found: %s", fault)
+defer (catch err) io::printfn("fault found: %s", err)
 ```
 ### Memory allocation example
 
@@ -124,9 +124,9 @@ defer (catch fault) io::printfn("fault found: %s", fault)
 fn String! test()
 {
     char[] data = mem::new_array(char, 12)!;
-    defer (catch fault) 
+    defer (catch err) 
     {
-        io::printfn("fault found: %s", fault)
+        io::printfn("fault found: %s", err)
         (void)free(data);
     }
     return IoError.FILE_NOT_FOUND?; // returns fault, memory gets freed
