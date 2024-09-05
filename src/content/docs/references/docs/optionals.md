@@ -5,9 +5,9 @@ sidebar:
     order: 115
 ---
 
-## Optionals handle potential failure 
+## Optionals handle the cases we cannot return the intended value 
 
-A common example using optionals is for a function that can return a value or it can fail. We call the reason for the failure a `fault` and the successful outcome a `result`. 
+A common example using optionals is for a function that can return an intended value or it can provide reasons why it could not. We call the intended outcome a `result`, when it could not return a `result` we call that reason the `fault`.
 
 ### What is a `fault`?
 
@@ -32,7 +32,7 @@ fn void! main(String[] args)
 
 ### What is an Optional?
 
-Optionals are a tagged union of either the `result` **or** `fault`, either of which can be unpacked in C3.
+Optionals act like a tagged union of either the `result` **or** `fault`, either of which can be unpacked in C3.
 
 Similar to a "Result" type in other languages, the `fault` is specific and something you can unpack and test against and switch over.
 
