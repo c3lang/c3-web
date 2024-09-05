@@ -5,187 +5,272 @@ sidebar:
     order: 115
 ---
 
-Optionals in C3 work differently from other languages:
+## Optionals handle potential failure 
 
-1. It is similar to a "Result" type in capabilities.
-2. It is not quite a type: it can be used for variable and return values - but not for parameters or struct member types.
-3. It "cascades" the optional-ness of an expression, somewhat reminiscent of the "flatmap" operation.
-4. A function called with an Optional is only invoked if it has an actual value.
- 
-## What is an Optional?
+A common example using optionals is for a function that can return a value or it can fail. We call the reason for the failure a `fault` and the successful outcome a `result`. 
 
-In C3 it is either:
+### What is a `fault`?
 
-1. A variable that works as a union between a `fault` value and an actual value, we call this latter the "result".
-2. A return value that is either a `fault` or a result.
-
-We can construct an Optional by adding the `!` suffix to a type:
-
-```c
-int! a; // An optional value with the result type of "int"
-
-fn int! foo() // A function returning an optional value with the result type of "int"
+A `fault` represents a reason why a `result` could not be returned, like opening a file but finding it does not exist and returning an `IoError.FILE_NOT_FOUND` for instance. A `fault` is defined similarly to simple enums:
+```c3
+fault NoPurchaseReason
 {
-  ...
-}  
+    BOOK_NOT_FOUND,
+    BOOK_OUT_OF_STOCK,
+}
+
+fn void! main(String[] args)
+{
+    NoPurchaseReason order_failed = NoPurchaseReason.BOOK_NOT_FOUND;
+
+    // The union of all of the program's `fault` types is an `anyfault` type
+    // You can convert between different types of `fault`
+    anyfault example = order_failed;
+    example = IoError.FILE_NOT_FOUND; // Also ok
+}
 ```
 
-It is not possible to create an Optional of an Optional (so for example `int!!` is never valid).
+### What is an Optional?
 
-*Using* a variable or return with an Optional type yields an optional:
+Optionals are a tagged union of either the `result` **or** `fault`, either of which can be unpacked in C3.
 
-    int! a = ...
-    fn int! foo() { ... }
-    
-    double! x = a * 3.14159;
-    double! y = foo() * 0.3333333333;
-    double! z = x * y;
+Similar to a "Result" type in other languages, the `fault` is specific and something you can unpack and test against and switch over.
 
-Similar to basic operations it's possible to use an Optional value as a call parameter. The return value then becomes Optional
-
-    int! a = ...
-    fn double bar(int x) { ... }
-
-    // "bar" can be called because the result type of the Optional is "int"
-    // but the return value will become Optional:
-    double! x = bar(a);
-
-## Optional execution
-
-The most important feature of Optionals is how it will only optionally execute
-operations. Given a call with the arguments a0, a1, ... the call will only 
-be invoked if all of the arguments evaluate to real values.
-
-    int! a = 1;
-    int! b = MyResult.FOO?;
-
-    // "baz" called, because "a" is has a result. 
-    int! z = baz(a, a);  // same as z = bar(1, 1)
-
-    // "baz" is not called, because "b" evaluates to a fault
-    int! y = baz(a, b);
-
-    // Due to evaluation ordering "abc" is called, but not "def" nor "baz":
-    int! x = baz(abc(a), def(b));
-
-    // Due to evaluation ordering none of "abc", "def" or "baz" is called:
-    int! x2 = baz(def(b), abc(a));
-
-We can think of the above example `int! x = baz(a, b)` as the following:
-
-1. Evaluate the first argument.
-2. If it is a `fault` then we're done, set `x` to this fault.
-3. Evaluate the second argument.
-4. If it is a `fault` then we're done, set `x` to this fault.
-5. Execute `baz` with the result values from the arguments.
-
-Optional execution allows us to avoid dealing with intermediary errors, we can simply
-collect them together:
-
-`int! x = foo_return_optional(other_return_optional(optional_value))`
-
-## Optional unwrapping
-
-It's not possible to assign an Optional to a non-optional type:
-
-```c
-int! a = ...
-
-int b = a; // <- ERROR, can't assign "int!" to "int"
+Create an Optional from an existing type by appending `!` to that type.
+```c3
+int! example = 6; // Optional value with `result` type of int
 ```
 
-To assign it we have two options, `if-try` and implicit unwrap.
+#### Setting the `result` or the `fault` in an Optional
 
-### If-try
+- To set the `result` of an Optional, use regular assignment
+- To set the `fault` `?` suffix operator.
+```c3
+int! a = 1;                       // Set the `result` with `=`
+int! b = IoError.FILE_NOT_FOUND?; // Set the `fault` with '?' 
+```
 
-If-try tests an Optional and executes the "then" part if the value is a result.
+#### Run code if we find a `fault` in the Optional: 
+```c3
+// Detect `fault` inside "optional_value", handle inside scope
+if (catch optional_value) {...} 
 
-    int! a = ...;
-    int b;
-  
-    if (try int x = a) 
-    {
-        // This part only executes if "a" has a result.
-        b = x; 
+// Detect and Unwrap `fault` from "optional_value" and assign to `err` inside scope
+if (catch err = optional_value) {...} 
+```
+If you `catch` the `fault` and exit the scope via `return`, `break`, `continue` or rethrow `!`, you have handled the `fault`, and `optional_value` converts to a normal variable, implicitly unwrapping it.
+```c3
+int! optional_value = unreliable_function();
+if (catch err = optional_value) return err?; 
+io::printfn("use optional_value as normal now: %s", optional_value);
+```
+A helpful shorthand for this is using rethrow `!`
+```c3
+int optional_value = unreliable_function()!; // rethrow `!` here
+io::printfn("use optional_value as normal now: %s", optional_value)!;
+```
+For more details see [Detect and Unwrap fault](#detect-and-unwrap-fault).
+
+#### Run code if we find a `result` in the Optional: 
+```c3
+// Detect and Unwrap `result` inside "optional_value", use inside scope
+if (try optional_value) {...} 
+
+// Detect, Unwrap and assign `result` from "optional_value" to `value` inside of this context
+if (try value = optional_value) {...} 
+```
+
+You can also rethrow `!` function calls with Optionals to run if there is a `result` else return the `fault` to the caller.
+```c3
+int! optional_value = 7;
+io::printn(optional_value)!; // Rethrow `!` Prints 7
+```
+For more details see [Detect and Unwrap result](#detect-and-unwrap-result).
+
+### Optionals are only defined in certain code
+- ✅ Variable declarations
+```c3
+int! example = unreliable_function();
+```
+
+- ✅ Function return signature
+```c3
+fn int! example() { ... }
+```
+
+- ❌ Function parameter
+```c3
+fn void example(int parameter) { ... }
+```
+
+- ❌ Struct member types
+```c3
+struct Example {
+    int member;
+}
+```
+
+- ❌ Being an Optional cannot be nested. 
+```c3
+int!! example;  // This is invalid
+int! example;   // This is valid
+```
+
+## Examples of Optionals
+
+### Example returning an Optional `fault`
+Optionals are best explained by example, first let's return a `fault` from a function to see how we can deal with it.
+
+
+```c3
+import std::io;
+
+/* Returns optional with `result` of type `void` or a `fault` */
+fn void! test()
+{
+    return IoError.FILE_NOT_FOUND?; // Return a `fault` using `?` suffix
+}
+
+fn void! main(String[] args)
+{
+    // Catch if there's a `fault` returned, store `fault` in `err`
+    if (catch err = test()) 
+    { 
+        io::printfn("test() returned a fault: %s", err);
+        return err?; // Returning `fault` using `?` suffix
     }
 
-There are abbreviated variants of `if-try`:
+    io::printn("This code is never reached");
+}
+```
+Above we saw that a `fault` can be caught, logged and used to prevent the program from continuing. 
 
-    if (try x = a) { ... } // Infer type of "x"
-    if (try a) { ... } // Unwrap "a" inside of this context.
+### Example returning an Optional `fault` OR `result`
+Let's expand this example to something which *may* fail, like opening a file. 
 
-It is possible to add conditions to an `if-try` but they must be joined with `&&`
-"or" (i.e. `||`) is not allowed:
+- If the file is not present the `fault` will be `IoError.FILE_NOT_FOUND`.
+- If the file is present the `result` will be the first 100 bytes of the file.
 
-    if (try a && try z && a > z)
+Try running this code below with and without a file called `file_to_open.txt` in the same directory.
+
+```c3
+import std::io;
+
+/** 
+ * Function modifies `buffer` by pointer in the char[] slice
+ * Returns optional with `result` of type `void` or a `fault`
+**/
+fn void! read_file(String filename, char[] buffer)
+{
+    // Return `fault` if failed opening file, using rethrow `!`
+    File! file = file::open(filename, "r")!; 
+
+    // At scope exit, close the file if it was opened successfully
+    // Discard the `fault` from file.close() with (void) cast
+    defer (void)file.close(); 
+
+    // Return `fault` if failed to read file, using rethrow `!`
+    file.read(buffer)!; 
+    return; // return the void `result`
+}
+
+fn void! main()
+{
+    char[] buffer = mem::new_array(char, 100);
+    defer free(buffer); // Free memory on scope exit
+
+    // Catch if there's a `fault` returned, store `fault` in `err`
+    if (catch err = read_file("file_to_open.txt", buffer)) 
     {
-        // Only executes if a and z have results 
-        // *and* a > z
+        io::printfn("fault found: %s", err);
+        return err?; // Returning `fault` using `?` suffix
+    }
+
+    // `buffer` was unwrapped as `fault` was handled by `if (catch)`
+    // Only reached when a file was successfully read
+    io::printfn("Buffer read: %s", buffer);
+    return;
+}
+```
+
+## Unwrapping optionals
+
+### Detect and Unwrap `fault`
+
+#### Unwrap the `fault` with `if (catch)`
+The `fault` inside Optionals can be unwrapped with `if (catch ...)`
+```c3
+// Detect `fault` in optional_value, discard `fault` value
+if (catch optional_value) { ... } 
+
+// Detect `fault` in optional_value, assign err = `fault` value
+if (catch err = optional_value) { ... } 
+```
+You can catch one of multiple possible errors by catching them together in a group:
+```c3
+if (catch err = optional1, optional2, foo())
+{
+    // Detects a `fault` in optional1, optional2 or foo()
+    // Catches the first found `fault` in left-to-right order
+    // foo() is only called if no fault in either `optional1` or `optional2`
+}
+```
+
+#### Implicit Unwrap of `result` after `if (catch)` 
+The Optional is implicitly unwrapped to a regular type if there is any kind of scope exit in the `if (catch)` block such as: `return`, `break`, `continue` or `!` rethrow. 
+
+In general `if (catch)` is a sensible default because it explicitly handles the fault, and the implicit unwrapping of the `result` after handling the `fault` in the `if (catch)` makes code simple to read.
+
+```c3
+import std::io;
+
+/* Returns optional with `result` of type `int` or a `fault` */
+fn int! reliable_function()
+{
+    return 7; // Return a `result` of `int`
+}
+
+fn void! main(String[] args)
+{
+    int! reliable_result = reliable_function();
+    
+    // Catch if there's a `fault` returned, store `fault` in `err`
+    if (catch err = reliable_result) 
+    {
+        io::printfn("reliable_function() returned a fault: %s", err);
+        return err?; // Returning `fault` using `?` suffix
+    }
+    
+    // reliable_result is implicitly unwrapped here as we exited scope inside if (catch)
+    io::printfn("reliable_result: %s", reliable_result);
+}
+```
+
+#### Unwrap then switch on `fault` with `if (catch)`
+
+`if (catch)` can also immediately switch on the fault value:
+```c3
+if (catch optional_value)
+{
+    case NoPurchaseReason.BOOK_NOT_FOUND:
         ...
-    }
+    case IoError.NO_SUCH_FILE:
+        ...
+    case IoError.FILE_NOT_DIR:
+        ...
+    default:
+        ...
+}
+```
 
-    // if (try a || try z) { ... } <- ERROR!
+Which is shorthand for:
 
-
-### If-catch
-
-If-catch works the other way and only executes if the Optional is a fault:
-
-    if (catch anyfault f = a) 
+```c3
+if (catch err = optional_value)
+{
+    switch (err)
     {
-        // Handle the fault
-    }
-
-Just like for if-try there are abbreviated variants:
-
-    if (catch f = a) { ... } // "f" has the type of "anyfault"
-    if (catch a) { ... } // Discards the actual fault value
-
-It is possible to catch multiple errors by grouping them with `,`:
-
-    if (catch f = a, b, foo()) 
-    {
-        // Returns the fault from a, b or foo()
-        // trying each in order.
-        // foo() is only called if neight a nor b has a fault.
-    }
-    
-### Implicit unwrapping with if-catch.
-
-If an `if-catch` returns or jumps out of the current scope in some way, then
-the variable becomes implicit unwrapped to its result type in that scope:
-
-    int! a = foo_may_error();
-    
-    if (catch a)
-    {
-        return;
-    }
-
-    // a is now considered a plain int:
-    int b = a; 
-
-### Getting the fault without unwrapping
-
-If-catch is not necessary in order to get the underlying fault from any Optional. Instead the macro `@catch` 
-may be used.
-
-    int! a = ...
-
-    anyfault f = @catch(a);
-
-    if (!f)
-    {
-        // No error!
-    }
-
-### If-catch switching
-
-If-catch can also immediately switch on the fault value:
-
-    if (catch a) 
-    {
-        case MyResult.FOO:
+        case NoPurchaseReason.BOOK_NOT_FOUND:
             ...
         case IoError.NO_SUCH_FILE:
             ...
@@ -194,256 +279,381 @@ If-catch can also immediately switch on the fault value:
         default:
             ...
     }
+}
+```
 
-The above being equivalent to:
+### Detect and Unwrap `result`
 
-    if (catch f = a) 
+#### Unwrapping the `result` with Rethrow `!`
+Optionals can be unwrapped with rethrow `!` to extract the `result` if it is defined, or `return` the `fault` if that is defined.
+
+```c3
+import std::io;
+
+fn void! main(String[] args)
+{
+    int! first_optional = 7;
+    io::printn(first_optional)!; // Prints 7
+
+    int! second_optional = IoError.FILE_NOT_FOUND?;
+    io::printn(second_optional)!; // Returns `fault` & program exits
+    return;
+}
+```
+
+#### Unwrapping the `result` with `if (try )`
+
+`if (try)` tests for a valid `result` in an Optional and if valid executes the code block.
+
+```c3
+// Unwrap optional_value and assign to x inside of this context.
+if (try x = optional_value) { ... }
+
+// Unwrap optional_value inside of this context.
+if (try optional_value) { ... }     
+```
+
+For example
+
+```c3
+import std::io;
+
+/* Returns optional with `result` of type `int` or a `fault` */
+fn int! reliable_function()
+{
+    return 7; // Return a `result` of `int`
+}
+
+fn void! main(String[] args)
+{
+    int! reliable_result = reliable_function();
+    
+    // Unwrap the `result` from reliable_result
+    if (try reliable_result) 
     {
-        switch (f)
-        {
-            case MyResult.FOO:
-                ...
-            case IoError.NO_SUCH_FILE:
-                ...
-            case IoError.FILE_NOT_DIR:
-                ...
-            default:
-                ...
-        }
+        // reliable_result is unwrapped in this scope, can be used as normal
+        io::printfn("reliable_result: %s", reliable_result);
     }
+}
+```
 
+It is possible to add conditions to an `if (try)` but they must be joined with `&&`. Logicial OR `||` conditions are not allowed:
 
-### Testing for a result without unwrapping
+```c3
+import std::io;
 
-The `@ok` macro will return `true` if an Optional is a result and `false`
-if it is a fault. Functionally this is equivalent to `!@catch`
+/* Returns optional with `result` of type `int` or a `fault` */
+fn int! reliable_function()
+{
+    return 7; // Return a `result` of `int`
+}
 
-    int! a = ...
-
-    bool was_ok = @ok(a);
-    assert(was_ok == !@catch(a));
-
-## `fault` and `anyfault`
-
-Faults are defined similar to simple enums:
-
-    fault MyResult
+fn void! main(String[] args)
+{
+    int! reliable_result1 = reliable_function();
+    int! reliable_result2 = reliable_function();
+    
+    // Unwrap the `result` from reliable_result
+    if (try reliable_result1 && try reliable_result2 && 5 > 2) 
     {
-        SOMETHING_HAPPENED,
-        UNEXPECTED_ERROR,
+        // reliable_result is unwrapped here and can be used as a normal variable
+        io::printfn("reliable_result: %s", reliable_result);
     }
 
-The union of all of such types is `anyfault`:
+    // ERROR cannot use logical OR `||`
+    // if (try reliable_result1 || try reliable_result2) 
+    // {
+    //     io::printn("this can never happen);
+    // }
+}
+```
 
-    MyResult foo = MyResult.UNEXPECTED_ERROR;
+## Optionals affect types and control flow
 
-    anyfault x = foo;
-    x = IoError.NO_SUCH_FILE; // Also ok
+### Optionals affect result types when used
+Use an Optional anywhere in an expression the outcome will be an Optional too.
+```c3
+import std::io;
 
-## Setting the `result` and the `fault`
+/* Returns optional with `result` of type `int` or a `fault` */
+fn int! test() 
+{
+    return 7;
+}
 
-To set the `result` of an Optional, use regular assignment, and
-to set the `fault` `?` suffix operator.
+fn void! main(String[] args)
+{
+    int! first_optional = test();
+    int! second_optional = first_optional + 1; // This is optional too
+    io::printn(second_optional)!; // Printing by unwrapping optional with rethrow `!` 
 
-    int! a = 1;
-    int! b = MyResult.UNEXPECTED_ERROR?; // <- '?' sets the fault
+    return;
+}
+```
 
-    MyResult foo = MyResult.UNEXPECTED_ERROR;
-    anyfault bar = IoError.NO_SUCH_FILE;
+### Optionals affect function return value types when used
+Calling a function with any arguments of Optional type will make the return value Optional type as well. The Optional function arguments are checked left-to-right and the first encountered `fault` in the function arguments is returned before running the function. 
 
-    int! c = foo?; // c has the fault MyResult.UNEXPECTED_ERROR
-    int! d = bar?; // d has the fault IoError.NO_SUCH_FILE?
+```c3
+import std::io;
 
-## Rethrow, or-else and force unwrap
+fn int test(int input) 
+{
+    io::printn("test(): inside function body");
+    return input;
+}
 
-Three helper operators are provided for working with Optionals:
-rethrow `!`, or-else `??` and force unwrap `!!`.
+fn void! main(String[] args)
+{
+    int! first_optional = 7;
 
-### Rethrow 
+    // Argument `first_optional` makes `second_optional` Optional too 
+    int! second_optional = test(first_optional);
+    
+    int! third_optional = IoError.FILE_NOT_FOUND?;
 
-Sometimes the optional fault needs to be propagated upwards, here is 
-an example:
+    // `forth_optional` contains the fault = IoError.FILE_NOT_FOUND
+    // We never enterred the function body with a `fault` argument
+    int! forth_optional = test(third_optional); 
+    return;
+}
+```
 
-    int! a = foo_may_error();
+### Functions may not run when called with Optional arguments
 
-    if (catch f = a)
+Calling a functions with an Optional arguments will only proceed when **all** of the arguments that are Optional type contain a valid `result`, and no `fault`.
+
+```c3
+import std::io;
+
+fn int test(int input, int input2) 
+{
+    io::printn("test(): inside function body");
+    return input;
+}
+
+fn void! main(String[] args)
+{
+    int! first_optional = IoError.FILE_NOT_FOUND?;
+    int! second_optional = IoError.NO_PERMISSION?;
+
+    // Arguments evaluated left-to-right `first_optional` contained a fault
+    // `third_optional` was assigned the fault in `first_optional`
+    int! third_optional = test(first_optional, second_optional);  // IoError.FILE_NOT_FOUND
+    return;
+}
+```
+
+
+## Avoiding unwrapping Optionals
+
+### Getting the `fault` without unwrapping
+
+Unwrapping errors with `if (catch err = optional_value) {...}` is not the only way to get the `fault` from an Optional, we can use the macro `@catch` instead.
+```c3
+fn void! main(String[] args)
+{
+    int! optional_value = IoError.FILE_NOT_FOUND?;
+    
+    anyfault err = @catch(optional_value);
+    if (err)
     {
-        return f?; // Pass the fault upwards.
+        io::printfn("error found: %s", err);
     }
+    return;
+}
+```
 
-To simplify this the rethrow operator `!` can be used:
+### Testing for a valid `result` without unwrapping
 
-    // Equivalent to the code above.
-    int! a = foo_may_error()!;
+The `@ok` macro will return `true` if an Optional is a `result` and `false`
+if it is a `fault`. Functionally this is equivalent to `!@catch`
+```c3
+fn void! main(String[] args)
+{
+    int! optional_value = IoError.FILE_NOT_FOUND?;
+    
+    bool successful = @ok(optional_value);
+    assert(successful == !@catch(optional_value));
+    return;
+}
+```
 
-Because the rethrow operator automatically returns on a fault, the return value
-turns into its result. In the above example the type of `foo_may_error()!` becomes `int`:
+## Set default Optional `result` when `fault` was assigned using `??`
+When assigning to an Optional if an expression returns a `fault` we can assign a default `result` using the `??` operator.
 
-    int b = foo_may_error()!; // This works
+```c3
+int regular_value;
+int! optional_value = function_may_error();
+if (catch optional_value) // A `fault` was found in optional_value
+{   
+    regular_value = -1; // Assign default value when fault was found
+}
+if (try optional_value;) // A `result` was found in optional_value
+{
+    regular_value = optional_value;
+}
+```
 
-### Or-else
+The operator `??` allows you to set a default value, set when an expression is a `fault`:
 
-Sometimes we have this situation:
+```c3
+// Set default `result` to -1 when foo_may_error() is a `fault`
+int regular_value = foo_may_error() ?? -1;
+```
 
-    int! a_temp = foo_may_error();
-    int a;
-    if (try a_temp)
-    {   
-        a = a_temp;
-    }
-    else
-    {
-        a = -1;
-    }
+This is similar to the [elvis operator `?:`](../specification/#ternary-elvis-and-or-else-expressions) which sets a default value in case a value is false.
 
-The or-else operator `??` works similar to `?:` allowing you to do this in a single expression:
+## Assert unwrap of Optional should not fail with force unwrap `!!`
 
-    // Equivalent to the above
-    int a = foo_may_error() ?? -1;
+Sometimes a `fault` is unexpected or cannot be easily handled, so assert if we detect a `fault`, this is best used sparingly:
+```c3
+int! optional_value = foo_may_error();
+if (catch err = optional_value) 
+{
+    unreachable("Unexpected fault %s", err);
+}
+// Now optional_value is a regular variable
+```
 
-### Force unwrap
-
-Sometimes a `fault` is completely unexpected, and we want to assert if 
-it happens:
-
-    int! a = foo_may_error();
-    if (catch f = a) 
-    {
-        unreachable("Unexpected fault %s", f);
-    }
-    ... use "a" as int here ...
-
-The force unwrap operator `!!` allows us to express this similar to rethrow and or-else:
-
-    int a = foo_may_error()!!;
+The force unwrap operator `!!` will exit the program if a `fault` is returned from `foo_may_error()`.
+```c3
+int regular_value = foo_may_error()!!;
+```
 
 ## No void! variables
 
 The `void!` type has no possible representation as a variable, and may
-only be a return type. To store the result of a `void!` function,
-one can use the `@catch` macro to convert the result to
-an `anyfault`:
+only be a return type. 
 
-    fn void! test() { ... }
+Use `if (catch)` to handle `fault`
+```c3
+fn void! test() 
+{
+    return IoError.FILE_NOT_FOUND?;
+}
 
-    anyfault f = @catch(test());
+if (catch err = test()) // Capture returned `fault`
+{
+    io::printfn("found fault: %s", err);
+    return err?;
+}
+```
+Or use `if (try)` to handle `result`
+```c3
+fn void! test() 
+{
+    return;
+}
 
-## Examples
+if (try test()) // Handle `result` outcome
+{
+    io::printn("successful test()");
+}
+```
+If you wish to store the possible `fault` returned from a `void!` function, use the `@catch` macro to convert the result to an `anyfault`:
+```c3
+fn void! test() 
+{
+    return IoError.FILE_NOT_FOUND?;
+}
 
-#### Basic usage with immediate error handling
+anyfault err = @catch(test());
+```
 
-    // Open a file, we will get an optional result:
-    // Either a File* or an error.
-    File*! file = file::open("foo.txt");
 
-    // We can extract the optional result value using "catch"
-    if (catch f = file)
-    {
-        // Might print "Error was FILE_NOT_FOUND"
-        io::printfn("Error was %s", f.name()); 
-    
-        // Might print "Error code: 931938210"
-        io::printfn("Error code: %d", (uptr)err); 
-        return;
-    }
 
-    // Because of implicit unwrapping, the type of
-    // `file` is File* here.
-
-We can also execute just in case of success:
-
-    File*! file2 = file::open("bar.txt");
-
-    // Only true if there is an expected result.
-    if (try file2)
-    {
-        // Inside here file2 is a regular File*
-    }
+## More Examples Of Optionals
 
 #### Composability of calls
+```c3
+fn int! foo_may_error() { ... }
+fn int mult(int i) { ... }
+fn int! save(int i) { ... }
 
-    fn int! foo_may_error() { ... }
-    fn int mult(int i) { ... }
-    fn int! save(int i) { ... }
+fn void test()
+(
+    // "mult" is only called if "fooMayError()"
+    // returns a non optional result.
+    int! result1 = mult(foo_may_error());
     
-    fn void test()
-    (
-        // "mult" is only called if "fooMayError()"
-        // returns a non optional result.
-        int! j = mult(foo_may_error());
-        
-        int! k = save(mult(foo_may_error()));
-        if (catch f = k)
-        {
-            // The fault may be from foo_may_error
-            // or save!
-        }    
-    )
-
+    int! result2 = save(mult(foo_may_error()));
+    if (catch err = result2)
+    {
+        // The fault may be from foo_may_error
+        // or save!
+    }    
+)
+```
 #### Returning a fault
 
-Returning a fault looks like a normal return but with the `?`
+Returning a fault looks like a normal return but with the `?`.
 
-```
-fn void! find_file()
+Note this function is referenced in future examples.
+
+```c3
+fn void! find_file() 
 {
-    if (file::exists("foo.txt")) return IoError.FILE_NOT_FOUND?;
-    /* ... */
+    File! file = file::open("file_to_open.txt", "r")!; 
+    return;
 }
 ```
 
-#### Calling a function automatically returning any optional result
+#### Calling a function automatically returning any optional result with rethrow `!`
 
-The `!` suffix will create an implicit return on a fault.
+The rethrow `!` suffix will create an implicit return if a `fault` is found.
 
-```
+```c3
 fn void! find_file_and_test()
 {
-    find_file()!;
-    // Implictly:
-    // if (catch f = find_file()) return f?;
+    find_file()!; // Rethrow `!`
+
+    // Rethrow `!` runs the following:
+    // if (catch err = find_file()) return err?;
 }
 ```
 
-#### Force unwrapping to panic on fault
+#### Using force unwrap `!!` to panic on `fault`
 
-The `!!` will issue a panic if there is a fault.
+The force unwrap `!!` will issue a panic and exit the program if there is a `fault`.
 
-```
+```c3
 fn void find_file_and_test()
 {
     find_file()!!;
-    // Implictly:
+
+    // Force unwrap `!!` runs the following:
     // if (catch find_file()) unreachable("Unexpected error");
 }
 ```
 
-#### Catching faults to implicitly unwrap
+#### Using `if (catch)` to implicitly unwrap `result` after scope exit
 
 Catching faults and then exiting the scope will implicitly unwrap the
 variable:
-
-    fn void find_file_and_no_fault()
+```c3
+fn void find_file_and_no_fault()
+{
+    File*! result = find_file();    
+    if (catch err = result)
     {
-        File*! res = find_file();    
-        if (catch res)
-        {
-            io::printn("An error occurred!");
-            // Jump required for unwrapping!
-            return;
-        }
-        // res is implicitly unwrapped here.
-        // and have an effective type of File*.
+        io::printfn("An error occurred: %s", err);
+        
+        // Scope exit here required to implicitly unwrap after
+        return;
     }
-
+    // result is implicitly unwrapped here.
+    // and has a type of File*
+}
+```
 
 #### Only run if there is no fault
 
-```
+```c3
 fn void do_something_to_file()
 {
-    void! res = find_file();    
-    if (try res)
+    void! result = find_file();    
+    if (try result)
     {
         io::printn("I found the file");
     }
@@ -451,51 +661,53 @@ fn void do_something_to_file()
 ```
 
 #### Catching and switch on fault
-
-    fn void! find_file_and_parse2()
+```c3
+fn void! find_file_and_parse2()
+{
+    if (catch err = find_file_and_parse())
     {
-        if (catch f = find_file_and_parse())
-        {
-            case IOError.FILE_NOT_FOUND:
-                io::printn("Error loading the file!");
-            default:
-                return f?;
-        }
+        case IOError.FILE_NOT_FOUND:
+            io::printn("Error loading the file!");
+        default:
+            return err?;
     }
-    
+}
+```
 
-#### Default values using or-else
+#### Setting default values for when `fault` is returned using `??`
 
+```c3
+fn int get_int()
+{
+    return get_int_number_or_fail() ?? -1;
+}
+```
 
-    fn int get_int()
+#### Get the fault from an optional without `if (catch)`
+```c3
+fn void test_catch()
+{
+    int! result = get_something();
+    anyfault maybe_fault = @catch(result);
+    if (maybe_fault)
     {
-        return get_int_number_or_fail() ?? -1;
+        // Do something with the fault
     }
-
-
-#### Get the fault from an optional without `if-catch`
-
-    fn void test_catch()
-    {
-        int! i = get_something();
-        anyfault maybe_fault = @catch(i);
-        if (maybe_fault)
-        {
-            // Do something with the fault
-        }
-    }
+}
+```
 
 #### Test if something has a value without `if-try`
-
-    fn void test_something()
+```c3
+fn void test_something()
+{
+    int! optional_value = try_it();
+    bool result_is_ok = @ok(optional_value);
+    if (result_is_ok)
     {
-        int! i = try_it();
-        bool worked = @ok(i);
-        if (worked)
-        {
-            io::printn("Horray! It worked.");
-        }
+        io::printn("Horray! Result is OK.");
     }
+}
+```
 
 ### Some common techniques
 
@@ -503,61 +715,66 @@ Here follows some common techniques using optional values.
 
 #### Catch and return another error
 
-In this case we don't want to return the underlying fault, but instead return out own replacement error.
+In this case we don't want to return the underlying `fault`, but instead return our own replacement `fault`.
+```c3
+fn void! return_own()
+{
+    // Default value is assigned our own `fault`
+    int! i = try_something() ?? OurError.SOMETHING_FAILED?; 
+    .. do things ..
+}
 
-    fn void! return_own()
-    {
-        int! i = try_something() ?? OurError.SOMETHING_FAILED?;
-        .. do things ..
-    }
+fn void! return_own_rethrow()
+{
+    // Rethrow our default `fault`
+    int i = try_something() ?? OurError.SOMETHING_FAILED?!;
+    .. do things ..
+}
+```
 
-    fn void! return_own_rethrow()
-    {
-        int i = try_something() ?? OurError.SOMETHING_FAILED?!; // Cause immediate rethrow
-        .. do things ..
-    }
-
-#### Using void! as a boolean
+#### Using `void!` as a boolean
 
 A common pattern in C is to use a boolean result to indicate success. `void!` can be used
 in a similar way:
+```c
+// C
+bool store_foo(Foo* f)
+{
+    if (!foo_repository_is_valid()) return false;
+    return foo_repo_store_foo(f);
+}
 
-    // C
-    bool store_foo(Foo* f)
+void test()
+{
+    Foo* f = foo_create();
+    if (store_foo(f)) 
     {
-        if (!foo_repository_is_valid()) return false;
-        return foo_repo_store_foo(f);
+        puts("Storage worked");
+        return;
     }
-    
-    void test()
-    {
-        Foo* f = foo_create();
-        if (store_foo(f)) 
-        {
-            puts("Storage worked");
-            return;
-        }
-        ...
-    }
+    ...
+}
+```
 
+```c3
+// C3
+fn void! store_foo(Foo* f)
+{
+    if (!foo_repository_is_valid()) return FooFaults.INVALID_REPO?;
+    return foo_repo_store_foo(f);
+}
 
-    // C3
-    fn void! store_foo(Foo* f)
+fn void test()
+{
+    Foo* f = foo_create();
+    if (@ok(store_foo(f))) 
     {
-        if (!foo_repository_is_valid()) return FooFaults.INVALID_REPO?;
-        return foo_repo_store_foo(f);
+        io::printn("Storage worked");
+        return;
     }
-
-    fn void test()
-    {
-        Foo* f = foo_create();
-        if (@ok(store_foo(f))) 
-        {
-            io::printn("Storage worked");
-            return;
-        }
-        ...
-    }
+    ...
+}
+```
     
 ## Interfacing with C
 
@@ -565,11 +782,12 @@ For C the interface to C3, the fault is returned as the regular return while the
 is passed by reference:
 
 C3 code:
-
-    fn int! get_value();
-
+```c3
+fn int! get_value();
+```
 Corresponding C code:
-
-    c3fault_t get_value(int *value_ref);
-
+```c
+c3fault_t get_value(int *value_ref);
+```
 The `c3fault_t` is guaranteed to be a pointer sized value.
+     
