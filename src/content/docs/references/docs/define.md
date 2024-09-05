@@ -33,7 +33,7 @@ Similar to `def` aliases are `distinct` which create distinct new types. Unlike 
 they do not implicitly convert to or from any other type.
 Literals will convert to the distinct types if they would convert to the underlying type.
 
-    distinct Foo = distinct int;
+    distinct Foo = int;
     Foo f = 0; // Valid since 0 converts to an int.
     f = f + 1;
     int i = 1;

@@ -339,6 +339,13 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"references/docs/defer.md": {
+	id: "references/docs/defer.md";
+  slug: "references/docs/defer";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "references/docs/define.md": {
 	id: "references/docs/define.md";
   slug: "references/docs/define";
