@@ -7,11 +7,11 @@ sidebar:
 
 ## Optionals handle the cases we cannot return the intended value 
 
-A commonly Optionals are used for a function that can return a value that is *present* or return a value that is *missing*, along with a *reason* why it was missing. We call the intended outcome a `value`, when it could not return a `value` we call that *reason* the `fault`.
+A commonly Optionals are used for a function that can return a value that is *present* or return a value that is *missing*, along with an *excuse* about why it was missing. We call the intended outcome a `value`, when it could not return a `value` we call the *excuse* the `fault`.
 
 ### What is a `fault`?
 
-A `fault` represents a reason why a `value` could not be returned, like opening a file but finding it does not exist and returning an `IoError.FILE_NOT_FOUND` for instance. A `fault` is defined similarly to enums:
+A `fault` represents an excuse why a `value` could not be returned, like opening a file but finding it does not exist and returning an `IoError.FILE_NOT_FOUND` for instance. A `fault` is defined similarly to enums:
 ```c3
 fault NoHomework
 {
@@ -33,7 +33,7 @@ fn void! main(String[] args)
 
 ### What is an Optional?
 
-Optionals in C3 act like a tagged union of either the `value` **or** `fault`. When the `value` is present there is no `fault`, when `value` is missing we can check the `fault` to see the reason for that. This is an alternative to error codes in C.
+Optionals in C3 act like a tagged union of either the `value` **or** `fault`. When the `value` is present there is no `fault`, when `value` is missing we can check the `fault` to see the excuse for that. This is an alternative to error codes in C.
 
 Similar to a "Result" type in other languages, you can retrieve the underlying `fault` test against it and switch over different cases of it. 
 
