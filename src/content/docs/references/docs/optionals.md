@@ -7,7 +7,7 @@ sidebar:
 
 ## Optionals handle the cases we cannot return the intended value 
 
-A common example using optionals is for a function that can return an intended value or it can provide reasons why it could not. We call the intended outcome a `value`, when it could not return a `value` we call that reason the `fault`.
+A commonly Optionals are used for a function that can return a value that is *present* or return a value that is *missing*, along with a *reason* why it was missing. We call the intended outcome a `value`, when it could not return a `value` we call that *reason* the `fault`.
 
 ### What is a `fault`?
 
@@ -35,7 +35,9 @@ fn void! main(String[] args)
 
 Optionals in C3 act like a tagged union of either the `value` **or** `fault`, you can access either.
 
-Similar to a "Result" type in other languages, you can retrieve the underlying `fault` test against it and switch over. You can also use it in a simpler way, to detect `value` is present or not. This is an alternative way of handling data which might otherwise be `null` in C.
+Similar to a "Result" type in other languages, you can retrieve the underlying `fault` test against it and switch over different cases of it. 
+
+Optionals can also be used in a more lightweight way, to detect `value` is present or not. This is an alternative way of handling data which might otherwise be `null` in C.
 
 Create an Optional from an existing type by appending `!` to that type.
 ```c3
@@ -460,9 +462,9 @@ int b = always_error() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?!;
 ```
 
 
-## Assert unwrap of Optional should not fail with force unwrap `!!`
+## Assert an Optional cannot have a missing `value` and the program should panic with force unwrap `!!`
 
-Sometimes a `fault` is unexpected or cannot be easily handled, so assert if we detect a `fault`, this is best used sparingly:
+Sometimes a missing `value` is unexpected or cannot be easily handled, so panic if we detect a missing `value`, this is best used sparingly:
 ```c3
 int! optional_value = foo_may_error();
 if (catch excuse = optional_value) 
@@ -482,7 +484,7 @@ int regular_value = foo_may_error()!!;
 The `void!` type has no possible representation as a variable, and may
 only be a return type. 
 
-Use `if (catch)` to handle `fault`
+Use `if (catch)` to handle a missing `value` or read the `fault`
 ```c3
 fn void! test() 
 {
@@ -495,7 +497,7 @@ if (catch excuse = test()) // Capture returned `fault`
     return excuse?;
 }
 ```
-Or use `if (try)` to handle `value`
+Or use `if (try)` to handle sucessful outcome of having a `value` present
 ```c3
 fn void! test() 
 {
