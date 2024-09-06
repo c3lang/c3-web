@@ -84,17 +84,28 @@ int! example;   // This is valid
 
 ## Detect missing `value` 
 ```c3
+import std::io;
+int! optional_value = IoError.FILE_NOT_FOUND?;
+
 // Detect missing `value` inside `optional_value` and handle inside scope
-if (catch optional_value) {...} 
-```
-You can catch one of multiple possible errors by catching them together in a group:
-```c3
-if (catch excuse = optional1, optional2, foo())
+if (catch optional_value) 
 {
-    // Detects a `fault` in optional1, optional2 or foo()
-    // Catches the first found `fault` in left-to-right order
-    // foo() is only called if no fault in either `optional1` or `optional2`
-}
+    io::printn("Detected missing `value`, underlying fault was ignored.");
+} 
+```
+
+Detect missing `value` and retrieve underlying `fault`
+
+```c3
+import std::io;
+int! optional_value = IoError.FILE_NOT_FOUND?;
+
+// Detect missing `value` and retrieve underlying `fault` from `optional_value` 
+// Retrieve underlying `fault`, assigning to `excuse` inside scope
+if (catch excuse = optional_value)
+{
+    io::printfn("fault found: %s", excuse);
+} 
 ```
 
 For example let’s return a `fault` from a function.
@@ -120,12 +131,14 @@ fn void! main(String[] args)
 }
 ```
 
-### Detect missing `value` and retrieve underlying `fault`
-
+You can catch one of multiple possible errors by catching them together in a group:
 ```c3
-// Detect missing `value` and retrieve underlying `fault` from `optional_value` 
-// Retrieve underlying `fault`, assigning to `excuse` inside scope
-if (catch excuse = optional_value) {...} 
+if (catch excuse = optional1, optional2, foo())
+{
+    // Detects a `fault` in optional1, optional2 or foo()
+    // Catches the first found `fault` in left-to-right order
+    // foo() is only called if no fault in either `optional1` or `optional2`
+}
 ```
 
 ### Detect missing `value` and switch on underlying `fault`
@@ -180,12 +193,6 @@ A helpful shorthand for this is using rethrow `!`
 int optional_value = unreliable_function()!; // rethrow `!` here
 io::printfn("use optional_value as normal now: %s", optional_value)!;
 ```
-Rethrow `!` is similar to Go's
-```go
-if err != nil {
-    return err
-}
-```
 
 #### Example returning an Optional `fault` OR `value`
 Let's expand this example to something which *may* fail, like opening a file. 
@@ -239,10 +246,16 @@ fn void! main()
 ## Detect `value` is present 
 ```c3
 // Unwrap the `value` from `optional_value` to be a normal value inside scope
-if (try optional_value) {...} 
+if (try optional_value) 
+{
+    io::printfn("value found: %s", optional_value);    
+} 
 
 // Unwrap and assign `value` from `optional_value` to `unwrapped_value` inside scope
-if (try unwrapped_value = optional_value) {...} 
+if (try unwrapped_value = optional_value)
+{
+    io::printfn("value found: %s", unwrapped_value);    
+}  
 ```
 
 For example
