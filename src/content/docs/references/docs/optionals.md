@@ -135,8 +135,9 @@ You can catch one of multiple possible errors by catching them together in a gro
 ```c3
 if (catch excuse = optional1, optional2, foo())
 {
-    // Detects a `fault` in optional1, optional2 or foo()
-    // Catches the first found `fault` in left-to-right order
+    // Detects a missing `value` in `optional1`, `optional2` or `foo()`
+    // Each is checked in left-to-right order
+    // Any underlying `fault` is assigned to `excuse`
     // foo() is only called if no fault in either `optional1` or `optional2`
 }
 ```
@@ -296,11 +297,14 @@ fn void! main(String[] args)
     int! reliable_result1 = reliable_function();
     int! reliable_result2 = reliable_function();
 
-    // Unwrap the `value` from reliable_result
+    // Unwrap the `value` from reliable_result1 and reliable_result2
     if (try reliable_result1 && try reliable_result2 && 5 > 2)
     {
-        // reliable_result is unwrapped here and can be used as a normal variable
-        io::printfn("reliable_result: %s", reliable_result);
+        // `reliable_result1` is unwrapped here and can be used as a normal variable
+        io::printfn("reliable_result1: %s", reliable_result1);
+
+        // `reliable_result2` is unwrapped here and can be used as a normal variable
+        io::printfn("reliable_result2: %s", reliable_result2);
     }
 
     // ERROR cannot use logical OR `||`
@@ -334,7 +338,6 @@ fn void! main(String[] args)
 ```
 
 ### Optionals affect function return value types when used
-Calling a function with any arguments of Optional type will make the return value Optional type as well. The Optional function arguments are checked left-to-right and the first encountered `fault` in the function arguments is returned before running the function. 
 
 ```c3
 import std::io;
@@ -347,23 +350,16 @@ fn int test(int input)
 
 fn void! main(String[] args)
 {
-    int! first_optional = 7;
+    int! optional_argument = 7;
 
-    // Argument `first_optional` makes `second_optional` Optional too 
-    int! second_optional = test(first_optional);
-    
-    int! third_optional = IoError.FILE_NOT_FOUND?;
-
-    // `forth_optional` contains the fault = IoError.FILE_NOT_FOUND
-    // We never enterred the function body with a `fault` argument
-    int! forth_optional = test(third_optional); 
-    return;
+    // `optional_argument` makes returned `returned_optional` Optional too 
+    int! returned_optional = test(optional_argument);
 }
 ```
 
 ### Functions may not run when called with Optional arguments
 
-Calling a functions with an Optional arguments will only proceed when **all** of the arguments that are Optional type contain a valid `value`, and no `fault`.
+Calling a functions with an Optional arguments will only proceed when **all** of the arguments that are Optional type contain a valid `value`, and therefore no underlying `fault`.
 
 ```c3
 import std::io;
@@ -376,12 +372,18 @@ fn int test(int input, int input2)
 
 fn void! main(String[] args)
 {
-    int! first_optional = IoError.FILE_NOT_FOUND?;
-    int! second_optional = IoError.NO_PERMISSION?;
+    int! first_optional = IoError.FILE_NOT_FOUND?; // Missing `value` and `fault` assigned
+    int! second_optional = IoError.NO_PERMISSION?; // Missing `value` and `fault` assigned
 
-    // Arguments evaluated left-to-right `first_optional` contained a fault
-    // `third_optional` was assigned the fault in `first_optional`
-    int! third_optional = test(first_optional, second_optional);  // IoError.FILE_NOT_FOUND
+    // Arguments are checked left-to-right for a missing `value` 
+    // First detected missing `value` causes underlying `fault` to be returned
+    // Here `third_optional` was assigned the fault in `first_optional`
+    int! third_optional = test(first_optional, second_optional);
+
+    if (catch excuse = third_optional) 
+    {
+        io::printfn("third_optional fault: %s", excuse); // IoError.FILE_NOT_FOUND
+    }
     return;
 }
 ```
@@ -423,6 +425,8 @@ fn void! main(String[] args)
 If an expression returns a `fault` when assigning an Optional make default assignment using `??` operator.
 
 ```c3
+import std::io;
+
 int regular_value;
 int! optional_value = function_may_error();
 if (catch optional_value) // A `fault` was found in optional_value
@@ -435,20 +439,20 @@ if (try optional_value;) // A `value` was found in optional_value
 }
 ```
 
-The operator `??` allows you to set a default value, set when an expression is a `fault`:
+The operator `??` allows you to assign a default `value` or `fault` when an expression contains a missing `value`:
 
 ```c3
-// Set default `value` to -1 when foo_may_error() is a `fault`
+// Set default `value` to -1 when foo_may_error() has a missing `value`
 int regular_value = foo_may_error() ?? -1;
 ```
 
-This is similar to the [elvis operator `?:`](../specification/#ternary-elvis-and-or-else-expressions) which sets a default value in case a value is false.
-
-### Distinguish between two function calls that could have the same `fault`
+### Distinguish between two function calls that could return the same `fault`
 
 Catch and return another error which is unique, that allows us to tell two similar `fault` origins apart.
 
 ```c3
+import std::io;
+
 fault NoHomework
 {
     DOG_ATE_MY_HOMEWORK,
@@ -456,22 +460,25 @@ fault NoHomework
     DISTRACTED_BY_CAT_PICTURES
 }
 
-fn int! always_error() 
+fn int! test() 
 {
     return IoError.FILE_NOT_FOUND?;
 }
 
-int! a = always_error(); // IoError.FILE_NOT_FOUND
-int! b = always_error(); // IoError.FILE_NOT_FOUND
+fn void! main(String[] args) 
+{
+    int! a = test(); // IoError.FILE_NOT_FOUND
+    int! b = test(); // IoError.FILE_NOT_FOUND
 
-// We can tell these appart by default assigning our own unique `fault`
-// Our unique `fault` is assigned only if a `fault` is found
-int a = always_error() ?? NoHomework.DOG_ATE_MY_HOMEWORK?;
-int b = always_error() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?;
+    // We can tell these appart by default assigning our own unique `fault`
+    // Our unique `fault` is assigned only if a `fault` is found
+    int c = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?;
+    int d = test() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?;
 
-// If you want to return those unique `fault` to the caller, add rethrow `!`
-int a = always_error() ?? NoHomework.DOG_ATE_MY_HOMEWORK?!;
-int b = always_error() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?!;
+    // If you want to return those unique `fault` to the caller, add rethrow `!`
+    int e = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?!;
+    int f = test() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?!;
+}
 ```
 
 
@@ -504,7 +511,7 @@ fn void! test()
     return IoError.FILE_NOT_FOUND?;
 }
 
-if (catch excuse = test()) // Capture returned `fault`
+if (catch excuse = test()) // Retrieve underlying `fault`
 {
     io::printfn("found fault: %s", excuse);
     return excuse?;
