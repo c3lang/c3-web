@@ -11,7 +11,7 @@ A commonly Optionals are used for a function that can return a value that is *pr
 
 ### What is a `fault`?
 
-A `fault` represents a reason why a `value` could not be returned, like opening a file but finding it does not exist and returning an `IoError.FILE_NOT_FOUND` for instance. A `fault` is defined similarly to simple enums:
+A `fault` represents a reason why a `value` could not be returned, like opening a file but finding it does not exist and returning an `IoError.FILE_NOT_FOUND` for instance. A `fault` is defined similarly to enums:
 ```c3
 fault NoHomework
 {
@@ -33,11 +33,11 @@ fn void! main(String[] args)
 
 ### What is an Optional?
 
-Optionals in C3 act like a tagged union of either the `value` **or** `fault`, you can access either.
+Optionals in C3 act like a tagged union of either the `value` **or** `fault`. When the `value` is present there is no `fault`, when `value` is missing we can check the `fault` to see the reason for that. This is an alternative to error codes in C.
 
 Similar to a "Result" type in other languages, you can retrieve the underlying `fault` test against it and switch over different cases of it. 
 
-Optionals can also be used in a more lightweight way, to detect `value` is present or not. This is an alternative way of handling data which might otherwise be `null` in C.
+Optionals can also be used in a more lightweight way, to detect if `value` is present or not. This is an alternative way of handling data which might otherwise be `null` in C.
 
 Create an Optional from an existing type by appending `!` to that type.
 ```c3
