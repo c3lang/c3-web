@@ -146,16 +146,15 @@ if (catch excuse = optional1, optional2, foo())
 
 `if (catch)` can also immediately switch on the fault value:
 ```c3
-if (catch optional_value)
+if (catch excuse = optional_value)
 {
     case NoHomework.DOG_ATE_MY_HOMEWORK:
-        ...
-    case IoError.NO_SUCH_FILE:
-        ...
-    case IoError.FILE_NOT_DIR:
-        ...
+        io::printn("Dog ate your file");
+    case IoError.FILE_NOT_FOUND:
+        io::printn("File not found");
     default:
-        ...
+        io::printfn("Unexpected fault: %s", excuse);
+        return excuse?;
 }
 ```
 
@@ -167,13 +166,12 @@ if (catch excuse = optional_value)
     switch (excuse)
     {
         case NoHomework.DOG_ATE_MY_HOMEWORK:
-            ...
-        case IoError.NO_SUCH_FILE:
-            ...
-        case IoError.FILE_NOT_DIR:
-            ...
+            io::printn("Dog ate your file");
+        case IoError.FILE_NOT_FOUND:
+            io::printn("File not found");
         default:
-            ...
+            io::printfn("Unexpected fault: %s", excuse);
+            return excuse?;
     }
 }
 ```
@@ -565,15 +563,20 @@ fn void test()
 ```
 #### Returning a fault
 
-Returning a fault looks like a normal return but with the `?`.
+Returning a `fault` looks like a normal return but with a `?` suffix.
 
 Note this function is referenced in future examples.
 
 ```c3
 fn void! find_file() 
 {
-    File! file = file::open("file_to_open.txt", "r")!; 
-    return;
+    File! optional_file = file::open("file_to_open.txt", "r"); 
+    if (catch excuse = optional_file) 
+    {
+        return excuse?; // `?` suffix returns `fault`
+    }
+    
+    return; 
 }
 ```
 
@@ -607,20 +610,17 @@ fn void find_file_and_test()
 
 #### Using `if (catch)` to implicitly unwrap `value` after scope exit
 
-Catching faults and then exiting the scope will implicitly unwrap the
-variable:
+Catching empty `value` and then exiting the `if (catch)` scope via; `return`, `break`, `continue` or rethrow `!` implicitly unwraps the `optional_value` afterwards:
 ```c3
 fn void find_file_and_no_fault()
 {
-    File*! result = find_file();    
-    if (catch excuse = result)
+    File*! optional_value = find_file();    
+    if (catch optional_value)
     {
-        io::printfn("An error occurred: %s", excuse);
-        
-        // Scope exit here required to implicitly unwrap after
+        // Scope exit here required to implicitly unwrap `optional_value` after
         return;
     }
-    // result is implicitly unwrapped here.
+    // `optional_value` is implicitly unwrapped here.
     // and has a type of File*
 }
 ```
@@ -630,8 +630,8 @@ fn void find_file_and_no_fault()
 ```c3
 fn void do_something_to_file()
 {
-    void! result = find_file();    
-    if (try result)
+    void! optional_value = find_file();    
+    if (try optional_value)
     {
         io::printn("I found the file");
     }
