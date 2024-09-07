@@ -254,7 +254,6 @@ fn void! main()
     // because missing `Result` was handled by scope exit in `if (catch)`
     // Only reached when a file was successfully read
     io::printfn("read_buffer: %s", read_buffer);
-    return;
 }
 ```
 
@@ -361,8 +360,6 @@ fn void! main(String[] args)
     int! second_optional = first_optional + 1;
     // Printing by unwrapping optional with rethrow `!`: 
     io::printn(second_optional)!;  
-
-    return;
 }
 ```
 
@@ -416,7 +413,6 @@ fn void! main(String[] args)
         // The excuse will be IoError.FILE_NOT_FOUND
         io::printfn("third_optional's Excuse: %s", excuse); 
     }
-    return;
 }
 ```
 
@@ -435,7 +431,6 @@ fn void! main(String[] args)
     {
         io::printfn("Excuse found: %s", excuse);
     }
-    return;
 }
 ```
 
@@ -449,7 +444,6 @@ fn void! main(String[] args)
     
     bool result_found = @ok(optional_value);
     assert(result_found == !@catch(optional_value));
-    return;
 }
 ```
 
@@ -609,8 +603,6 @@ fn void! find_file()
     {
         return excuse?; // `?` suffix returns `Excuse`
     }
-    
-    return; 
 }
 ```
 
