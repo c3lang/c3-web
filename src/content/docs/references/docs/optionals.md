@@ -196,10 +196,16 @@ if (catch excuse = optional_value)
 }
 io::printfn("use optional_value as normal now: %s", optional_value);
 ```
-A helpful shorthand for this is using rethrow `!`
+A helpful shorthand for this is Rethrow `!` shown below.
+
+### Rethrow `!` checks the `Result` is present, if not returns `Excuse` to the caller
+
+The Rethrow `!` suffix will attempt to unwrap the `Result` if present, without creating a new scope, and if `Result` is missing it will return of the underlying `Excuse` to the caller.
+
 ```c3
-int optional_value = unreliable_function()!; // rethrow `!` here
-io::printfn("use optional_value as normal now: %s", optional_value)!;
+// Rethrow `!` here converts optional to normal variable
+int normal_variable = unreliable_function()!;
+io::printfn("use normal_variable as normal now: %s", optional_value)!;
 ```
 
 #### Example returning an Optional `Excuse` OR `Result`
@@ -214,10 +220,10 @@ Try running this code below with and without a file called `file_to_open.txt` in
 import std::io;
 
 /** 
- * Function modifies `buffer` by pointer in the char[] slice
- * Returns optional with `Result` of type `void` or a `Excuse`
+ * Function modifies `buffer`
+ * Returns Optional with `Result` of type `char[]` or an `Excuse`
 **/
-fn void! read_file(String filename, char[] buffer)
+fn char[]! read_file(String filename, char[] buffer)
 {
     // Return `Excuse` if failed opening file, using rethrow `!`
     File! file = file::open(filename, "r")!; 
@@ -228,17 +234,20 @@ fn void! read_file(String filename, char[] buffer)
 
     // Return `Excuse` if failed to read file, using rethrow `!`
     file.read(buffer)!; 
-    return; // return the void `Result`
+    return buffer; // return the buffer `Result`
 }
 
 fn void! main()
 {
-    char[] buffer = mem::new_array(char, 100);
-    defer free(buffer); // Free memory on scope exit
+    char[]! buffer = mem::new_array(char, 100);
 
+    // Free memory on scope exit
+    // Discard the `Excuse` from free(buffer) with (void) cast
+    defer (void)free(buffer); 
 
     // Catch missing `Result` with an underlying `Excuse` defined, assign to `excuse`
-    if (catch excuse = read_file("file_to_open.txt", buffer)) 
+    buffer = read_file("file_to_open.txt", buffer);
+    if (catch excuse = buffer) 
     {
         io::printfn("Excuse found: %s", excuse);
         return excuse?; // Returning `Excuse` using `?` suffix
@@ -247,23 +256,23 @@ fn void! main()
     // `buffer` unwrapped so like a normal variable here 
     // because missing `Result` was handled by scope exit in `if (catch)`
     // Only reached when a file was successfully read
-    io::printfn("Buffer read: %s", buffer);
+    io::printfn("buffer read: %s", buffer);
     return;
 }
 ```
 
 ## Detect `Result` is present 
 ```c3
-// Unwrap the `Result` from `optional_value` to be a regular value inside scope
+// Unwrap the `Result` from `optional_value` to be a normal variable inside scope
 if (try optional_value) 
 {
-    io::printfn("value found: %s", optional_value);    
+    io::printfn("Result found: %s", optional_value);    
 } 
 
 // Unwrap and assign `Result` from `optional_value` to `unwrapped_value` inside scope
 if (try unwrapped_value = optional_value)
 {
-    io::printfn("value found: %s", unwrapped_value);    
+    io::printfn("Result found: %s", unwrapped_value);    
 }  
 ```
 
@@ -323,6 +332,18 @@ fn void! main(String[] args)
     // }
 }
 ```
+
+
+### Rethrow `!` checks the `Result` is present, if not returns `Excuse` to the caller
+
+The Rethrow `!` suffix will attempt to unwrap the `Result` if present, without creating a new scope, and if `Result` is missing it will return of the underlying `Excuse` to the caller.
+
+```c3
+// Rethrow `!` here converts optional to normal variable
+int normal_variable = unreliable_function()!;
+io::printfn("use normal_variable as normal now: %s", optional_value)!;
+```
+
 ## Optionals affect types and control flow
 
 ### Optionals affect result types when used
@@ -427,10 +448,10 @@ The `@ok` macro will return `true` if an Optional `Result` is present and `false
 ```c3
 fn void! main(String[] args)
 {
-    int! optional_value = IoError.FILE_NOT_FOUND?;
+    int! optional_value = 7;
     
-    bool successful = @ok(optional_value);
-    assert(successful == !@catch(optional_value));
+    bool result_found = @ok(optional_value);
+    assert(result_found == !@catch(optional_value));
     return;
 }
 ```
@@ -445,7 +466,7 @@ int regular_value;
 int! optional_value = function_may_error();
 if (catch optional_value) // A `Excuse` was found in optional_value
 {   
-    regular_value = -1; // Assign default value when fault was found
+    regular_value = -1; // Assign default `Result` when fault was found
 }
 if (try optional_value;) // A `Result` was found in optional_value
 {
@@ -596,18 +617,14 @@ fn void! find_file()
 }
 ```
 
-#### Calling a function automatically returning any optional result with rethrow `!`
+#### Rethrow `!` checks the `Result` is present, if not returns `Excuse` to the caller
 
-The rethrow `!` suffix will create an implicit return if an `Excuse` is found.
+The Rethrow `!` suffix will attempt to unwrap the `Result` if present, without creating a new scope, and if `Result` is missing it will return of the underlying `Excuse` to the caller.
 
 ```c3
-fn void! find_file_and_test()
-{
-    find_file()!; // Rethrow `!`
-
-    // Rethrow `!` runs the following:
-    // if (catch excuse = find_file()) return excuse?;
-}
+// Rethrow `!` here converts optional to normal variable
+int normal_variable = unreliable_function()!;
+io::printfn("use normal_variable as normal now: %s", optional_value)!;
 ```
 
 #### Using force unwrap `!!` to panic on `Excuse`
@@ -682,7 +699,7 @@ fn void test_catch()
 }
 ```
 
-#### Test if something has a value without `if (try)`
+#### Test if something has a `Result` present without `if (try)`
 ```c3
 fn void test_something()
 {
