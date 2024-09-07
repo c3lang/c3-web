@@ -702,6 +702,15 @@ or_group_expr      ::= and_group_expr | or_expr
 or_expr            ::= or_group_expr "||" and_group_expr
 ```
 
+#### Constant folded arithmetics
+
+Constant folding will happen for constant integers and floating. Vectors operations will
+not be constant-folded.
+
+Constant folded operations are: multiplication, division, addition, subtraction,
+bit shifts, bit negation, bitwise and, or and xor, comparison, logical and/or,
+and negation.
+
 #### Type
 
 The type of the or-expression is `bool`.
