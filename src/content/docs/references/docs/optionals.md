@@ -239,24 +239,21 @@ fn char[]! read_file(String filename, char[] buffer)
 
 fn void! main()
 {
-    char[]! buffer = mem::new_array(char, 100);
-
-    // Free memory on scope exit
-    // Discard the `Excuse` from free(buffer) with (void) cast
-    defer (void)free(buffer); 
+    char[] buffer = mem::new_array(char, 100);
+    defer free(buffer); // Free memory on scope exit
 
     // Catch missing `Result` with an underlying `Excuse` defined, assign to `excuse`
-    buffer = read_file("file_to_open.txt", buffer);
-    if (catch excuse = buffer) 
+    char[]! read_buffer = read_file("file_to_open.txt", buffer);
+    if (catch excuse = read_buffer) 
     {
         io::printfn("Excuse found: %s", excuse);
         return excuse?; // Returning `Excuse` using `?` suffix
     }
 
-    // `buffer` unwrapped so like a normal variable here 
+    // `read_buffer` unwrapped so like a normal variable here 
     // because missing `Result` was handled by scope exit in `if (catch)`
     // Only reached when a file was successfully read
-    io::printfn("buffer read: %s", buffer);
+    io::printfn("read_buffer: %s", read_buffer);
     return;
 }
 ```
