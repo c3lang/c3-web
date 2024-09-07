@@ -34,7 +34,8 @@ fn void! main(String[] args)
 
 ### What is an Optional?
 
-Optionals in C3 act like a tagged union of either the `Result` **or** `Excuse`. When the `Result` is present, the `Excuse` is not. Conversely when the `Result` is missing we can check the `Excuse` to see what happened. This is an alternative to error codes in C.
+Optionals in C3 act like a tagged union of either the `Result` 
+*or* `Excuse`. When the `Result` is present, the `Excuse` is not. Conversely when the `Result` is missing we can check the `Excuse` to see what happened. This is an alternative to error codes in C.
 
 Similar to a "Result" type in other languages, you can retrieve the underlying `Excuse` test against it and switch over different cases of it. 
 
@@ -101,8 +102,8 @@ Detect missing `Result` and retrieve underlying `Excuse`
 import std::io;
 int! optional_value = IoError.FILE_NOT_FOUND?;
 
-// Detect missing `Result` and retrieve underlying `Excuse` from `optional_value` 
-// Retrieve underlying `Excuse`, assigning to `excuse` inside scope
+// Detect missing `Result` and retrieve underlying `Excuse` from 
+// `optional_value` assigning it to `excuse` inside of the if-scope
 if (catch excuse = optional_value)
 {
     io::printfn("Excuse found: %s", excuse);
@@ -113,15 +114,18 @@ For example let’s return a `Excuse` from a function.
 ```c3
 import std::io;
 
-/* Returns optional with `Result` of type `void` or an `Excuse` of type `anyfault` */
+// Returns optional with `Result` of type `void` or an 
+// `Excuse` of type `anyfault`
 fn void! test()
 {
-    return IoError.FILE_NOT_FOUND?; // Return a `Excuse` using `?` suffix
+    // Return a `Excuse` using `?` suffix
+    return IoError.FILE_NOT_FOUND?; 
 }
 
 fn void! main(String[] args)
 {
-    // Catch missing `Result` with an underlying `Excuse` defined, assign to `excuse`
+    // Catch missing `Result` with an underlying `Excuse` defined, 
+    // assign to `excuse`
     if (catch excuse = test())
     {
         io::printfn("test() gave an Excuse: %s", excuse);
@@ -139,7 +143,8 @@ if (catch excuse = optional1, optional2, foo())
     // Detects a missing `Result` in `optional1`, `optional2` or `foo()`
     // Each is checked in left-to-right order
     // Any underlying `Excuse` is assigned to `excuse`
-    // foo() is only called if no `Excuse` in either `optional1` or `optional2`
+    // foo() is only called if no `Excuse` in either `optional1` 
+    // or `optional2`
 }
 ```
 
@@ -178,8 +183,11 @@ if (catch excuse = optional_value)
 ```
 
 ### Detect and handle a missing `Result` makes it no longer Optional 
-If scope is exited inside `if (catch)` afterwards the `optional_value` behaves like a normal variable.
-Scope exit is `return`, `break`, `continue` or rethrow `!`.
+If an `if (catch)` exits the outer scope, then the 
+`optional_value` *implicitly unwraps* the value, into
+its non-optional type.
+The outer scope may be exited due to a `return`, `break`, `continue` 
+or rethrow `!`.
 ```c3
 int! optional_value = unreliable_function();
 if (catch excuse = optional_value) 
@@ -246,7 +254,7 @@ fn void! main()
 
 ## Detect `Result` is present 
 ```c3
-// Unwrap the `Result` from `optional_value` to be a normal value inside scope
+// Unwrap the `Result` from `optional_value` to be a regular value inside scope
 if (try optional_value) 
 {
     io::printfn("value found: %s", optional_value);    
@@ -264,7 +272,7 @@ For example
 ```c3
 import std::io;
 
-/* Returns optional with `Result` of type `int` or an `Excuse` */
+// Returns optional with `Result` of type `int` or an `Excuse`
 fn int! reliable_function()
 {
     return 7; // Return a `Result` of `int`
@@ -282,7 +290,8 @@ fn void! main(String[] args)
     }
 }
 ```
-It is possible to add conditions to an `if (try)` but they must be joined with `&&`. Logicial OR `||` conditions are **not** allowed:
+It is possible to add conditions to an `if (try)` but they must be 
+joined with `&&`. Logical OR (`||`) conditions are **not** allowed:
 ```c3
 import std::io;
 
@@ -321,7 +330,7 @@ Use an Optional anywhere in an expression the outcome will be an Optional too.
 ```c3
 import std::io;
 
-/* Returns optional with `Result` of type `int` or an `Excuse` */
+// Returns optional with `Result` of type `int` or an `Excuse`
 fn int! test() 
 {
     return 7;
@@ -330,8 +339,10 @@ fn int! test()
 fn void! main(String[] args)
 {
     int! first_optional = test();
-    int! second_optional = first_optional + 1; // This is optional too
-    io::printn(second_optional)!; // Printing by unwrapping optional with rethrow `!` 
+    // This is optional too:
+    int! second_optional = first_optional + 1;
+    // Printing by unwrapping optional with rethrow `!`: 
+    io::printn(second_optional)!;  
 
     return;
 }
@@ -352,7 +363,8 @@ fn void! main(String[] args)
 {
     int! optional_argument = 7;
 
-    // `optional_argument` makes returned `returned_optional` Optional too 
+    // `optional_argument` makes returned `returned_optional` 
+    // Optional too: 
     int! returned_optional = test(optional_argument);
 }
 ```
@@ -376,13 +388,15 @@ fn void! main(String[] args)
     int! second_optional = IoError.NO_PERMISSION?; // Missing `Result` and `Excuse` defined
 
     // Arguments are checked left-to-right for a missing `Result` 
-    // First detected missing `Result` causes underlying `Excuse` to be returned
+    // First detected missing `Result` causes underlying `Excuse` to 
+    // be returned.
     // Here `third_optional` was assigned the `Excuse` in `first_optional`
     int! third_optional = test(first_optional, second_optional);
 
     if (catch excuse = third_optional) 
     {
-        io::printfn("third_optional's Excuse: %s", excuse); // IoError.FILE_NOT_FOUND
+        // The excuse will be IoError.FILE_NOT_FOUND
+        io::printfn("third_optional's Excuse: %s", excuse); 
     }
     return;
 }
