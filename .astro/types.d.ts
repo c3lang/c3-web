@@ -430,6 +430,13 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"references/docs/optionals_advanced.md": {
+	id: "references/docs/optionals_advanced.md";
+  slug: "references/docs/optionals_advanced";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "references/docs/precedence.md": {
 	id: "references/docs/precedence.md";
   slug: "references/docs/precedence";
