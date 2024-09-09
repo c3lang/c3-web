@@ -153,7 +153,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Added
 
-1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(.name = a, .len = 2)`.
+1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(name: a, len: 2)`.
 2. Typed varargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
 3. It is possible to "splat" an array or slice into the location of a typed vararg using `...`: `foo(a, b, ...list)`
 4. `any` varargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
