@@ -443,7 +443,7 @@ C.
 - [Expression blocks](/references/docs/statements/#expression-blocks)
 - [Defer](/references/docs/examples/#defer)
 - [Methods](/references/docs/functions/#methods)
-- [Optionals](references/docs/optionals)
+- [Optionals](/references/docs/optionals)
 - [Semantic macros](/references/docs/macros)
 - [Generic modules](/references/docs/generics)
 - [Contracts](/references/docs/contracts)
