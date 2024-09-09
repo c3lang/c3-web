@@ -314,7 +314,7 @@ fn void! main(String[] args)
 The `void!` type has no possible representation as a variable, and may
 only be a function return type. 
 
-To store the `Excuse` returned from a `void!` function without [`if (catch foo = optional_value)`](../optionals#checking-if-an-optional-is-empty), use the `@catch` macro to convert the result to an `anyfault`:
+To store the `Excuse` returned from a `void!` function without [`if (catch foo = optional_value)`](../optionals#checking-if-an-optional-is-empty), use the `@catch` macro to convert the Optional to an `anyfault`:
 ```c3
 fn void! test() 
 {
