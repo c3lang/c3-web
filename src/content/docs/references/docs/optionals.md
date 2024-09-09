@@ -7,9 +7,9 @@ sidebar:
 
 ## What is an Optional? 
 
-Optionals are a safer alternative to returning `-1` or `null` from a function when a valid value can't be returned. An Optional has either a `Result` or is `Empty`. When an Optional is `Empty` it has an `Excuse` about what happened. 
+Optionals are a safer alternative to returning `-1` or `null` from a function, when a valid value can't be returned. An Optional has either a `Result` or is `Empty`. When an Optional is `Empty` it has an `Excuse` about what happened. 
 
-- For example trying to open a missing file returns the `Excuse`: `IoError.FILE_NOT_FOUND`.
+- For example trying to open a missing file returns the `Excuse` of `IoError.FILE_NOT_FOUND`.
 - Optionals are declared by adding `!` after the type.
 - An `Excuse` is of type `anyfault`.
 ```c3
@@ -27,7 +27,7 @@ import std::io;
 
 fn void! test()
 {
-    // Return a `Excuse` using `?` after the value
+    // Return an `Excuse` using `?` after the value
     return IoError.FILE_NOT_FOUND?; 
 }
 
