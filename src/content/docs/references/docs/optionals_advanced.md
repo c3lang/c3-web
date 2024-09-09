@@ -87,8 +87,6 @@ fn void! main(String[] args)
 ```
 
 ### File reading example 
-Let's expand this example to something which *may* fail, like opening a file. 
-
 - If the file is present the `Result` will be the first 100 bytes of the file.
 - If the file is not present the `Excuse` will be `IoError.FILE_NOT_FOUND`.
 
