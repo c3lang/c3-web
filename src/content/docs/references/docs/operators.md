@@ -45,7 +45,7 @@ be a syntax error.
 
 The counterpart of [] allows setting an element using `my_type[<index>] = <value>`.
 
-    fn void Foo.get_ref(&self, usz i, double new_val) @operator([]=)
+    fn void Foo.set(&self, usz i, double new_val) @operator([]=)
     {
         return self.x[i] = new_val;
     }
