@@ -47,13 +47,16 @@ fn void! main(String[] args)
 We must exit the scope in the `if (catch)` via a `return`, `break`, `continue` 
 or rethrow `!` and if execution gets past the `if (catch)` block the `Optional` then behaves like a normal variable.
 ```c3
-int! foo = unreliable_function();
-if (catch excuse = foo) 
+fn void! test() 
 {
-    return excuse?; // Return `Excuse` with `?` operator
+    int! foo = unreliable_function();
+    if (catch excuse = foo) 
+    {
+        return excuse?; // Return `Excuse` with `?` operator
+    }
+    // `foo` a normal variable here
+    io::printfn("foo: %s", foo); // 7
 }
-// `foo` a normal variable here
-io::printfn("foo: %s", foo); // 7
 ```
 ### Rethrow `!` shorthand validates the Optional `Result`
 
