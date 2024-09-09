@@ -20,8 +20,7 @@ fn int! example() { ... }
 ## Handling `Empty` Optional
 
 ### Return a default value when Optional is `Empty`
-If an expression returns a `Empty` Optional default assign using `??` operator.
-
+The `??` operator allows us to return a default value if the `Result` if the optional is `Empty`.
 ```c3
 import std::io;
 
@@ -30,7 +29,7 @@ fn void test()
     int regular_value;
     int! optional_value = function_may_error();
 
-    // A `Empty` Optional found in optional_value
+    // An `Empty` Optional found in optional_value
     if (catch optional_value) 
     {   
         // Assign default `Result` when `Empty` Optional
@@ -45,7 +44,7 @@ fn void test()
 }
 ```
 
-The operator `??` allows you to assign a default `Result` or `Excuse` when an expression contains a `Empty` Optional:
+The operator `??` allows you to assign a default `Result` or `Excuse` when an expression contains an `Empty` Optional:
 
 ```c3
 // Set default `Result` to -1 when `foo_may_error()` returns an `Empty` Optional
@@ -54,7 +53,7 @@ int regular_value = foo_may_error() ?? -1;
 
 #### Make origin of common `Excuse` explicit
 
-Catch a `Empty` Optional and change the `Excuse` to a more specific `Excuse`, that allows us to disitinguish one situation from the other, even with the same starting `Excuse`.
+Catch an `Empty` Optional and change the `Excuse` to a more specific `Excuse`, that allows us to disitinguish one situation from the other, even with the same starting `Excuse`.
 
 ```c3
 import std::io;
