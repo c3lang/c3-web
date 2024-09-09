@@ -19,6 +19,53 @@ fn int! example() { ... }
 
 ## Handling `Empty` Optional
 
+### File reading example 
+- If the file is present the `Result` will be the first 100 bytes of the file.
+- If the file is not present the `Excuse` will be `IoError.FILE_NOT_FOUND`.
+
+Try running this code below with and without a file called `file_to_open.txt` in the same directory.
+
+```c3
+import std::io;
+
+/** 
+ * Function modifies `buffer`
+ * Returns Optional with `Result` of type `char[]` or an `Excuse`
+**/
+fn char[]! read_file(String filename, char[] buffer)
+{
+    // Return `Excuse` if failed opening file, using rethrow `!`
+    File file = file::open(filename, "r")!; 
+
+    // At scope exit, close the file if it was opened successfully
+    // Discard the `Excuse` from file.close() with (void) cast
+    defer (void)file.close(); 
+
+    // Return `Excuse` if failed to read file, using rethrow `!`
+    file.read(buffer)!; 
+    return buffer; // return the buffer `Result`
+}
+
+fn void! main()
+{
+    char[] buffer = mem::new_array(char, 100);
+    defer free(buffer); // Free memory on scope exit
+
+    // Catch `Empty` Optional with an `Excuse` defined, assign to `excuse`
+    char[]! read_buffer = read_file("file_to_open.txt", buffer);
+    if (catch excuse = read_buffer) 
+    {
+        io::printfn("Excuse found: %s", excuse);
+        // Returning `Excuse` using `?` suffix
+        return excuse?;
+    }
+
+    // `read_buffer` behaves like a normal variable here 
+    // because `Empty` Optional was handled by scope exit in `if (catch)`
+    io::printfn("read_buffer: %s", read_buffer);
+}
+```
+
 ### Return a default value when Optional is `Empty`
 The `??` operator allows us to return a default value if the `Result` if the optional is `Empty`.
 ```c3
@@ -83,53 +130,6 @@ fn void! main(String[] args)
     // If you want to return those unique `Excuse` to the caller, add rethrow `!`
     int! e = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?!;
     int! f = test() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?!;
-}
-```
-
-### File reading example 
-- If the file is present the `Result` will be the first 100 bytes of the file.
-- If the file is not present the `Excuse` will be `IoError.FILE_NOT_FOUND`.
-
-Try running this code below with and without a file called `file_to_open.txt` in the same directory.
-
-```c3
-import std::io;
-
-/** 
- * Function modifies `buffer`
- * Returns Optional with `Result` of type `char[]` or an `Excuse`
-**/
-fn char[]! read_file(String filename, char[] buffer)
-{
-    // Return `Excuse` if failed opening file, using rethrow `!`
-    File file = file::open(filename, "r")!; 
-
-    // At scope exit, close the file if it was opened successfully
-    // Discard the `Excuse` from file.close() with (void) cast
-    defer (void)file.close(); 
-
-    // Return `Excuse` if failed to read file, using rethrow `!`
-    file.read(buffer)!; 
-    return buffer; // return the buffer `Result`
-}
-
-fn void! main()
-{
-    char[] buffer = mem::new_array(char, 100);
-    defer free(buffer); // Free memory on scope exit
-
-    // Catch `Empty` Optional with an `Excuse` defined, assign to `excuse`
-    char[]! read_buffer = read_file("file_to_open.txt", buffer);
-    if (catch excuse = read_buffer) 
-    {
-        io::printfn("Excuse found: %s", excuse);
-        // Returning `Excuse` using `?` suffix
-        return excuse?;
-    }
-
-    // `read_buffer` behaves like a normal variable here 
-    // because `Empty` Optional was handled by scope exit in `if (catch)`
-    io::printfn("read_buffer: %s", read_buffer);
 }
 ```
 
@@ -282,7 +282,7 @@ fn void! main(String[] args)
 
 ### Getting the `Excuse`
 
-Retrieving the `Excuse` with `if (catch excuse = optional_value) {...}` is not the only way to get the `Excuse` from an Optional, we can use the macro `@catch` instead.
+Retrieving the `Excuse` with [`if (catch excuse = optional_value) {...}`](../optionals#checking-if-an-optional-is-empty) is not the only way to get the `Excuse` from an Optional, we can use the macro `@catch` instead.
 ```c3
 fn void! main(String[] args)
 {
