@@ -33,6 +33,41 @@ When you want to initialize a fixed array without specifying the size, use the [
 int[3] a = { 1, 2, 3 };
 int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
 ```
+Two dimensional fixed arrays are declared as `<type>[x-size, y-size]`, e.g. `int[4,2]`
+```c3
+// C 
+// Uses: name[rows][columns]
+float array[4][2] = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
+
+// C3
+// Uses: <type>[x-size, y-size]
+float[4][2] array = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+};
+
+// To match C we must invert the order of the dimensions 
+int[2][4] array = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
+
+// C3 also supports Irregular arrays, for example:
+int[][4] arr = {
+    { 1 },
+    { 2, 3 },
+    { 4, 5, 6 },
+    { 7, 8, 9, 10 },
+};
+```
+
 ## Slice
 
 The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers.
