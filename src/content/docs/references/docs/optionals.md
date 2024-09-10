@@ -45,7 +45,7 @@ fn void! main(String[] args)
 ### After checking `Optional` is not `Empty` we must have a `Result` present
 
 We must exit the scope in the `if (catch)` via a `return`, `break`, `continue` 
-or rethrow `!` and if execution gets past the `if (catch)` block the `Optional` then behaves like a normal variable.
+or [Rethrow](#rethrow--shorthand-validates-the-optional-result) `!` and if execution gets past the `if (catch)` block the `Optional` then behaves like a normal variable.
 ```c3
 fn void! test() 
 {
