@@ -33,10 +33,10 @@ When you want to initialize a fixed array without specifying the size, use the [
 int[3] a = { 1, 2, 3 };
 int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
 ```
-Two dimensional fixed arrays are declared as `<type>[x-size, y-size]`, e.g. `int[4,2]`
+Declare Two dimensional fixed arrays as `<type>[<x-size>, <y-size>]`, e.g. `int[4,2]`
 ```c3
 // C 
-// Uses: name[rows][columns]
+// Uses: name[<rows>][<columns>]
 float array[4][2] = {
     {1, 2},
     {3, 4},
@@ -45,7 +45,7 @@ float array[4][2] = {
 };
 
 // C3
-// Uses: <type>[x-size, y-size]
+// Uses: <type>[<x-size>, <y-size>]
 float[4][2] array = {
     {1, 2, 3, 4},
     {5, 6, 7, 8},
@@ -66,6 +66,9 @@ int[][4] arr = {
     { 4, 5, 6 },
     { 7, 8, 9, 10 },
 };
+
+// Access fixed array using: name[<row>,<column>]
+int value = arr[1,0]; // 2nd row, 1st column
 ```
 
 ## Slice
