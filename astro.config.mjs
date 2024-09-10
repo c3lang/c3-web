@@ -11,6 +11,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     starlight({
+      favicon: "ico.svg",
       title: "The C3 Handbook",
       customCss: ["./src/content/docs.css"],
       expressiveCode: {
