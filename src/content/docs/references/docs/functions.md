@@ -53,13 +53,13 @@ fn void test_named(int times, double data)
 fn void test()
 {
     // Named only
-    test_named(.data = 3.0, .times = 1);
+    test_named(data: 3.0, times: 1);
 
     // Unnamed only
     test_named(3, 4.0);
 
     // Mixing named and unnamed        
-    test_named(15, .data = 3.141592);
+    test_named(15, data: 3.141592);
 }
 ```
 
@@ -77,16 +77,16 @@ fn void test_named_default(int times = 1, double data = 3.0, bool dummy = false)
 fn void test()
 {
     // Named only
-    test_named_default(.data = 3.5, .times = 10);
+    test_named_default(data: 3.5, times: 10);
 
     // Unnamed and named
-    test_named_default(3, .dummy = false);
+    test_named_default(3, dummy: false);
 
     // Overwriting an unnamed argument with named is an error:
-    // test_named_default(2, .times = 3); ERROR!
+    // test_named_default(2, times: 3); ERROR!
     
     // Unnamed may not follow named arguments.
-    // test_named_default(.times = 3, 4.0); ERROR!
+    // test_named_default(times: 3, 4.0); ERROR!
 }
 ```
 
