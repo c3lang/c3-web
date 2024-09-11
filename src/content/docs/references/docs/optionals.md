@@ -9,66 +9,77 @@ sidebar:
 
 Optionals are a safer alternative to returning `-1` or `null` from 
 a function, when a valid value can't be returned. An Optional 
-has either a *result* or is *empty*. When an Optional 
-is empty it has an `Excuse` explaining what happened. 
+has either a “Result” or is “Empty”. When an Optional 
+is “Empty” it has an ”Excuse” explaining what happened. 
 
-- For example trying to open a missing file returns the `Excuse` of `IoError.FILE_NOT_FOUND`.
+- For example trying to open a missing file returns the ”Excuse” of `IoError.FILE_NOT_FOUND`.
 - Optionals are declared by adding `!` after the type.
-- An `Excuse` is of the type `anyfault`.
+- An ”Excuse” is of the type `anyfault`.
 ```c3
-int! a = 1; // Set the Optional to a result
+int! a = 1; // Set the Optional to a “Result”
 ```
-The Optional `Excuse` is set with `?` after the value.
+The Optional “Excuse” is set with `?` after the value.
 ```c3
-// Set the Optional to empty with a specific Excuse.
+// Set the Optional to “Empty” with a specific “Excuse”.
 int! b = IoError.FILE_NOT_FOUND?; 
 ```
 
-## Checking if an Optional is *empty* 
+## 🎁 Unwrapping an Optional
+:::note
+
+Unwrapping an Optional is safe because it checks it has a 
+“Result” present before trying to use it.
+
+After unwrapping a variable is a non-Optional, and behaves 
+like a normal variable.
+:::
+
+## Checking if an Optional is “Empty” 
 
 ```c3
 import std::io;
 
 fn void! test()
 {
-    // Return an 'Excuse' by adding '?' after the fault.
+    // Return an “Excuse” by adding '?' after the fault.
     return IoError.FILE_NOT_FOUND?; 
 }
 
 fn void main(String[] args)
 {
-    // If the Optional is empty, assign the
-    // 'Execuse' to a variable: 
-    if (catch ex = test())
+    // If the Optional is “Empty”, assign the
+    // “Excuse” to a variable: 
+    if (catch excuse = test())
     {
-        io::printfn("test() gave an Excuse: %s", ex);
+        io::printfn("test() gave an Excuse: %s", excuse);
     }
 }
 ```
 
-### Implicitly unwapping an Optional result
+### Automatically unwrapping an Optional “Result”
 
 If we escape the current scope from an `if (catch my_var)` using a `return`, `break`, `continue` 
-or [rethrow](#rethrow--shorthand-validates-the-optional-result) `!`,
-then the variable is implicitly non-optional:
+or [Rethrow](#using-the-rethrow-operator--to-unwrap-an-optional-value) `!`,
+then the variable is automatically [unwrapped](#unwrapping-an-optional) to a non-Optional:
 ```c3
 fn void! test() 
 {
     int! foo = unreliable_function();
-    if (catch ex = foo) 
+    if (catch excuse = foo) 
     {
-        return ex?; // Return the 'Excuse' with `?` operator
+        // Return the “Excuse” with `?` operator
+        return excuse?;
     }
     // Because the compiler knows 'foo' cannot
-    // be empty here, it will unwrap it to a regular
+    // be “Empty” here, it is unwrapped to non-Optional
     // 'int foo' in this scope:
     io::printfn("foo: %s", foo); // 7
 }
 ```
-### Using the rethrow `!` to unwrap an Optional value
+### Using the Rethrow operator `!` to unwrap an Optional value
 
-- Rethrow `!` will return from the function with the `Execuse` if an expression is *empty*.
-- The resulting value will be non-optional. 
+- The Rethrow operator `!` will return from the function with the “Excuse” if an expression is “Empty”.
+- The resulting value will be [unwrapped](#unwrapping-an-optional) to a non-Optional. 
 
 ```c3
 import std::io;
@@ -78,19 +89,22 @@ fn int! maybe_func() { /* ... */ }
 
 fn void! main() 
 {
-    // Error, maybe_function() returns an Optional
-    // and 'bar' is not optional:
+    // ❌ This will be a compile error
+    // maybe_function() returns an Optional
+    // and 'bar' is not declared Optional:
     // int bar = maybe_function();
     
     int bar = maybe_function()!; 
-    // The above is equivalent to:    
-    // int! __temp = maybe_function();
-    // if (catch ex = temp) return ex?
-    // int bar = __temp; // Ok, because __temp is unwrapped
+    // ✅ The above is equivalent to:    
+    // int! temp = maybe_function();
+    // if (catch excuse = temp) return excuse?
+
+    // Now temp is unwrapped to a non-Optional
+    int bar = temp; // ✅ This is OK
 }
 ```
 
-## Optionals affect types and control flow
+## ⚠️ Optionals affect types and control flow
 
 ### Optionals in expressions produce Optionals
 Use an Optional anywhere in an expression the resulting
@@ -100,10 +114,10 @@ import std::io;
 
 fn void! main(String[] args)
 {
-    // Returns optional with `Result` of type `int` or an `Excuse`
+    // Returns Optional with “Result” of type `int` or an “Excuse”
     int! first_optional = 7;
 
-    // This is optional too:
+    // This is Optional too:
     int! second_optional = first_optional + 1;
 }
 ```
@@ -132,9 +146,9 @@ fn void! main(String[] args)
 ### Functions conditionally run when called with Optional arguments
 
 When calling a function with an Optionals as arguments, 
-the result will be the first `Excuse` found looking left-to-right. 
+the “Result” will be the first “Excuse” found looking left-to-right. 
 The function is only executed if all Optional arguments
-have *results*.
+have a “Result”.
 
 ```c3
 import std::io;
@@ -150,7 +164,7 @@ fn void! main(String[] args)
     int! first_optional = IoError.FILE_NOT_FOUND?;
     int! second_optional = 7;
 
-    // Return first `Excuse` we find
+    // Return first “Excuse” we find
     int! third_optional = test(first_optional, second_optional);
     if (catch excuse = third_optional) 
     {
@@ -162,8 +176,8 @@ fn void! main(String[] args)
 
 ## Interfacing with C
 
-For C the interface to C3, the `Excuse` of type `anyfault` 
-is returned as the regular return while the result is passed by reference:
+For C the interface to C3, the “Excuse” of type `anyfault` 
+is returned as the regular return while the “Result” is passed by reference:
 
 C3 code:
 ```c3

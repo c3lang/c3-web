@@ -12,7 +12,7 @@ A `defer` *always* runs at the [end of a scope](#end-of-a-scope) at any point *a
 ### End of a scope
 The end of a scope also includes `return`, `break`, `continue` or `!` rethrow. 
 
-[Rethrow](../optionals/#rethrow--shorthand-validates-the-optional-result) `!` unwraps the optional, making it a normal variable again if [successful](../optionals), and if unsuccessful it returns the [fault](../optionals) from the function back to the caller.
+[Rethrow](../optionals/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` unwraps the optional, making it a normal variable again if [successful](../optionals), and if unsuccessful it returns the [fault](../optionals) from the function back to the caller.
 
 ```c3
 fn void test() 
@@ -134,7 +134,7 @@ fn String! test()
 ```
 
 ## Pitfalls with defer and defer catch
-If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing](../optionals/#rethrow--shorthand-validates-the-optional-result) `!` before the `defer catch` declaration. 
+If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing](../optionals/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` before the `defer catch` declaration. 
 
 ```c3
 fn void! function_throws() 

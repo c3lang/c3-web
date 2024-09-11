@@ -15,11 +15,11 @@ int! example = unreliable_function();
 fn int! example() { /* ... */ }
 ```
 
-## Handling `Empty` Optional
+## Handling “Empty” Optional
 
 ### File reading example 
-- If the file is present the `Result` will be the first 100 bytes of the file.
-- If the file is not present the `Excuse` will be `IoError.FILE_NOT_FOUND`.
+- If the file is present the “Result” will be the first 100 bytes of the file.
+- If the file is not present the “Excuse” will be `IoError.FILE_NOT_FOUND`.
 
 Try running this code below with and without a file called `file_to_open.txt` in the same directory.
 
@@ -28,20 +28,21 @@ import std::io;
 
 /** 
  * Function modifies 'buffer'
- * Returns an optional with a 'char[]' result or an empty with an 'Excuse'
+ * Returns an Optional with a 'char[]' “Result” 
+ *  OR an “Empty” Optional with an “Excuse”
 **/
 fn char[]! read_file(String filename, char[] buffer)
 {
-    // Return 'Excuse' if opening a file failed, using rethrow `!`
+    // Return “Excuse” if opening a file failed, using Rethrow `!`
     File file = file::open(filename, "r")!; 
 
     // At scope exit, close the file.
-    // Discard the `Excuse` from file.close() with (void) cast
+    // Discard the “Excuse” from file.close() with (void) cast
     defer (void)file.close(); 
 
-    // Return 'Excuse' if reading failed, using rethrow `!`
+    // Return “Excuse” if reading failed, using Rethrow `!`
     file.read(buffer)!; 
-    return buffer; // return a buffer 'result'
+    return buffer; // return a buffer “Result”
 }
 
 fn void! main()
@@ -50,25 +51,24 @@ fn void! main()
     defer free(buffer); // Free memory on scope exit
 
     char[]! read_buffer = read_file("file_to_open.txt", buffer);
-    // Catch Optional empty with and assign the 'Excuse' 
-    // to 'ex'
-    if (catch ex = read_buffer) 
+    // Catch Optional “Empty” with and assign the “Excuse” 
+    // to `excuse`
+    if (catch excuse = read_buffer) 
     {
-        io::printfn("Excuse found: %s", ex);
-        // Returning `Excuse` using the `?` suffix
+        io::printfn("Excuse found: %s", excuse);
+        // Returning “Excuse” using the `?` suffix
         return excuse?;
     }
 
     // `read_buffer` behaves like a normal variable here 
-    // because the empty was handled by 'if (catch)'
-    // which implicitly unwrapped 'read_buffer' at this
-    // point.
+    // because the Optional being “Empty” was handled by 'if (catch)'
+    // which automatically unwrapped 'read_buffer' at this point.
     io::printfn("read_buffer: %s", read_buffer);
 }
 ```
 
-### Return a default value on 'empty'
-The `??` operator allows us to return a default value if the optional is *empty*.
+### Return a default value on “Empty”
+The `??` operator allows us to return a default value if the Optional is “Empty”.
 ```c3
 import std::io;
 
@@ -77,14 +77,14 @@ fn void test_bad()
     int regular_value;
     int! optional_value = function_may_error();
 
-    // An empty Optional found in optional_value
+    // An “Empty” Optional found in optional_value
     if (catch optional_value) 
     {   
-        // Assign default result when empty.
+        // Assign default “Result” when “Empty”.
         regular_value = -1;
     }
 
-    // A result was found in optional_value
+    // A “Result” was found in optional_value
     if (try optional_value) 
     {
         regular_value = optional_value;
@@ -94,19 +94,19 @@ fn void test_bad()
 
 fn void test_good() 
 {
-    // Return '-1' when `foo_may_error()` is empty.
+    // Return '-1' when `foo_may_error()` is “Empty”.
     int regular_value = foo_may_error() ?? -1;
 
     io::printfn("The value was: %d", regular_value);
 }
 ```
 
-#### Modifying the returned "Excuse"
+#### Modifying the returned “Excuse”
 
-A common use of `??` is to catch an empty Optional and change 
-the `Excuse` to another more specific `Excuse`, which 
+A common use of `??` is to catch an “Empty” Optional and change 
+the “Excuse” to another more specific “Excuse”, which 
 allows us to distinguish one failure from the other, 
-even with the same original `Excuse`.
+even when they had the same “Excuse” originally.
 
 ```c3
 import std::io;
@@ -129,15 +129,13 @@ fn void! main(String[] args)
     int! b = test(); // IoError.FILE_NOT_FOUND
 
     // We can tell these appart by default assigning our own unique 
-    // 'Excuse'. Our custom 'Excuse' is assigned only if an
-    // empty is returned.
+    // “Excuse”. Our custom “Excuse” is assigned only if an
+    // “Empty” Optional is returned.
     int! c = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?;
     int! d = test() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?;
 
-    // If you want to immediately with an 'Excuse', using "?" and "!"
-    // in combination does this. In the code below,
-    // The code below will return immediately with the given
-    // 'Excuse' if test() returns empty.
+    // If you want to immediately return with an “Excuse”, 
+    // use the "?" and "!" operators together, see the code below:
     int! e = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?!;
     int! f = test() ?? NoHomework.DISTRACTED_BY_CAT_PICTURES?!;
 }
@@ -145,10 +143,10 @@ fn void! main(String[] args)
 
 ### Force unwrapping expressions 
 
-The force unwrap `!!` will issue a panic and exit the program 
-if the expression is *empty*. This is useful when the 
-error should – in normal cases – not happen and you don't 
-want to write any error handling for it. 
+The force [unwrap](../optionals#unwrapping-an-optional) operator `!!` 
+will cause the program to panic and exit if the expression is “Empty”. 
+This is useful when the error should – in normal cases – not happen 
+and you don't want to write any error handling for it. 
 That said, it should be used with great caution in production code.
 
 ```c3
@@ -161,7 +159,7 @@ fn void find_file_and_test()
 }
 ```
 
-### Check for empty without reading the "Excuse"
+### Check for “Empty” without reading the “Excuse”
 
 ```c3
 import std::io;
@@ -169,28 +167,28 @@ fn void test()
 {
     int! optional_value = IoError.FILE_NOT_FOUND?;
 
-    // Find `Empty` Optional handling inside scope
+    // Find “Empty” Optional handling inside scope
     if (catch optional_value) 
     {
-        io::printn("Found empty Optional, the 'Excuse' was not read");
+        io::printn("Found “Empty” Optional, the “Excuse” was not read");
     } 
 }
 ```
 
-### Find empty and switch on the "Excuse"
+### Find “Empty” and switch on the “Excuse”
 
-`if (catch)` can also immediately switch on the `Excuse` value:
+`if (catch)` can also immediately switch on the “Excuse” value:
 ```c3
 fn void! test() 
 {
-    if (catch ex = optional_value)
+    if (catch excuse = optional_value)
     {
         case NoHomework.DOG_ATE_MY_HOMEWORK:
             io::printn("Dog ate your file");
         case IoError.FILE_NOT_FOUND:
             io::printn("File not found");
         default:
-            io::printfn("Unexpected Excuse: %s", ex);
+            io::printfn("Unexpected Excuse: %s", excuse);
             return excuse?;
     }
 }
@@ -201,7 +199,7 @@ Which is shorthand for:
 ```c3
 fn void! test() 
 {
-    if (catch ex = optional_value)
+    if (catch excuse = optional_value)
     {
         switch (excuse)
         {
@@ -210,27 +208,28 @@ fn void! test()
             case IoError.FILE_NOT_FOUND:
                 io::printn("File not found");
             default:
-                io::printfn("Unexpected Excuse: %s", ex);
+                io::printfn("Unexpected Excuse: %s", excuse);
                 return excuse?;
         }
     }
 }
 ```
 
-## Run code if the Optional has a result 
-This is a convenience method, the logical inverse of [`if (catch)`](./optionals/#checking-if-an-optional-is-empty) 
-and is helpful when you don't care about the empty branch of 
-the code or wish to perform an early return.
+## Run code if the Optional has a “Result” 
+This is a convenience method, the logical inverse of 
+[`if (catch)`](../optionals/#checking-if-an-optional-is-empty) 
+and is helpful when you don't care about the “Empty” branch of 
+the code or you wish to perform an early return.
 ```c3
 fn void test()
 {
-    // 'optional_value' is a non-optional variable inside the scope
+    // 'optional_value' is a non-Optional variable inside the scope
     if (try optional_value) 
     {
         io::printfn("Result found: %s", optional_value);    
     } 
 
-    // The result is assigned to 'unwrapped_value' inside the scope
+    // The “Result” is assigned to 'unwrapped_value' inside the scope
     if (try unwrapped_value = optional_value)
     {
         io::printfn("Result found: %s", unwrapped_value);    
@@ -243,17 +242,17 @@ Another example:
 ```c3
 import std::io;
 
-// Returns optional with an 'int' result or empty with an 'Excuse'
+// Returns Optional “Result” with `int` type or an “Empty” with an “Excuse”
 fn int! reliable_function()
 {
-    return 7; // Return a result
+    return 7; // Return a “Result”
 }
 
 fn void! main(String[] args)
 {
     int! reliable_result = reliable_function();
 
-    // Unwrap the result from reliable_result
+    // Unwrap the “Result” from reliable_result
     if (try reliable_result)
     {
         // reliable_result is unwrapped in this scope, can be used as normal
@@ -262,14 +261,14 @@ fn void! main(String[] args)
 }
 ```
 It is possible to add conditions to an `if (try)` but they must be 
-joined with `&&`. Logical OR (`||`) conditions are **not** allowed:
+joined with `&&`. However you **cannot** use logical OR (`||`) conditions:
 ```c3
 import std::io;
 
-// Returns optional with an 'int' result or empty with an 'Excuse'
+// Returns Optional with an 'int' “Result” or “Empty” with an “Excuse”
 fn int! reliable_function()
 {
-    return 7; // Return a result
+    return 7; // Return a “Result”
 }
 
 fn void! main(String[] args)
@@ -277,7 +276,7 @@ fn void! main(String[] args)
     int! reliable_result1 = reliable_function();
     int! reliable_result2 = reliable_function();
 
-    // Unwrap the result from reliable_result1 and reliable_result2
+    // Unwrap the “Result” from reliable_result1 and reliable_result2
     if (try reliable_result1 && try reliable_result2 && 5 > 2)
     {
         // `reliable_result1` is can be used as a normal variable here
@@ -297,10 +296,11 @@ fn void! main(String[] args)
 
 ## Shorthands to work with Optionals
 
-### Getting the `Excuse`
+### Getting the “Excuse”
 
-Retrieving the `Excuse` with [`if (catch ex = optional_value) {...}`](../optionals#checking-if-an-optional-is-empty) is not the only way to get the `Excuse` from an Optional, we can use the macro `@catch` instead.
-Unlike `if (catch)` this will never cause implicit unwrapping.
+Retrieving the “Excuse” with [`if (catch excuse = optional_value) {...}`](../optionals#checking-if-an-optional-is-empty) 
+is not the only way to get the “Excuse” from an Optional, we can use the macro `@catch` instead.
+Unlike `if (catch)` this will never cause automatic [unwrapping](../optionals#unwrapping-an-optional).
 
 ```c3
 fn void! main(String[] args)
@@ -315,10 +315,10 @@ fn void! main(String[] args)
 }
 ```
 
-### Checking is an optional has a result without unwrapping
+### Checking is an Optional has a “Result” without unwrapping
 
-The `@ok` macro will return `true` if a result is present and 
-`false` if the optional is empty. 
+The `@ok` macro will return `true` if a “Result” is present and 
+`false` if the Optional is “Empty”. 
 Functionally this is equivalent to `!@catch`
 
 ```c3
@@ -336,7 +336,8 @@ fn void! main(String[] args)
 The `void!` type has no possible representation as a variable, and may
 only be a function return type. 
 
-To store the `Excuse` returned from a `void!` function without [`if (catch foo = optional_value)`](../optionals#checking-if-an-optional-is-empty), 
+To store the “Excuse” returned from a `void!` function without 
+[`if (catch foo = optional_value)`](../optionals#checking-if-an-optional-is-empty), 
 use the `@catch` macro to convert the Optional to an `anyfault`:
 ```c3
 fn void! test() 
