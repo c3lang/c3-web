@@ -18,6 +18,15 @@ C3 function but with `extern` in front of it. As long as the function is linked,
         puts("Hello, world!"); 
     }
 
+To use a different identifier inside of your C3 code compared to the function or variable’s external name, use the @extern attribute:
+
+    extern fn void foo_puts(char*) @extern("puts"); // C "puts"
+
+    fn void main()
+    {
+        foo_puts("Hello, world!"); // Still calls C "puts"
+    }
+
 While C3 functions are available from C using their external name, it's often useful to
 define an external name using `@extern` to match C usage.
 
