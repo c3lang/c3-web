@@ -565,7 +565,11 @@ macro long @fib(long $n)
 const long FIB19 = @fib(19); 
 // Same as const long FIB19 = 4181;
 ```
+:::note
+C3 macros are by design, not intended for intense compile time work there are other mechanisms, such as `$exec` to use for that.
 
+For that reason, C3 simply uses macro expansion and constant folding, and there are practical limits to that.
+:::
 Read more about compile time execution [here](/references/docs/compiletime).
 
 #### Generic modules
