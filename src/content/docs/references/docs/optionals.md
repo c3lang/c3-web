@@ -5,6 +5,12 @@ sidebar:
     order: 114
 ---
 
+In this section we will go over the *essential* information about Optionals and safe methods for working with them, for example 
+ [`if (catch optional_value)`](#checking-if-an-optional-is-empty) 
+ and the [Rethrow operator `!`](#using-the-rethrow-operator--to-unwrap-an-optional-value).
+
+In the [advanced section](../optionals_advanced/) there are other *nice to have* features. Like an alternative to safely unwrap a result from an Optionals using [`if (try optional_value)`](../optionals_advanced/#run-code-if-the-optional-has-a-result) and an unsafe method to [force unwrap `!!`](../optionals_advanced/#force-unwrapping-expressions) a result from an Optional, return [default values for optionals `??`](../optionals_advanced/#return-a-default-value-if-optional-is-empty) if they are empty and other more specialised concepts.
+
 ## What is an Optional? 
 
 Optionals are a safer alternative to returning `-1` or `null` from 
@@ -30,8 +36,7 @@ int! b = IoError.FILE_NOT_FOUND?;
 Unwrapping an Optional is safe because it checks it has a 
 result present before trying to use it.
 
-After unwrapping a variable is a non-Optional, and behaves 
-like a normal variable.
+After unwrapping, the variable then behaves like a normal variable, a non-Optional.
 :::
 
 ## Checking if an Optional is empty 

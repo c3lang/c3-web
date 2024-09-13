@@ -150,7 +150,7 @@ It is possible to type a floating point by adding a suffix:
 |------------|---------:|
 | bf16       | bfloat16 |
 | f16        |  float16 |
-| f32 *or f* |    float |
+| f32 *or* f |    float |
 | f64        |   double |
 | f128       | float128 |
 
@@ -315,125 +315,181 @@ Distinct types is a kind of type alias which creates a new type that has the sam
 but is - as the name suggests - distinct from it. It cannot implicitly convert into the other type using the syntax 
 `distict <name> = <type>`
 
-    distinct MyId = int;
-    fn void* get_by_id(MyId id) { ... }
+```c3
+distinct MyId = int;
+fn void* get_by_id(MyId id) { ... }
 
-    fn void test(MyId id)
-    {
-      void* val = get_by_id(id); // Ok
-      void* val2 = get_by_id(1); // Literals convert implicitly
-      int a = 1;
-      // void* val3 = get_by_id(a); // ERROR expected a MyId
-      void* val4 = get_by_id((MyId)a); // Works
-      // a = id; // ERROR can't assign 'MyId' to 'int'
-    }
+fn void test(MyId id)
+{
+    void* val = get_by_id(id); // Ok
+    void* val2 = get_by_id(1); // Literals convert implicitly
+    int a = 1;
+    // void* val3 = get_by_id(a); // ERROR expected a MyId
+    void* val4 = get_by_id((MyId)a); // Works
+    // a = id; // ERROR can't assign 'MyId' to 'int'
+}
+```
 
 #### Inline distinct
 
 Using `inline` in the `distinct` declaration allows a distinct type to implicitly convert to its underlying type:
 
-    distinct Abc = int;
-    distinct Bcd = inline int;
+```c3
+distinct Abc = int;
+distinct Bcd = inline int;
 
-    fn void test()
-    {
-        Abc a = 1;
-        Bcd b = 1;
+fn void test()
+{
+    Abc a = 1;
+    Bcd b = 1;
 
-        // int i = a; Error: Abc cannot be implicitly converted to 'int'
-        int i = b; // This is valid
+    // int i = a; Error: Abc cannot be implicitly converted to 'int'
+    int i = b; // This is valid
 
-        // However, 'inline' does not allow implicit conversion from 
-        // the inline type to the distinct type:
-        // a = i; Error: Can't implicitly convert 'int' to 'Abc'
-        // b = i; Error: Can't implicitly convert 'int' to 'Bcd'
-    }
+    // However, 'inline' does not allow implicit conversion from 
+    // the inline type to the distinct type:
+    // a = i; Error: Can't implicitly convert 'int' to 'Abc'
+    // b = i; Error: Can't implicitly convert 'int' to 'Bcd'
+}
+```
 
 ### Generic types
+```c3
+import generic_list; // Contains the generic MyList
 
-    import generic_list; // Contains the generic MyList
+struct Foo { 
+    int x; 
+}
 
-    struct Foo { int x; }
+// ✅ def for each type used with a generic module.
+def IntMyList = MyList(<Foo>);
+MyListFoo working_example;
 
-    // Using def - usually recommended:
-    def IntMyList = MyList(<int>);
-    IntMyList abc;
-
-    // Inline type definition
-    MyList<Foo> bcd = MyList(<Foo>);
-
-Read more about generic types on [the page about generics](/references/docs/generics).
+// ❌ An inline type definition will give an error.
+// It is only allowed in a type definition or macro.
+MyList<Foo> failing_example = MyList(<Foo>);
+```
+Read more about [generic types](/references/docs/generics).
 
 ## Enum
 
-Enum (enumerated) types use the following syntax:
+Enum or enumerated types use the following syntax:
+```c3
+enum State : int 
+{
+    WAITING,
+    RUNNING,
+    TERMINATED
+}
 
-    enum State : int 
-    {
-      PENDING,
-      RUNNING,
-      TERMINATED
-    }
-
-Enum constants are namespaces by default, just like C++'s class enums. So accessing the enums above would for example use `State.PENDING` rather than `PENDING`.
-
-### Enum type inference
-
-When an enum is used in where the type can be inferred, like in case-clauses or in variable assignment, it is allowed to drop the enum name:
-
-    State foo = PENDING; // State.PENDING is inferred.
-    switch (foo)
-    {
-      case RUNNING: // State.RUNNING is inferred
-        ...
-      default:
-        ...
-    }
-
-    fn void test(State s) { ... }
-
-    ...
-
-    test(RUNNING); // State.RUNNING is inferred
-
-
-In the case that it collides with a global in the same scope, it needs the qualifier:
-
-    module test;
-
-    fn void testState(State s) { ... }
-
-    const State RUNNING = State.TERMINATED; // Don't do this!
-
-    ... 
-
-    test(RUNNING); // Ambiguous
-    test(test::RUNNING); // Uses global.
-    test(State.RUNNING); // Uses enum constant.
+// Access enum values via:
+State current_state = State.WAITING;
+```
+The access requires referencing the `enum`'s name as `State.WAITING` because 
+an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
 
 ### Enum associated values
 
-It is possible to associate each enum value with a static value.
+It is possible to associate each enum value with one or more a static values.
+```c3
+enum State : int (String description) 
+{
+    WAITING = "waiting",
+    RUNNING = "running",
+    TERMINATED = "ended",
+}
 
-    enum State : int (String state_desc, bool active) 
+fn void main() 
+{
+    State process = State.RUNNING;
+    io::printfn("%s", process.description);
+}
+```
+Multiple static values can be associated with an enum value, for example:
+```c3
+struct Position
+{
+    int x;
+    int y;
+}
+
+enum State : int (String desc, bool active, Position pos)
+{
+    WAITING    = { "waiting", false, { 1, 2} },
+    RUNNING    = { "running", true,  {12,22} },
+    TERMINATED = { "ended",   false, { 0, 0} },
+}
+
+fn void main()
+{
+    State process = State.RUNNING;
+    if (process.active)
     {
-        PENDING = { "pending start", false },
-        RUNNING = { "running", true },
-        TERMINATED = { "ended", false }
+        io::printfn("Process is: %s", process.desc);
+        io::printfn("Position x: %d", process.pos.x);
     }
+}
+```
 
-    ...
-    
-    State s = get_state();
+### Enum type inference
 
-    io::printfn("Currently the process is %s", s.state_desc);
-    if (s.active) do_something();
+When an `enum` is used where the type can be inferred, like in switch case-clauses or in variable assignment, the enum name is not required:
+```c3
+State process = WAITING; // State.WAITING is inferred.
+switch (process)
+{
+    case RUNNING: // State.RUNNING is inferred
+        io::printfn("Position x: %d", process.pos.x);
+    default:
+        io::printfn("Process is: %s", process.desc);
+}
 
-## Faults
+fn void test(State s) { ... }
 
-`fault` defines a set of optional result values, that are similar to enums, but are used for 
-optional returns.
+test(RUNNING); // State.RUNNING is inferred
+```
+
+If the `enum` without it's name matches with a global in the same scope, it needs the enum name to be added as a qualifier, for example:
+```c3
+module test;
+
+// Global variable
+// ❌ Don't do this!
+const State RUNNING = State.TERMINATED; 
+
+test(RUNNING);       // Ambiguous
+test(test::RUNNING); // Uses global variable.
+test(State.RUNNING); // Uses enum constant.
+```
+
+## Optional Type
+
+An [Optional type](../optionals/) is created by taking a type and appending `!`. 
+An Optional type behaves like a tagged union, containing either the
+result or an Excuse of type [fault](#optional-excuses-are-of-type-fault). 
+
+```c3
+int! i;
+i = 5; // Assigning a real value to i.
+i = IOResult.IO_ERROR?; // Assigning an optional result to i.
+```
+
+Only variables, expressions and function returns may be Optionals. 
+Function and macro parameters in their definitions may not be optionals.
+
+```c3
+fn Foo*! getFoo() { /* ... */ } // ✅ Ok!
+int! x = 0; // ✅ Ok!
+fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
+```
+
+Read more about the Optional types on the page about [Optionals and error handling](/references/docs/optionals).
+
+
+### Optional Excuses are of type Fault
+
+When an [Optional](../optionals/) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
 
 ```c3
 fault IOResult
@@ -448,35 +504,17 @@ fault MapResult
 }
 ```
 
-Like the typeid, the constants are pointer sized and each value is globally unique, even when 
-compared to other faults. For example the underlying value of `MapResult.NOT_FOUND` is guaranteed
-to be different from `IOResult.IO_ERROR`. This is true even if they are separately compiled.
+Like the [typeid type](#the-typeid-type), the constants are pointer sized 
+and each value is globally unique. For example the underlying value of 
+`MapResult.NOT_FOUND` is guaranteed to be different from `IOResult.IO_ERROR`. 
+This is true even if they are separately compiled.
 
-A fault may be stored as a normal value, but is also unique in that it may be passed
-as the optional result value using the `!` suffix operator.
+:::note
+The values assigned to a fault may vary each time a program is compiled. 
+:::
 
-
-## Optional Result Types
-
-An *optional result type* is created by taking a type and appending `!`. 
-An optional result type is a tagged union containing either the *expected result* or *an optional result value* 
-(which is a fault).
-
-```c3
-int! i;
-i = 5; // Assigning a real value to i.
-i = IOResult.IO_ERROR?; // Assigning an optional result to i.
-```
-
-Only variables and return variables may be optionals. Function and macro parameters may not be optionals.
-
-```c3
-fn Foo*! getFoo() { /* ... */ } // Ok!
-fn void processFoo(Foo*! f) { /* ... */ } // Error
-int! x = 0; // Ok!
-```
-
-Read more about the optional types on the page about [optionals and error handling](/references/docs/optionals).
+A fault may be stored as a normal value, but is also unique so that it may be passed
+in an Optional as a function return value using the [rethrow `!` operator](../optionals/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
 ## Struct types

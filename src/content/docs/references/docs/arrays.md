@@ -8,7 +8,7 @@ sidebar:
 Arrays have a central role in programming. C3 offers built-in arrays, slices and [vectors](/references/docs/vectors/).
 The standard library enhances this further with dynamically sized arrays and other collections.
 
-## Fixed arrays
+## Fixed size 1D arrays
 
 These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`. 
 
@@ -33,6 +33,7 @@ When you want to initialize a fixed array without specifying the size, use the [
 int[3] a = { 1, 2, 3 };
 int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
 ```
+
 ## Slice
 
 The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers.
@@ -280,4 +281,59 @@ fn void test()
     list.free();        // Free all memory associated with list.
 }
 ```
+
+## Fixed size multi-dimensional arrays
+
+To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
+```c
+// C 
+// Uses: name[<rows>][<columns>]
+int array_in_c[4][2] = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
+
+// C3
+// Uses: <type>[<x-size>][<y-size>]
+// C3 declares the dimensions, inner-most to outer-most
+int[4][2] array = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+};
+
+// To match C we must invert the order of the dimensions 
+int[2][4] array = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
+
+// C3 also supports Irregular arrays, for example:
+int[][4] array = {
+    { 1 },
+    { 2, 3 },
+    { 4, 5, 6 },
+    { 7, 8, 9, 10 },
+};
+```
+
+:::note
+Accessing the multi-dimensional fixed array has inverted array index order to when the array was declared.
+```c3
+// Uses: <type>[<x-size>][<y-size>]
+int[2][4] array = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
+
+// Access fixed array using: array[<row>][<column>]
+int value = array[3][1]; // 8
+```
+:::
+
 
