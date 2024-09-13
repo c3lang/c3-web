@@ -8,7 +8,7 @@ sidebar:
 Arrays have a central role in programming. C3 offers built-in arrays, slices and [vectors](/references/docs/vectors/).
 The standard library enhances this further with dynamically sized arrays and other collections.
 
-## Fixed arrays
+## Fixed size 1D arrays
 
 These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`. 
 
@@ -282,7 +282,7 @@ fn void test()
 }
 ```
 
-## Fixed multi-dimensional arrays
+## Fixed size multi-dimensional arrays
 
 To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
 ```c

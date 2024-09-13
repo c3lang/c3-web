@@ -366,6 +366,7 @@ def IntMyList = MyList(<Foo>);
 MyListFoo working_example;
 
 // ❌ An inline type definition will give an error.
+// It is only allowed in a type definition or macro.
 MyList<Foo> failing_example = MyList(<Foo>);
 ```
 Read more about [generic types](/references/docs/generics).
@@ -385,12 +386,12 @@ enum State : int
 State current_state = State.WAITING;
 ```
 The access requires referencing the `enum`'s name as `State.WAITING` because 
-an emum like `State` is a separate namespace by default, just like C++'s class `enum`.
+an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
 
 ### Enum associated values
 
-It is possible to associate each enum value one or more a static values.
+It is possible to associate each enum value with one or more a static values.
 ```c3
 enum State : int (String description) 
 {
@@ -413,11 +414,7 @@ struct Position
     int y;
 }
 
-enum State : int (
-    String   desc,
-    bool     active,
-    Position pos,
-)
+enum State : int (String desc, bool active, Position pos)
 {
     WAITING    = { "waiting", false, { 1, 2} },
     RUNNING    = { "running", true,  {12,22} },
@@ -437,7 +434,7 @@ fn void main()
 
 ### Enum type inference
 
-When an `enum` is used in where the type can be inferred, like switch case-clauses or in variable assignment, it is allowed to drop the enum name:
+When an `enum` is used where the type can be inferred, like in switch case-clauses or in variable assignment, the enum name is not required:
 ```c3
 State process = WAITING; // State.WAITING is inferred.
 switch (process)
@@ -469,7 +466,7 @@ test(State.RUNNING); // Uses enum constant.
 ## Optional Type
 
 An [Optional type](../optionals/) is created by taking a type and appending `!`. 
-An Optional type behaves like a tagged union containing either the
+An Optional type behaves like a tagged union, containing either the
 result or an Excuse of type [fault](#optional-excuses-are-of-type-fault). 
 
 ```c3
@@ -478,7 +475,7 @@ i = 5; // Assigning a real value to i.
 i = IOResult.IO_ERROR?; // Assigning an optional result to i.
 ```
 
-Only variables, function arguments and function returns may be Optionals. 
+Only variables, expressions and function returns may be Optionals. 
 Function and macro parameters in their definitions may not be optionals.
 
 ```c3
@@ -492,7 +489,7 @@ Read more about the Optional types on the page about [Optionals and error handli
 
 ### Optional Excuses are of type Fault
 
-When an [Optional](../optionals/) is does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
+When an [Optional](../optionals/) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
 
 ```c3
 fault IOResult
