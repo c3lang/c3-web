@@ -566,9 +566,9 @@ const long FIB19 = @fib(19);
 // Same as const long FIB19 = 4181;
 ```
 :::note
-C3 macros are not intended for intense compile time work there are other mechanisms, such as `$exec` for that purpose.
+C3 macros are designed to provide a replacement for C preprocessor macros. They extend such macros by providing compile time evaluation using constant folding, which offers an IDE friendly, limited, compile time execution.
 
-For that reason, C3 simply uses macro expansion and constant folding, and there are practical limits to that.
+However, if you are doing more complex compile time code generation it is recommended to use `$exec` and related techniques to generate code in external scripts instead.
 :::
 Read more about compile time execution [here](/references/docs/compiletime).
 
