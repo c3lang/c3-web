@@ -16,12 +16,12 @@ The macro capabilities of C3 reaches across several constructs: macros (prefixed
     #endif
     
     // C3
-    $if $defined(x) && $y > 3:
+    $if $defined(x) && Y > 3:
         int z;
     $endif
 
     // or
-    int z @if($defined(x) && $y > 3);
+    int z @if($defined(x) && Y > 3);
 
     
 
@@ -102,7 +102,7 @@ in C3 the captured argument isn't automatically dereferenced)
     
     
     // C3
-    macro for_each(list; @body(it))
+    macro @for_each(list; @body(it))
     {
         for ($typeof(list) x = list; x; x = x.next)
         {
@@ -136,8 +136,8 @@ in C3 the captured argument isn't automatically dereferenced)
     int foo(int x) PURE_INLINE { ... }
     
     // C3
-    define @PureInline = { @pure @inline };
-    fn int foo(int) @PureInline { ... }    
+    def @NoDiscardInline = { @nodiscard @inline };
+    fn int foo(int) @NoDiscardInline { ... }
 
 
 ### Declaration macros
@@ -338,7 +338,7 @@ the arguments:
     {
        var $x = 0;
        $for (var $i = 0; $i < $vacount; $i++)
-           $x += $vaconst($i);
+           $x += $vaconst[$i];
        $endfor
        return $x;
     }
@@ -385,7 +385,7 @@ arguments 2, 3 and 4).
 
 Nor is it limited to function arguments, you can also use it with initializers:
 
-    int[*] a = { 5, $vasplat(2..), 77 };
+    int[*] a = { 5, $vasplat[2..], 77 };
 
 ## Untyped lists
 
