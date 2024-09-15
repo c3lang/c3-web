@@ -35,7 +35,7 @@ If you want to contribute to this project, you can do so by forking this reposit
 
 ## Adding Documentation content
 Navigate to one of the following folders:
-`src/content/docs/guide`
+`src/content/docs/introduction`
 or 
 `src/content/docs/references`
 
@@ -44,7 +44,7 @@ create a file ending in `.mdx` (or `.md`) (or edit one that already exists)
 and lastly add a little bit of a header on top of whatever markdown content you have, one that looks like this (for SEO and visibility on the website)
 ```astro
 ---
-title: the C3 Handbook
+title: the C3 Guide
 description: A guide to the C3 Programming Language
 ---
 aand after the `---` everything else is just plain old markdown!

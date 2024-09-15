@@ -184,378 +184,380 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"docs": {
-"guide/basic-types-and-values.md": {
-	id: "guide/basic-types-and-values.md";
-  slug: "guide/basic-types-and-values";
+		"Generic Programming": {
+"anyinterfaces.md": {
+	id: "anyinterfaces.md";
+  slug: "anyinterfaces";
+  body: string;
+  collection: "Generic Programming";
+  data: any
+} & { render(): Render[".md"] };
+"compiletime.md": {
+	id: "compiletime.md";
+  slug: "compiletime";
+  body: string;
+  collection: "Generic Programming";
+  data: any
+} & { render(): Render[".md"] };
+"generics.md": {
+	id: "generics.md";
+  slug: "generics";
+  body: string;
+  collection: "Generic Programming";
+  data: any
+} & { render(): Render[".md"] };
+"macros.md": {
+	id: "macros.md";
+  slug: "macros";
+  body: string;
+  collection: "Generic Programming";
+  data: any
+} & { render(): Render[".md"] };
+"reflection.md": {
+	id: "reflection.md";
+  slug: "reflection";
+  body: string;
+  collection: "Generic Programming";
+  data: any
+} & { render(): Render[".md"] };
+};
+"docs": {
+"Advanced/asm.md": {
+	id: "Advanced/asm.md";
+  slug: "advanced/asm";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"guide/index.mdx": {
-	id: "guide/index.mdx";
-  slug: "guide";
+"Advanced/builtins.md": {
+	id: "Advanced/builtins.md";
+  slug: "advanced/builtins";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Advanced/libraries.md": {
+	id: "Advanced/libraries.md";
+  slug: "advanced/libraries";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Build System/commands.md": {
+	id: "Build System/commands.md";
+  slug: "build-system/commands";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Build System/index.md": {
+	id: "Build System/index.md";
+  slug: "build-system";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Build System/project.md": {
+	id: "Build System/project.md";
+  slug: "build-system/project";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Error Handling/optionals.md": {
+	id: "Error Handling/optionals.md";
+  slug: "error-handling/optionals";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Error Handling/optionals_advanced.md": {
+	id: "Error Handling/optionals_advanced.md";
+  slug: "error-handling/optionals_advanced";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"FAQ/faq.md": {
+	id: "FAQ/faq.md";
+  slug: "faq/faq";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Get Involved/changes.md": {
+	id: "Get Involved/changes.md";
+  slug: "get-involved/changes";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Get Involved/index.md": {
+	id: "Get Involved/index.md";
+  slug: "get-involved";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Get Involved/rejectedideas.md": {
+	id: "Get Involved/rejectedideas.md";
+  slug: "get-involved/rejectedideas";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Getting Started/allfeatures.md": {
+	id: "Getting Started/allfeatures.md";
+  slug: "getting-started/allfeatures";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Getting Started/basic-types-and-values.md": {
+	id: "Getting Started/basic-types-and-values.md";
+  slug: "getting-started/basic-types-and-values";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Getting Started/my-first-hello-world.md": {
+	id: "Getting Started/my-first-hello-world.md";
+  slug: "getting-started/my-first-hello-world";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Getting Started/my-first-project.md": {
+	id: "Getting Started/my-first-project.md";
+  slug: "getting-started/my-first-project";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Getting Started/primer.md": {
+	id: "Getting Started/primer.md";
+  slug: "getting-started/primer";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Implementation Details/specification.md": {
+	id: "Implementation Details/specification.md";
+  slug: "implementation-details/specification";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Install C3/prebuilt-binaries.md": {
+	id: "Install C3/prebuilt-binaries.md";
+  slug: "install-c3/prebuilt-binaries";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Install C3/setup.md": {
+	id: "Install C3/setup.md";
+  slug: "install-c3/setup";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Introduction/design-goals.md": {
+	id: "Introduction/design-goals.md";
+  slug: "introduction/design-goals";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Introduction/index.mdx": {
+	id: "Introduction/index.mdx";
+  slug: "introduction";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".mdx"] };
-"guide/my-first-hello-world.md": {
-	id: "guide/my-first-hello-world.md";
-  slug: "guide/my-first-hello-world";
+"Language Common/arrays.md": {
+	id: "Language Common/arrays.md";
+  slug: "language-common/arrays";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"guide/my-first-project.md": {
-	id: "guide/my-first-project.md";
-  slug: "guide/my-first-project";
+"Language Common/attributes.md": {
+	id: "Language Common/attributes.md";
+  slug: "language-common/attributes";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/build-system/commands.md": {
-	id: "references/build-system/commands.md";
-  slug: "references/build-system/commands";
+"Language Common/cinterop.md": {
+	id: "Language Common/cinterop.md";
+  slug: "language-common/cinterop";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/build-system/index.md": {
-	id: "references/build-system/index.md";
-  slug: "references/build-system";
+"Language Common/comments.md": {
+	id: "Language Common/comments.md";
+  slug: "language-common/comments";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/build-system/project.md": {
-	id: "references/build-system/project.md";
-  slug: "references/build-system/project";
+"Language Common/contracts.md": {
+	id: "Language Common/contracts.md";
+  slug: "language-common/contracts";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/development/changes.md": {
-	id: "references/development/changes.md";
-  slug: "references/development/changes";
+"Language Common/conversion.md": {
+	id: "Language Common/conversion.md";
+  slug: "language-common/conversion";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/development/index.md": {
-	id: "references/development/index.md";
-  slug: "references/development";
+"Language Common/defer.md": {
+	id: "Language Common/defer.md";
+  slug: "language-common/defer";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/development/rejectedideas.md": {
-	id: "references/development/rejectedideas.md";
-  slug: "references/development/rejectedideas";
+"Language Common/define.md": {
+	id: "Language Common/define.md";
+  slug: "language-common/define";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/anyinterfaces.md": {
-	id: "references/docs/anyinterfaces.md";
-  slug: "references/docs/anyinterfaces";
+"Language Common/expressions.md": {
+	id: "Language Common/expressions.md";
+  slug: "language-common/expressions";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/arrays.md": {
-	id: "references/docs/arrays.md";
-  slug: "references/docs/arrays";
+"Language Common/functions.md": {
+	id: "Language Common/functions.md";
+  slug: "language-common/functions";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/asm.md": {
-	id: "references/docs/asm.md";
-  slug: "references/docs/asm";
+"Language Common/modules.md": {
+	id: "Language Common/modules.md";
+  slug: "language-common/modules";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/attributes.md": {
-	id: "references/docs/attributes.md";
-  slug: "references/docs/attributes";
+"Language Common/naming.md": {
+	id: "Language Common/naming.md";
+  slug: "language-common/naming";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/builtins.md": {
-	id: "references/docs/builtins.md";
-  slug: "references/docs/builtins";
+"Language Common/operators.md": {
+	id: "Language Common/operators.md";
+  slug: "language-common/operators";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/changesfromc.md": {
-	id: "references/docs/changesfromc.md";
-  slug: "references/docs/changesfromc";
+"Language Common/precedence.md": {
+	id: "Language Common/precedence.md";
+  slug: "language-common/precedence";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/cinterop.md": {
-	id: "references/docs/cinterop.md";
-  slug: "references/docs/cinterop";
+"Language Common/statements.md": {
+	id: "Language Common/statements.md";
+  slug: "language-common/statements";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/comments.md": {
-	id: "references/docs/comments.md";
-  slug: "references/docs/comments";
+"Language Common/syntax.md": {
+	id: "Language Common/syntax.md";
+  slug: "language-common/syntax";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/compare.md": {
-	id: "references/docs/compare.md";
-  slug: "references/docs/compare";
+"Language Common/undefinedbehaviour.md": {
+	id: "Language Common/undefinedbehaviour.md";
+  slug: "language-common/undefinedbehaviour";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/compiletime.md": {
-	id: "references/docs/compiletime.md";
-  slug: "references/docs/compiletime";
+"Language Common/variables.md": {
+	id: "Language Common/variables.md";
+  slug: "language-common/variables";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/contracts.md": {
-	id: "references/docs/contracts.md";
-  slug: "references/docs/contracts";
+"Language Common/vectors.md": {
+	id: "Language Common/vectors.md";
+  slug: "language-common/vectors";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/conversion.md": {
-	id: "references/docs/conversion.md";
-  slug: "references/docs/conversion";
+"Language Comparisons/changesfromc.md": {
+	id: "Language Comparisons/changesfromc.md";
+  slug: "language-comparisons/changesfromc";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/defer.md": {
-	id: "references/docs/defer.md";
-  slug: "references/docs/defer";
+"Language Comparisons/compare.md": {
+	id: "Language Comparisons/compare.md";
+  slug: "language-comparisons/compare";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/define.md": {
-	id: "references/docs/define.md";
-  slug: "references/docs/define";
+"Language Overview/examples.md": {
+	id: "Language Overview/examples.md";
+  slug: "language-overview/examples";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/examples.md": {
-	id: "references/docs/examples.md";
-  slug: "references/docs/examples";
+"Language Overview/sample.md": {
+	id: "Language Overview/sample.md";
+  slug: "language-overview/sample";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/expressions.md": {
-	id: "references/docs/expressions.md";
-  slug: "references/docs/expressions";
+"Language Overview/types.md": {
+	id: "Language Overview/types.md";
+  slug: "language-overview/types";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/faq.md": {
-	id: "references/docs/faq.md";
-  slug: "references/docs/faq";
+"Standard Library/standard_library.md": {
+	id: "Standard Library/standard_library.md";
+  slug: "standard-library/standard_library";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/functions.md": {
-	id: "references/docs/functions.md";
-  slug: "references/docs/functions";
+"Standard Library/stdlib_refcard.md": {
+	id: "Standard Library/stdlib_refcard.md";
+  slug: "standard-library/stdlib_refcard";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"references/docs/generics.md": {
-	id: "references/docs/generics.md";
-  slug: "references/docs/generics";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/libraries.md": {
-	id: "references/docs/libraries.md";
-  slug: "references/docs/libraries";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/macros.md": {
-	id: "references/docs/macros.md";
-  slug: "references/docs/macros";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/modules.md": {
-	id: "references/docs/modules.md";
-  slug: "references/docs/modules";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/naming.md": {
-	id: "references/docs/naming.md";
-  slug: "references/docs/naming";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/operators.md": {
-	id: "references/docs/operators.md";
-  slug: "references/docs/operators";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/optionals.md": {
-	id: "references/docs/optionals.md";
-  slug: "references/docs/optionals";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/optionals_advanced.md": {
-	id: "references/docs/optionals_advanced.md";
-  slug: "references/docs/optionals_advanced";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/precedence.md": {
-	id: "references/docs/precedence.md";
-  slug: "references/docs/precedence";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/reflection.md": {
-	id: "references/docs/reflection.md";
-  slug: "references/docs/reflection";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/sample.md": {
-	id: "references/docs/sample.md";
-  slug: "references/docs/sample";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/specification.md": {
-	id: "references/docs/specification.md";
-  slug: "references/docs/specification";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/standard_library.md": {
-	id: "references/docs/standard_library.md";
-  slug: "references/docs/standard_library";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/statements.md": {
-	id: "references/docs/statements.md";
-  slug: "references/docs/statements";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/stdlib_refcard.md": {
-	id: "references/docs/stdlib_refcard.md";
-  slug: "references/docs/stdlib_refcard";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/syntax.md": {
-	id: "references/docs/syntax.md";
-  slug: "references/docs/syntax";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/types.md": {
-	id: "references/docs/types.md";
-  slug: "references/docs/types";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/undefinedbehaviour.md": {
-	id: "references/docs/undefinedbehaviour.md";
-  slug: "references/docs/undefinedbehaviour";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/variables.md": {
-	id: "references/docs/variables.md";
-  slug: "references/docs/variables";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/vectors.md": {
-	id: "references/docs/vectors.md";
-  slug: "references/docs/vectors";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/allfeatures.md": {
-	id: "references/getting-started/allfeatures.md";
-  slug: "references/getting-started/allfeatures";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/prebuilt-binaries.md": {
-	id: "references/getting-started/prebuilt-binaries.md";
-  slug: "references/getting-started/prebuilt-binaries";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/primer.md": {
-	id: "references/getting-started/primer.md";
-  slug: "references/getting-started/primer";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/setup.md": {
-	id: "references/getting-started/setup.md";
-  slug: "references/getting-started/setup";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/index.mdx": {
-	id: "references/index.mdx";
-  slug: "references";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".mdx"] };
 };
 
 	};
