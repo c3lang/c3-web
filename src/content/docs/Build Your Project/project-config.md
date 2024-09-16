@@ -1,8 +1,8 @@
 ---
-title: Project Structure
-description: Project Structure
+title: Project Configuration
+description: Project Configuration
 sidebar:
-    order: 181
+    order: 182
 ---
 # Customizing A Project
 

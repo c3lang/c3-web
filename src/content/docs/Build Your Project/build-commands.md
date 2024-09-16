@@ -1,21 +1,33 @@
 ---
-title: Build Commands
-description: Build Commands
+title: Project Build Commands
+description: Project Build Commands
 sidebar:
-    order: 182
+    order: 181
 ---
 
-When starting out, with C3 it's natural to use `run` to try things out. For larger projects, the built-in build system is instead recommended. 
+
+
+Building a project is done by invoking the C3 compiler with the `build` or `run` command inside of the project structure. The compiler will search upwards in the file hierarchy until a `project.json` file is found.
+
+You can also [customise the project build config](../project-config/).
+
+## Compile Individual Files
 
 By default the compiler is compiling stand-alone files to output an executable binary.
 
-`c3c <file1> <file2> <file3>`
+```bash
+c3c <file1> <file2> <file3>
+```
 
 ## run
 
-The run command works same as compilation, but also immediately runs the resulting executable.
+When starting out, with C3 it's natural to use `run` to try things out. For larger projects, the built-in build system is recommended instead. 
 
-`c3c run <file1> <file2> <file3>`
+The `run` command works same as compilation, but also immediately runs the resulting executable.
+
+```bash
+c3c run <file1> <file2> <file3>
+```
 
 ## Common additional parameters
 
@@ -26,7 +38,9 @@ Additional parameters:
     
 ## init
 
-`c3c init <project_name> [optional path]`.
+```bash
+c3c init <project_name> [optional path]`
+```
 
 Create a new project structure in the current directory.
 
@@ -41,12 +55,11 @@ It is also possible to give the path to a custom template.
 Additional parameters:
 - `--template <path>` indicate an alternative template to use. 
 
-`c3c init hello_world` will create the following structure:
+For example `c3c init hello_world` creates the following structure:
 
 ```
-$ tree .
-.
-└── hello_world
+hello_world
+    |
     ├── LICENSE
     ├── README.md
     ├── build
@@ -65,7 +78,9 @@ $ tree .
 ```
 ## build
 
-`build [target]`
+```bash
+build [target]
+```
 
 Build the project in the current path. It doesn't matter where in the project structure you are. 
 
@@ -73,34 +88,46 @@ The built-in templates define two targets: `debug` (which is the default) and `r
 
 ## clean
 
-`clean`
+```bash
+clean
+```
 
 ## build-run
 
-`build-run [target]`
+```bash
+build-run [target]
+```
 
 Build the target (if needed) and run the executable.
 
 ## clean-run
 
-`clean-run [target]`
+```bash
+clean-run [target]
+```
 
 Clean, build and run the target.
 
 ## dist
 
-`dist [target]`
+```bash
+dist [target]
+```
 
 Clean, build and package the target.
 
 ## docs
 
-`docs [target]`
+```bash
+docs [target]
+```
 
 Rebuilds the documentation.
 
 ## bench
 
-`bench [target]`
+```bash
+bench [target]
+```
 
 Runs benchmarks on a target.

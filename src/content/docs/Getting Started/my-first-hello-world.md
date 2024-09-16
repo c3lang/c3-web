@@ -5,7 +5,12 @@ sidebar:
   order: 30
 ---
 
-Let's start with a simple "Hello World" program. The simplest Hello World you can write in C3 looks like this:
+:::note[Not installed the C3 compiler yet?]
+[Get C3 from here](../../install-c3/prebuilt-binaries/), available on Mac, Windows and Linux.
+:::
+
+## 👋 Hello world
+Let's start with the traditional first program, Hello World in C3:
 
 ```c3
 import std::io;
@@ -15,36 +20,31 @@ fn void main()
     io::printn("Hello, World!");
 }
 ```
-The `import` statement imports other modules, and we want `printn` which
-is in `std::io`
 
-:::note
+The [`import`]((/language-fundamentals/modules/#importing-modules)) statement imports other modules, and we want `printn` which
+is in `std::io`.
 
-Import is always recursive, so `import std::io` actually
-imports both `std::io` and its sub-modules, such as `std::io::path` (which 
-handles file paths). You could even do `import std;`, which would import the entire standard library into your project!
-:::
-
-
-Next we define a function, which starts with the `fn` keyword followed by the return type. In this case we don't need to return anything, so we use `void`. Then follows the name of the function, `main`, followed by the parameter list, which is empty.
-```cpp
+Next we define a [function](/language-fundamentals/functions/) which starts with the `fn` keyword followed by the return type. We don't need to return anything, so return `void`. The function name `main` then follows, followed by the function's parameter list, which is empty.
+```c3
 fn void main() {}
 ```
 
-:::tip
-the name `main` is a bit special as it is also the entry point to the program.
+:::note
+The function named `main` is a bit special, as it is where the program starts, or the entry point of the program.
 
-For Unix-like OSes there are a few different variants, for example we might declare it as `fn void main(String[] args)`. In that case the parameter "args" contains a *slice* of strings, which correspond to the command line arguments, with the first one being the name of the application itself.
+For Unix-like OSes there are a few different variants, for example we might declare it as `fn void main(String[] args)`. In that case the parameter "args" contains a [slice](/language-common/arrays/#slice) of strings, of the program's command line arguments, starting with the name of the program, itself.
 :::
 
 
-`{` and `}` signifies the start and end of the function respectively. Inside we have a single
-call to the function `printn` in `std::io`. We use the last part of the path "io" in front of
+### 🔭 Function scope
+`{` and `}` signifies the start and end of the function respectively, 
+we call this the function's scope. Inside the function scope we have a single function 
+call to `printn` inside `std::io`. We use the last part of the path "io" in front of
 the function to identify what module it belongs to.
 
-:::tip
-We could also have used `std::io::printn`
-if we wanted. Just a part of the module path, like "io::printn", is known as "path-shortening" and is the common way of referring to functions (avoid `std::io::printn`, it's not idiomatic).
+### 📏 Imports can use a shorthand
+We could have used the original longer path: `std::io::printn`
+if we wanted, but we *can* shorten it to just the lowest level module like `io::printn`. This is the *convention* in C3 and is is known as "path-shortening", it avoids writing long import paths that can make code harder to read.
 
 ```diff lang="cpp"
 - std::io::printn("Hello, World!");
@@ -53,37 +53,29 @@ if we wanted. Just a part of the module path, like "io::printn", is known as "pa
 ```
 :::
 
-The `io::printn` function takes a single argument and prints it, followed by a line feed After this the function ends and the program terminates.
-
-```cpp  ins="Hello, World!"
-fn void main()
-{
-    io::printn("Hello, World!");
-}
-
-```
+The `io::printn` function takes a single argument and prints it, followed by a newline, then the function ends and the program terminates.
 
 
-### Compiling the program
+## 🔧 Compiling the program
 
 Let's take the above program and put it in a file called `hello_world.c3`.
 
-We can then compile it:
+We can then compile it with:
 
 ```bash 
-$ c3c compile hello_world.c3
+c3c compile hello_world.c3
 ```
 
 And run it:
 
 ```bash
-$ ./hello_world
+./hello_world
 ```
 
 It should print `Hello, World!` and return back to the command line prompt. 
 If you are on Windows, you will have `hello_world.exe` instead. Call it in the same way.
 
-### Compiling and running
+### 🏃 Compiling and running
 
 When we start out it can be useful to compile and then have the compiler start the
 program immediately. We can do that with `compile-run`:
@@ -95,4 +87,8 @@ $ c3c compile-run hello_world.c3
 > Hello, World
 ```
 
-If you followed along so far: Congratulations! You're now up and running with C3.
+### 🎉 Successfully working? 
+Congratulations! You're now up and running with C3.
+
+### ❓ Need help?
+We're happy to help on the [C3 Discord](https://discord.gg/qN76R87).
