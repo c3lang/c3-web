@@ -11,7 +11,7 @@ In C3, undefined behaviour means that the compiler is free to interpret *undefin
 
 In the example below:
 
-```
+```c3
 uint x = foo();
 uint z = 255 / x;
 return x != 0;
@@ -20,14 +20,14 @@ return x != 0;
 The case of `x == 0` would invoke undefined behaviour for `255/x`. For that reason, 
 the compiler may assume that `x != 0` and compile it into the following code: 
 
-```
+```c3
 foo();
 return true;
 ```
 
 As a contrast, the safe build will compile code equivalent to the following.
 
-```
+```c3
 uint x = foo();
 if (x == 0) trap("Division by zero")
 return true;

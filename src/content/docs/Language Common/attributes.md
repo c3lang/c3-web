@@ -232,7 +232,7 @@ Emits a weak symbol rather than a global.
 
 User defined attributes are intended for conditional application of built-in attributes.
  
-```
+```c3
 def @MyAttribute = { @noreturn @inline };
 
 // The following two are equivalent:

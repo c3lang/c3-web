@@ -80,4 +80,7 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
 - C3 uses fixed integer sizes, this means that `int` and `CInt` does not need to be the same.
 - Passing arrays by value like in C3 must be represented as passing a struct containing the array.
 - Atomic types are not supported by C3.
-- Volatile and const have no representation in C3.
+    - In C3 there are generic Atomic types instead.
+- There are no `volatile` and `const` **qualifiers** like in C. 
+    - C3 has [global constants](../../language-fundamentals/naming/#global-constants) declared with `const`. 
+    - Instead of the `volatile` type qualifier, there are standard library macros `@volatile_load` and `@volatile_store`.

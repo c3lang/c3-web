@@ -5,7 +5,7 @@ sidebar:
     order: 41
 ---
 
-C3 introduces fairly strict naming rules to reduce ambiguity. 
+C3 introduces fairly strict naming rules to reduce ambiguity, make the language compile faster and simplify the compiler. 
 
 As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
 
@@ -13,7 +13,7 @@ As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initi
 
 All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
 
-```
+```c3
 struct Foo @extern("foo")
 {
     int x;
@@ -43,7 +43,7 @@ fault Err
 
 All variables and parameters *except for* global constant variables must start with a-z after any optional initial `_`. `___a` `fooBar` and `_test_` are all valid variable / parameter names. `_`, `_Bar`, `X` are not.
 
-```
+```c3
 int theGlobal = 1;
 
 fn void foo(int x)
@@ -57,7 +57,7 @@ fn void foo(int x)
 
 Global constants must start with A-Z after any optional initial `_`. `_FOO2`, `BAR_FOO`, `X` are all valid global constants, `_`, `_bar`, `x` are not. 
 
-```
+```c3
 const int A_VALUE = 12;
 ```
 
@@ -65,7 +65,7 @@ const int A_VALUE = 12;
 
 Enum and fault values follow the same naming standard as global constants.
 
-```
+```c3
 enum Baz 
 {
     VALUE_1,
@@ -95,7 +95,7 @@ module foo;
 
 Functions and macros must start with a-z after any optional initial `_`.
 
-```
+```c3
 fn void theMostAmazingFunction() 
 { 
     return;

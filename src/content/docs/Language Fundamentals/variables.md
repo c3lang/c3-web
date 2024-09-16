@@ -8,9 +8,9 @@ sidebar:
 
 ### Zero init by default
 
-Unlike C, C3 local variables are zero-initialized by default. To avoid zero-init, you need to explicitly opt-out.
+Unlike C, C3 local variables are zero-initialized by default. To avoid zero initialization, you need to explicitly opt-out.
 
-```
+```c3
 int x;               // x = 0
 int y @noinit;       // y is explicitly undefined and must be assigned before use.
 

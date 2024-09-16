@@ -48,8 +48,8 @@ An expression with an integer type, may implicitly narrow to smaller integer typ
 
 As rough guide: if all the sub expressions originally are small enough it's ok to implicitly convert the result.
 
-Examples
-```
+Examples:
+```c3
 float16 h = 12.0;
 float f = 13.0;
 double d = 22.0;
@@ -72,28 +72,32 @@ if the expression is a primary expression, or a unary operation on a primary exp
 
 For assignment, special rules hold. For an assignment to a binary expression, *if* its two subexpressions are "simple expressions" and the binary expression is `+`, `-`, `/`, `*`, allow an implicit promotion of the two sub expressions.
 
-    int a = ...
-    short b = ...
-    char c = ...
-    long d = a; // Valid - simple expression.
-    int e = (int)(d + (a + b)); // Error
-    int f = (int)(d + ~b); // Valid
-    long g = a + b; // Valid
+```c3
+int a = ...
+short b = ...
+char c = ...
+long d = a; // Valid - simple expression.
+int e = (int)(d + (a + b)); // Error
+int f = (int)(d + ~b); // Valid
+long g = a + b; // Valid
+```
 
 As a rule of thumb, if there are more than one possible conversion an explicit cast is needed.
 
 Example:
 
-    long h = a + (b + c);
+```c3
+long h = a + (b + c);
 
-    // Possible intention 1
-    long h = (long)(a + (b + c));
+// Possible intention 1
+long h = (long)(a + (b + c));
 
-    // Possible intention 2
-    long h = (long)a + (long)(b + c);
-    
-    // Possible intention 3
-    long h = (long)a + ((long)b + (long)c);
+// Possible intention 2
+long h = (long)a + (long)(b + c);
+
+// Possible intention 3
+long h = (long)a + ((long)b + (long)c);
+```
 
 ## Maximum type
 

@@ -11,7 +11,7 @@ Contracts are optional pre- and post-conditions checks that the compiler may use
 
 Pre-conditions are usually used to validate incoming arguments. Each condition must be an expression that can be evaluated to a boolean. A pre-condition use the `@require` annotation.
 
-```
+```c3
 /**
  * @require foo > 0, foo < 1000
  **/
@@ -28,7 +28,7 @@ The post condition uses the `@ensure` annotation. Where `return` is used to repr
 
 
     
-```
+```c3
 /**
  * @require foo != null
  * @ensure return > foo.x
@@ -59,7 +59,7 @@ and is checked for `null`.
 
 However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
 
-```
+```c3
 fn void bad_func(int* i)
 {
     *i = 2;
@@ -82,8 +82,8 @@ fn void test()
 ```
 
 However, compilers will usually detect this:
-```
 
+```c3
 /**
  * @param [&in] i
  */

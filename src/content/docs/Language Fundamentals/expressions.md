@@ -8,15 +8,15 @@ sidebar:
 Expressions work like in C, with one exception: it is possible to take the address of a temporary. This uses the operator `&&` rather than `&`.
 
 Consequently, this is valid:
+```c3
+fn void test(int* x) { ... }
 
-    fn void test(int* x) { ... }
+test(&&1);
 
-    test(&&1);
-
-    // In C:
-    // int x = 1;
-    // test(&x);
-
+// In C:
+// int x = 1;
+// test(&x);
+```
 ## Well-defined evaluation order
 
 Expressions have a well-defined evaluation order:
@@ -31,56 +31,57 @@ Expressions have a well-defined evaluation order:
 
 C3 has C's compound literals, but unlike C's cast style syntax `(MyStruct) { 1, 2 }`, 
 it uses C++ syntax: `MyStruct { 1, 2 }`.
+```c3
+struct Foo
+{
+    int a;
+    double b;
+}
 
-    struct Foo
-    {
-        int a;
-        double b;
-    }
+fn void test1(Foo x) { ... }
 
-    fn void test1(Foo x) { ... }
+... 
 
-    ... 
-
-    test1(Foo { 1, 2.0 });
+test1(Foo { 1, 2.0 });
+```
 
 Arrays follow the same syntax:
+```c3
+fn void test2(int[3] x) { ... }
 
-    fn void test2(int[3] x) { ... }
+...
 
-    ...
-
-    test2(int[3] { 1, 2, 3 });
-
+test2(int[3] { 1, 2, 3 });
+```
 
 Note that when it's possible, inferring the type is allowed, so we have for the above examples:
-
-    test1({ 1, 2.0 });
-    test2({ 1, 2, 3 });
-
+```c3
+test1({ 1, 2.0 });
+test2({ 1, 2, 3 });
+```
 One may take the address of temporaries, using `&&` (rather than `&` for normal variables). This allows the following:
 
-Passing a slice
+Passing a [slice](../../language-common/arrays/#slice)
+```c3
+fn void test(int[] y) { ... }
 
-    fn void test(int[] y) { ... }
+// Using &&
+test(&&int[3]{ 1, 2, 3 });
 
-    // Using &&
-    test(&&int[3]{ 1, 2, 3 });
+// Explicitly slicing:
+test(int[3]{ 1, 2, 3 }[..]));
 
-    // Explicitly slicing:
-    test(int[3]{ 1, 2, 3 }[..]));
+// Using a slice directly as a temporary:
+test(int[]{ 1, 2, 3 }));
+```
+Passing the pointer to an [array](../../language-common/arrays)
+```c3
+fn void test1(int[3]* z) { ... }
+fn void test2(int* z) { ... }
 
-    // Using a slice directly as a temporary:
-    test(int[]{ 1, 2, 3 }));
-
-Passing the pointer to an array
-
-    fn void test1(int[3]* z) { ... }
-    fn void test2(int* z) { ... }
-
-    test1(&&int[3]{ 1, 2, 3 }));
-    test2(&&int[3]{ 1, 2, 3 }));
-
+test1(&&int[3]{ 1, 2, 3 }));
+test2(&&int[3]{ 1, 2, 3 }));
+```
 
 ## Constant expressions
 
@@ -107,7 +108,9 @@ Some things that are *not* constant expressions:
 The `$embed(...)` function includes the contents of a file into the compilation as a
 constant array of bytes:
 
-    char[*] my_image = $embed("my_image.png");
+```c3
+char[*] my_image = $embed("my_image.png");
+```
 
 The result of an embed work similar to a string literal and can implicitly convert to a `char*`, 
 `void*`, `char[]`, `char[*]` and `String`.
@@ -116,17 +119,22 @@ The result of an embed work similar to a string literal and can implicitly conve
 
 It's possible to limit the length of included with the optional second parameter.
 
-    char[4] my_data = $embed("foo.txt", 4);
+```c3
+char[4] my_data = $embed("foo.txt", 4);
+```
 
 ##### Failure to load at compile time and defaults
 
-Usually it's a compile time error if the file can't be included, but sometimes it's useful
-to only optionally include it. If this is desired, declare the left hand side to be an optional:
+Usually it's a compile time error if the file can't be included, but sometimes it's useful to only optionally include it. 
+If this is desired, declare the left hand side an [Optional](../../language-common/optionals/essential/#what-is-an-optional):
 
-    char[]! my_image = $embed("my_image.png");
+```c3
+char[]! my_image = $embed("my_image.png");
+```
 
 `my_image` with be an optional `IoError.FILE_NOT_FOUND?` if the image is missing.
 
-This also allows us to pass a default value using `??`:
-
-    char[] my_image = $embed("my_image.png") ?? DEFAULT_IMAGE_DATA;
+This also allows us to pass a [default value using `??`](../../language-common/optionals/advanced/#return-a-default-value-if-optional-is-empty):
+```c3
+char[] my_image = $embed("my_image.png") ?? DEFAULT_IMAGE_DATA;
+```
