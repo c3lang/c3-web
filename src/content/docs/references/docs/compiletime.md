@@ -223,11 +223,6 @@ A set of compile time functions are available at compile time:
 
 Get the alignment of something. See [reflection](../reflection).
 
-### `$and`
-
-Evaluate a list of constant boolean expressions at compile time, stopping
-evaluation if a `false` result is found.
-
 ### `$append`
 
 Append a compile time constant to a compile time array or untyped list.
@@ -239,10 +234,6 @@ Check a condition at compile time.
 ### `$assignable`
 
 Check if an expression is assignable to the given type, e.g. `Type x = expr;` would be valid.
-
-### `$concat`
-
-Concatenate two constant arrays, strings or untyped lists at compile time.
 
 ### `$defined`
 
@@ -291,11 +282,6 @@ Get the local name of a symbol. See [reflection](../reflection).
 ### `$offsetof`
 
 Get the offset of a member. See [reflection](../reflection).
-
-### `$or`
-
-Evaluate a list of constant boolean expressions at compile time, stopping
-evaluation if a `true` result is found.
 
 ### `$qnameof`
 
