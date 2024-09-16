@@ -449,7 +449,7 @@ C.
 - [Contracts](/references/docs/contracts)
 - [Compile time evaluation](/references/docs/compiletime)
 - [Reflection](/references/docs/reflection)
-- [Operator overloading](/references/docs/operators)
+- [Operator overloading](/generic-programming/operator-overloading/)
 - [Macro methods](/references/docs/macros/#macro-methods)
 - [Static initialize and finalize functions](/references/docs/functions#static-initializer-and-finalizers)
 - [Dynamic interfaces](/references/docs/anyinterfaces)

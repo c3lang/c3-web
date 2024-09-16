@@ -245,7 +245,7 @@ Print a message to stdout when compiling the code.
 
 ### `$embed`
 
-Embed binary data from a file. See [expressions](../expressions).
+Embed binary data from a file. See [expressions](/language-fundamentals/expressions/).
 
 ### `$error`
 

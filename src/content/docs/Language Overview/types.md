@@ -253,7 +253,7 @@ the raw `void*` pointer.
 ### Array types
 
 Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
-from the initializer. See the chapter on [arrays](/references/docs/arrays).
+from the initializer. See the chapter on [arrays](/language-common/arrays/).
 
 ### Vector types
 

@@ -5,7 +5,7 @@ sidebar:
     order: 60
 ---
 
-Arrays have a central role in programming. C3 offers built-in arrays, slices and [vectors](/references/docs/vectors/).
+Arrays have a central role in programming. C3 offers built-in arrays, [slices](#slice) and [vectors](../vectors/).
 The standard library enhances this further with dynamically sized arrays and other collections.
 
 ## Fixed size 1D arrays
@@ -260,7 +260,7 @@ fn void test()
 }
 ```
 
-For more information, see [operator overloading](/references/docs/operators)
+For more information, see [operator overloading](/generic-programming/operator-overloading/)
 
 ## Dynamic arrays and lists
 

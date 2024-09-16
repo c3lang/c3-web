@@ -379,7 +379,7 @@ fn void print_file2(String filename)
 
 
 
-Read more about optionals and error handling [here](/references/docs/optionals).
+Read more about optionals and error handling [here](/language-common/optionals/essential/#what-is-an-optional).
 
 #### Contracts
 
@@ -407,7 +407,7 @@ fn int getLastElement(int* array, int length)
 }
 ```
 
-Read more about contracts [here](/references/docs/contracts).
+Read more about contracts [here](/language-common/contracts/).
 
 #### Macros
 
@@ -484,7 +484,7 @@ fn void test()
 }
 ```
 
-Read more about macros [here](/references/docs/macros).
+Read more about macros [here](/generic-programming/macros/).
 
 #### Methods
 
@@ -570,7 +570,7 @@ C3 macros are designed to provide a replacement for C preprocessor macros. They 
 
 However, if you are doing more complex compile time code generation it is recommended to use `$exec` and related techniques to generate code in external scripts instead.
 :::
-Read more about compile time execution [here](/references/docs/compiletime).
+Read more about compile time execution [here](/generic-programming/compiletime/).
 
 #### Generic modules
 
@@ -632,7 +632,7 @@ fn void test()
 }
 ```
 
-Read more about generic modules [here](/references/docs/generics)
+Read more about generic modules [here](/generic-programming/generics/)
 
 #### Dynamic calls
 
@@ -681,4 +681,4 @@ fn void main()
 }
 ```
 
-Read more about dynamic calls [here](/references/docs/anyinterfaces).
+Read more about dynamic calls [here](/generic-programming/anyinterfaces/).

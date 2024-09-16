@@ -155,7 +155,7 @@ on faults and enums to remove the stored names.
 
 *Used for: method, macro method*
 
-This attribute has arguments `[]` `[]=` `&[]` and `len` allowing operator overloading for `[]` and `foreach`.
+This attribute has arguments `[]` `[]=` `&[]` and `len` allowing [operator overloading](/generic-programming/operator-overloading/) for `[]` and `foreach`.
 By implementing `[]` and `len`, `foreach` and `foreach_r` is enabled. In order to do `foreach` by reference,
 `&[]` must be implemented as well.
 
