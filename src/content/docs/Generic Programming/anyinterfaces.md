@@ -2,7 +2,7 @@
 title: Any and interfaces
 description: Any and interfaces
 sidebar:
-    order: 122
+    order: 80
 ---
 
 ## Working with the type of `any` at runtime.

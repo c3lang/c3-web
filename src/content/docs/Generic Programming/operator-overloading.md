@@ -2,7 +2,7 @@
 title: Operator Overloading
 description: Operator Overloading
 sidebar:
-    order: 999
+    order: 81
 ---
 
 C3 allows some limited operator overloading for working with containers.

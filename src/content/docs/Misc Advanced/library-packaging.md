@@ -1,6 +1,6 @@
 ---
-title: Libraries
-description: Libraries
+title: Library Packaging
+description: Library Packaging
 sidebar:
     order: 227
 ---

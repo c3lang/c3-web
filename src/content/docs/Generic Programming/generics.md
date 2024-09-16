@@ -2,7 +2,7 @@
 title: Generics
 description: Generics
 sidebar:
-    order: 118
+    order: 82
 ---
 
 Generic modules are parameterized modules that allow functionality for arbitrary types.

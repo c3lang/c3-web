@@ -7,14 +7,14 @@ sidebar:
 
 ## Design goals
 
-- Procedural "get things done" type of language.
+- Procedural language, with a pragmatic ethos to get work done.
+- Minimalistic, no feature should be unnecessary or redundant.
 - Stay close to C - only change where there is a significant need.
-- Flawless C integration.
 - Learning C3 should be easy for a C programmer.
+- Flawless C integration.
 - Dare add conveniences if the value is great.
-- Data is inert and zero is initialization.
+- Data is inert and by default is zero initialized.
 - Avoid "big ideas".
-- Avoid the kitchen sink language trap.
 
 ## Features
 
@@ -41,11 +41,6 @@ Binaries are directly downloadable for the following platforms:
 - Ubuntu x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz), [install instructions](https://github.com/c3lang/c3c#installing-on-debian-with-precompiled-binaries).
 - Debian x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz), [install instructions](https://github.com/c3lang/c3c#installing-on-debian-with-precompiled-binaries).
 
-
-## Community: 
-
-1. Discord: invite link: https://discord.gg/qN76R87
-2. Discourse: https://c3lang.discourse.group
 
 ## C3 Origin Story
 

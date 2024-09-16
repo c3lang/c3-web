@@ -12,7 +12,8 @@ So if you find the project interesting, here's what you can do to help:
 
 
 ### 💬 Discuss The Language
-On the [C3 Discord](https://discord.gg/qN76R87). 
+- Join us on [C3 Discord](https://discord.gg/qN76R87). 
+- Open a thread on [Discourse](https://c3lang.discourse.group).
 
 ### 💡 Suggest Improvements
 - Found a bug? [File an issue for C3 compiler](https://github.com/c3lang/c3c/issues/new)

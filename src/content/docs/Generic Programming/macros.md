@@ -2,7 +2,7 @@
 title: Macros
 description: Macros
 sidebar:
-    order: 119
+    order: 83
 ---
 The macro capabilities of C3 reaches across several constructs: macros (prefixed with `@` at invocation), [generic functions](/references/docs/generics/#generic-functions), [generic modules](/references/docs/generics/#generic-modules), compile time variables (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 

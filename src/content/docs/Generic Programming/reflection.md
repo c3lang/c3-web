@@ -2,7 +2,7 @@
 title: Reflection
 description: Reflection
 sidebar:
-    order: 120
+    order: 85
 ---
 
 C3 allows both compile time and runtime reflection.

@@ -184,65 +184,7 @@ declare module 'astro:content' {
 	>;
 
 	type ContentEntryMap = {
-		"Generic Programming": {
-"anyinterfaces.md": {
-	id: "anyinterfaces.md";
-  slug: "anyinterfaces";
-  body: string;
-  collection: "Generic Programming";
-  data: any
-} & { render(): Render[".md"] };
-"compiletime.md": {
-	id: "compiletime.md";
-  slug: "compiletime";
-  body: string;
-  collection: "Generic Programming";
-  data: any
-} & { render(): Render[".md"] };
-"generics.md": {
-	id: "generics.md";
-  slug: "generics";
-  body: string;
-  collection: "Generic Programming";
-  data: any
-} & { render(): Render[".md"] };
-"macros.md": {
-	id: "macros.md";
-  slug: "macros";
-  body: string;
-  collection: "Generic Programming";
-  data: any
-} & { render(): Render[".md"] };
-"reflection.md": {
-	id: "reflection.md";
-  slug: "reflection";
-  body: string;
-  collection: "Generic Programming";
-  data: any
-} & { render(): Render[".md"] };
-};
-"docs": {
-"Advanced/asm.md": {
-	id: "Advanced/asm.md";
-  slug: "advanced/asm";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Advanced/builtins.md": {
-	id: "Advanced/builtins.md";
-  slug: "advanced/builtins";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Advanced/libraries.md": {
-	id: "Advanced/libraries.md";
-  slug: "advanced/libraries";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
+		"docs": {
 "Build System/commands.md": {
 	id: "Build System/commands.md";
   slug: "build-system/commands";
@@ -264,16 +206,16 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Error Handling/optionals.md": {
-	id: "Error Handling/optionals.md";
-  slug: "error-handling/optionals";
+"FAQ/changesfromc.md": {
+	id: "FAQ/changesfromc.md";
+  slug: "faq/changesfromc";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Error Handling/optionals_advanced.md": {
-	id: "Error Handling/optionals_advanced.md";
-  slug: "error-handling/optionals_advanced";
+"FAQ/compare-languages.md": {
+	id: "FAQ/compare-languages.md";
+  slug: "faq/compare-languages";
   body: string;
   collection: "docs";
   data: any
@@ -285,9 +227,51 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Get Involved/changes.md": {
-	id: "Get Involved/changes.md";
-  slug: "get-involved/changes";
+"FAQ/rejected-ideas.md": {
+	id: "FAQ/rejected-ideas.md";
+  slug: "faq/rejected-ideas";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/anyinterfaces.md": {
+	id: "Generic Programming/anyinterfaces.md";
+  slug: "generic-programming/anyinterfaces";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/compiletime.md": {
+	id: "Generic Programming/compiletime.md";
+  slug: "generic-programming/compiletime";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/generics.md": {
+	id: "Generic Programming/generics.md";
+  slug: "generic-programming/generics";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/macros.md": {
+	id: "Generic Programming/macros.md";
+  slug: "generic-programming/macros";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/operator-overloading.md": {
+	id: "Generic Programming/operator-overloading.md";
+  slug: "generic-programming/operator-overloading";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Generic Programming/reflection.md": {
+	id: "Generic Programming/reflection.md";
+  slug: "generic-programming/reflection";
   body: string;
   collection: "docs";
   data: any
@@ -295,20 +279,6 @@ declare module 'astro:content' {
 "Get Involved/index.md": {
 	id: "Get Involved/index.md";
   slug: "get-involved";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Get Involved/rejectedideas.md": {
-	id: "Get Involved/rejectedideas.md";
-  slug: "get-involved/rejectedideas";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Getting Started/allfeatures.md": {
-	id: "Getting Started/allfeatures.md";
-  slug: "getting-started/allfeatures";
   body: string;
   collection: "docs";
   data: any
@@ -334,9 +304,16 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Getting Started/primer.md": {
-	id: "Getting Started/primer.md";
-  slug: "getting-started/primer";
+"Implementation Details/change-logs.md": {
+	id: "Implementation Details/change-logs.md";
+  slug: "implementation-details/change-logs";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Implementation Details/grammar.md": {
+	id: "Implementation Details/grammar.md";
+  slug: "implementation-details/grammar";
   body: string;
   collection: "docs";
   data: any
@@ -348,16 +325,16 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Install C3/prebuilt-binaries.md": {
-	id: "Install C3/prebuilt-binaries.md";
-  slug: "install-c3/prebuilt-binaries";
+"Install C3/compile.md": {
+	id: "Install C3/compile.md";
+  slug: "install-c3/compile";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Install C3/setup.md": {
-	id: "Install C3/setup.md";
-  slug: "install-c3/setup";
+"Install C3/prebuilt-binaries.md": {
+	id: "Install C3/prebuilt-binaries.md";
+  slug: "install-c3/prebuilt-binaries";
   body: string;
   collection: "docs";
   data: any
@@ -376,6 +353,20 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".mdx"] };
+"Language Common/Optionals/advanced.md": {
+	id: "Language Common/Optionals/advanced.md";
+  slug: "language-common/optionals/advanced";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Common/Optionals/essential.md": {
+	id: "Language Common/Optionals/essential.md";
+  slug: "language-common/optionals/essential";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
 "Language Common/arrays.md": {
 	id: "Language Common/arrays.md";
   slug: "language-common/arrays";
@@ -397,23 +388,9 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Language Common/comments.md": {
-	id: "Language Common/comments.md";
-  slug: "language-common/comments";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
 "Language Common/contracts.md": {
 	id: "Language Common/contracts.md";
   slug: "language-common/contracts";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/conversion.md": {
-	id: "Language Common/conversion.md";
-  slug: "language-common/conversion";
   body: string;
   collection: "docs";
   data: any
@@ -432,76 +409,6 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Language Common/expressions.md": {
-	id: "Language Common/expressions.md";
-  slug: "language-common/expressions";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/functions.md": {
-	id: "Language Common/functions.md";
-  slug: "language-common/functions";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/modules.md": {
-	id: "Language Common/modules.md";
-  slug: "language-common/modules";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/naming.md": {
-	id: "Language Common/naming.md";
-  slug: "language-common/naming";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/operators.md": {
-	id: "Language Common/operators.md";
-  slug: "language-common/operators";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/precedence.md": {
-	id: "Language Common/precedence.md";
-  slug: "language-common/precedence";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/statements.md": {
-	id: "Language Common/statements.md";
-  slug: "language-common/statements";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/syntax.md": {
-	id: "Language Common/syntax.md";
-  slug: "language-common/syntax";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/undefinedbehaviour.md": {
-	id: "Language Common/undefinedbehaviour.md";
-  slug: "language-common/undefinedbehaviour";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"Language Common/variables.md": {
-	id: "Language Common/variables.md";
-  slug: "language-common/variables";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
 "Language Common/vectors.md": {
 	id: "Language Common/vectors.md";
   slug: "language-common/vectors";
@@ -509,16 +416,79 @@ declare module 'astro:content' {
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Language Comparisons/changesfromc.md": {
-	id: "Language Comparisons/changesfromc.md";
-  slug: "language-comparisons/changesfromc";
+"Language Fundamentals/comments.md": {
+	id: "Language Fundamentals/comments.md";
+  slug: "language-fundamentals/comments";
   body: string;
   collection: "docs";
   data: any
 } & { render(): Render[".md"] };
-"Language Comparisons/compare.md": {
-	id: "Language Comparisons/compare.md";
-  slug: "language-comparisons/compare";
+"Language Fundamentals/conversion.md": {
+	id: "Language Fundamentals/conversion.md";
+  slug: "language-fundamentals/conversion";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/expressions.md": {
+	id: "Language Fundamentals/expressions.md";
+  slug: "language-fundamentals/expressions";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/functions.md": {
+	id: "Language Fundamentals/functions.md";
+  slug: "language-fundamentals/functions";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/modules.md": {
+	id: "Language Fundamentals/modules.md";
+  slug: "language-fundamentals/modules";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/naming.md": {
+	id: "Language Fundamentals/naming.md";
+  slug: "language-fundamentals/naming";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/precedence.md": {
+	id: "Language Fundamentals/precedence.md";
+  slug: "language-fundamentals/precedence";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/statements.md": {
+	id: "Language Fundamentals/statements.md";
+  slug: "language-fundamentals/statements";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/undefined-behaviour.md": {
+	id: "Language Fundamentals/undefined-behaviour.md";
+  slug: "language-fundamentals/undefined-behaviour";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Fundamentals/variables.md": {
+	id: "Language Fundamentals/variables.md";
+  slug: "language-fundamentals/variables";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Overview/allfeatures.md": {
+	id: "Language Overview/allfeatures.md";
+  slug: "language-overview/allfeatures";
   body: string;
   collection: "docs";
   data: any
@@ -526,6 +496,13 @@ declare module 'astro:content' {
 "Language Overview/examples.md": {
 	id: "Language Overview/examples.md";
   slug: "language-overview/examples";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Language Overview/primer.md": {
+	id: "Language Overview/primer.md";
+  slug: "language-overview/primer";
   body: string;
   collection: "docs";
   data: any
@@ -540,6 +517,27 @@ declare module 'astro:content' {
 "Language Overview/types.md": {
 	id: "Language Overview/types.md";
   slug: "language-overview/types";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Misc Advanced/asm.md": {
+	id: "Misc Advanced/asm.md";
+  slug: "misc-advanced/asm";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Misc Advanced/builtins.md": {
+	id: "Misc Advanced/builtins.md";
+  slug: "misc-advanced/builtins";
+  body: string;
+  collection: "docs";
+  data: any
+} & { render(): Render[".md"] };
+"Misc Advanced/library-packaging.md": {
+	id: "Misc Advanced/library-packaging.md";
+  slug: "misc-advanced/library-packaging";
   body: string;
   collection: "docs";
   data: any

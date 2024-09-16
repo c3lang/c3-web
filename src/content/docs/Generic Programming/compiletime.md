@@ -2,7 +2,7 @@
 title: Compile Time Evaluation
 description: Compile time introspection and execution
 sidebar:
-    order: 116
+    order: 84
 ---
 During compilation, constant expressions will automatically be folded. Together with the compile
 time conditional statements `$if`, `$switch` and the compile time iteration statements `$for` `$foreach`

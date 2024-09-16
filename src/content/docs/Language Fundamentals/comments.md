@@ -6,19 +6,19 @@ sidebar:
 ---
 C3 uses three distinct comment types:
 
-1. The normal `//` line comment, which is terminated at the end of the line.
-2. The classic `/* ... */` C style comment, but unlike in C they are allowed to nest.
-3. Documentation comments `/** ... **/` the text within these comments will be parsed as documentation and optional contracts on the following code.
+1. The normal `//` single line comment.
+2. The classic `/* ... */` multi-line C style comment, but unlike in C they are allowed to nest.
+3. Documentation comments `/** ... **/` the text within these comments will be parsed as documentation and optional [Contracts](../../language-common/contracts/) on the following code.
 
-## Documentation
+## Doc Comments
 
 Documentation comments start with `/**` and must be terminated using `*/`. Note that any number of `*` may follow `/**` and any number of stars may preceed `*/`. Any space and `*` in the beginning of each line will be ignored.
 
-Here is an example:
+For example:
 
-```
+```c3
 /**
- * Here are som docs.
+ * Here are some docs.
  * @param foo The number of foos.
  * @required foo > 4 
  * @deprecated
@@ -30,12 +30,14 @@ void bar(int foo)
 }
 ```
  
-In the example above, the following is parsed as description: *"Here are the docs."*, then there is a description associated with the `foo` parameter: *"The number of foos"*.
+### Doc Comments Are Parsed
+The following was extracted:
+- The function description: *"Here are some docs."*
+- The `foo` parameter has the description: *"The number of foos"*.
+- A [Contract](../../language-common/contracts/) annotation for the compiler: `@required foo > 4` which tells the compiler and a user of the function that a precondition is that `foo` must be greater than 4.
+- A function [Attribute](../../language-common/attributes/) marking it as `@deprecated`, which displays warnings.
+- A custom function [Attribute](../../language-common/attributes/) `@mycustom`. The compiler is free to silently ignore custom Attributes, they can be used to optionally emit warnings, but are otherwise ignored.
 
-On top of that there are two annotations for the compiler: `@required foo > 4` which tells the compiler and a user of the function that a precondition is that `foo` must be greater than 4. It is also marked as @deprecated, which can be used to display warnings.
-
-Finally, a custom annotation, "@mycustom" is added. The compiler is free to silently ignore such annotations, but can optionally emit warnings for them, it is otherwise ignored.
- 
 ### Available annotations
 
 | Name        |                               format |
@@ -49,4 +51,4 @@ Finally, a custom annotation, "@mycustom" is added. The compiler is free to sile
 | @ensure     |     `@ensure <expre1>, <expr2>, ...` |
 | @pure       |                              `@pure` |
     
-See [contracts](/references/docs/contracts) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
+See [Contracts](../../language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.

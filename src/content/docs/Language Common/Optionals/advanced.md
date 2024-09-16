@@ -315,7 +315,7 @@ fn void! main(String[] args)
 }
 ```
 
-### Checking is an Optional has a result without unwrapping
+### Checking if an Optional has a result without unwrapping
 
 The `@ok` macro will return `true` if an Optional result is present and 
 `false` if the Optional is empty. 

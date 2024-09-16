@@ -1,6 +1,6 @@
 ---
-title: Basic Error Handling
-description: Basic Error Handling
+title: Essential Error Handling
+description: Essential Error Handling
 sidebar:
     order: 63
 ---
