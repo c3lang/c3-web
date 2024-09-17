@@ -517,7 +517,7 @@ A struct may not have zero members.
 #### Alignment
 
 A non-packed struct has the alignment of the member that has the highest alignment. A packed struct
-has alignment 1. See [align attribute](#align-attribute) for details on changing the alignment.
+has alignment 1. See [align attribute](#attributes) for details on changing the alignment.
 
 ### Union types
 
@@ -525,16 +525,16 @@ A union may not have zero members.
 
 #### Alignment
 
-A union has the alignment of the member that has the highest alignment. See [align attribute](#align-attribute) for
+A union has the alignment of the member that has the highest alignment. See [align attribute](#attributes) for
 details on changing the alignment.
 
 ### Fault types
 
-A fault is an extensible enum which can be used to create an [optional](#optional-types).
+A fault is an extensible enum which can be used to create an Excuse for an empty [optional](/language-common/optionals/essential/#what-is-an-optional).
 
 #### Alignment
 
-A fault type has the same alignment as a pointer. See [align attribute](#align-attribute) for details on changing the
+A fault type has the same alignment as a pointer. See [align attribute](#attributes) for details on changing the
 alignment.
 
 ### Enum types
@@ -557,7 +557,7 @@ of the underlying value.
 
 #### Switching over `any`
 
-Switching over an `any` value creates an [any switch](any-switch).
+Switching over an `any` value creates an [any switch](#any-switch).
 
 ### Anyfault type
 

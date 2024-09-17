@@ -43,13 +43,13 @@ Mark a code path as unreachable.
 ```c
 switch (x)
 {
-  case 0:
-    foo();
-  case 1:
-    bar();
-  default:
-    // Should never happen.
-    unreachable("x should have been 0 or 1");    
+    case 0:
+        foo();
+    case 1:
+        bar();
+    default:
+        // Should never happen.
+        unreachable("x should have been 0 or 1");    
 }    
 ```
 
@@ -71,8 +71,8 @@ enum Foo { ABC, CDE, EFG }
 
 fn void! test()
 {
-  Foo f = enum_by_name(Foo, "CDE")!; 
-  // same as Foo f = Foo.CDE;
+    Foo f = enum_by_name(Foo, "CDE")!; 
+    // same as Foo f = Foo.CDE;
 }
 ```
 
@@ -288,7 +288,6 @@ Makes a shallow copy of a value using the regular allocator.
 Foo f = ...
 
 return @clone(f); 
-
 ```
 
 ### @tclone(&value)
@@ -335,28 +334,35 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read from a stream (default is stdin) to the next "\n" or to the end of the stream, whatever comes first.<br>
+Read from a stream (default is stdin) to the next "\n" or to the end of the stream, whatever comes first.
+
 `\r` will be filtered from the String.
 
 ### String! treadline(stream = io::stdin())
 Same as `readline` but uses the temporary allocator.
 
 ### void print(x), void printn(x = "")
-Print any value to stdout.<br>
+Print any value to stdout.
+
 The `printn` variant appends a newline.
 
 ### void eprint(x), void eprintn(x)
-Print any value to stderr.<br>
+Print any value to stderr.
+
 The `eprintn` variant appends a newline.
 
 ### usz! printf(String format, args...) @maydiscard
-Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.<br>
-Will also print enums and vectors.<br>
-Also available as `printfn` which appends a newline.<br>
+Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+
+Will also print enums and vectors.
+
+Also available as `printfn` which appends a newline.
+
 `eprintf` and its matching function `eprintfn` print to stderr.
 
 ### char[]! bprintf(char[] buffer, String format, args...) @maydiscard
-Prints using a 'printf'-style formatting string, to a string buffer.<br>
+Prints using a 'printf'-style formatting string, to a string buffer.
+
 Returns a slice of the `buffer` argument with the resulting length.
 
 ### usz! fprint(out, x), usz! fprintn(out, x = "")
@@ -364,8 +370,10 @@ Print a value to a stream. `out` must implement `OutStream`.
 The `fprintn` variant appends a newline.
 
 ### usz! fprintf(OutStream out, String format, args...)
-Prints to the specified OutStream using a 'printf'-style formatting string.<br>
-Returns the number of characters printed.<br>
+Prints to the specified OutStream using a 'printf'-style formatting string.
+
+Returns the number of characters printed.
+
 `fprintfn` appends a newline.
 
 ### void putchar(char c) @inline
@@ -419,7 +427,8 @@ Write to a buffer, based on the libc function.
 Read a single byte from a file.
 
 ### char[]! load_buffer(String filename, char[] buffer)
-Load up to buffer.len characters into the buffer.<br>
+Load up to buffer.len characters into the buffer.
+
 Returns IoError.OVERFLOW if the file is longer than the buffer.
 
 ### char[]! load_new(String filename, Allocator allocator = allocator::heap())

@@ -89,8 +89,8 @@ sidebar:
 
 ##### Revision 2023-01-24
 - Consistently use printfn rather than printfln
-- Added [short function](/references/docs/functions) syntax.
-- Added [lambdas](/references/docs/functions).
+- Added [short function](/language-fundamentals/functions/) syntax.
+- Added [lambdas](/language-fundamentals/functions/#short-function-declaration-syntax).
 
 ##### Revision 2023-01-07
 - Direct download links added.
@@ -119,7 +119,7 @@ sidebar:
 - libc::printf replaced with io::printf
 
 ##### Revision 2022-10-01
-- Expanded and updated [types](/references/docs/types).
+- Expanded and updated [types](/language-overview/types/).
 
 ##### Revision 2022-07-20
 - Added start + len syntax
@@ -176,7 +176,7 @@ sidebar:
 - Updated array layout.
 - Revised macros for foreach.
 - Removed old generic functions. 
-- Added new ideas around generic, macros
+- Added new "ideas" around generic, macros
 - Changed macro body definition syntax.
 - Introduced both $for and $foreach.
 
@@ -192,18 +192,18 @@ sidebar:
 
 ##### Revision 2021-05-08
 - Added rationale for some changes from C.
-- Updated undefined and [undefined behaviour](/references/docs/undefinedbehaviour).
+- Updated undefined and [undefined behaviour](/language-fundamentals/undefined-behaviour/).
 - Removed many of the fine-grained module features.
-- Removed "local" visibility in [modules](/references/docs/modules).
+- Removed "local" visibility in [modules](/language-fundamentals/modules/).
 - All modules are now distinct, parent modules do not have any special access to submodules.
 - Added `as module` imports.
 
 ##### Revision 2021-04-05
 - "next" is now "nextcase".
 - Added link to the C3 discord.
-- The [conversions](/references/docs/conversion) page updated with new conversion rules.
+- The [conversions](/language-fundamentals/conversion/) page updated with new conversion rules.
 - Updated compound literal syntax.
-- Removed [undefined behaviour](/references/docs/undefinedbehaviour) behaviour on integer overflow and added a list of unspecified behaviour.
+- Removed [undefined behaviour](/language-fundamentals/undefined-behaviour/) behaviour on integer overflow and added a list of unspecified behaviour.
 
 ##### Revision 2020-12-23
 - Updated slice behaviour.
@@ -223,18 +223,18 @@ sidebar:
 - Changed cast syntax to `cast(<expr> as <type>)`.
     
 ##### Revision 2020-07-08
-- Additions to [error handling](/references/docs/optionals).
+- Additions to [error handling](/language-common/optionals/essential/).
 - Introduction of labelled `nextcase`, `break` and `continue`.
 - Removal of `goto`.
 
 ##### Revision 2020-06-17
-- Alternate casts in [idea](/references/docs/ideas).
+- Alternate casts in "ideas".
 - Method functions simply renamed to "method".
-- Completely revised [error handling](/references/docs/optionals).
+- Completely revised [error handling](/language-common/optionals/essential/).
 
 ##### Revision 2020-04-23
 - Updated error handling, adding try-else-jump and changed how errors are passed.
-- Included [reflection](/references/docs/reflection) page
+- Included [reflection](/generic-programming/reflection/) page
 
 ##### Revision 2020-03-30
 - Added Odin and D to comparisons.
@@ -246,11 +246,11 @@ sidebar:
 
 ##### Revision 2020-03-29
 - Type inference for enums.
-- Included [macro](/references/docs/macros) page.
+- Included [macro](/generic-programming/macros/) page.
 - Corrected precedence rules with `try` and `@`.
 - Type functions.
-- Managed variables back to ideas.
-- Volatile moved back to ideas.
+- Managed variables back to "ideas".
+- Volatile moved back to "ideas".
 - Removed implicit lossy signed conversions.
 - Introducing safe signed-unsigned comparisons.
 - "Function block" renamed "expression block".
@@ -258,49 +258,49 @@ sidebar:
 - Changed cast syntax from `@cast(Type, var)` to `cast(var, Type)`
 
 ##### Revision 2019-12-26
-- Added module versioning system [idea](/references/docs/ideas). 
+- Added module versioning system "ideas". 
 - Fleshed out polymorphic functions.
 - Unsigned to signed promotion mentioned in "changes from C"
 
 ##### Revision 2019-12-25
 - Changes how generic modules work.
 - Switched so that vararrays use `Type[*]` and slices use `Type[]`.
-- Added submodule granularity, partial imports (only importing selected functions and types), removal of `local`, extended aliasing. See [modules](/references/docs/modules).
+- Added submodule granularity, partial imports (only importing selected functions and types), removal of `local`, extended aliasing. See [modules](/language-fundamentals/modules/).
 - Updated "changes from C" with removal of multiple declarations.
 
 ##### Revision 2019-12-11
-- Updated the [setup](/references/docs/setup) page.
+- Updated the [setup](/install-c3/compile/) page.
 
 ##### Revision 2019-12-03
-- Added page on [conversions](/references/docs/conversion).
-- Added page on [undefined behaviour](/references/docs/undefinedbehaviour).
+- Added page on [conversions](/language-fundamentals/conversion/).
+- Added page on [undefined behaviour](/language-fundamentals/undefined-behaviour/).
 
 ##### Revision 2019-11-01
 - Updated "changes from C" with the lack of array decays.
 - Added FourCC to the language 
-- Added name alias to ideas
-- Added align asserts to ideas
-- Added built in tests to ideas
-- Added [arrays page](/references/docs/arrays)
-- Added function blocks to [statements page](/references/docs/statements).
-- Added [expressions page](/references/docs/expressions).
-- Added [variables page](/references/docs/variables).
-- Moved managed pointers from idea to the [variables page](/references/docs/variables).
+- Added name alias to "ideas"
+- Added align asserts to "ideas"
+- Added built in tests to "ideas"
+- Added [arrays page](/language-common/arrays/)
+- Added function blocks to [statements page](/language-fundamentals/statements/).
+- Added [expressions page](/language-fundamentals/expressions/).
+- Added [variables page](/language-fundamentals/variables/).
+- Moved managed pointers from "ideas" to the [variables page](/language-fundamentals/variables/).
 
 ##### Revision 2019-09-30
 
 - Removed references (non-nullable pointers)
-- Removed idea with aliasing in import
+- Removed "idea" with aliasing in import
 
 ##### Revision 2019-08-14
 
-- Compile time run-include and include ideas.
-- New module system idea.
+- Compile time run-include and include "ideas".
+- New module system "idea".
 
 ##### Revision 2019-08-14
 
 - Namespace separator changed to `::` instead of `.` to simplify parsing. 
-- Added FourCC, Macro text interpolation to ideas.
+- Added FourCC, Macro text interpolation to "ideas".
 - Added Yacc grammar (incomplete)
 - Added "attribute" keyword. 
 - Changed type alias declaration to use `typedef ... as ...`. 
@@ -312,48 +312,48 @@ sidebar:
 - Added error example.
 - Added generics example.
 - Added method function example.
-- Added idea implicit method functions
+- Added "idea" implicit method functions
 - Expanded the types page somewhat.
 
 ##### Revision 2019-07-30
 
-- Added default and named arguments to the [functions page](/references/docs/functions).
-- Added varargs to the [functions page](/references/docs/functions).
-- Added idea about hierarchal memory.
-- Added idea of raw dynamic safe arrays & strings.
+- Added default and named arguments to the [functions page](/language-fundamentals/functions/).
+- Added varargs to the [functions page](/language-fundamentals/functions/).
+- Added "idea" about hierarchal memory.
+- Added "idea" of raw dynamic safe arrays & strings.
 - Volatile sections are no longer prefixed by '@'
-- Added idea regarding c3 interop
-- Added [page about c interop](/references/docs/cinterop).
+- Added "idea" regarding c3 interop
+- Added [page about c interop](/language-common/cinterop/).
 - Removed `c_ichar` and `c_uchar` types as they are redundant.
-- Updates to keywords on the [grammar page]()/references/docs/syntax).
+- Updates to keywords on the [grammar page](/implementation-details/grammar/).
 
 ##### Revision 2019-07-27
 
 - Updated grammar with keywords.
-- Added the [docs & comments](/references/docs/comments) page.
-- Updated the [pre- and post-conditions](/references/docs/contracts).
+- Added the [docs & comments](/language-fundamentals/comments/) page.
+- Updated the [pre- and post-conditions](/language-common/contracts/).
 
 ##### Revision 2019-07-24
 
-- Idea: typed varargs.
-- Added "pure" [post condition](/references/docs/contracts)
+- "Idea": typed varargs.
+- Added "pure" [post condition](/language-common/contracts/)
 - Updated c3c commands.
 - Removed the `type` keyword for defining union/struct/enum/error.
 
 ##### Revision 2019-07-23
 
-- Added to [generic functions](/references/docs/generics) examples for [] and []=
-- Developed ideas about vectors in the [idea section](/references/docs/ideas).
+- Added to [generic functions](/generic-programming/generics) examples for [] and []=
+- Developed "ideas" about vectors in the "ideas" section.
 - Defined 2's complement for signed integers. 
-- Idea: Managed pointers.
-- Updated [naming rules](/references/docs/naming) for types.
-- Added more [naming rules](/references/docs/naming) + examples of them.
-- Removed "defer on function signatures" from ideas.
-- Removed "managed qualifier" from ideas.
-- Removed "defer sugar" from ideas.
+- "Idea": Managed pointers.
+- Updated [naming rules](/language-fundamentals/naming/) for types.
+- Added more [naming rules](/language-fundamentals/naming/) + examples of them.
+- Removed "defer on function signatures" from "ideas".
+- Removed "managed qualifier" from "ideas".
+- Removed "defer sugar" from "ideas".
 - Removed "built in dynamic arrays" from ideas.
-- Added [standard_library](/references/docs/standard_library) section.
-- Added more about [pre- and post-conditions](/references/docs/contracts).
+- Added [standard_library](/standard-library/) section.
+- Added more about [pre- and post-conditions](/language-common/contracts/).
 
 ##### Revision 2019-07-22
 
@@ -361,15 +361,15 @@ sidebar:
 
 ##### Revision 2019-07-21
 
-- "return" rather than function name is used in post conditions. See [Functions](/references/docs/functions#pre-and-post-conditions)
-- Added "@include" macro for textual includes. See [Modules](/references/docs/modules#textual-includes).
-- Files to without `module` for single file compilations is now ok as a special case. See [Modules](/references/docs/modules)
-- Added cone style array idea to the [idea section](/references/docs/ideas).
-- Added idea about defer on error to the [idea section](/references/docs/ideas).
-- Added idea for aliasing generic structs in the import to the [idea section](/references/docs/ideas).
-- Added idea for changing automatic signed <-> unsigned conversion to the [idea section](/references/docs/ideas).
-- Added [Changes from C](/references/docs/changesfromc) and [Statements](/references/docs/statements) sections.
-- Removal of `volatile`. See [Changes from C](/references/docs/changesfromc) and [Statements](/references/docs/statements)
-- Removal of `const` See [Changes from C](/references/docs/changesfromc)
+- "return" rather than function name is used in post conditions. See [Functions](/language-fundamentals/functions/)
+- Added "@include" macro for textual includes. See [Modules](/language-fundamentals/modules/#textual-includes).
+- Files to without `module` for single file compilations is now ok as a special case. See [Modules](/language-fundamentals/modules/)
+- Added cone style array idea to the "ideas" section.
+- Added "idea" about defer on error to the ideas.
+- Added "idea" for aliasing generic structs in the import to the "ideas" section.
+- Added "idea" for changing automatic signed <-> unsigned conversion to the "ideas" section.
+- Added [Changes from C](/faq/changesfromc/) and [Statements](/language-fundamentals/statements/) sections.
+- Removal of `volatile`. See [Changes from C](/faq/changesfromc/) and [Statements](/language-fundamentals/statements/)
+- Removal of `const` See [Changes from C](/faq/changesfromc/)
 
 

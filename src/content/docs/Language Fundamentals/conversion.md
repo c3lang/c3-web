@@ -105,11 +105,16 @@ The *maximum type* is a concept used when unifying two or more types. The algori
 
 1. First perform implicit promotion.
 2. If both types are the same, the maximum type is this type. 
-3. If one type is a floating point type, and the other is an integer type, the maximum type is the floating point type. E.g. `int + float -> float`.
+3. If one type is a floating point type, and the other is an integer type, 
+the maximum type is the floating point type. E.g. `int + float -> float`.
 4. If both types are floating point types, the maximum type is the widest floating point type. E.g. `float + double -> double`.
-5. If both types are integer types with the same signedness, the maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`.
-6. If both types are integer types with different signedness, the maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`
-7. If at least one side is a struct or a pointer to a struct with an `inline` directive on a member, check recursively check if the type of the inline member can be used to find a maximum type (see below under sub struct conversions)
+5. If both types are integer types with the same signedness, the 
+maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`.
+6. If both types are integer types with different signedness, the 
+maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`
+7. If at least one side is a struct or a pointer to a struct with an 
+`inline` directive on a member, check recursively check if the type of 
+the inline member can be used to find a maximum type (see below under sub struct conversions)
 8. All other cases are errors.
  
 ## Substruct conversions
@@ -117,12 +122,16 @@ The *maximum type* is a concept used when unifying two or more types. The algori
 Substructs may be used in place of its parent structs in many cases. The rule is as follows:
 
 1. A substruct pointer may implicitly convert to a parent struct.
-2. A substruct *value* may be implicitly assigned to a variable with the parent struct type, This will *truncate* the value, copying only the parent part of the substruct. However, a substruct value cannot be assigned its parent struct.
+2. A substruct *value* may be implicitly assigned to a variable with the parent struct type, 
+This will *truncate* the value, copying only the parent part of the substruct. However, a 
+substruct value cannot be assigned its parent struct.
 3. Substruct slices and arrays *can not* be cast (implicitly or explicitly) to an array of the parent struct type.
 
 ## Pointer conversions
 
-Pointer conversion between types usually need explicit casts. The exception is `void *` which any type may implicitly convert *to* or *from*. Conversion rules from and to arrays are detailed under [arrays](/references/docs/arrays)
+Pointer conversion between types usually need explicit casts. 
+The exception is `void *` which any type may implicitly convert *to* or *from*. 
+Conversion rules from and to arrays are detailed under [arrays](/language-common/arrays/)
 
 ## Vector conversions
 
@@ -256,5 +265,9 @@ Dereferencing 0 is implementation defined.
 
 ### 2. Constants and literals
 
-1. If the constant is an integer, it is assumed to be the *arithmetic promotion width* and signed. If the suffix `u` is added, it is assumed to be an unsigned number. If a suffix `ixx` or `uxx` is given then it is considered a an integer of that type width and signedness. It cannot be implicitly narrowed. 
-2. If the constant is a floating point value, it is assumed to be a `double` unless suffixed with `f` which is then assumed to be a `float`. If a bit width is given after `f`, it is instead a floating point type of that width.
+1. If the constant is an integer, it is assumed to be the *arithmetic promotion width* and signed. 
+If the suffix `u` is added, it is assumed to be an unsigned number. If a suffix `ixx` or `uxx` 
+is given then it is considered a an integer of that type width and signedness. It cannot be implicitly narrowed. 
+2. If the constant is a floating point value, it is assumed to be a `double` unless suffixed
+ with `f` which is then assumed to be a `float`. If a bit width is given after `f`, 
+ it is instead a floating point type of that width.

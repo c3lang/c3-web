@@ -150,7 +150,7 @@ int[3] abc = { 1, 2, 3 }; // Explicit int[3]
 int[*] bcd = { 1, 2, 3 }; // Implicit int[3]
 ```
 
-Read more about initializing arrays in [the chapter on arrays](/references/docs/arrays/).
+Read more about initializing arrays in [the chapter on arrays](/language-common/arrays/).
 
 ## Slices
 

@@ -29,10 +29,11 @@ This would affect things like generated C headers.
 Unlike C, C3 does not use type qualifiers. `const` exists, 
 but is a storage class modifier, not a type qualifier. 
 Instead of `volatile`, volatile loads and stores are used. 
-In order to signal restrictions on parameter usage, parameter [preconditions](/references/docs/preconditions/) are used.
+Restrictions on function parameter usage are instead described by parameter [preconditions](/language-common/contracts/#pre-conditions).
+
 `typedef` has a slightly different syntax and renamed `def`.
 
-C3 also requires all function pointers to be used with an alias, so:
+C3 also requires all function pointers to be used with a `def` for example:
 
 ```c3
 def Callback = fn void();
@@ -369,7 +370,7 @@ MyListFoo working_example;
 // It is only allowed in a type definition or macro.
 MyList<Foo> failing_example = MyList(<Foo>);
 ```
-Read more about [generic types](/references/docs/generics).
+Find out more about [generic types](/generic-programming/generics).
 
 ## Enum
 
@@ -466,7 +467,7 @@ test(State.RUNNING); // Uses enum constant.
 
 ## Optional Type
 
-An [Optional type](../optionals/) is created by taking a type and appending `!`. 
+An [Optional type](/language-common/optionals/essential/#what-is-an-optional) is created by taking a type and appending `!`. 
 An Optional type behaves like a tagged union, containing either the
 result or an Excuse of type [fault](#optional-excuses-are-of-type-fault). 
 
@@ -485,12 +486,12 @@ int! x = 0; // ✅ Ok!
 fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 ```
 
-Read more about the Optional types on the page about [Optionals and error handling](/references/docs/optionals).
+Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals/essential/).
 
 
 ### Optional Excuses are of type Fault
 
-When an [Optional](../optionals/) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
+When an [Optional](/language-common/optionals/essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
 
 ```c3
 fault IOResult
@@ -511,11 +512,11 @@ and each value is globally unique. For example the underlying value of
 This is true even if they are separately compiled.
 
 :::note
-The values assigned to a fault may vary each time a program is compiled. 
+The underlying values assigned to a fault may vary each time a program is compiled. 
 :::
 
 A fault may be stored as a normal value, but is also unique so that it may be passed
-in an Optional as a function return value using the [rethrow `!` operator](../optionals/#using-the-rethrow-operator--to-unwrap-an-optional-value).
+in an Optional as a function return value using the [rethrow `!` operator](../../language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
 ## Struct types
@@ -549,7 +550,7 @@ fn void test()
 ```
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
 
-To change alignment and packing, optional [attributes](/references/docs/attributes) such as `@packed` may be used.
+To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
 
 ## Struct subtyping
 

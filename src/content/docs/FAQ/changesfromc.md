@@ -32,7 +32,7 @@ Notably bit operations have higher precedence than +/-, making code like this: `
 
 The const qualifier is only retained for actual constant variables. C3 uses a special type of [post condition](/language-common/contracts/) for functions to indicate that they do not alter in parameters.
 
-```
+```c3
 /**
  * This function ensures that foo is not changed in the function.
  * @param [in] foo
@@ -52,7 +52,7 @@ fn void test(Foo* foo, Bar* bar)
 
 C3 has three different array types. Variable arrays and slices decay to pointers, but fixed arrays are value objects and do not decay.
 
-```
+```c3
 int[3] a = { 1, 2, 3 };
 int[4]* b = &a; // No conversion
 int* c = a; // ERROR
@@ -65,7 +65,7 @@ int[3] f = a; // Copy by value!
 
 Only a single declaration with initialization is allowed per statement in C3:
 
-```
+```c3
 int i, j = 1; // ERROR
 int a = 1;    // Ok
 int b, c;     // Ok
@@ -73,7 +73,7 @@ int b, c;     // Ok
 
 In conditionals, a special form of multiple declarations are allowed but each must then provide its type:
 
-```
+```c3
 for (int i = 0, int j = 1; i < 10; i++, j++) { ... }
 ```
 
@@ -89,17 +89,19 @@ is disallowed. However, `long x = int_val_1` is unambiguous, so C3 permits it ju
 
 C3 also adds *safe signed-unsigned comparisons*: this means that comparing signed and unsigned values will always yield the correct result:
 
-    // The code below would print "Hello C3!" in C3 and "Hello C!" in C.
-    int i = -1;
-    uint j = 1;
-    if (i < j)
-    {
-        printf("Hello C3!\n");
-    }
-    else
-    {
-        printf("Hello C!\n");
-    }
+```c3
+// The code below would print "Hello C3!" in C3 and "Hello C!" in C.
+int i = -1;
+uint j = 1;
+if (i < j)
+{
+    printf("Hello C3!\n");
+}
+else
+{
+    printf("Hello C!\n");
+}
+```
 
 ##### Goto removed
 
@@ -113,29 +115,31 @@ the code is harder to understand as well. The replacements together with `defer`
 Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed
 `nextcase` can also be used to jump to any other case statement in the switch.
 
-    switch (h)
-    {
-        case 1:
-            a = 1;
-            nextcase; // Fall through
-        case 2:
-            b = 123;
-        case 3:
-            a = 2;
-            nextcase 2; // Jump to case 2
-        default:
-            a = 111;
-    }
-
+```c3
+switch (h)
+{
+    case 1:
+        a = 1;
+        nextcase; // Fall through
+    case 2:
+        b = 123;
+    case 3:
+        a = 2;
+        nextcase 2; // Jump to case 2
+    default:
+        a = 111;
+}
+```
 
 ##### Locals variables are implicitly zeroed
 
-In C global variables are implicitly zeroed out, but local variables aren't. In C3 local variables are zeroed out by default, but may be explicitly undefined to get the C behaviour.
+In C global variables are implicitly zeroed out, but local variables aren't. In C3 local variables are zeroed out by default, but may be *explicitly* undefined if you wish to match the C behaviour.
 
-*Rationale: In the "zero-is-initialization" paradigm, zeroing variables, in particular structs, is very common. By offering zero initialization by default this avoids a whole class of vulnerabilities.
-Another alternative that was considered for C3 was mandatory initialization,
+###### Rationale for this change 
+- In the "zero-is-initialization" paradigm, zeroing variables, in particular structs, is very common. By offering zero initialization by default this **avoids a whole class of vulnerabilities**.
+- Another alternative that was considered for C3 was mandatory initialization,
 but this adds a lot of extra boilerplate. 
-C3 also offers a way to opt out of zero-initialization, so the change comes at no performance loss.*
+- C3 also offers a way to opt out of zero-initialization, so the change comes at no performance loss.
 
 ##### Compound literal syntax changed
 

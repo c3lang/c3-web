@@ -12,7 +12,7 @@ types, boolean or pointers.
 A vector is declared similar to an array but uses `[<>]` rather than `[]`, e.g. `int[<4>]`.
 
 (If you are searching for the counterpart of C++'s `std::vector`, look instead at the standard
-library [`List` type](/references/docs/arrays/#dynamic-arrays-and-lists).)
+library [`List` type](/language-common/arrays/#dynamic-arrays-and-lists).)
 
 ## Arithmetics on vectors
 

@@ -213,13 +213,13 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"FAQ/faq.md": {
-	id: "FAQ/faq.md";
-  slug: "faq/faq";
+"FAQ/index.mdx": {
+	id: "FAQ/index.mdx";
+  slug: "faq";
   body: string;
   collection: "docs";
   data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
+} & { render(): Render[".mdx"] };
 "FAQ/rejected-ideas.md": {
 	id: "FAQ/rejected-ideas.md";
   slug: "faq/rejected-ideas";
@@ -535,13 +535,13 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"Standard Library/standard_library.md": {
-	id: "Standard Library/standard_library.md";
-  slug: "standard-library/standard_library";
+"Standard Library/index.mdx": {
+	id: "Standard Library/index.mdx";
+  slug: "standard-library";
   body: string;
   collection: "docs";
   data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
+} & { render(): Render[".mdx"] };
 "Standard Library/stdlib_refcard.md": {
 	id: "Standard Library/stdlib_refcard.md";
   slug: "standard-library/stdlib_refcard";
