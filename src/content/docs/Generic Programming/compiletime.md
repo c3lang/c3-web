@@ -2,7 +2,7 @@
 title: Compile Time Evaluation
 description: Compile time introspection and execution
 sidebar:
-    order: 84
+    order: 116
 ---
 During compilation, constant expressions will automatically be folded. Together with the compile
 time conditional statements `$if`, `$switch` and the compile time iteration statements `$for` `$foreach`
@@ -245,7 +245,7 @@ Print a message to stdout when compiling the code.
 
 ### `$embed`
 
-Embed binary data from a file. See [expressions](/language-fundamentals/expressions/).
+Embed binary data from a file. See [expressions](../expressions).
 
 ### `$error`
 
