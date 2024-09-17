@@ -18,7 +18,7 @@ You can use one of the precompiled binaries here or [build the compiler from sou
 1.  [Download the C3 compiler](https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip). Or the [debug build](https://github.com/c3lang/c3c/releases/download/latest/c3-windows-debug.zip)
 2. Unzip it into a folder
 3. Either Visual Studio 17 or follow the next two steps.
-   - Run the `msvc_build_libraries.py` Python script which will download the necessary files to compile on Windows.
+4. Run the `msvc_build_libraries.py` Python script which will download the necessary files to compile on Windows.
 
 :::note[Running the Python script]
 
