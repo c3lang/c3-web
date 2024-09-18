@@ -65,29 +65,35 @@
 </div>
 
 <script>
-const userAgent = window.navigator.userAgent.toLowerCase();
-const os =
-  userAgent.indexOf("linux") != -1
-    ? "Linux"
-    : userAgent.indexOf("mac") != -1
-    ? "MacOS"
-    : userAgent.indexOf("win") != -1
-    ? "Windows"
-    : "Unknown";
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const os =
+    userAgent.indexOf("linux") != -1
+      ? "Linux"
+      : userAgent.indexOf("mac") != -1
+        ? "MacOS"
+        : userAgent.indexOf("win") != -1
+          ? "Windows"
+          : "Unknown";
 
-const downloadButton = document.getElementById("download-button");
-const windowsDownloadLink = document.getElementById("windows-download");
-const macosDownloadLink = document.getElementById("macos-download");
-const linuxDownloadLink = document.getElementById("linux-download");
-if (os == "MacOS") {
-  downloadButton.setAttribute("href", "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip")
-  downloadButton.innerText = "Download for MacOS";
-  windowsDownloadLink.style.setProperty("display", "block");
-  macosDownloadLink.style.setProperty("display", "none");
-} else if (os == "Linux") {
-  downloadButton.setAttribute("href", "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz")
-  downloadButton.innerText = "Download for Linux";
-  windowsDownloadLink.style.setProperty("display", "block");
-  linuxDownloadLink.style.setProperty("display", "none");
-}
+  const downloadButton = document.getElementById("download-button");
+  const windowsDownloadLink = document.getElementById("windows-download");
+  const macosDownloadLink = document.getElementById("macos-download");
+  const linuxDownloadLink = document.getElementById("linux-download");
+  if (os == "MacOS") {
+    downloadButton.setAttribute(
+      "href",
+      "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip",
+    );
+    downloadButton.innerText = "Download for MacOS";
+    windowsDownloadLink.style.setProperty("display", "block");
+    macosDownloadLink.style.setProperty("display", "none");
+  } else if (os == "Linux") {
+    downloadButton.setAttribute(
+      "href",
+      "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz",
+    );
+    downloadButton.innerText = "Download for Linux";
+    windowsDownloadLink.style.setProperty("display", "block");
+    linuxDownloadLink.style.setProperty("display", "none");
+  }
 </script>

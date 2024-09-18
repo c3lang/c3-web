@@ -96,11 +96,13 @@ Under the config you define external constants ("key: value") that will be inclu
 #### export
 
 *Not added yet*
+
 Define the list of modules to be exported by a library. Not valid for executables.
 
 #### warnings
 
 *Not completely supported yet*
+
 List of warnings to enable during compilation.
 
 ## Target options
@@ -114,6 +116,7 @@ This mandatory option should be one of "executable", "dynamic-lib" and "static-l
 ## Using environment variables
 
 *Not supported yet*
+
 In addition to constants any values starting with "$" will be assumed to be environment variables.
 
 For example "$HOME" would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string "$HOME"

@@ -1,5 +1,5 @@
 ---
-title: Basic types and values
+title: Basic Types and Values
 description: Get an overview of C3's basic types and values
 sidebar:
   order: 33
@@ -18,7 +18,7 @@ expands on this set by adding slices and vectors, as well as the `any` and `type
 C3 has signed and unsigned integer types. The built-in signed integer types are `ichar`, `short`, `int`, `long`,
 `int128`, `iptr` and `isz`. `ichar` to `int128` have all well-defined power-of-two bit sizes, whereas `iptr`
 has the same number of bits as a `void*` and `isz` has the same number of bits as the maximum difference 
-between two pointer. For each signed integer type there is a corresponding unsigned integer type: `char`, 
+between two pointers. For each signed integer type there is a corresponding unsigned integer type: `char`, 
 `ushort`, `uint`, `ulong`, `uint128`, `uptr` and `usz`.
 
 | type    | signed? | min    | max       | bits   |
@@ -98,7 +98,7 @@ bool f = false;
 
 ### Character literals
 
-A character literal is a value enclosed in `'``'`. Its value is interpreted as being its 
+A character literal is a value enclosed in `''`. Its value is interpreted as being its 
 ASCII value for a single character. 
 
 It is also possible to use 2, 4 or 8 character wide character literals. Such are interpreted
@@ -133,7 +133,7 @@ floating point by adding a suffix:
 
 | Suffix       | type     |
 | ------------ | --------:|
-| f32 *or f*   | float    |
+| f32 *or* f   | float    |
 | f64          | double   |
 
 ## Arrays
@@ -192,23 +192,37 @@ Vector initialization and literals work the same way as arrays, using `{ ... }`
 
 ## String literals
 
+String literals are special and can convert to several different types: 
+`String`, `char` and `ichar` arrays and slices and finally `ichar*` and `char*`.
+
 Like C, string literals is text enclosed in `" "` just like in C. These support
 escape sequences like `\n` for line break and need to use `\"` for any `"` inside of the
 string.
 
 C3 also offers *raw strings* which are enclosed in `` ` ` ``. 
+A raw string may span multiple lines.
 Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
-char* foo = `C:\foo\bar.dll`;
-char* bar = `"Say ``hello``"`;
+// Note: String is a distinct char*
+String three_lines = 
+`multi
+line
+string`;
+
+String foo = `C:\foo\bar.dll`;
+String bar = `"Say ``hello``"`;
 // Same as
-char* foo = "C:\\foo\\bar.dll";
-char* bar = "\"Say `hello`\"";
+String foo = "C:\\foo\\bar.dll";
+String bar = "\"Say `hello`\"";
 ```
 
-String literals are special in that they can convert to several different types: `String`,
-`char` and `ichar` arrays and slices and finally `ichar*` and `char*`.
+`String` is a 
+[distinct inline](/language-common/define/#distinct-inline) `char[]`, which can implicitly convert to `char[]` when required. 
+
+`ZString` is a [distinct inline](/language-common/define/#distinct-inline) `char*`.`ZString` is a C compatible null terminated string, which can implicitly convert to `char*` when required.
+
+
 
 ## Base64 and hex data literals
 

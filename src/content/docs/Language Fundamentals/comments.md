@@ -19,7 +19,7 @@ For example:
 ```c3
 /**
  * Here are some docs.
- * @param foo The number of foos.
+ * @param foo `The number of foos.`
  * @required foo > 4 
  * @deprecated
  * @mycustom 2
@@ -45,7 +45,6 @@ The following was extracted:
 | @param      |       `@param <param> <description>` |
 | @return     |              `@return <description>` |
 | @return!    |   `@return! <fault1>, <fault2>, ...` |
-| @fails      |               `@fails <description>` |
 | @deprecated | `@deprecated <optional description>` |
 | @require    |     `@require <expr1>, <expr2>, ...` |
 | @ensure     |     `@ensure <expre1>, <expr2>, ...` |

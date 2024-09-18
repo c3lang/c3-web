@@ -416,7 +416,6 @@ struct Position
 }
 
 enum State : int (String desc, bool active, Position pos)
-    order: 135
 {
     WAITING    = { "waiting", false, { 1, 2} },
     RUNNING    = { "running", true,  {12,22} },

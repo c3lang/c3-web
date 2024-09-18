@@ -24,8 +24,6 @@ Expressions have a well-defined evaluation order:
 1. Binary expressions are evaluated from left to right.
 2. Assignment occurs right to left, so `a = a++` would result in `a` being unchanged.
 3. Call arguments are evaluated in parameter order.
-4. For named parameters, evaluation is in parameter order, not argument order. So the evaluation order of 
-`foo(.a = x++, .b = x--)` depends on the declaration order of `a` and `b`.
 
 ## Compound literals
 
@@ -62,6 +60,7 @@ test2({ 1, 2, 3 });
 One may take the address of temporaries, using `&&` (rather than `&` for normal variables). This allows the following:
 
 Passing a [slice](../../language-common/arrays/#slice)
+
 ```c3
 fn void test(int[] y) { ... }
 
@@ -73,14 +72,22 @@ test(int[3]{ 1, 2, 3 }[..]));
 
 // Using a slice directly as a temporary:
 test(int[]{ 1, 2, 3 }));
+
+// Same as above but with inferred type:
+test({ 1, 2, 3 ));
 ```
+
 Passing the pointer to an [array](../../language-common/arrays)
+
 ```c3
 fn void test1(int[3]* z) { ... }
 fn void test2(int* z) { ... }
 
 test1(&&int[3]{ 1, 2, 3 }));
 test2(&&int[3]{ 1, 2, 3 }));
+
+// Same as above but with inferred type:
+test(&&{ 1, 2, 3 ));
 ```
 
 ## Constant expressions

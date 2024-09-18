@@ -6,10 +6,11 @@ sidebar:
 ---
 
 ## Contributions Welcome!
-The C3 language is still in its *design phase*, which means functionality and specification are
-subject to change. That also means that any contribution right now will have a big impact on the language.
-So if you find the project interesting, here's what you can do to help:
 
+The C3 language is still in its *development* phase, which means 
+functionality and specification are subject to change. That also means 
+that any contribution right now will have a big impact on the language. 
+So if you find the project interesting, here’s what you can do to help:
 
 ### 💬 Discuss The Language
 - Join us on [C3 Discord](https://discord.gg/qN76R87). 

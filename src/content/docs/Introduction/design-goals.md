@@ -1,6 +1,6 @@
 ---
-title: Design Goals and Origins
-description: A more in-depth guide for topics regarding c3
+title: Design Goals & Background
+description: Design Goals & Background
 sidebar:
   order: 2
 ---
@@ -11,9 +11,10 @@ sidebar:
 - Minimalistic, no feature should be unnecessary or redundant.
 - Stay close to C - only change where there is a significant need.
 - Learning C3 should be easy for a C programmer.
-- Flawless C integration.
-- Dare add conveniences if the value is great.
-- Data is inert and by default is zero initialized.
+- Seamless C integration.
+- Ergonomic common patterns.
+- Data is inert.
+- Zero Is Initialised.
 - Avoid "big ideas".
 
 ## Features
@@ -42,13 +43,13 @@ Binaries are directly downloadable for the following platforms:
 - Debian x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz), [install instructions](https://github.com/c3lang/c3c#installing-on-debian-with-precompiled-binaries).
 
 
-## C3 Origin Story
+## C3 Background
 
 C3 is an evolution of C, a minimalistic language designed for systems 
 programming, enabling the same paradigms and retaining the same syntax 
 as far as possible.
 
-C3 started as an extension of the [C2 language](http://www.c2lang.org/) 
+C3 started as an experimental fork of the [C2 language](http://www.c2lang.org/) 
 by [Bas van den Berg](https://github.com/bvdberg). 
 It has evolved significantly, not just in syntax but also 
 in regard to error handling, macros, generics and strings.
