@@ -15,23 +15,27 @@ the enclosed type (the type the pointer points to) using the `type` field.
 
 This allows switching over the typeid, either using a normal switch:
 
-    switch (my_any.type)
-    {
-        case Foo.typeid:
-            ...
-        case Bar.typeid:
-            ...
-    }
+```c3
+switch (my_any.type)
+{
+    case Foo.typeid:
+        ...
+    case Bar.typeid:
+        ...
+}
+```
 
 Or the special `any`-version of the switch:
 
-    switch (my_any)
-    {
-        case Foo:
-            // my_any can be used as if it was Foo* here
-        case Bar:
-            // my_any can be used as if it was Bar* here
-    }
+```
+switch (my_any)
+{
+    case Foo:
+        // my_any can be used as if it was Foo* here
+    case Bar:
+        // my_any can be used as if it was Bar* here
+}
+```
 
 Sometimes one needs to manually construct an any-pointer, which
 is typically done using the `any_make` function: `any_make(ptr, type)`
@@ -43,9 +47,11 @@ on with the enclosed data without knowing the details of its type.
 
 For example, this would make a copy of the data and place it in the variable `any_copy`:
 
-    void* data = malloc(a.type.sizeof);
-	mem::copy(data, a.ptr, a.type.sizeof);
-    any any_copy = any_make(data, a.type);    
+```c3
+void* data = malloc(a.type.sizeof);
+mem::copy(data, a.ptr, a.type.sizeof);
+any any_copy = any_make(data, a.type);
+```
 
 ## Variable argument functions with implicit `any`
 
@@ -86,10 +92,12 @@ C3 provides this latter functionality over the `any` type using *interfaces*.
 
 The first step is to define an interface:
 
-    interface MyName
-    {
-        fn String myname();
-    }
+```c3
+interface MyName
+{
+    fn String myname();
+}
+```
 
 While `myname` will behave as a method, we declare it without type. Note here that unlike normal methods we leave
 out the first "self", argument.
@@ -98,16 +106,18 @@ out the first "self", argument.
 
 To declare that a type implements an interface, add it after the type name:
 
-    struct Baz (MyName) 
-    { 
-        int x; 
-    }
+```c3
+struct Baz (MyName)
+{
+    int x;
+}
 
-    // Note how the first argument differs from the interface.
-    fn String Baz.myname(Baz* self) @dynamic 
-    { 
-        return "I am Baz!"; 
-    }
+// Note how the first argument differs from the interface.
+fn String Baz.myname(Baz* self) @dynamic
+{
+    return "I am Baz!";
+}
+```
 
 If a type declares an interface but does not implement its methods, then that is compile time error.
 A type may implement multiple interfaces, by placing them all inside of `()` e.g. `struct Foo (VeryOptional, MyName) { ... }`
@@ -118,10 +128,12 @@ implement interfaces is possible but does not provide compile time checks.
 One of the interfaces available in the standard library is Printable, which contains `to_format` and `to_new_string`.
 If we implemented it for our struct above it might look like this:
 
-    fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
-    {
-        return string::printf("Baz(%d)", baz.x, .allocator = allocator);
-    }
+```c3
+fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
+{
+    return string::printf("Baz(%d)", baz.x, .allocator = allocator);
+}
+```
 
 ### "@dynamic" methods
 
@@ -144,85 +156,94 @@ implement the interface completely may implicitly be cast to the interface.
 
 So for example:
 
-    Bob b = { 1 };
-    double d = 0.5;
-    int i = 3;
-    MyName a = &b;          // Valid, Bob implements MyName.
-    // MyName c = &d;       // Error, double does not implement MyName.
-    MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
-    // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
-    MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"    
+```c3
+Bob b = { 1 };
+double d = 0.5;
+int i = 3;
+MyName a = &b;          // Valid, Bob implements MyName.
+// MyName c = &d;       // Error, double does not implement MyName.
+MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
+// MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
+MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"
+```
 
 ### Calling dynamic methods
 
 Methods implementing interfaces are like normal methods, and if called directly, they are just normal function calls. The
 difference is that they may be invoked through the interface:
 
-    fn void whoareyou(MyName a)
-    {
-        io::printn(a.myname());
-    }
+```c3
+fn void whoareyou(MyName a)
+{
+    io::printn(a.myname());
+}
+```
 
 If we have an optional method we should first check that it is implemented:
 
-    fn void do_something(VeryOptional z)
+```c3
+fn void do_something(VeryOptional z)
+{
+    if (&z.do_something)
     {
-        if (&z.do_something)
-        {
-            z.do_something(1, null);
-        }
+        z.do_something(1, null);
     }
+}
+```
 
 We first query if the method exists on the value. If it does we actually run it.
 
 Here is another example, showing how the correct function will be called depending on type, checking
 for methods on an `any`:
 
-    fn void whoareyou2(any a)
+```c3
+fn void whoareyou2(any a)
+{
+    // Query if the function exists
+    if (!&a.myname)
     {
-        // Query if the function exists
-        if (!&a.myname)
-        {
-            io::printn("I don't know who I am.");
-            return;
-        }
-        // Dynamically call the function
-        io::printn(((MyName)a).myname());
+        io::printn("I don't know who I am.");
+        return;
     }
+    // Dynamically call the function
+    io::printn(((MyName)a).myname());
+}
 
-    fn void main()
-    {
-        int i;
-        double d;
-        Bob bob;
+fn void main()
+{
+    int i;
+    double d;
+    Bob bob;
 
-        any a = &i; 
-	    whoareyou2(a); // Prints "I am int!"
-	    a = &d;
-	    whoareyou2(a); // Prints "I don't know who I am."
-	    a = &bob;
-	    whoareyou2(a); // Prints "I am Bob!"
-    }
+    any a = &i;
+    whoareyou2(a); // Prints "I am int!"
+    a = &d;
+    whoareyou2(a); // Prints "I don't know who I am."
+    a = &bob;
+    whoareyou2(a); // Prints "I am Bob!"
+}
+```
 
 ### Reflection invocation
 *This functionality is not yet implemented and may see syntax changes*
 
 It is possible to retrieve any `@dynamic` function by name and invoke it:
 
-    def VoidMethodFn = fn void(void*);
+```c3
+def VoidMethodFn = fn void(void*);
 
-    fn void* int.test_something(&self) @dynamic
-    {
-        io::printfn("Testing: %d", *self);
-    }
+fn void* int.test_something(&self) @dynamic
+{
+    io::printfn("Testing: %d", *self);
+}
 
-    fn void main()
-    {
-        int z = 321;
-        any a = &z;
-        VoidMethodFn test_func = a.reflect("test_something");
-        test_func(a); // Will print "Testing: 321"
-    }
+fn void main()
+{
+    int z = 321;
+    any a = &z;
+    VoidMethodFn test_func = a.reflect("test_something");
+    test_func(a); // Will print "Testing: 321"
+}
+```
 
 This feature allows methods to be linked up at runtime.
-

@@ -23,6 +23,7 @@ fn void test()
     return;
 }
 ```
+
 The `defer` runs **after** the other print statments, at the function return.
 
 ### Defer Execution order
@@ -81,6 +82,7 @@ fn void! main(String[] args)
     test();
 }
 ```
+
 Function returns a [successful](../optionals) value, `defer try` runs on [scope exit](#end-of-a-scope).
 
 ```c3
@@ -97,6 +99,7 @@ fn void! main(String[] args)
     }
 }
 ```
+
 Function returns a [fault](../optionals), `defer try` does not run on [scope exit](#end-of-a-scope).
 
 
@@ -113,10 +116,13 @@ defer catch { ... }
 ```c3
 defer (catch err) { ... };
 ```
+
 When the fault is captured this is convenient for logging the fault:
+
 ```c3
 defer (catch err) io::printfn("fault found: %s", err)
 ```
+
 ### Memory allocation example
 
 

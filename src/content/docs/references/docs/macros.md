@@ -10,51 +10,60 @@ The macro capabilities of C3 reaches across several constructs: macros (prefixed
 
 ### Conditional compilation
 
-    // C
-    #if defined(x) && Y > 3
+```c
+// C
+#if defined(x) && Y > 3
+int z;
+#endif
+```
+
+```c3
+// C3
+$if $defined(x) && Y > 3:
     int z;
-    #endif
-    
-    // C3
-    $if $defined(x) && Y > 3:
-        int z;
-    $endif
+$endif
 
-    // or
-    int z @if($defined(x) && Y > 3);
-
-    
+// or
+int z @if($defined(x) && Y > 3);
+```
 
 ### Macros
 
-    // C
-    #define M(x) ((x) + 2)
-    #define UInt32 unsigned int
-    
-    // Use:
-    int y = M(foo() + 2);
-    UInt32 b = y;
-    
-    // C3
-    macro m(x)
-    {
-        return x + 2;
-    }
-    def UInt32 = uint;
-    
-    // Use:
-    int y = m(foo() + 2);
-    UInt32 b = y;
+```c
+// C
+#define M(x) ((x) + 2)
+#define UInt32 unsigned int
+
+// Use:
+int y = M(foo() + 2);
+UInt32 b = y;
+```
+
+```c3
+// C3
+macro m(x)
+{
+    return x + 2;
+}
+def UInt32 = uint;
+
+// Use:
+int y = m(foo() + 2);
+UInt32 b = y;
+```
 
 ### Dynamic scoping
 
-    // C
-    #define Z() ptr->x->y->z
-    int x = Z();
-    
-    // C3
-    ... currently no corresponding functionality ...
+```c
+// C
+#define Z() ptr->x->y->z
+int x = Z();
+```
 
+```c3
+// C3
+... currently no corresponding functionality ...
+```
 
 ### Reference arguments
 
@@ -62,103 +71,128 @@ Use `&` in front of a parameter to capture the variable and pass it by reference
 (Note that in C++ this is allowed for normal functions, whereas for C3 it is only permitted with macros. Also, 
 in C3 the captured argument isn't automatically dereferenced)
 
-    // C
-    #define M(x, y) x = 2 * (y);
-    ...
-    M(x, 3);
+```c
+// C
+#define M(x, y) x = 2 * (y);
+...
+M(x, 3);
+```
 
-    // C3
-    macro @m(&x, y)
-    {
-        *x = 2 * y;
-    }
-    ...
-    @m(x, 3);
-
+```c3
+// C3
+macro @m(&x, y)
+{
+    *x = 2 * y;
+}
+...
+@m(x, 3);
+```
 
 ### First class types
 
-    // C
-    #define SIZE(T) (sizeof(T) + sizeof(int))
-    
-    // C3
-    macro size($Type)
-    {
-        return $Type.sizeof + int.sizeof;
-    }
+```c
+// C
+#define SIZE(T) (sizeof(T) + sizeof(int))
+```
+
+```c3
+// C3
+macro size($Type)
+{
+    return $Type.sizeof + int.sizeof;
+}
+```
 
 ### Trailing blocks for macros
 
-    // C
-    #define FOR_EACH(x, list) \
-    for (x = (list); x; x = x->next)
-    
-    // Use:
-    Foo *it;
-    FOR_EACH(it, list) 
+```c
+// C
+#define FOR_EACH(x, list) \
+for (x = (list); x; x = x->next)
+
+// Use:
+Foo *it;
+FOR_EACH(it, list)
+{
+    if (!process(it)) return;
+}
+```
+
+```c3
+// C3
+macro @for_each(list; @body(it))
+{
+    for ($typeof(list) x = list; x; x = x.next)
     {
-        if (!process(it)) return;
+        @body(x);
     }
-    
-    
-    // C3
-    macro @for_each(list; @body(it))
-    {
-        for ($typeof(list) x = list; x; x = x.next)
-        {
-            @body(x);
-        }    
-    }
-    
-    // Use:
-    @for_each(list; Foo* x)
-    {
-        if (!process(x)) return;
-    }
+}
+
+// Use:
+@for_each(list; Foo* x)
+{
+    if (!process(x)) return;
+}
+```
 
 ### First class names
 
-    // C
-    #define offsetof(T, field) (size_t)(&((T*)0)->field)
-    
-    // C3
-    macro usz @offset($Type, #field)
-    {
-        $Type* t = null;
-        return (usz)(uptr)&t.#field;
-    }
+```c
+// C
+#define offsetof(T, field) (size_t)(&((T*)0)->field)
+```
+
+```c3
+// C3
+macro usz @offset($Type, #field)
+{
+    $Type* t = null;
+    return (usz)(uptr)&t.#field;
+}
+```
 
 ### Declaration attributes
 
+```c
+// C
+#define PURE_INLINE __attribute__((pure)) __attribute__((always_inline))
+int foo(int x) PURE_INLINE { ... }
+```
 
-    // C
-    #define PURE_INLINE __attribute__((pure)) __attribute__((always_inline))
-    int foo(int x) PURE_INLINE { ... }
-    
-    // C3
-    def @NoDiscardInline = { @nodiscard @inline };
-    fn int foo(int) @NoDiscardInline { ... }
-
+```c3
+// C3
+def @NoDiscardInline = { @nodiscard @inline };
+fn int foo(int) @NoDiscardInline { ... }
+```
 
 ### Declaration macros
 
-    // C
-    #define DECLARE_LIST(name) List name = { .head = NULL };
-    // Use:
-    DECLARE_LIST(hello)
-    
-    // C3
-    ... currently no corresponding functionality ...
+```c
+// C
+#define DECLARE_LIST(name) List name = { .head = NULL };
+// Use:
+DECLARE_LIST(hello)
+```
+
+```c3
+// C3
+... currently no corresponding functionality ...
+```
 
 ### Stringification
 
-    #define CHECK(x) do { if (!x) abort(#x); } while(0)
-    
-    // C3
-    macro @check(#expr)
-    {
-       if (!#expr) abort($stringify(#expr));
-    }
+```c
+// C
+#define CHECK(x) do { if (!x) abort(#x); } while(0)
+```
+
+```c3
+// C3
+macro @check(#expr)
+{
+    if (!#expr) abort($stringify(#expr));
+}
+```
 
 ## Top level evaluation
 
@@ -178,74 +212,82 @@ The parameters have different sigils: `$` means compile time evaluated (constant
 
 A basic swap:
 
-    /**
-     * @checked $assignable(*a, $typeof(*b)) && $assignable(*b, $typeof(*a))
-     */
-    macro void @swap(&a, &b)
-    {
-        $typeof(*a) temp = *a;
-        *a = *b;
-        *b = temp;
-    }
+```c3
+/**
+    * @checked $assignable(*a, $typeof(*b)) && $assignable(*b, $typeof(*a))
+    */
+macro void @swap(&a, &b)
+{
+    $typeof(*a) temp = *a;
+    *a = *b;
+    *b = temp;
+}
+```
 
 This expands on usage like this:
 
-    fn void test()
+```c3
+fn void test()
+{
+    int a = 10;
+    int b = 20;
+    @swap(a, b);
+}
+// Equivalent to:
+fn void test()
+{
+    int a = 10;
+    int b = 20;
     {
-        int a = 10;
-        int b = 20;
-        @swap(a, b);
+        int __temp = a;
+        a = b;
+        b = __temp;
     }
-    // Equivalent to:
-    fn void test()
-    {
-        int a = 10;
-        int b = 20;
-        {
-            int __temp = a;
-            a = b;
-            b = __temp;
-        }
-    }
+}
+```
 
 Note the necessary `&`. Here is an incorrect swap and what it would expand to:
 
-    macro void badswap(a, b)
+```c3
+macro void badswap(a, b)
+{
+    $typeof(a) temp = a;
+    a = b;
+    b = temp;
+}
+
+fn void test()
+{
+    int a = 10;
+    int b = 20;
+    badswap(a, b);
+}
+// Equivalent to:
+fn void test()
+{
+    int a = 10;
+    int b = 20;
     {
-        $typeof(a) temp = a;
-        a = b;
-        b = temp;
+        int __a = a;
+        int __b = b;
+        int __temp = __a;
+        __a = __b;
+        __b = __temp;
     }
-    
-    fn void test()
-    {
-        int a = 10;
-        int b = 20;
-        badswap(a, b);
-    }
-    // Equivalent to:
-    fn void test()
-    {
-        int a = 10;
-        int b = 20;
-        {
-            int __a = a;
-            int __b = b;
-            int __temp = __a;
-            __a = __b;
-            __b = __temp;
-        }
-    }
+}
+```
 
 ## Macro methods
 
 Similar to regular *methods* a macro may also be associated with a particular type:
 
-    struct Foo { ... }
-    
-    macro Foo.generate(&self) { ... }
-    Foo f;
-    f.generate();
+```c3
+struct Foo { ... }
+
+macro Foo.generate(&self) { ... }
+Foo f;
+f.generate();
+```
 
 See the chapter on [functions](/references/docs/functions) for more details.
 
@@ -257,72 +299,77 @@ To accept a trailing block, `; @name(param1, ...)` is placed after declaring the
 
 Here's an example to illustrate its use:
 
-    /**
-     * A macro looping through a list of values, executing the body once
-     * every pass.
-     *
-     * @require $defined(a.len) && $defined(a[0])
-     **/
-    macro @foreach(a; @body(index, value))
+```c3
+/**
+    * A macro looping through a list of values, executing the body once
+    * every pass.
+    *
+    * @require $defined(a.len) && $defined(a[0])
+    **/
+macro @foreach(a; @body(index, value))
+{
+    for (int i = 0; i < a.len; i++)
     {
-        for (int i = 0; i < a.len; i++)
-        {
-		    @body(i, a[i]);
-        }
+        @body(i, a[i]);
     }
-    
-    fn void test()
-    {
-        double[] a = { 1.0, 2.0, 3.0 };
-        @foreach(a; int index, double value)
-        {
-            io::printfn("a[%d] = %f", index, value);
-        };
-    }
-    
-    // Expands to code similar to:
-    fn void test()
-    {
-        int[] a = { 1, 2, 3 };
-        {
-            int[] __a = a;
-            for (int __i = 0; i < __a.len; i++)
-            {
-                io::printfn("Value: %d, x2: %d", __value1, __value2);
-            }
-        }
-    }
+}
 
+fn void test()
+{
+    double[] a = { 1.0, 2.0, 3.0 };
+    @foreach(a; int index, double value)
+    {
+        io::printfn("a[%d] = %f", index, value);
+    };
+}
+
+// Expands to code similar to:
+fn void test()
+{
+    int[] a = { 1, 2, 3 };
+    {
+        int[] __a = a;
+        for (int __i = 0; i < __a.len; i++)
+        {
+            io::printfn("Value: %d, x2: %d", __value1, __value2);
+        }
+    }
+}
+```
 
 ## Macros returning values
 
 A macro may return a value, it is then considered an expression rather than a statement:
 
-    macro square(x)
-    {
-        return x * x;
-    }
-    
-    fn int getTheSquare(int x)
-    {
-        return square(x);
-    }
-    
-    fn double getTheSquare2(double x)
-    {
-        return square(x);
-    }
+```c3
+macro square(x)
+{
+    return x * x;
+}
+
+fn int getTheSquare(int x)
+{
+    return square(x);
+}
+
+fn double getTheSquare2(double x)
+{
+    return square(x);
+}
+```
 
 ## Calling macros
 
 It's perfectly fine for a macro to invoke another macro or itself.
 
-    macro square(x) { return x * x; }
-    
-    macro squarePlusOne(x)
-    {
-        return square(x) + 1; // Expands to "return x * x + 1;"
-    }
+```c3
+macro square(x) { return x * x; }
+
+macro squarePlusOne(x)
+{
+    return square(x) + 1; // Expands to "return x * x + 1;"
+}
+```
 
 The maximum recursion depth is limited to the `macro-recursion-depth` build setting.
 
@@ -334,17 +381,19 @@ but it also supports a unique set of macro vaargs that look like C style vaargs:
 To access the arguments there is a family of $va-* built-in functions to retrieve
 the arguments:
 
-    macro compile_time_sum(...)
-    {
-       var $x = 0;
-       $for (var $i = 0; $i < $vacount; $i++)
-           $x += $vaconst[$i];
-       $endfor
-       return $x;
-    }
-    $if compile_time_sum(1, 3) > 2: // Will compile to $if 4 > 2
-      ...
-    $endif
+```c3
+macro compile_time_sum(...)
+{
+    var $x = 0;
+    $for (var $i = 0; $i < $vacount; $i++)
+        $x += $vaconst[$i];
+    $endfor
+    return $x;
+}
+$if compile_time_sum(1, 3) > 2: // Will compile to $if 4 > 2
+    ...
+$endif
+```
 
 ### $vacount
 
@@ -385,23 +434,26 @@ arguments 2, 3 and 4).
 
 Nor is it limited to function arguments, you can also use it with initializers:
 
-    int[*] a = { 5, $vasplat[2..], 77 };
+```c3
+int[*] a = { 5, $vasplat[2..], 77 };
+```
 
 ## Untyped lists
 
 Compile time variables may hold untyped lists. Such lists may be iterated over or 
 implicitly converted to initializer lists:
 
-    var $a = { 1, 2 };
-    $foreach ($x : $a)
-        io::printfn("%d", $x);
-    $endforeach
-    int[2] x = $a;
-    io::printfn("%s", x);
-    io::printfn("%s", $a[1]);
-    // Will print
-    // 1
-    // 2
-    // [1, 2]
-    // 2
-
+```c3
+var $a = { 1, 2 };
+$foreach ($x : $a)
+    io::printfn("%d", $x);
+$endforeach
+int[2] x = $a;
+io::printfn("%s", x);
+io::printfn("%s", $a[1]);
+// Will print
+// 1
+// 2
+// [1, 2]
+// 2
+```

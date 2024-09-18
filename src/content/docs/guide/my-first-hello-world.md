@@ -15,6 +15,7 @@ fn void main()
     io::printn("Hello, World!");
 }
 ```
+
 The `import` statement imports other modules, and we want `printn` which
 is in `std::io`
 

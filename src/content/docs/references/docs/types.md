@@ -354,6 +354,7 @@ fn void test()
 ```
 
 ### Generic types
+
 ```c3
 import generic_list; // Contains the generic MyList
 
@@ -369,6 +370,7 @@ MyListFoo working_example;
 // It is only allowed in a type definition or macro.
 MyList<Foo> failing_example = MyList(<Foo>);
 ```
+
 Read more about [generic types](/references/docs/generics).
 
 ## Enum
@@ -385,6 +387,7 @@ enum State : int
 // Access enum values via:
 State current_state = State.WAITING;
 ```
+
 The access requires referencing the `enum`'s name as `State.WAITING` because 
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
@@ -392,6 +395,7 @@ an enum like `State` is a separate namespace by default, just like C++'s class `
 ### Enum associated values
 
 It is possible to associate each enum value with one or more a static values.
+
 ```c3
 enum State : int (String description) 
 {
@@ -406,7 +410,9 @@ fn void main()
     io::printfn("%s", process.description);
 }
 ```
+
 Multiple static values can be associated with an enum value, for example:
+
 ```c3
 struct Position
 {

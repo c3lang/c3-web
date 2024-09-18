@@ -52,7 +52,7 @@ fn void test(Foo* foo, Bar* bar)
 
 C3 has three different array types. Variable arrays and slices decay to pointers, but fixed arrays are value objects and do not decay.
 
-```
+```c3
 int[3] a = { 1, 2, 3 };
 int[4]* b = &a; // No conversion
 int* c = a; // ERROR
@@ -65,7 +65,7 @@ int[3] f = a; // Copy by value!
 
 Only a single declaration with initialization is allowed per statement in C3:
 
-```
+```c3
 int i, j = 1; // ERROR
 int a = 1;    // Ok
 int b, c;     // Ok
@@ -73,7 +73,7 @@ int b, c;     // Ok
 
 In conditionals, a special form of multiple declarations are allowed but each must then provide its type:
 
-```
+```c3
 for (int i = 0, int j = 1; i < 10; i++, j++) { ... }
 ```
 
@@ -89,17 +89,19 @@ is disallowed. However, `long x = int_val_1` is unambiguous, so C3 permits it ju
 
 C3 also adds *safe signed-unsigned comparisons*: this means that comparing signed and unsigned values will always yield the correct result:
 
-    // The code below would print "Hello C3!" in C3 and "Hello C!" in C.
-    int i = -1;
-    uint j = 1;
-    if (i < j)
-    {
-        printf("Hello C3!\n");
-    }
-    else
-    {
-        printf("Hello C!\n");
-    }
+```c3
+// The code below would print "Hello C3!" in C3 and "Hello C!" in C.
+int i = -1;
+uint j = 1;
+if (i < j)
+{
+    printf("Hello C3!\n");
+}
+else
+{
+    printf("Hello C!\n");
+}
+```
 
 ##### Goto removed
 
@@ -113,20 +115,21 @@ the code is harder to understand as well. The replacements together with `defer`
 Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed
 `nextcase` can also be used to jump to any other case statement in the switch.
 
-    switch (h)
-    {
-        case 1:
-            a = 1;
-            nextcase; // Fall through
-        case 2:
-            b = 123;
-        case 3:
-            a = 2;
-            nextcase 2; // Jump to case 2
-        default:
-            a = 111;
-    }
-
+```c3
+switch (h)
+{
+    case 1:
+        a = 1;
+        nextcase; // Fall through
+    case 2:
+        b = 123;
+    case 3:
+        a = 2;
+        nextcase 2; // Jump to case 2
+    default:
+        a = 111;
+}
+```
 
 ##### Locals variables are implicitly zeroed
 
@@ -139,7 +142,7 @@ C3 also offers a way to opt out of zero-initialization, so the change comes at n
 
 ##### Compound literal syntax changed
 
-```c
+```c3
 // C style:
 call_foo((Foo) { 1, 2, 3 });
 
@@ -161,7 +164,7 @@ call_foo({ 1, 2, 3 });
 Bitfields are replaced by bitstructs that have a well-defined encapsulating type, and 
 an exact bit layout.
 
-```c
+```c3
 // C
 struct Foo
 {

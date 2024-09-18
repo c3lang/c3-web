@@ -18,7 +18,7 @@ Default function called when the asserts fails.
 ### void @swap(&a, &b)
 Swap values in `a` and `b`.
 
-```c
+```c3
 int a = 3;
 int b = 5;
 @swap(a, b);
@@ -29,7 +29,7 @@ io::printfn("%d", a); // Prints 5
 
 Optionally cast the value `v` to type `$Type*` on failure returns `CastResult.TYPE_MISMATCH`.
 
-```c
+```c3
 int b;
 any a = &b;
 float*! c = anycast(a, float); // Will return TYPE_MISMATCH
@@ -40,7 +40,7 @@ int*! d = anycast(a, int);     // Works!
 
 Mark a code path as unreachable.
 
-```c
+```c3
 switch (x)
 {
   case 0:
@@ -58,7 +58,7 @@ compiler will assume this case never happens.
 
 ### bitcast(value, $Type)
 Do a bitcast of a value to `$Type`, requires that the types are of the same memory size.
-```c
+```c3
 float x = 1.0;
 int y = bitcast(x, int); // y = 0x3f800000
 ```
@@ -66,7 +66,7 @@ int y = bitcast(x, int); // y = 0x3f800000
 ### enum_by_name($Type, enum_name)
 Optionally returns the enum value with the given name. `$Type` must be an enum. Returns `SearchResult.MISSING`
 on failure.
-```c
+```c3
 enum Foo { ABC, CDE, EFG }
 
 fn void! test()
@@ -80,7 +80,7 @@ fn void! test()
 
 Scopes a variable:
 
-```
+```c3
 int a = 3;
 
 @scope(a)
@@ -123,7 +123,7 @@ whereas `malloc_checked` and `malloc_aligned` returns an optional value.
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
 the normal `free` or memory corruption may result.
 
-```c
+```c3
 char* data = malloc(8);
 char*! data2 = malloc_checked(8);
 int[<16>]*! data3 = malloc_aligned(16 * int.sizeof), 128);
@@ -179,7 +179,7 @@ must be freed using `free_aligned`.
 
 Swaps the current memory allocator for the duration of the call.
 
-```c
+```c3
 DynamicArenaAllocator dynamic_arena;
 dynamic_arena.init(1024);
 mem::@scoped(&dynamic_arena) 
@@ -284,7 +284,7 @@ Sets bytes to zero. This operation may be aligned and/or volatile. See the `copy
 
 Makes a shallow copy of a value using the regular allocator.
 
-```c
+```c3
 Foo f = ...
 
 return @clone(f); 
@@ -315,7 +315,7 @@ Return `true` if the value can be compared using the comparison macros.
 Returns an optional value of `$Type` if the any value losslessly
 may be converted into the given type. Returns a `ConversionResult` otherwise.
 
-```c
+```c3
 any* v = &&128;
 short y = any_to_int(v, short)!!; // Works 
 ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
@@ -435,7 +435,7 @@ Flush a file, based on the libc function.
 
 Generic list module, elements are of `Type`.
 
-```c
+```c3
 import std::collections::list;
 def MyIntList = List(<int>);
 

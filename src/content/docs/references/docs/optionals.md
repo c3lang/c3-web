@@ -21,10 +21,13 @@ is empty it has an `Excuse` explaining what happened.
 - For example trying to open a missing file returns the `Excuse` of `IoError.FILE_NOT_FOUND`.
 - Optionals are declared by adding `!` after the type.
 - An `Excuse` is of the type `anyfault`.
+
 ```c3
 int! a = 1; // Set the Optional to a result
 ```
+
 The Optional Excuse is set with `?` after the value.
+
 ```c3
 // Set the Optional to empty with a specific Excuse.
 int! b = IoError.FILE_NOT_FOUND?; 
@@ -193,8 +196,9 @@ For example:
 fn int! get_value();
 ```
 
-```c
+```c3
 // Corresponding C code:
 c3fault_t get_value(int *value_ref);
 ```
+
 The `c3fault_t` is guaranteed to be a pointer sized value.

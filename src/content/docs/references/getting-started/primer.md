@@ -412,7 +412,7 @@ Note that we can jump to an arbitrary case using C3:
 
 A bitstruct has an explicit container type, and each field has an exact bit range.
 
-```c
+```c3
 bitstruct Foo : short
 {
     int a : 0..2; // Exact bit ranges, bits 0-2
@@ -424,7 +424,7 @@ bitstruct Foo : short
 There exists a simplified form for a bitstruct containing only booleans,
 it is the same except the ranges are left out:
 
-```c
+```c3
 struct Flags : char
 {
     bool has_hyperdrive;

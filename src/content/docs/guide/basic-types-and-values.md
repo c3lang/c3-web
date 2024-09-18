@@ -86,7 +86,7 @@ Note how `uint` also has the `u` suffix.
 A `bool` will be either `true` or `false`. Although a bool is only a single bit of data, 
 it should be noted that it is stored in a byte.
 
-```c
+```c3
 bool b = true;
 bool f = false;
 ```

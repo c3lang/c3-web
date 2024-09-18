@@ -61,7 +61,7 @@ Behaviour here is analogous how structs may use `inline` to create struct subtyp
 
 The syntax is `def <alias> = <original identifier>`.
 
-```
+```c3
 fn void foo() { ... }
 int foo_var;
 
@@ -85,19 +85,21 @@ fn void test()
 It is recommended to favour using `def` to create aliases for parameterized types, functions 
 and variables:
 
-     import generic_foo;
+```c3
+import generic_foo;
 
-     // Parameterized function aliases
-     def int_foo_call = generic_foo::foo_call(<int>);
-     def double_foo_call = generic_foo::foo_call(<double>);
-  
-     // Parameterized type aliases
-     def IntFoo = Foo(<int>);
-     def DoubleFoo = Foo(<double>);
+// Parameterized function aliases
+def int_foo_call = generic_foo::foo_call(<int>);
+def double_foo_call = generic_foo::foo_call(<double>);
 
-     // Parameterized global aliases
-     def int_max_foo = generic_foo::max_foo(<int>);
-     def double_max_foo = generic_foo::max_foo(<double>);
+// Parameterized type aliases
+def IntFoo = Foo(<int>);
+def DoubleFoo = Foo(<double>);
+
+// Parameterized global aliases
+def int_max_foo = generic_foo::max_foo(<int>);
+def double_max_foo = generic_foo::max_foo(<double>);
+```
 
 For more information, see the chapter on [generics](/references/docs/generics).
 
@@ -112,19 +114,20 @@ will yield the function pointer alias' default argument.
 Similarly, named parameter arguments follow the alias definition when calling through the 
 function pointer:
 
-    def TestFn = fn void(int y = 123);
+```c3
+def TestFn = fn void(int y = 123);
 
-    fn void test(int x = 5)
-    {
-        io::printfn("X = %d");
-    }
+fn void test(int x = 5)
+{
+    io::printfn("X = %d");
+}
 
-    fn void main()
-    {
-        TestFn test2 = &test;
-        test();        // Prints X = 5
-        test2();       // Prints X = 123
-        test(.x = 3);  // Prints X = 3 
-        test2(.y = 4); // Prints X = 4
-    }
-
+fn void main()
+{
+    TestFn test2 = &test;
+    test();        // Prints X = 5
+    test2();       // Prints X = 123
+    test(.x = 3);  // Prints X = 3
+    test2(.y = 4); // Prints X = 4
+}
+```

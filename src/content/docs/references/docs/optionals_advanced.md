@@ -260,8 +260,10 @@ fn void! main(String[] args)
     }
 }
 ```
+
 It is possible to add conditions to an `if (try)` but they must be 
 joined with `&&`. However you **cannot** use logical OR (`||`) conditions:
+
 ```c3
 import std::io;
 

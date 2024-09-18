@@ -65,7 +65,7 @@ $$TIME
 
 ## Yacc grammar
 
-```c
+```c3
 %{
 
 #include <stdio.h>

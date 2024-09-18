@@ -344,7 +344,7 @@ Strings will concatenate if declared in sequence.
 
 Example:
 
-```c
+```c3
 String s = "abc" "def" "ghi";
 // This is equivalent to:
 String s = "abcdefghi";
@@ -454,7 +454,7 @@ element-wise.
 
 Example:
 
-```c
+```c3
 int[<2>] a = { 1, 3 };
 int[<2>] b = { 2, 7 };
 
@@ -1056,7 +1056,7 @@ variable.
 
 Example:
 
-```c
+```c3
 void* a = &a;  // Valid
 int a = a + 1; // Invalid
 ```
@@ -1087,7 +1087,7 @@ are executed.
 
 Example:
 
-```c
+```c3
 int a = 0;
 defer a++;
 return a;
@@ -1204,7 +1204,7 @@ after the if-statement.
 
 Example:
 
-```
+```c3
 int! a = foo();
 if (catch a)
 {
@@ -1293,7 +1293,7 @@ the pointee type given by the case statement.
 
 Example:
 
-```c
+```c3
 any a = abc();
 switch (a)
 {

@@ -209,7 +209,6 @@ Furthermore, by providing two variable name, the first is assumed to be the
 index:
 
 ```c3
-
 fn void test()
 {
     Foo[4] a = { /* ... */ };
@@ -219,6 +218,7 @@ fn void test()
     }
 }
 ```
+
 It is possible to enable foreach on any type 
 by implementing "len" and "[]" methods and annotating them using the `@operator` attribute:
 
@@ -285,7 +285,7 @@ fn void test()
 ## Fixed size multi-dimensional arrays
 
 To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
-```c
+```c3
 // C 
 // Uses: name[<rows>][<columns>]
 int array_in_c[4][2] = {

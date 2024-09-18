@@ -49,7 +49,8 @@ An expression with an integer type, may implicitly narrow to smaller integer typ
 As rough guide: if all the sub expressions originally are small enough it's ok to implicitly convert the result.
 
 Examples
-```
+
+```c3
 float16 h = 12.0;
 float f = 13.0;
 double d = 22.0;
