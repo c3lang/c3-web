@@ -51,7 +51,6 @@ if we wanted, but we *can* shorten it to just the lowest level module like `io::
 + io::printn("Hello, World!");
 
 ```
-:::
 
 The `io::printn` function takes a single argument and prints it, followed by a newline, then the function ends and the program terminates.
 
