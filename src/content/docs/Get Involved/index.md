@@ -20,5 +20,9 @@ So if you find the project interesting, here's what you can do to help:
 - Spotted a typo or broken link? [File an issue for the website](https://github.com/c3lang/c3-web/issues/new)
 
 ### 💪 Contribute
+
+Now the compiler is stable, what is needed now are the *non-essentials*, such as a docs generator, editor plugins, LSP etc. 
+
+- [A list of what's needed is on Github](https://github.com/c3lang/c3c/issues/1456).
 - [Help on the compiler](https://github.com/c3lang/c3c). 
 - [Help on the docs](https://github.com/c3lang/c3-web). 

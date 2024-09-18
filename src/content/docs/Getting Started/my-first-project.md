@@ -6,7 +6,7 @@ sidebar:
 ---
 
 :::note[Not installed the C3 compiler yet?]
-[Get C3 from here](../../install-c3/prebuilt-binaries/), available on Mac, Windows and Linux.
+[Download C3](../../install-c3/prebuilt-binaries/), available on Mac, Windows and Linux.
 :::
 
 ## Projects in C3

@@ -185,377 +185,377 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"docs": {
-"guide/basic-types-and-values.md": {
-	id: "guide/basic-types-and-values.md";
-  slug: "guide/basic-types-and-values";
+"Build Your Project/build-commands.md": {
+	id: "Build Your Project/build-commands.md";
+  slug: "build-your-project/build-commands";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"guide/index.mdx": {
-	id: "guide/index.mdx";
-  slug: "guide";
+"Build Your Project/project-config.md": {
+	id: "Build Your Project/project-config.md";
+  slug: "build-your-project/project-config";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"FAQ/changesfromc.md": {
+	id: "FAQ/changesfromc.md";
+  slug: "faq/changesfromc";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"FAQ/compare-languages.md": {
+	id: "FAQ/compare-languages.md";
+  slug: "faq/compare-languages";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"FAQ/index.mdx": {
+	id: "FAQ/index.mdx";
+  slug: "faq";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".mdx"] };
-"guide/my-first-hello-world.md": {
-	id: "guide/my-first-hello-world.md";
-  slug: "guide/my-first-hello-world";
+"FAQ/rejected-ideas.md": {
+	id: "FAQ/rejected-ideas.md";
+  slug: "faq/rejected-ideas";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"guide/my-first-project.md": {
-	id: "guide/my-first-project.md";
-  slug: "guide/my-first-project";
+"Generic Programming/anyinterfaces.md": {
+	id: "Generic Programming/anyinterfaces.md";
+  slug: "generic-programming/anyinterfaces";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/build-system/commands.md": {
-	id: "references/build-system/commands.md";
-  slug: "references/build-system/commands";
+"Generic Programming/compiletime.md": {
+	id: "Generic Programming/compiletime.md";
+  slug: "generic-programming/compiletime";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/build-system/index.md": {
-	id: "references/build-system/index.md";
-  slug: "references/build-system";
+"Generic Programming/generics.md": {
+	id: "Generic Programming/generics.md";
+  slug: "generic-programming/generics";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/build-system/project.md": {
-	id: "references/build-system/project.md";
-  slug: "references/build-system/project";
+"Generic Programming/macros.md": {
+	id: "Generic Programming/macros.md";
+  slug: "generic-programming/macros";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/development/changes.md": {
-	id: "references/development/changes.md";
-  slug: "references/development/changes";
+"Generic Programming/operator-overloading.md": {
+	id: "Generic Programming/operator-overloading.md";
+  slug: "generic-programming/operator-overloading";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/development/index.md": {
-	id: "references/development/index.md";
-  slug: "references/development";
+"Generic Programming/reflection.md": {
+	id: "Generic Programming/reflection.md";
+  slug: "generic-programming/reflection";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/development/rejectedideas.md": {
-	id: "references/development/rejectedideas.md";
-  slug: "references/development/rejectedideas";
+"Get Involved/index.md": {
+	id: "Get Involved/index.md";
+  slug: "get-involved";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/anyinterfaces.md": {
-	id: "references/docs/anyinterfaces.md";
-  slug: "references/docs/anyinterfaces";
+"Getting Started/basic-types-and-values.md": {
+	id: "Getting Started/basic-types-and-values.md";
+  slug: "getting-started/basic-types-and-values";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/arrays.md": {
-	id: "references/docs/arrays.md";
-  slug: "references/docs/arrays";
+"Getting Started/my-first-hello-world.md": {
+	id: "Getting Started/my-first-hello-world.md";
+  slug: "getting-started/my-first-hello-world";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/asm.md": {
-	id: "references/docs/asm.md";
-  slug: "references/docs/asm";
+"Getting Started/my-first-project.md": {
+	id: "Getting Started/my-first-project.md";
+  slug: "getting-started/my-first-project";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/attributes.md": {
-	id: "references/docs/attributes.md";
-  slug: "references/docs/attributes";
+"Implementation Details/change-logs.md": {
+	id: "Implementation Details/change-logs.md";
+  slug: "implementation-details/change-logs";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/builtins.md": {
-	id: "references/docs/builtins.md";
-  slug: "references/docs/builtins";
+"Implementation Details/grammar.md": {
+	id: "Implementation Details/grammar.md";
+  slug: "implementation-details/grammar";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/changesfromc.md": {
-	id: "references/docs/changesfromc.md";
-  slug: "references/docs/changesfromc";
+"Implementation Details/specification.md": {
+	id: "Implementation Details/specification.md";
+  slug: "implementation-details/specification";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/cinterop.md": {
-	id: "references/docs/cinterop.md";
-  slug: "references/docs/cinterop";
+"Install C3/compile.md": {
+	id: "Install C3/compile.md";
+  slug: "install-c3/compile";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/comments.md": {
-	id: "references/docs/comments.md";
-  slug: "references/docs/comments";
+"Install C3/prebuilt-binaries.md": {
+	id: "Install C3/prebuilt-binaries.md";
+  slug: "install-c3/prebuilt-binaries";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/compare.md": {
-	id: "references/docs/compare.md";
-  slug: "references/docs/compare";
+"Introduction/design-goals.md": {
+	id: "Introduction/design-goals.md";
+  slug: "introduction/design-goals";
   body: string;
   collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
-"references/docs/compiletime.md": {
-	id: "references/docs/compiletime.md";
-  slug: "references/docs/compiletime";
+"Introduction/index.mdx": {
+	id: "Introduction/index.mdx";
+  slug: "introduction";
   body: string;
   collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/contracts.md": {
-	id: "references/docs/contracts.md";
-  slug: "references/docs/contracts";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/conversion.md": {
-	id: "references/docs/conversion.md";
-  slug: "references/docs/conversion";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/defer.md": {
-	id: "references/docs/defer.md";
-  slug: "references/docs/defer";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/define.md": {
-	id: "references/docs/define.md";
-  slug: "references/docs/define";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/examples.md": {
-	id: "references/docs/examples.md";
-  slug: "references/docs/examples";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/expressions.md": {
-	id: "references/docs/expressions.md";
-  slug: "references/docs/expressions";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/faq.md": {
-	id: "references/docs/faq.md";
-  slug: "references/docs/faq";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/functions.md": {
-	id: "references/docs/functions.md";
-  slug: "references/docs/functions";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/generics.md": {
-	id: "references/docs/generics.md";
-  slug: "references/docs/generics";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/libraries.md": {
-	id: "references/docs/libraries.md";
-  slug: "references/docs/libraries";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/macros.md": {
-	id: "references/docs/macros.md";
-  slug: "references/docs/macros";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/modules.md": {
-	id: "references/docs/modules.md";
-  slug: "references/docs/modules";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/naming.md": {
-	id: "references/docs/naming.md";
-  slug: "references/docs/naming";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/operators.md": {
-	id: "references/docs/operators.md";
-  slug: "references/docs/operators";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/optionals.md": {
-	id: "references/docs/optionals.md";
-  slug: "references/docs/optionals";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/optionals_advanced.md": {
-	id: "references/docs/optionals_advanced.md";
-  slug: "references/docs/optionals_advanced";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/precedence.md": {
-	id: "references/docs/precedence.md";
-  slug: "references/docs/precedence";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/reflection.md": {
-	id: "references/docs/reflection.md";
-  slug: "references/docs/reflection";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/sample.md": {
-	id: "references/docs/sample.md";
-  slug: "references/docs/sample";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/specification.md": {
-	id: "references/docs/specification.md";
-  slug: "references/docs/specification";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/standard_library.md": {
-	id: "references/docs/standard_library.md";
-  slug: "references/docs/standard_library";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/statements.md": {
-	id: "references/docs/statements.md";
-  slug: "references/docs/statements";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/stdlib_refcard.md": {
-	id: "references/docs/stdlib_refcard.md";
-  slug: "references/docs/stdlib_refcard";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/syntax.md": {
-	id: "references/docs/syntax.md";
-  slug: "references/docs/syntax";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/types.md": {
-	id: "references/docs/types.md";
-  slug: "references/docs/types";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/undefinedbehaviour.md": {
-	id: "references/docs/undefinedbehaviour.md";
-  slug: "references/docs/undefinedbehaviour";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/variables.md": {
-	id: "references/docs/variables.md";
-  slug: "references/docs/variables";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/docs/vectors.md": {
-	id: "references/docs/vectors.md";
-  slug: "references/docs/vectors";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/allfeatures.md": {
-	id: "references/getting-started/allfeatures.md";
-  slug: "references/getting-started/allfeatures";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/prebuilt-binaries.md": {
-	id: "references/getting-started/prebuilt-binaries.md";
-  slug: "references/getting-started/prebuilt-binaries";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/primer.md": {
-	id: "references/getting-started/primer.md";
-  slug: "references/getting-started/primer";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/getting-started/setup.md": {
-	id: "references/getting-started/setup.md";
-  slug: "references/getting-started/setup";
-  body: string;
-  collection: "docs";
-  data: any
-} & { render(): Render[".md"] };
-"references/index.mdx": {
-	id: "references/index.mdx";
-  slug: "references";
-  body: string;
-  collection: "docs";
-  data: any
+  data: InferEntrySchema<"docs">
 } & { render(): Render[".mdx"] };
+"Introduction/roadmap.md": {
+	id: "Introduction/roadmap.md";
+  slug: "introduction/roadmap";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/Optionals/advanced.md": {
+	id: "Language Common/Optionals/advanced.md";
+  slug: "language-common/optionals/advanced";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/Optionals/essential.md": {
+	id: "Language Common/Optionals/essential.md";
+  slug: "language-common/optionals/essential";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/arrays.md": {
+	id: "Language Common/arrays.md";
+  slug: "language-common/arrays";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/attributes.md": {
+	id: "Language Common/attributes.md";
+  slug: "language-common/attributes";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/cinterop.md": {
+	id: "Language Common/cinterop.md";
+  slug: "language-common/cinterop";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/contracts.md": {
+	id: "Language Common/contracts.md";
+  slug: "language-common/contracts";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/defer.md": {
+	id: "Language Common/defer.md";
+  slug: "language-common/defer";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/define.md": {
+	id: "Language Common/define.md";
+  slug: "language-common/define";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Common/vectors.md": {
+	id: "Language Common/vectors.md";
+  slug: "language-common/vectors";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/comments.md": {
+	id: "Language Fundamentals/comments.md";
+  slug: "language-fundamentals/comments";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/conversion.md": {
+	id: "Language Fundamentals/conversion.md";
+  slug: "language-fundamentals/conversion";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/expressions.md": {
+	id: "Language Fundamentals/expressions.md";
+  slug: "language-fundamentals/expressions";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/functions.md": {
+	id: "Language Fundamentals/functions.md";
+  slug: "language-fundamentals/functions";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/modules.md": {
+	id: "Language Fundamentals/modules.md";
+  slug: "language-fundamentals/modules";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/naming.md": {
+	id: "Language Fundamentals/naming.md";
+  slug: "language-fundamentals/naming";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/precedence.md": {
+	id: "Language Fundamentals/precedence.md";
+  slug: "language-fundamentals/precedence";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/statements.md": {
+	id: "Language Fundamentals/statements.md";
+  slug: "language-fundamentals/statements";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/undefined-behaviour.md": {
+	id: "Language Fundamentals/undefined-behaviour.md";
+  slug: "language-fundamentals/undefined-behaviour";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Fundamentals/variables.md": {
+	id: "Language Fundamentals/variables.md";
+  slug: "language-fundamentals/variables";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Overview/allfeatures.md": {
+	id: "Language Overview/allfeatures.md";
+  slug: "language-overview/allfeatures";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Overview/examples.md": {
+	id: "Language Overview/examples.md";
+  slug: "language-overview/examples";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Overview/primer.md": {
+	id: "Language Overview/primer.md";
+  slug: "language-overview/primer";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Overview/sample.md": {
+	id: "Language Overview/sample.md";
+  slug: "language-overview/sample";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Language Overview/types.md": {
+	id: "Language Overview/types.md";
+  slug: "language-overview/types";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Misc Advanced/asm.md": {
+	id: "Misc Advanced/asm.md";
+  slug: "misc-advanced/asm";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Misc Advanced/builtins.md": {
+	id: "Misc Advanced/builtins.md";
+  slug: "misc-advanced/builtins";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Misc Advanced/library-packaging.md": {
+	id: "Misc Advanced/library-packaging.md";
+  slug: "misc-advanced/library-packaging";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Standard Library/index.mdx": {
+	id: "Standard Library/index.mdx";
+  slug: "standard-library";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".mdx"] };
+"Standard Library/stdlib_refcard.md": {
+	id: "Standard Library/stdlib_refcard.md";
+  slug: "standard-library/stdlib_refcard";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 };
 
 	};
@@ -566,5 +566,5 @@ declare module 'astro:content' {
 
 	type AnyEntryMap = ContentEntryMap & DataEntryMap;
 
-	type ContentConfig = never;
+	type ContentConfig = typeof import("../src/content/config.js");
 }
