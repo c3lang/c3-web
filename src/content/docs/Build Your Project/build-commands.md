@@ -15,7 +15,7 @@ You can also [customise the project build config](../project-config/).
 
 By default the compiler is compiling stand-alone files to output an executable binary.
 
-```bash
+```
 c3c <file1> <file2> <file3>
 ```
 
@@ -25,7 +25,7 @@ When starting out, with C3 it's natural to use `run` to try things out. For larg
 
 The `run` command works same as compilation, but also immediately runs the resulting executable.
 
-```bash
+```
 c3c run <file1> <file2> <file3>
 ```
 
@@ -38,7 +38,7 @@ Additional parameters:
     
 ## init
 
-```bash
+```
 c3c init <project_name> [optional path]`
 ```
 
@@ -58,7 +58,9 @@ Additional parameters:
 For example `c3c init hello_world` creates the following structure:
 
 ```
-hello_world
+$ tree .
+.
+└── hello_world
     |
     ├── LICENSE
     ├── README.md
@@ -78,8 +80,8 @@ hello_world
 ```
 ## build
 
-```bash
-build [target]
+```
+c3c build [target]
 ```
 
 Build the project in the current path. It doesn't matter where in the project structure you are. 
@@ -88,46 +90,47 @@ The built-in templates define two targets: `debug` (which is the default) and `r
 
 ## clean
 
-```bash
-clean
+```
+c3c clean
 ```
 
 ## build-run
 
-```bash
-build-run [target]
+```
+c3c build-run [target]
 ```
 
 Build the target (if needed) and run the executable.
 
 ## clean-run
 
-```bash
-clean-run [target]
+```
+c3c clean-run [target]
 ```
 
 Clean, build and run the target.
 
 ## dist
 
-```bash
-dist [target]
+```
+c3c dist [target]
 ```
 
-Clean, build and package the target.
+Clean, build and package the target for distribution.
 
-## docs
+## directives
 
-```bash
-docs [target]
 ```
+c3c directives [<target>]
+```
+                              
+Generate documentation for the target.
 
-Rebuilds the documentation.
 
 ## bench
 
-```bash
-bench [target]
+```
+c3c bench [target]
 ```
 
 Runs benchmarks on a target.

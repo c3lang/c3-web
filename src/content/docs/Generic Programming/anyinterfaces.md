@@ -130,7 +130,7 @@ If we implemented it for our struct above it might look like this:
 ```c3
 fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
 {
-    return string::printf("Baz(%d)", baz.x, .allocator = allocator);
+    return string::printf("Baz(%d)", baz.x, allocator: allocator);
 }
 ```
 

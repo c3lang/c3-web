@@ -133,10 +133,13 @@ switch (h)
 
 ##### Locals variables are implicitly zeroed
 
-In C global variables are implicitly zeroed out, but local variables aren't. In C3 local variables are zeroed out by default, but may be *explicitly* undefined if you wish to match the C behaviour.
+In C global variables are implicitly zeroed out, but local variables aren't. 
+In C3 local variables are zeroed out by default, but may be *explicitly* undefined 
+(using the `@noinit` attribute) if you wish to match the C behaviour.
 
 ###### Rationale for this change 
-- In the "zero-is-initialization" paradigm, zeroing variables, in particular structs, is very common. By offering zero initialization by default this **avoids a whole class of vulnerabilities**.
+- In the "zero-is-initialization" paradigm, zeroing variables, in particular structs, 
+is very common. By offering zero initialization by default this **avoids a whole class of vulnerabilities**.
 - Another alternative that was considered for C3 was mandatory initialization,
 but this adds a lot of extra boilerplate. 
 - C3 also offers a way to opt out of zero-initialization, so the change comes at no performance loss.

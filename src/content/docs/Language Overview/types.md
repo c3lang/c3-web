@@ -415,7 +415,7 @@ struct Position
     int y;
 }
 
-enum State : int (String desc, bool active, Position pos)sidebar:
+enum State : int (String desc, bool active, Position pos)
     order: 135
 {
     WAITING    = { "waiting", false, { 1, 2} },
