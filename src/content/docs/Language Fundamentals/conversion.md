@@ -189,7 +189,7 @@ These operations are only valid for integers.
 
 1. Resolve the operands.
 2. In safe mode, insert a trap to ensure that rhs >= 0 and rhs < bit width of the left hand side.
-3The result of the expression is the lhs type.
+3. The result of the expression is the lhs type.
 
 ### 7. Assignment operations `+=` `-=` `*=` `*=` `/=` `%=` `^=` `|=` `&=`
 

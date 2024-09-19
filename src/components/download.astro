@@ -4,17 +4,72 @@
       id="download-button"
       href="https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip"
       onclick="openLink()"
-      class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-l-md border font-medium text-gray-700 dark:text-gray-400 shadow-sm bg-white dark:bg-stone-950 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:hover:text-white dark:focus:ring-offset-gray-800"
+      class=`
+      py-3 
+      px-4 
+      inline-flex
+      justify-center 
+      items-center 
+      gap-2 
+      rounded-l-md border 
+      font-medium 
+      shadow-sm 
+      focus:z-10 
+      focus:outline-none 
+      transition-all 
+      text-sm 
+      bg-blue-500
+      
+      hover:bg-blue-400 
+      text-white 
+      
+      dark:bg-blue-600
+      dark:text-white
+      dark:hover:bg-blue-700 
+      dark:hover:text-white 
+
+      dark:border-gray-700 `
     >
       Download for Windows
     </a>
-    <div
-      class="mr-5 hs-dropdown relative inline-flex [--placement:bottom-right]"
-    >
+    <div class="mr-5 hs-dropdown relative inline-flex">
       <button
         id="hs-split-dropdown"
         type="button"
-        class="bg-white dark:bg-stone-950 hs-dropdown-toggle relative -ml-[.3125rem] py-3 px-4 inline-flex justify-center items-center gap-2 h-[2.875rem] w-[2.875rem] rounded-r-md border font-medium text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+        class=`
+        bg-slate-200
+        dark:bg-slate-900 
+        hs-dropdown-toggle 
+        relative 
+        -ml-[.3125rem] 
+        py-3 
+        px-4 
+        inline-flex 
+        justify-center 
+        items-center 
+        gap-2 
+        h-[2.875rem] 
+        w-[2.875rem] 
+        rounded-r-md 
+        border 
+        font-medium 
+        text-gray-700 
+        shadow-sm 
+        align-middle 
+        hover:bg-gray-50 
+        focus:z-10 
+        focus:outline-none 
+        focus:ring-2 
+        focus:ring-offset-2 
+        focus:ring-offset-white 
+        focus:ring-blue-600 
+        transition-all 
+        text-sm 
+        dark:hover:bg-slate-800 
+        dark:border-gray-700 
+        dark:text-gray-400 
+        dark:hover:text-white 
+        dark:focus:ring-offset-gray-800`
       >
         <span class="sr-only">Toggle Dropdown</span>
         <svg
@@ -40,21 +95,21 @@
         <a
           id="windows-download"
           style="display: none;"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-blue-500 dark:hover:text-white"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip"
         >
           Windows
         </a>
         <a
           id="macos-download"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-blue-500 dark:hover:text-white"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip"
         >
           macOS
         </a>
         <a
           id="linux-download"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-blue-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-blue-500 dark:hover:text-white"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz"
         >
           Linux
@@ -62,38 +117,38 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const os =
+      userAgent.indexOf("linux") != -1
+        ? "Linux"
+        : userAgent.indexOf("mac") != -1
+          ? "MacOS"
+          : userAgent.indexOf("win") != -1
+            ? "Windows"
+            : "Unknown";
+
+    const downloadButton = document.getElementById("download-button");
+    const windowsDownloadLink = document.getElementById("windows-download");
+    const macosDownloadLink = document.getElementById("macos-download");
+    const linuxDownloadLink = document.getElementById("linux-download");
+    if (os == "MacOS") {
+      downloadButton.setAttribute(
+        "href",
+        "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip",
+      );
+      downloadButton.innerText = "Download for MacOS";
+      windowsDownloadLink.style.setProperty("display", "block");
+      macosDownloadLink.style.setProperty("display", "none");
+    } else if (os == "Linux") {
+      downloadButton.setAttribute(
+        "href",
+        "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz",
+      );
+      downloadButton.innerText = "Download for Linux";
+      windowsDownloadLink.style.setProperty("display", "block");
+      linuxDownloadLink.style.setProperty("display", "none");
+    }
+  </script>
 </div>
-
-<script>
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  const os =
-    userAgent.indexOf("linux") != -1
-      ? "Linux"
-      : userAgent.indexOf("mac") != -1
-        ? "MacOS"
-        : userAgent.indexOf("win") != -1
-          ? "Windows"
-          : "Unknown";
-
-  const downloadButton = document.getElementById("download-button");
-  const windowsDownloadLink = document.getElementById("windows-download");
-  const macosDownloadLink = document.getElementById("macos-download");
-  const linuxDownloadLink = document.getElementById("linux-download");
-  if (os == "MacOS") {
-    downloadButton.setAttribute(
-      "href",
-      "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip",
-    );
-    downloadButton.innerText = "Download for MacOS";
-    windowsDownloadLink.style.setProperty("display", "block");
-    macosDownloadLink.style.setProperty("display", "none");
-  } else if (os == "Linux") {
-    downloadButton.setAttribute(
-      "href",
-      "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz",
-    );
-    downloadButton.innerText = "Download for Linux";
-    windowsDownloadLink.style.setProperty("display", "block");
-    linuxDownloadLink.style.setProperty("display", "none");
-  }
-</script>

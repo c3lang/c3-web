@@ -68,13 +68,13 @@ fn void test(int[] y) { ... }
 test(&&int[3]{ 1, 2, 3 });
 
 // Explicitly slicing:
-test(int[3]{ 1, 2, 3 }[..]));
+test(int[3]{ 1, 2, 3 }[..]);
 
 // Using a slice directly as a temporary:
-test(int[]{ 1, 2, 3 }));
+test(int[]{ 1, 2, 3 });
 
 // Same as above but with inferred type:
-test({ 1, 2, 3 ));
+test({ 1, 2, 3 });
 ```
 
 Passing the pointer to an [array](../../language-common/arrays)
@@ -83,11 +83,8 @@ Passing the pointer to an [array](../../language-common/arrays)
 fn void test1(int[3]* z) { ... }
 fn void test2(int* z) { ... }
 
-test1(&&int[3]{ 1, 2, 3 }));
-test2(&&int[3]{ 1, 2, 3 }));
-
-// Same as above but with inferred type:
-test(&&{ 1, 2, 3 ));
+test1(&&int[3]{ 1, 2, 3 });
+test2(&&int[3]{ 1, 2, 3 });
 ```
 
 ## Constant expressions

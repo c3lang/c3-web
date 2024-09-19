@@ -53,7 +53,7 @@ fn void test_named(int times, double data)
 fn void test()
 {
     // Named only
-    test_named(data: 3.0, times: 1);
+    test_named(times: 1, data: 3.0);
 
     // Unnamed only
     test_named(3, 4.0);
@@ -77,12 +77,12 @@ fn void test_named_default(int times = 1, double data = 3.0, bool dummy = false)
 fn void test()
 {
     // Named only
-    test_named_default(data: 3.5, times: 10);
+    test_named_default(times: 10, data: 3.5);
 
     // Unnamed and named
     test_named_default(3, dummy: false);
 
-    // Overwriting an unnamed argument with named is an error:
+    // Overwriting an unnamed argument with a named argument is an error:
     // test_named_default(2, times: 3); ERROR!
     
     // Unnamed may not follow named arguments.
@@ -133,7 +133,7 @@ fn void test()
 }
 ```
 
-For typed varargs, we can pass a slice instead of the arguments, by using the `...` operator:
+For typed varargs, we can pass a slice instead of the individual arguments, by using the splat `...` operator for example:
 
 ```c3
 fn void test_splat()
@@ -142,6 +142,51 @@ fn void test_splat()
    va_singletyped(...x);
 }   
 ```
+### Splat
+
+- Splat `...` unknown size slice ONLY in a typed vaarg slot.
+
+```c3
+fn void va_singletyped(int... args) { 
+    io::printfn("%s", args); 
+}
+fn void main() 
+{
+    int[2] arr = {1, 2};
+    va_singletyped(...arr); // arr is splatting two arguments
+}
+```
+
+- Splat `...` any array anywhere
+
+```c3
+fn void foo(int a, int b, int c) 
+{ 
+    io::printfn("%s, %s, %s", a, b, c); 
+}
+fn void main() 
+{
+    int[2] arr = {1, 2};
+    foo(...arr, 7); // arr is splatting two arguments
+}
+```
+
+
+- Splat `...` known size slices anywhere
+
+```c3
+fn void foo(int a, int b, int c) 
+{ 
+    io::printfn("%s, %s, %s", a, b, c); 
+}
+fn void main() 
+{
+    int[5] arr = {1, 2, 3, 4, 5};
+    foo(...arr[:3]); // slice is splatting three arguments
+}
+```
+
+
 
 ### Named arguments and varargs
 
@@ -169,13 +214,12 @@ fn void test()
 }
 ```
 
-### Functions and optional returns
+### Functions and Optional returns
 
-The return parameter may be an *optional result type* – a type suffixed by `!` indicating that this 
-function might either return a regular value or an *optional result value*.
+Function return values may be *Optionals* – denoted by `<type>!` indicating that this 
+function might either return an Optional with a result, or an Optional with an Excuse.
 
-The below example might return optional values from both the `SomeError` optional enum as well as 
-the `OtherResult` type.
+For example this function might return an Excuse of type `SomeError` or `OtherResult`.
 
 ```c3
 fn double! test_error()
@@ -187,8 +231,8 @@ fn double! test_error()
 }
 ```
 
-*A function call* which is passed one or more *optional result type* arguments will only execute 
-if all optional values contain *expected results*, otherwise *the first* *optional result value* is returned.
+*A function call* which is passed one or more *Optional* arguments will only execute 
+if all Optional values contain a *result*, otherwise the first Excuse found is returned.
 
 ```c3
 fn void test()
@@ -197,7 +241,8 @@ fn void test()
     // or does not print at all:
     io::printfn("%d", test_error());
     
-    double x = (test_error() + test_error()) ?? 100;
+    // ?? sets a default value if an Excuse is found
+    double x = (test_error() + test_error()) ?? 100;  
     
     // This prints either a value less than 0.4 or 100:
     io::printfn("%d", x);
@@ -220,7 +265,7 @@ fn void print_input_with_explicit_checks()
             return;
         }
     }
-    io::printn("You didn't type an integer :(");
+    io::printn("You didn't type an integer :/ ");
 }
 
 fn void print_input_with_chaining()
@@ -230,7 +275,7 @@ fn void print_input_with_chaining()
         io::printfn("You typed the number %d", val);
         return;
     }
-    io::printn("You didn't type an integer :(");
+    io::printn("You didn't type an integer :/ ");
 }
 ```
 
