@@ -2,7 +2,7 @@
 title: All features
 description: A list of all features of C3.
 sidebar:
-    order: 37
+    order: 701
 ---
 
 Here is a summary of _all_ the features of C3 and changes from C

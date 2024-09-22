@@ -495,6 +495,6 @@ The following things are enhancements to C, that don't have an equivalent in C.
 - [Static initialize and finalize functions](/language-fundamentals/functions/#static-initializer-and-finalizers)
 - [Dynamic interfaces](/generic-programming/anyinterfaces/)
 
-**For the full list of all new features** see the [feature list](/language-overview/allfeatures/).
+**For the full list of all new features** see the [feature list](/faq/allfeatures/).
 
 Finally, the [FAQ](/faq/) answers many questions you might have as you start out.
