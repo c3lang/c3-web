@@ -9,10 +9,19 @@ Generic modules are parameterized modules that allow functionality for arbitrary
 
 For generic modules, the generic parameters follows the module name:
 
+
+
 ```c3
 // TypeA, TypeB, TypeC are generic parameters.
 module vector(<TypeA, TypeB, TypeC>);
 ```
+
+It is also possible to parameterize by an `int` or `bool` constant, for example:
+```c3
+// module custom_type<Type, VALUE>  
+module custom_type<float, 3>;
+```
+
 
 Code inside a generic module may use the generic parameters as if they were well-defined symbols:
 

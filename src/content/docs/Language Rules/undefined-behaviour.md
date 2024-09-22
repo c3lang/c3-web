@@ -2,7 +2,7 @@
 title: Undefined Behaviour
 description: Undefined Behaviour
 sidebar:
-    order: 47
+    order: 212
 ---
 
 Like C, C3 uses undefined behaviour. In contrast, C3 will *trap* - that is, print an error trace and abort – on undefined behaviour in debug builds. This is similar to using C with a UB sanitizer. It is only during release builds that actual undefined behaviour occurs.

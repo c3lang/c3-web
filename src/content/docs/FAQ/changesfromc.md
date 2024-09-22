@@ -26,7 +26,7 @@ The `->` operator is removed, access uses dot for both direct and pointer access
 
 ##### Different operator precedence
 
-Notably bit operations have higher precedence than +/-, making code like this: `a & b == c` evaluate like `(a & b) == c` instead of C's `a & (b == c)`. See the page about [precedence rules](/language-fundamentals/precedence/).
+Notably bit operations have higher precedence than +/-, making code like this: `a & b == c` evaluate like `(a & b) == c` instead of C's `a & (b == c)`. See the page about [precedence rules](/language-rules/precedence/).
 
 ##### Removal of the const type qualifier
 
@@ -85,7 +85,7 @@ where there is only a single way to widen the expression. To explain the latter:
 take the case of `long x = int_val_1 + int_val_2`. In C this would widen the result of the addition:
 `long x = (long)(int_val_1 + int_val_2)`, but there is another possible 
 way to widen: `long x = (long)int_val_1 + (long)int_val_2`. so in this case, the widening
-is disallowed. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](/language-fundamentals/conversion/). 
+is disallowed. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](/language-rules/conversion/). 
 
 C3 also adds *safe signed-unsigned comparisons*: this means that comparing signed and unsigned values will always yield the correct result:
 

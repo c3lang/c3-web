@@ -130,7 +130,7 @@ char[4] my_data = $embed("foo.txt", 4);
 ##### Failure to load at compile time and defaults
 
 Usually it's a compile time error if the file can't be included, but sometimes it's useful to only optionally include it. 
-If this is desired, declare the left hand side an [Optional](/language-common/optionals/essential/#what-is-an-optional):
+If this is desired, declare the left hand side an [Optional](/language-common/optionals-essential/#what-is-an-optional):
 
 ```c3
 char[]! my_image = $embed("my_image.png");
@@ -138,7 +138,7 @@ char[]! my_image = $embed("my_image.png");
 
 `my_image` with be an optional `IoError.FILE_NOT_FOUND?` if the image is missing.
 
-This also allows us to pass a [default value using `??`](/language-common/optionals/advanced/#return-a-default-value-if-optional-is-empty):
+This also allows us to pass a [default value using `??`](/language-common/optionals-advanced/#return-a-default-value-if-optional-is-empty):
 ```c3
 char[] my_image = $embed("my_image.png") ?? DEFAULT_IMAGE_DATA;
 ```

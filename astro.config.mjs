@@ -8,8 +8,8 @@ export default defineConfig({
   site: "https://c3-lang.org",
   redirects: {
     '/guide': '/introduction',
-    '/guide/my-first-hello-world': '/getting-started/my-first-hello-world',
-    '/guide/my-first-project': '/getting-started/my-first-project',
+    '/guide/my-first-hello-world': '/getting-started/hello-world',
+    '/guide/my-first-project': '/getting-started/projects',
     '/guide/basic-types-and-values': '/getting-started/basic-types-and-values',
     '/references/development': '/get-involved',
     '/references': '/introduction/design-goals',

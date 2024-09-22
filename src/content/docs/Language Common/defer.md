@@ -12,7 +12,7 @@ A `defer` *always* runs at the [end of a scope](#end-of-a-scope) at any point *a
 ### End of a scope
 The end of a scope also includes `return`, `break`, `continue` or `!` rethrow. 
 
-[Rethrow](/language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` unwraps the optional, making it a normal variable again if [successful](/language-common/optionals/essential/), and if unsuccessful it returns the [fault](/language-common/optionals/essential/) from the function back to the caller.
+[Rethrow](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` unwraps the optional, making it a normal variable again if [successful](/language-common/optionals-essential/), and if unsuccessful it returns the [fault](/language-common/optionals-essential/) from the function back to the caller.
 
 ```c3
 fn void test() 
@@ -26,7 +26,7 @@ fn void test()
 The `defer` runs **after** the other print statments, at the function return.
 
 ### Defer Execution order
-When there are multiple `defer` statements they are executed in reverse order of their declaration, last-to-first decalared. 
+When there are multiple `defer` statements they are executed in reverse order of their declaration, last-to-first declared. 
 
 
 ```c3
@@ -47,10 +47,15 @@ import std::io;
 
 fn char[]! file_read(String filename, char[] buffer)
 {   
-    File! file = file::open(filename, "r")!; // return if fault opening file
+    // return Excuse if failed to open file
+    File! file = file::open(filename, "r")!; 
+
     defer { 
         io::printn("File was found, close the file"); 
-        if (catch err = file.close()) io::printfn("Fault closing file: %s", fault); 
+        if (catch excuse = file.close()) 
+        {
+            io::printfn("Fault closing file: %s", excuse); 
+        }
     }
 
     file.read(buffer)!; // return if fault reading the file into the buffer
@@ -64,7 +69,7 @@ Note that if a scope exit happens before the `defer` declaration, the `defer` wi
 
 ## Defer try
 
-A `defer try` is called at [end of a scope](#end-of-a-scope) when exiting with a [successful](/language-common/optionals/essential/) value.
+A `defer try` is called at [end of a scope](#end-of-a-scope) when exiting with a [successful](/language-common/optionals-essential/) value.
 
 
 ### Examples
@@ -81,7 +86,7 @@ fn void! main(String[] args)
     test();
 }
 ```
-Function returns a [successful](/language-common/optionals/essential/) value, `defer try` runs on [scope exit](#end-of-a-scope).
+Function returns a [successful](/language-common/optionals-essential/) value, `defer try` runs on [scope exit](#end-of-a-scope).
 
 ```c3
 fn void! test() 
@@ -97,13 +102,13 @@ fn void! main(String[] args)
     }
 }
 ```
-Function returns a [fault](/language-common/optionals/essential/), `defer try` does not run on [scope exit](#end-of-a-scope).
+Function returns a [fault](/language-common/optionals-essential/), `defer try` does not run on [scope exit](#end-of-a-scope).
 
 
 
 ## Defer catch
 
-A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting exiting with a [fault](/language-common/optionals/essential/), and is helpful for cleanup and freeing resources.
+A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting exiting with a [fault](/language-common/optionals-essential/), and is helpful for cleanup and freeing resources.
  
 
 ```c3
@@ -134,7 +139,7 @@ fn String! test()
 ```
 
 ## Pitfalls with defer and defer catch
-If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing](/language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` before the `defer catch` declaration. 
+If cleaning up memory allocations or resources make sure the `defer` or `defer catch` are declared as close to the resource declaration as possible. This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) `!` before the `defer catch` declaration. 
 
 ```c3
 fn void! function_throws() 

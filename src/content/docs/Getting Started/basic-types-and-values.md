@@ -138,7 +138,7 @@ floating point by adding a suffix:
 
 ## Arrays
 
-Arrays have the format `Type[size]`, so for example: `int[4]`. An array is a type consisting
+[Arrays](/language-common/arrays/) have the format `Type[size]`, so for example: `int[4]`. An array is a type consisting
 of the same element repeated a number of times. Our `int[4]` is essentially four `int` values
 packed together.
 
@@ -150,11 +150,9 @@ int[3] abc = { 1, 2, 3 }; // Explicit int[3]
 int[*] bcd = { 1, 2, 3 }; // Implicit int[3]
 ```
 
-Read more about initializing arrays in [the chapter on arrays](/language-common/arrays/).
-
 ## Slices
 
-Slices have the format `Type[]`. Unlike the array, a slice does not hold the values themselves
+[Slices](/language-common/arrays/#slice) have the format `Type[]`. Unlike the array, a slice does not hold the values themselves
 but instead presents a view of some underlying array or vector.
 
 Slices have two properties: `.ptr`, which retrieves the array it points to, and `.len` which
@@ -172,8 +170,10 @@ providing pointer + length separately.
 
 ## Vectors
 
-Similar to arrays, vectors use the format `Type[<size>]`, with the restriction that vectors may only form out
-of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: 
+[Vectors](/language-common/vectors/) similar to arrays, use the format 
+`Type[<size>]`, with the restriction that vectors may only form out
+of integers, floats and booleans. Similar to arrays, wildcard can be 
+used to infer the size of a vector: 
 
 ```c3
 int[<*>] a = { 1, 2 };

@@ -58,7 +58,7 @@ asm
 The asm block will infer register clobbers and in/out parameters.
 
 *\*Please note that the current state of inline asm is a __work in progress__,
-only a subset of x86 and aarch64 instructions are available, other platforms
+only a subset of x86, aarch64 and riscv instructions are available, other platforms
 have no support at all. It is likely that the grammar will be extended as more 
 architectures are supported. More instructions can be added as they are needed,
 so please file issues when you encounter missing instructions you need.*

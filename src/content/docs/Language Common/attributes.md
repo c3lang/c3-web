@@ -13,7 +13,15 @@ Attributes are compile-time annotations on functions, types, global constants an
 
 *Used for: struct, bitstructs, union, var, function*
 
-This attribute sets the minimum alignment for a field or a variable.
+This attribute sets the minimum alignment for a field or a variable, for example:
+
+```c3
+struct Foo @align(32)
+{
+  int a;
+  int b @align(16);
+}
+```
 
 ### @benchmark
 

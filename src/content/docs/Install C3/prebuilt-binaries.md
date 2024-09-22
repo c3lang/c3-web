@@ -5,7 +5,6 @@ sidebar:
   order: 20
 ---
 
-You can use one of the precompiled binaries here or [build the compiler from source yourself](/install-c3/compile/).
 
 # Prebuilt binaries
 - [Installing on Windows](#installing-on-windows)

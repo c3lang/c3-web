@@ -1,6 +1,6 @@
 ---
-title: My first C3 Project
-description: Learn to create your first C3 project
+title: Projects
+description: Learn to create C3 projects
 sidebar:
   order: 31
 ---
@@ -10,7 +10,8 @@ sidebar:
 :::
 
 ## Projects in C3
-Projects are a good way to manage compiling code when there are a lot of files and modules.
+Projects are *optional*, but are a good way to manage compiling code when there
+ are a lot of files and modules.
 
 ### Creating a new project
 
@@ -22,7 +23,7 @@ c3c init <project-name>
 
 ### Project structure
 
-If you check the directory that was created you might find it a bit confusing with a bunch of different directories but worry not because if you expand them you will realise that most of them are actually empty!
+If you check the directory that was created you might find it a bit confusing with a bunch of different directories, but worry not because if you expand them you will realise that most of them are actually empty!
 
 ![project](./project-structure.png)
 

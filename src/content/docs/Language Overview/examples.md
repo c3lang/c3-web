@@ -2,7 +2,7 @@
 title: Examples
 description: Examples of C3 code
 sidebar:
-    order: 800
+    order: 35
 ---
 
 #### if-statement
@@ -379,7 +379,7 @@ fn void print_file2(String filename)
 
 
 
-Read more about optionals and error handling [here](/language-common/optionals/essential/#what-is-an-optional).
+Read more about optionals and error handling [here](/language-common/optionals-essential/#what-is-an-optional).
 
 #### Contracts
 

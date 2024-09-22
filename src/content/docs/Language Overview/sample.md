@@ -2,7 +2,7 @@
 title: More Code Examples
 description: More Code Examples
 sidebar:
-    order: 999
+    order: 39
 ---
 
 Here is a bit of code manually converted to C3 from C.

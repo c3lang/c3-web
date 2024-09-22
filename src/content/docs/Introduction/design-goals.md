@@ -58,9 +58,3 @@ by [Bas van den Berg](https://github.com/bvdberg).
 It has evolved significantly, not just in syntax but also 
 in regard to error handling, macros, generics and strings.
 
-#### Thank You
-
-Special thank you to: 
-- Bas van der Berg the Author of [C2](http://www.c2lang.org)
-- Jon Goodwin the Author of [Cone](http://cone.jondgoodwin.com)
-- Andrey Penechko the Author of [Vox](https://github.com/MrSmith33/vox).

@@ -530,7 +530,7 @@ details on changing the alignment.
 
 ### Fault types
 
-A fault is an extensible enum which can be used to create an Excuse for an empty [optional](/language-common/optionals/essential/#what-is-an-optional).
+A fault is an extensible enum which can be used to create an Excuse for an empty [optional](/language-common/optionals-essential/#what-is-an-optional).
 
 #### Alignment
 

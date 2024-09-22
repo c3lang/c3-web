@@ -2,7 +2,7 @@
 title: Precedence
 description: Precedence
 sidebar:
-    order: 44
+    order: 211
 ---
 
 Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3, listed from highest (1) to lowest (11):

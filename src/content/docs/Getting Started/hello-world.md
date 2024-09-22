@@ -1,6 +1,6 @@
 ---
-title: My first Hello World
-description: Let's write our first hello world program in C3
+title: Hello World in C3
+description: Learn to write hello world
 sidebar:
   order: 30
 ---
@@ -21,7 +21,7 @@ fn void main()
 }
 ```
 
-The [`import`]((/language-fundamentals/modules/#importing-modules)) statement imports other modules, and we want `printn` which
+The [`import`](/language-fundamentals/modules/#importing-modules) statement imports other modules, and we want `printn` which
 is in `std::io`.
 
 Next we define a [function](/language-fundamentals/functions/) which starts with the `fn` keyword followed by the return type. We don't need to return anything, so return `void`. The function name `main` then follows, followed by the function's parameter list, which is empty.

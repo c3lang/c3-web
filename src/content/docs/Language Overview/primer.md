@@ -2,7 +2,7 @@
 title: A quick primer on C3
 description: A quick primer on C3 for C programmers
 sidebar:
-    order: 999
+    order: 36
 ---
 This primer is intended as a guide to how the C syntax – and in some cases C semantics
 – is different in C3. It is intended to help you take a piece of C code and understand
@@ -101,7 +101,7 @@ Find out more about [arrays](/language-common/arrays/).
 #### Undefined behaviour
 
 C3 has less undefined behaviour, in particular integers are defined as using 2s
-complement and signed overflow is wrapping. Find out more about [undefined behaviour](/language-fundamentals/undefined-behaviour/).
+complement and signed overflow is wrapping. Find out more about [undefined behaviour](/language-rules/undefined-behaviour/).
 
 #### Functions
 
@@ -484,7 +484,7 @@ The following things are enhancements to C, that don't have an equivalent in C.
 - [Expression blocks](/language-fundamentals/statements/#expression-blocks)
 - [Defer](/language-common/defer/)
 - [Methods](/language-fundamentals/functions/#methods)
-- [Optionals](/language-common/optionals/essential/#what-is-an-optional)
+- [Optionals](/language-common/optionals-essential/#what-is-an-optional)
 - [Semantic macros](/generic-programming/macros/)
 - [Generic modules](/generic-programming/generics/)
 - [Contracts](/language-common/contracts/)

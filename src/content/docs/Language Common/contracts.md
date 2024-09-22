@@ -9,11 +9,14 @@ Contracts are optional pre- and post-conditions checks that the compiler may use
 
 # Pre-conditions
 
-Pre-conditions are usually used to validate incoming arguments. Each condition must be an expression that can be evaluated to a boolean. A pre-condition use the `@require` annotation.
+Pre-conditions are usually used to validate incoming arguments. 
+Each condition must be an expression that can be evaluated to a boolean. 
+Pre-conditions use the `@require` annotation, and optionally can have an 
+error message to display after them.
 
 ```c3
 /**
- * @require foo > 0, foo < 1000
+ * @require foo > 0, foo < 1000, "optional error msg"
  **/
 fn int testFoo(int foo)
 {
@@ -166,7 +169,7 @@ function which returns true if the code inside would pass semantic checking.
 
 ```c3
 /**
- * @require $and($defined(resource.open), $defined(resource.open()) `Expected resource to have an "open" function`
+ * @require $defined(resource.open, resource.open()), `Expected resource to have an "open" function`
  * @require resource != nil
  * @require $assignable(resource.open(), void*)
  **/

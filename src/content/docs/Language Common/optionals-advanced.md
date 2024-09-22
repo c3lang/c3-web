@@ -143,7 +143,7 @@ fn void! main(String[] args)
 
 ### Force unwrapping expressions 
 
-The force [unwrap](/language-common/optionals/essential/#-unwrapping-an-optional) operator `!!` will 
+The force [unwrap](/language-common/optionals-essential/#-unwrapping-an-optional) operator `!!` will 
 make the program panic and exit if the expression is an empty optional. 
 This is useful when the error should – in normal cases – not happen 
 and you don't want to write any error handling for it. 
@@ -217,7 +217,7 @@ fn void! test()
 
 ## Run code if the Optional has a result 
 This is a convenience method, the logical inverse of 
-[`if (catch)`](/language-common/optionals/essential/#checking-if-an-optional-is-empty) 
+[`if (catch)`](/language-common/optionals-essential/#checking-if-an-optional-is-empty) 
 and is helpful when you don't care about the empty branch of 
 the code or you wish to perform an early return.
 ```c3
@@ -298,9 +298,9 @@ fn void! main(String[] args)
 
 ### Getting the Excuse
 
-Retrieving the `Excuse` with [`if (catch excuse = optional_value) {...}`](/language-common/optionals/essential/#checking-if-an-optional-is-empty) 
+Retrieving the `Excuse` with [`if (catch excuse = optional_value) {...}`](/language-common/optionals-essential/#checking-if-an-optional-is-empty) 
 is not the only way to get the `Excuse` from an Optional, we can use the macro `@catch` instead.
-Unlike `if (catch)` this will never cause automatic [unwrapping](/language-common/optionals/essential/#-unwrapping-an-optional).
+Unlike `if (catch)` this will never cause automatic [unwrapping](/language-common/optionals-essential/#-unwrapping-an-optional).
 
 ```c3
 fn void! main(String[] args)
@@ -337,7 +337,7 @@ The `void!` type has no possible representation as a variable, and may
 only be a function return type. 
 
 To store the `Excuse` returned from a `void!` function without 
-[`if (catch foo = optional_value)`](/language-common/optionals/essential/#checking-if-an-optional-is-empty), 
+[`if (catch foo = optional_value)`](/language-common/optionals-essential/#checking-if-an-optional-is-empty), 
 use the [`@catch`](#getting-the-excuse) macro to convert the Optional to an `anyfault`:
 ```c3
 fn void! test() 

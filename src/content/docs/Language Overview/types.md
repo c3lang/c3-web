@@ -2,7 +2,7 @@
 title: Types
 description: Types
 sidebar:
-    order: 999
+    order: 38
 ---
 
 As usual, types are divided into basic types and user defined types (enum, union, struct, faults, aliases). All types are defined on a global level.
@@ -466,7 +466,7 @@ test(State.RUNNING); // Uses enum constant.
 
 ## Optional Type
 
-An [Optional type](/language-common/optionals/essential/#what-is-an-optional) is created by taking a type and appending `!`. 
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `!`. 
 An Optional type behaves like a tagged union, containing either the
 result or an Excuse of type [fault](#optional-excuses-are-of-type-fault). 
 
@@ -485,12 +485,12 @@ int! x = 0; // ✅ Ok!
 fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 ```
 
-Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals/essential/).
+Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals-essential/).
 
 
 ### Optional Excuses are of type Fault
 
-When an [Optional](/language-common/optionals/essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
+When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
 
 ```c3
 fault IOResult
@@ -515,7 +515,8 @@ The underlying values assigned to a fault may vary each time a program is compil
 :::
 
 A fault may be stored as a normal value, but is also unique so that it may be passed
-in an Optional as a function return value using the [rethrow `!` operator](/language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
+in an Optional as a function return value using the 
+[rethrow `!` operator](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
 ## Struct types

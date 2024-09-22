@@ -2,7 +2,7 @@
 title: All features
 description: A list of all features of C3.
 sidebar:
-    order: 801
+    order: 37
 ---
 
 Here is a summary of _all_ the features of C3 and changes from C
@@ -126,7 +126,9 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 13. `?` suffix operator turns a fault into an optional value.
 14. `!!` suffix panics if the value is an optional value.
 15. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
-16. `$and(...)` `$or(...)` perform compile time `&&` and `||` without semantically checking any elements after the first false/true respectively.
+16. `$and(...)` `$or(...)` perform compile time logic, and may also be written as `&&&` and `|||` respectively. 
+- It does not check any elements after the first false value found for `$and()` also written as `&&&`. To check both conditions are false use: `!false_condition &&& !false_condition`.
+- It does not check any values after the first true found for `$or()` also written as `|||`.
 17. Lambdas (anonymous functions) may be defined, they work just like functions and do not capture any state.
 18. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
 19. Structs may implicitly convert to their `inline` member if they have one.
