@@ -5,10 +5,10 @@ sidebar:
     order: 60
 ---
 
-Arrays have a central role in programming. C3 offers built-in arrays, [slices](#slice) and [vectors](../vectors/).
+Arrays have a central role in programming. C3 offers built-in arrays, [slices](#slice) and [vectors](/language-common/vectors/).
 The standard library enhances this further with dynamically sized arrays and other collections.
 
-## Fixed size 1D arrays
+## Fixed Size 1D Arrays
 
 These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`. 
 
@@ -55,7 +55,7 @@ fn void test()
 }
 ```
 
-### Slicing arrays
+### Slicing Arrays
 
 It's possible to use the range syntax to create slices from pointers, arrays, and other slices.
 
@@ -148,7 +148,7 @@ a[1..2] = b[0..1]; // a = { 1, 2, 4 }
 
 Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is unspecified behaviour.
     
-### Conversion list
+### Conversion List
 
 | | int[4] | int[] | int[4]* | int* |
 |:-:|:-:|:-:|:-:|:-:|
@@ -165,12 +165,15 @@ For example:
 int[4] a;
 int[4]* b = &a;
 int* c = b;
+
 // Safe cast:
 int[4]* d = (int[4]*)c; 
 int e = 12;
 int* f = &e;
+
 // Incorrect, but not checked
 int[4]* g = (int[4]*)f;
+
 // Also incorrect but not checked.
 int[] h = f[0..2];
 ```
@@ -179,48 +182,88 @@ int[] h = f[0..2];
 
 Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; usz len; }`.
 
-There is a built-in struct `std::core::runtime::SubArrayContainer` which has the exact data layout of the fat array pointers. It is defined to be
+There is a built-in struct `std::core::runtime::SliceRaw` which 
+has the exact data layout of the fat array pointers. It is defined to be
 
 ```c3
-struct SubArrayContainer
+struct SliceRaw
 {
     void* ptr;
     usz len;
 }
 ```
 
-## Iteration over arrays
+## Iteration Over Arrays
 
-You may iterate over slices, arrays and vectors using `foreach (Type x : array)`:
+### Foreach element by copy
+
+You may iterate over slices, arrays and vectors using `foreach (Type x : array)`. 
+Using compile-time type inference this can be abbreviated 
+to `foreach (x : array)` for example:
 
 ```c3
 fn void test()
 {
-    int[4] a = { 1, 2, 3, 5 };
-    foreach (int x : a)
+    int[4] arr = { 1, 2, 3, 5 };
+    foreach (item : arr)
+    {
+        io::printfn("item: %s", item);
+    }
+
+    // Or equivalently, writing the type:
+    foreach (int x : arr)
     {
         /* ... */
     }
 }
 ```
 
+### Foreach element by reference
 Using `&` it is possible to get an element by reference rather than by copy.
-Furthermore, by providing two variable name, the first is assumed to be the
-index:
+Providing two variables to `foreach`, the first is assumed to be the index and the second the value:
 
 ```c3
-
 fn void test()
 {
-    Foo[4] a = { /* ... */ };
-    foreach (int idx, Foo* &f : a)
+    float[4] arr = { };
+    foreach (idx, &item : arr)
     {
-        f.abc = idx; // Mutates the array element
+        item = 7 + idx; // Mutates the array element
+    }
+
+    // Or equivalently, writing the types
+    foreach (int idx, Foo* &&item  : arr)
+    {
+        item = 7 + idx; // Mutates the array element
     }
 }
 ```
-It is possible to enable foreach on any type 
-by implementing "len" and "[]" methods and annotating them using the `@operator` attribute:
+
+### Foreach_r reverse iterating
+With `foreach_r` arrays or slices can be iterated over in reverse order 
+
+```c3
+fn void test()
+{
+    float[4] arr = { 1.0, 2.0 };
+    foreach_r (idx, item : arr)
+    {
+        // Prints 2.0, 1.0
+         io::printfn("item: %s", item); 
+    }
+
+    // Or equivalently, writing the types
+     foreach_r (int idx, float item : arr)
+    {
+        // Prints 2.0, 1.0
+         io::printfn("item: %s", item); 
+    }
+}
+```
+
+## Iteration Over Array-Like types
+It is possible to enable foreach on any custom type 
+by implementing `.len` and `[]` methods and annotating them using the `@operator` attribute:
 
 ```c3
 struct DynamicArray
@@ -262,27 +305,33 @@ fn void test()
 
 For more information, see [operator overloading](/generic-programming/operator-overloading/)
 
-## Dynamic arrays and lists
+## Dynamic Arrays and Lists
 
 The standard library offers dynamic arrays and other collections in the `std::collections` module.
 
 ```c3
+def ListStr = List(<String>);
+
 fn void test()
 {
-    List(<String>) list;
-    list.new_init();     // Initialize the list on the heap.
-    list.push("Hello");  // Add the string "Hello"
-    list.push("World");
-    foreach (s : list)
+    ListStr list_str;    
+
+    // Initialize the list on the heap.
+    list_str.new_init();    
+
+    list_str.push("Hello");  // Add the string "Hello"
+    list_str.push("World");
+
+    foreach (str : list_str)
     {
-        io::printn(s);   // Prints "Hello", then "World"
+        io::printn(str);   // Prints "Hello", then "World"
     }
-    String s = list[1]; // s is "World"
+    String str = list[1]; // str == "World"
     list.free();        // Free all memory associated with list.
 }
 ```
 
-## Fixed size multi-dimensional arrays
+## Fixed Size Multi-Dimensional Arrays
 
 To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
 ```c
@@ -322,6 +371,7 @@ int[][4] array = {
 
 :::note
 Accessing the multi-dimensional fixed array has inverted array index order to when the array was declared.
+
 ```c3
 // Uses: <type>[<x-size>][<y-size>]
 int[2][4] array = {
@@ -335,5 +385,4 @@ int[2][4] array = {
 int value = array[3][1]; // 8
 ```
 :::
-
 

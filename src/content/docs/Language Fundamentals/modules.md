@@ -174,8 +174,12 @@ import b @public;
 
 fn void test()
 {
-    a::a_function(); // <-- error, a_function is private
-    b::b_function(); // Allowed since import converted it to "public" in this context.
+    // Error! a_function() is private
+    a::a_function(); 
+
+    // Allowed since `import b @public` allowed `b`
+    // to "public" in this context.
+    b::b_function(); 
 }
 ```
 

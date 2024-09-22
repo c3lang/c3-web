@@ -165,13 +165,16 @@ enum FooEnum
 String[] x = FooEnum.names; // ["BAR", "BAZ"]
 ```
 
-#### params
+#### paramsof
 
-*Only available for function types.*
-Returns a list typeid for all parameters.
+*Only available for function pointer types.*
+Returns a ReflectParam struct for all function pointer parameters.
 
-    def TestFunc = fn int(int, double);
-    String s = TestFunc.params[1].nameof; // "double"
+```c3
+def TestFunc = fn int(int x, double f);
+String s = TestFunc.paramsof[1].name; // "f"
+typeid t = TestFunc.paramsof[1].type; // double.typeid
+```
 
 #### parentof
 

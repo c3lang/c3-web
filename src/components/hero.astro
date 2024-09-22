@@ -5,7 +5,18 @@ import Navbar from "./navbar.astro";
 <Navbar />
 
 <div
-  class="relative overflow-hidden before:absolute before:top-0 before:left-1/2 before:bg-[url('../svg/component/polygon.svg')] before:bg-no-repeat before:bg-top before:bg-cover before:w-full before:h-full before:-z-[1] before:transform before:-translate-x-1/2 dark:before:bg-[url('../svg/component/polygon-dark.svg')]"
+  class="relative
+  overflow-hidden
+  before:absolute
+  before:top-0 before:left-1/2
+  before:bg-no-repeat
+  before:bg-top
+  before:bg-cover
+  before:w-full
+  before:h-full
+  before:-z-[1]
+  before:transform
+  before:-translate-x-1/2"
 >
   <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
     <div class="mt-5 text-center mx-auto">
@@ -17,12 +28,35 @@ import Navbar from "./navbar.astro";
     </div>
     <div class="mt-5 max-w-3xl text-center mx-auto">
       <p class="text-lg text-gray-600 dark:text-gray-400">
-        The programming language for the next generation
+        <!-- The Next Generation of C -->
       </p>
     </div>
     <div class="mt-8 grid gap-3 w-full sm:inline-flex sm:justify-center">
       <a
-        class="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 hover:from-violet-600 hover:to-blue-600 border border-transparent text-white text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white py-3 px-4 dark:focus:ring-offset-stone-950"
+        class="inline-flex
+        justify-center
+        items-center
+        gap-x-3 text-center
+        bg-blue-600
+        border-blue-600
+        hover:border-slate-950
+        border-2
+        rounded-md
+        py-3
+        px-4
+        shadow-sm
+        focus:z-10
+        focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950
+        transition-all
+        leading-1
+        text-sm
+        text-white
+        font-medium
+        select-none
+        dark:bg-blue-600
+        dark:hover:border-blue-500
+        dark:border-blue-600
+        dark:text-white"
         href="introduction"
       >
         Get started
@@ -40,8 +74,12 @@ import Navbar from "./navbar.astro";
             stroke-linecap="round"></path>
         </svg>
       </a>
-      <a
-        class="relative group inline-flex justify-center items-center gap-x-3.5 text-center bg-white border hover:border-gray-300 shadow-sm font-mono text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition p-2 pl-4 dark:bg-slate-900 dark:border-stone-950 dark:hover:border-gray-600 dark:shadow-slate-700/[.7] dark:text-white dark:focus:ring-stone-700 dark:focus:ring-offset-stone-950"
+      <!-- <a
+        class="relative group inline-flex justify-center items-center gap-x-3.5 text-center bg-white border hover:border-gray-300 shadow-sm font-mono text-sm font-medium rounded-md
+        focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white
+        transition p-2 pl-4 dark:bg-slate-900 dark:border-stone-950 dark:hover:border-gray-600 dark:shadow-slate-700/[.7]
+         dark:text-white
+          dark:focus:ring-blue-200 dark:focus:ring-offset-stone-950"
         href="javascript:navigator.clipboard.writeText('c3c compile hello.c3');"
       >
         c3c compile hello.c3
@@ -63,12 +101,12 @@ import Navbar from "./navbar.astro";
             ></path>
           </svg>
         </span>
-      </a>
+      </a> -->
     </div>
     <div class="mt-5 flex justify-center items-center gap-x-1 sm:gap-x-3">
       <span class="text-sm text-gray-600 dark:text-gray-400"
-        >Current version:</span
-      >
+        >Current version:
+      </span>
       <span class="text-sm font-bold text-gray-900 dark:text-white">0.6.2</span>
       <svg
         class="h-5 w-5 text-gray-300 dark:text-gray-600"

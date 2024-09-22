@@ -38,6 +38,8 @@ Similar to `def` aliases are `distinct` which create distinct new types. Unlike 
 they do not implicitly convert to or from any other type.
 Literals will convert to the distinct types if they would convert to the underlying type.
 
+Because a distinct type is a standalone type, it can have its own methods, like any other user-defined type.
+
 ```c3
 distinct Foo = int;
 Foo f = 0; // Valid since 0 converts to an int.
@@ -91,8 +93,7 @@ fn void test()
 
 ## Using `def` to create generic types, functions and variables
 
-It is recommended to favour using `def` to create aliases for parameterized types, functions 
-and variables:
+It is recommended to favour using def to create aliases for parameterized types, but it can also be used for parameterized functions and variables:
 
 ```c3
 import generic_foo;
@@ -134,9 +135,9 @@ fn void test(int x = 5)
 fn void main()
 {
     TestFn test2 = &test;
-    test();        // Prints X = 5
-    test2();       // Prints X = 123
-    test(.x = 3);  // Prints X = 3 
-    test2(.y = 4); // Prints X = 4
+    test();         // Prints X = 5
+    test2();        // Prints X = 123
+    test(x: 3);     // Prints X = 3 
+    test2(y: 4);    // Prints X = 4
 }
 ```

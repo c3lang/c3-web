@@ -26,7 +26,7 @@ Changes relating to literals, identifiers etc.
 11. `\e` escape character.
 12. Source code must be UTF-8.
 13. Assumes `\n` for new row `\r` is stripped from source.
-14. Bit-width integer and float suffixes: u8/i8/u16/i16/... f32/f64/... 
+14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/... 
 15. The `null` literal is a pointer value of 0.
 16. The `true` and `false` are boolean constants true and false.
 

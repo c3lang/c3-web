@@ -8,7 +8,7 @@ C3 uses three distinct comment types:
 
 1. The normal `//` single line comment.
 2. The classic `/* ... */` multi-line C style comment, but unlike in C they are allowed to nest.
-3. Documentation comments `/** ... **/` the text within these comments will be parsed as documentation and optional [Contracts](../../language-common/contracts/) on the following code.
+3. Documentation comments `/** ... **/` the text within these comments will be parsed as documentation and optional [Contracts](/language-common/contracts/) on the following code.
 
 ## Doc Comments
 
@@ -34,9 +34,9 @@ void bar(int foo)
 The following was extracted:
 - The function description: *"Here are some docs."*
 - The `foo` parameter has the description: *"The number of foos"*.
-- A [Contract](../../language-common/contracts/) annotation for the compiler: `@required foo > 4` which tells the compiler and a user of the function that a precondition is that `foo` must be greater than 4.
-- A function [Attribute](../../language-common/attributes/) marking it as `@deprecated`, which displays warnings.
-- A custom function [Attribute](../../language-common/attributes/) `@mycustom`. The compiler is free to silently ignore custom Attributes, they can be used to optionally emit warnings, but are otherwise ignored.
+- A [Contract](/language-common/contracts/) annotation for the compiler: `@required foo > 4` which tells the compiler and a user of the function that a precondition is that `foo` must be greater than 4.
+- A function [Attribute](/language-common/attributes/) marking it as `@deprecated`, which displays warnings.
+- A custom function [Attribute](/language-common/attributes/) `@mycustom`. The compiler is free to silently ignore custom Attributes, they can be used to optionally emit warnings, but are otherwise ignored.
 
 ### Available annotations
 
@@ -50,4 +50,4 @@ The following was extracted:
 | @ensure     |     `@ensure <expre1>, <expr2>, ...` |
 | @pure       |                              `@pure` |
     
-See [Contracts](../../language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
+See [Contracts](/language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.

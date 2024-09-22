@@ -37,11 +37,15 @@ The C3 compiler can be found on github: [https://github.com/c3lang/c3c](https://
 
 Binaries are directly downloadable for the following platforms:
 
-- Windows x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip), [install instructions](https://github.com/c3lang/c3c#installing-on-windows-with-precompiled-binaries).
-- MacOS x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip), [install instructions](https://github.com/c3lang/c3c#installing-on-mac-with-precompiled-binaries).
-- Ubuntu x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz), [install instructions](https://github.com/c3lang/c3c#installing-on-debian-with-precompiled-binaries).
-- Debian x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz), [install instructions](https://github.com/c3lang/c3c#installing-on-debian-with-precompiled-binaries).
-
+- Windows x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip), 
+[install instructions](/install-c3/prebuilt-binaries/#installing-on-windows).
+- MacOS x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip), 
+[install instructions](/install-c3/prebuilt-binaries/#installing-on-mac-arm64).
+- Ubuntu x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz), 
+[install instructions](/install-c3/prebuilt-binaries/#installing-on-ubuntu).
+- Debian x64 [download](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz), 
+[install instructions](/install-c3/prebuilt-binaries/#installing-on-debian).
+- Arch [install instructions](/install-c3/prebuilt-binaries/#installing-on-arch-linux)
 
 ## C3 Background
 

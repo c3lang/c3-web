@@ -5,11 +5,11 @@ sidebar:
   order: 20
 ---
 
-You can use one of the precompiled binaries here or [build the compiler from source yourself](../compile/).
+You can use one of the precompiled binaries here or [build the compiler from source yourself](/install-c3/compile/).
 
 # Prebuilt binaries
 - [Installing on Windows](#installing-on-windows)
-- [Installing on a Mac Arm64](#installing-on-mac-arm64)
+- [Installing on Mac Arm64](#installing-on-mac-arm64)
 - [Installing on Ubuntu](#installing-on-ubuntu)
 - [Installing on Debian](#installing-on-debian) 
 - [Installing on Arch](#installing-on-arch-linux) 
@@ -46,7 +46,7 @@ Afterwards you can double click the `msvc_build_libraries.py` file and pick "pyt
 c3c compile ./hello.c3
 ```
 
-## Installing on a Mac Arm64
+## Installing on Mac Arm64
 1. Make sure you have XCode with command line tools installed.
 2. Download the zip file: [https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip](https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip)
    (debug version [here](https://github.com/c3lang/c3c/releases/download/latest/c3-macos-debug.zip))

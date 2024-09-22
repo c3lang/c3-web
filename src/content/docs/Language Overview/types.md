@@ -515,7 +515,7 @@ The underlying values assigned to a fault may vary each time a program is compil
 :::
 
 A fault may be stored as a normal value, but is also unique so that it may be passed
-in an Optional as a function return value using the [rethrow `!` operator](../../language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
+in an Optional as a function return value using the [rethrow `!` operator](/language-common/optionals/essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
 ## Struct types

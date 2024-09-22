@@ -213,7 +213,7 @@ usz foo_member_count = Foo.membersof.len;
 String foo_name = Foo.nameof; 
 ```
 
-To read more about all the fields available at compile time, see the page on [reflection](../reflection).
+To read more about all the fields available at compile time, see the page on [reflection](/generic-programming/reflection).
 
 ## Compile time functions
 
@@ -221,7 +221,7 @@ A set of compile time functions are available at compile time:
 
 ### `$alignof`
 
-Get the alignment of something. See [reflection](../reflection).
+Get the alignment of something. See [reflection](/generic-programming/reflection).
 
 ### `$append`
 
@@ -237,7 +237,7 @@ Check if an expression is assignable to the given type, e.g. `Type x = expr;` wo
 
 ### `$defined`
 
-Returns true if a type or identifier is defined. See [reflection](../reflection).
+Returns true if a type or identifier is defined. See [reflection](/generic-programming/reflection).
 
 ### `$echo`
 
@@ -253,11 +253,11 @@ When this is compiled, issue a compile time error.
 
 ### `$eval`
 
-Converts a compile time string to the corresponding variable or function. See [reflection](../reflection).
+Converts a compile time string to the corresponding variable or function. See [reflection](/generic-programming/reflection).
 
 ### `$evaltype`
 
-Converts a compile time string to the corresponding type. See [reflection](../reflection).
+Converts a compile time string to the corresponding type. See [reflection](/generic-programming/reflection).
 
 ### `$exec`
 
@@ -265,7 +265,7 @@ Execute a script at compile time and include the result in the source code.
 
 ### `$extnameof`, `$qnameof` and `$nameof`
 
-Get the external name of a symbol. See [reflection](../reflection).
+Get the external name of a symbol. See [reflection](/generic-programming/reflection).
 
 ### `$feature`
 
@@ -277,15 +277,15 @@ Check if the expression is constant at compile time.
 
 ### `$nameof`
 
-Get the local name of a symbol. See [reflection](../reflection).
+Get the local name of a symbol. See [reflection](/generic-programming/reflection).
 
 ### `$offsetof`
 
-Get the offset of a member. See [reflection](../reflection).
+Get the offset of a member. See [reflection](/generic-programming/reflection).
 
 ### `$qnameof`
 
-Get the qualified name of a symbol. See [reflection](../reflection).
+Get the qualified name of a symbol. See [reflection](/generic-programming/reflection).
 
 ### `$vacount`
 
