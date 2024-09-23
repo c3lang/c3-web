@@ -47,19 +47,19 @@ c3c compile ./hello.c3
 
 ## Installing on Mac Arm64
 1. Make sure you have XCode with command line tools installed.
-2. Download the zip file: [https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip](https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip)
+2. [Download the zip file](https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip)
    (debug version [here](https://github.com/c3lang/c3c/releases/download/latest/c3-macos-debug.zip))
 3. Unzip executable and standard lib.
 4. Run `./c3c`.
 
 ## Installing on Ubuntu
-1. Download tar file: [https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz)
+1. [Download tar file](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20.tar.gz)
    (debug version [here](https://github.com/c3lang/c3c/releases/download/latest/c3-ubuntu-20-debug.tar.gz))
 2. Unpack executable and standard lib.
 3. Run `./c3c`.
 
 ## Installing on Debian
-1. Download tar file: [https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz)
+1. [Download tar file](https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz)
    (debug version [here](https://github.com/c3lang/c3c/releases/download/latest/c3-linux-debug.tar.gz))
 2. Unpack executable and standard lib.
 3. Run `./c3c`.
