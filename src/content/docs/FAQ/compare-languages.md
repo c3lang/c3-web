@@ -1,5 +1,5 @@
 ---
-title: Comparisons with other languages
+title: Comparisons With Other Languages
 description: How C3 compares to other languages
 sidebar:
     order: 701

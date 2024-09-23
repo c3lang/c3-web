@@ -1,5 +1,5 @@
 ---
-title: A quick primer on C3
+title: C3 For C Programmers
 description: A quick primer on C3 for C programmers
 sidebar:
     order: 36

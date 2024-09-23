@@ -1,5 +1,5 @@
 ---
-title: All features
+title: All Features
 description: A list of all features of C3.
 sidebar:
     order: 701

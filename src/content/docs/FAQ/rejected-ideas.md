@@ -1,6 +1,6 @@
 ---
-title: Rejected ideas
-description: Rejected ideas
+title: Rejected Ideas
+description: Rejected Ideas
 sidebar:
     order: 703
 ---

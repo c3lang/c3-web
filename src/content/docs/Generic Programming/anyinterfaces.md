@@ -1,6 +1,6 @@
 ---
-title: Any and interfaces
-description: Any and interfaces
+title: Interfaces and Any Type
+description: Interfaces and Any Type
 sidebar:
     order: 80
 ---
