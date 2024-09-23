@@ -1,93 +1,257 @@
-<div class="mt-5 gap-3">
-  <div>
-    <a
-      id="download-button"
-      href="https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip"
-      onclick="openLink()"
-      class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-l-md border font-medium text-gray-700 dark:text-gray-400 shadow-sm bg-white dark:bg-stone-950 hover:bg-blue-500 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:hover:text-white dark:focus:ring-offset-gray-800"
-    >
-      Download for Windows
-    </a>
-    <div
-      class="mr-5 hs-dropdown relative inline-flex [--placement:bottom-right]"
-    >
-      <button
-        id="hs-split-dropdown"
-        type="button"
-        class="bg-white dark:bg-stone-950 hs-dropdown-toggle relative -ml-[.3125rem] py-3 px-4 inline-flex justify-center items-center gap-2 h-[2.875rem] w-[2.875rem] rounded-r-md border font-medium text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
-      >
-        <span class="sr-only">Toggle Dropdown</span>
-        <svg
-          class="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"></path>
-        </svg>
-      </button>
+<div class="mt-3 flex">
+  <a
+    id="download-button"
+    class="bg-blue-600
+      border-blue-600
+      hover:border-slate-950
+      border-2
+      rounded-l-md
+      py-3
+      px-4
+      shadow-sm
+      focus:z-10
+      focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950
+      transition-all
+      leading-1
+      text-sm
+      text-white
+      font-medium
+      select-none
+      dark:bg-blue-600
+      dark:hover:border-blue-500
+      dark:border-blue-600
+      dark:text-white"
+    href="https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip"
+  >
+    Download for Windows
+  </a>
 
-      <div
-        class="hs-dropdown-menu w-72 transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden z-10 bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-stone-950 dark:border dark:border-gray-700 dark:divide-gray-700"
-        aria-labelledby="hs-split-dropdown"
+  <button
+    class="relative
+    flex
+    items-center
+    bg-gray-100
+    py-3
+    px-4
+    rounded-r-md
+    border-gray-200
+    font-medium
+    text-sm
+    shadow-sm
+    align-middle
+    transition-all
+    hover:bg-gray-50
+    hover:border-gray-300
+    border-2
+    dark:bg-slate-800
+    dark:hover:bg-gray-800
+    dark:hover:text-white
+    dark:border-gray-800
+    dark:hover:border-gray-700
+    focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950"
+    id="dropDownTopLevel"
+  >
+    <span class="sr-only">Toggle Dropdown</span>
+    <!-- this will rotate-180 on click -->
+    <svg
+      class="w-2.5 h-2.5 text-gray-600 dark:text-gray-100
+      transition-all duration-150"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      id="shevron"
+    >
+      <path
+        d="M2 5L8.16086 10.6869C8.35239 10.8637 8.64761 10.8637 8.83914 10.6869L15 5"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
       >
+      </path>
+    </svg>
+  </button>
+
+  <div
+    class="transition-[opacity,margin] duration-200 opacity-0
+    hidden
+    p-2
+    mt-[3.9rem]
+    z-10
+    rounded-lg
+    shadow-xl
+    absolute
+    bg-slate-50 dark:bg-slate-700
+    border-2 border-gray-200
+  dark:border-slate-600"
+    id="menuDiv"
+    aria-haspopup="dialog"
+  >
+    <ul id="extra_download_options">
+      <li tabindex="2">
         <a
           id="windows-download"
           style="display: none;"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex justify-end items-center gap-x-3.5 py-2 px-3 rounded-md text-sm select-none
+      text-gray-900
+        hover:shadow-sm hover:bg-blue-200
+      dark:hover:bg-blue-700 dark:text-white
+        focus:ring-2 focus:ring-blue-500"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-windows.zip"
         >
           Windows
         </a>
+      </li>
+      <li tabindex="3">
         <a
           id="macos-download"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex justify-end items-center gap-x-3.5 py-2 px-3 rounded-md text-sm select-none
+      text-gray-900
+        hover:shadow-sm hover:bg-blue-200
+      dark:hover:bg-blue-700 dark:text-white
+        focus:ring-2 focus:ring-blue-500"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip"
         >
-          macOS
+          MacOS
         </a>
+      </li>
+      <li tabindex="4">
         <a
           id="linux-download"
-          class="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+          class="flex justify-end items-center gap-x-3.5 py-2 px-3 rounded-md text-sm select-none
+      text-gray-900
+        hover:shadow-sm hover:bg-blue-200
+      dark:hover:bg-blue-700 dark:text-white
+        focus:ring-2 focus:ring-blue-500"
           href="https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz"
         >
           Linux
         </a>
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </div>
 
 <script>
-const userAgent = window.navigator.userAgent.toLowerCase();
-const os =
-  userAgent.indexOf("linux") != -1
-    ? "Linux"
-    : userAgent.indexOf("mac") != -1
-    ? "MacOS"
-    : userAgent.indexOf("win") != -1
-    ? "Windows"
-    : "Unknown";
+  // Set the text in the Download for ... download button
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const os =
+    userAgent.indexOf("linux") != -1
+      ? "Linux"
+      : userAgent.indexOf("mac") != -1
+        ? "MacOS"
+        : userAgent.indexOf("win") != -1
+          ? "Windows"
+          : "Unknown";
 
-const downloadButton = document.getElementById("download-button");
-const windowsDownloadLink = document.getElementById("windows-download");
-const macosDownloadLink = document.getElementById("macos-download");
-const linuxDownloadLink = document.getElementById("linux-download");
-if (os == "MacOS") {
-  downloadButton.setAttribute("href", "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip")
-  downloadButton.innerText = "Download for MacOS";
-  windowsDownloadLink.style.setProperty("display", "block");
-  macosDownloadLink.style.setProperty("display", "none");
-} else if (os == "Linux") {
-  downloadButton.setAttribute("href", "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz")
-  downloadButton.innerText = "Download for Linux";
-  windowsDownloadLink.style.setProperty("display", "block");
-  linuxDownloadLink.style.setProperty("display", "none");
-}
+  const downloadButton = document.getElementById("download-button");
+  const windowsDownloadLink = document.getElementById("windows-download");
+  const macosDownloadLink = document.getElementById("macos-download");
+  const linuxDownloadLink = document.getElementById("linux-download");
+  if (os == "MacOS") {
+    downloadButton.setAttribute(
+      "href",
+      "https://github.com/c3lang/c3c/releases/download/latest/c3-macos.zip",
+    );
+    downloadButton.innerText = "Download for MacOS";
+    windowsDownloadLink.style.setProperty("display", "flex");
+    macosDownloadLink.style.setProperty("display", "none");
+  } else if (os == "Linux") {
+    downloadButton.setAttribute(
+      "href",
+      "https://github.com/c3lang/c3c/releases/download/latest/c3-linux.tar.gz",
+    );
+    downloadButton.innerText = "Download for Linux";
+    windowsDownloadLink.style.setProperty("display", "flex");
+    linuxDownloadLink.style.setProperty("display", "none");
+  }
+
+  // is dropdown menu open for the download button
+  let isMenuOpen = false;
+
+  //
+  // Change the download button width according to the content (set by the user agent)
+  function changeDownloadWidth() {
+    //
+    const downloadButton = document.getElementById("download-button");
+    const toplevel = document.getElementById("dropDownTopLevel");
+
+    const lengthInPx = downloadButton.offsetWidth + toplevel.offsetWidth;
+
+    const menuDiv = document.getElementById("menuDiv");
+    menuDiv.style.width = `${lengthInPx}px`;
+  }
+  changeDownloadWidth();
+
+  function handleClickInner(element, event) {
+    //
+    // Clicking off the menu to close
+    if (element.contains(event.target)) {
+      if (isMenuOpen) {
+        isMenuOpen = false;
+
+        setTimeout(
+          () => (document.getElementById("menuDiv").style.display = "none"),
+          200,
+        );
+
+        setTimeout(() => {
+          document.getElementById("shevron").style.rotate = "0deg";
+          document.getElementById("menuDiv").style.opacity = "0";
+        }, 0);
+
+        return;
+        //
+      }
+
+      //
+      // Opening the menu
+      isMenuOpen = true;
+
+      setTimeout(() => {
+        document.getElementById("shevron").style.rotate = "180deg";
+        document.getElementById("menuDiv").style.display = "block";
+        document.getElementById("menuDiv").style.opacity = "100";
+      }, 0);
+
+      //
+    } else {
+      //
+      // Closing the menu
+      isMenuOpen = false;
+
+      //
+      setTimeout(
+        () => (document.getElementById("menuDiv").style.display = "none"),
+        200,
+      );
+
+      setTimeout(() => {
+        document.getElementById("shevron").style.rotate = "0deg";
+        document.getElementById("menuDiv").style.opacity = "0";
+      }, 0);
+    }
+    //
+    //
+    return;
+  }
+
+  function clickHandlerForDropDown(element) {
+    // Add keyboard navigation
+    document.addEventListener("keydown", (event) => {
+      if (event.key == "Enter") {
+        handleClickInner(element, event);
+      } else if (event.key == "Escape") {
+        handleClickInner(element, event);
+      }
+    });
+
+    document.addEventListener("mousedown", (event) => {
+      handleClickInner(element, event);
+    });
+  }
+
+  clickHandlerForDropDown(document.getElementById("dropDownTopLevel"));
+  //
 </script>
