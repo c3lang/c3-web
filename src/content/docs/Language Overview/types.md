@@ -4,7 +4,7 @@ description: Types
 sidebar:
     order: 38
 ---
-# Overview
+## Overview
 
 As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `def`). All types are defined on a global level.
 
