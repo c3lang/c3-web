@@ -542,10 +542,10 @@ fn void test()
 
     io::printfn("%s is %d years old.", p.name, p.age);
 
-    Person* person_ref = &p;
-    person_ref.age = 20; // Ok!
+    Person* p_ptr_ = &p;
+    p_ptr.age = 20; // Ok!
 
-    io::printfn("%s is %d years old.", person_ref.name, person_ref.age);
+    io::printfn("%s is %d years old.", p_ptr.name, p_ptr.age);
 }
 ```
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
@@ -575,7 +575,9 @@ fn void test()
     important_person.age = 25;
     important_person.name = "Jane Doe";
     important_person.title = "Rockstar";
-    print_person(important_person); // Only the first part of the struct is copied.
+
+    // Only the first part of the struct is copied.
+    print_person(important_person); 
 }
 ```
 
@@ -680,8 +682,15 @@ fn void test()
     t.a = 0xABCD;
     t.b = 0x789A;
     char* c = (char*)&t;
-    io::printfn("%X", (uint)t); // Prints 789AABCD
-    for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints CDAB9A78
+
+    // Prints 789AABCD
+    io::printfn("%X", (uint)t); 
+
+    for (int i = 0; i < 4; i++) 
+    {
+        // Prints CDAB9A78
+        io::printf("%X", c[i]); 
+    }
     io::printn();
 }    
 ```
@@ -719,11 +728,21 @@ fn void test()
     Test2 t2;
     t1.a = t2.a = 0xABCD;
     t1.b = t2.b = 0x789A;
+
     char* c = (char*)&t1;
-    for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints CDAB9A78 on x86
+    for (int i = 0; i < 4; i++) 
+    {
+        // Prints CDAB9A78 on x86
+        io::printf("%X", c[i]); 
+    }
     io::printn();
+
     c = (char*)&t2;
-    for (int i = 0; i < 4; i++) io::printf("%X", c[i]); // Prints ABCD789A
+    for (int i = 0; i < 4; i++) 
+    {
+        // Prints ABCD789A
+        io::printf("%X", c[i]); 
+    }
     io::printn();
 }
 ```
@@ -735,6 +754,7 @@ a layout which has multiple different layouts depending on flag bits:
 bitstruct Foo : char @overlap
 {
     int a : 2..5;
-    int b : 1..3; // Only valid due to the @overlap attribute
+    // "b" is valid due to the @overlap attribute
+    int b : 1..3; 
 }
 ```
