@@ -4,8 +4,10 @@ description: Examples of C3 code
 sidebar:
     order: 35
 ---
+# Overview
+This is meant for a quick reference, for more experienced C3 users, to the learn more of the details, check the relevant sections.
 
-#### if-statement
+## If Statement
 ```c3
 fn void if_example(int a) 
 {
@@ -20,7 +22,7 @@ fn void if_example(int a)
 }
 ```
 
-#### for-loop
+## For Loop
 ```c3
 fn void example_for() 
 {
@@ -38,7 +40,7 @@ fn void example_for()
 }
 ```
 
-#### foreach-loop
+## Foreach Loop
 ```c3
 // Prints the values in the slice.
 fn void example_foreach(float[] values) 
@@ -60,10 +62,7 @@ fn void example_foreach_by_ref(float[] values)
 }
 ```
 
-
-
-
-#### while-loop
+## While Loop
 
 ```c3
 fn void example_while() 
@@ -83,7 +82,7 @@ fn void example_while()
 }
 ```
 
-#### enum + switch
+## Enum And Switch
 
 Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
 
@@ -178,7 +177,7 @@ usz enums = State.elements;   // 2
 String[] names = State.names; // [ "START", "STOP" ] 
 ```
 
-#### defer
+## Defer
 
 Defer will be invoked on scope exit.
 
@@ -222,7 +221,7 @@ test(0); // Prints "!XA"
 test(1); // Prints "FOOBA" and returns a FooError
 ```
 
-#### struct types
+## Struct Types
 
 ```c3
 def Callback = fn int(char c);
@@ -273,7 +272,7 @@ struct MyData
 ```
 
 
-#### Function pointers
+## Function Pointers
 
 ```c3
 module demo;
@@ -294,7 +293,7 @@ fn void example_cb()
 }
 ```
 
-#### Error handling
+## Error Handling
 
 Errors are handled using optional results, denoted with a '!' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
@@ -381,7 +380,7 @@ fn void print_file2(String filename)
 
 Read more about optionals and error handling [here](/language-common/optionals-essential/#what-is-an-optional).
 
-#### Contracts
+## Contracts
 
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
 ```c3
@@ -409,7 +408,33 @@ fn int getLastElement(int* array, int length)
 
 Read more about contracts [here](/language-common/contracts/).
 
-#### Macros
+## Struct Methods
+
+It's possible to namespace functions with a union, struct or enum type to enable "dot syntax" calls:
+
+```c3
+struct Foo
+{
+    int i;
+}
+
+fn void Foo.next(Foo* this)
+{
+    if (this) this.i++;
+}
+
+fn void test()
+{
+    Foo foo = { 2 };
+    foo.next();
+    foo.next();
+    // Prints 4
+    io::printfn("%d", foo.i); 
+}
+```
+
+
+## Macros
 
 Macro arguments may be immediately evaluated.
 ```c3
@@ -486,32 +511,8 @@ fn void test()
 
 Read more about macros [here](/generic-programming/macros/).
 
-#### Methods
 
-It's possible to namespace functions with a union, struct or enum type to enable "dot syntax" calls:
-
-```c3
-struct Foo
-{
-    int i;
-}
-
-fn void Foo.next(Foo* this)
-{
-    if (this) this.i++;
-}
-
-fn void test()
-{
-    Foo foo = { 2 };
-    foo.next();
-    foo.next();
-    // Prints 4
-    io::printfn("%d", foo.i); 
-}
-```
-
-#### Compile time reflection and execution
+### Compile Time Reflection & Execution
 
 Access type information and loop over values at compile time:
 
@@ -548,7 +549,7 @@ Field b, offset: 8, size: 8, type: double
 Field ptr, offset: 16, size: 8, type: int*
 ```
 
-#### Compile time execution
+### Compile Time Execution
 
 Macros with only compile time variables are completely evaluated at compile time:
 
@@ -572,7 +573,7 @@ However, if you are doing more complex compile time code generation it is recomm
 :::
 Read more about compile time execution [here](/generic-programming/compiletime/).
 
-#### Generic modules
+## Generic Modules
 
 Generic modules implements a generic system.
 
@@ -634,7 +635,7 @@ fn void test()
 
 Read more about generic modules [here](/generic-programming/generics/)
 
-#### Dynamic calls
+## Dynamic Calls
 
 Runtime dynamic dispatch through interfaces:
 

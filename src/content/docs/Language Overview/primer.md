@@ -4,11 +4,15 @@ description: A quick primer on C3 for C programmers
 sidebar:
     order: 36
 ---
-This primer is intended as a guide to how the C syntax – and in some cases C semantics
-– is different in C3. It is intended to help you take a piece of C code and understand
+
+# Overview
+This is intended for existing C programmers. 
+
+This primer is intended as a guide to how the C syntax – 
+and in some cases C semantics – is different in C3. It is intended to help you take a piece of C code and understand
 how it can be converted manually to C3.
 
-#### Struct, enum and union declarations
+## Struct, Enum And Union Declarations
 
 Don't add a `;` after enum, struct and union declarations, and note the slightly
 different syntax for declaring a named struct inside of a struct.
@@ -38,7 +42,7 @@ struct Foo
 Also, user defined types are used without a `struct`, `union` or `enum` keyword, as
 if the name was a C typedef.
 
-#### Arrays
+## Arrays
 
 Array sizes are written next to the type and arrays do not decay to pointers,
 you need to do it manually:
@@ -98,12 +102,12 @@ int[3] y = x;
 
 Find out more about [arrays](/language-common/arrays/).
 
-#### Undefined behaviour
+## Undefined Behaviour
 
 C3 has less undefined behaviour, in particular integers are defined as using 2s
 complement and signed overflow is wrapping. Find out more about [undefined behaviour](/language-rules/undefined-behaviour/).
 
-#### Functions
+## Functions
 
 Functions are declared like C, but you need to put `fn` in front:
 
@@ -117,7 +121,7 @@ fn int foo(Foo* b, int x, void* z) { ... }
 
 Find out more more about [functions](/language-fundamentals/functions/), including named arguments and default arguments.
 
-#### Calling C functions
+## Calling C Functions
 
 Declare a function (or variable) with `extern` and it will be possible to
 access it from C3:
@@ -142,7 +146,7 @@ extern fn int _puts(char* message) @extern("puts");
 _puts("Hello world"); // <- calls the puts function in libc
 ```
 
-#### Identifiers
+## Identifiers
 
 Name standards are enforced:
 
@@ -168,7 +172,7 @@ enum Test
 }
 ```
 
-#### Variable declaration
+## Variable Declaration
 
 Multiple declarations together with initialization isn't allowed in C3:
 
@@ -193,7 +197,7 @@ int a;
 int b @noinit;
 ```
 
-#### Compound literals
+## Compound Literals
 
 Compound literals use C++ style brace initialization, not cast style like in C.
 For convenience, assigning to a struct will infer the type even if it's not an initializer.
@@ -210,7 +214,7 @@ f = { 1, 2 };
 callFoo(Foo{ 2, 3 });
 ```
 
-#### typedef and #define becomes 'def'
+## typedef and #define becomes 'def'
 
 `typedef` is replaced by `def`:
 
@@ -244,7 +248,7 @@ println(my_excellent_string);
 
 Find out more about [`def`](/language-common/define/).
 
-#### Basic types
+## Basic Types
 
 Several C types that would be variable sized are fixed size, and others changed names:
 
@@ -274,7 +278,7 @@ uptr j;     // Same as uintptr_t depends on target
 
 Find out more about [types](/language-overview/types/).
 
-#### Instead of #include: Modules and import
+## Modules And Import Instead Of `#include` 
 
 Declaring the module name is not mandatory, but if you leave it out the file name will be used
 as the module name. Imports are recursive.
@@ -296,7 +300,7 @@ fn void myCheck()
 }
 ```
 
-#### Comments
+## Comments
 
 The `/* */` comments are nesting
 
@@ -307,7 +311,7 @@ The `/* */` comments are nesting
 Note that doc comments, starting with `/**` has special rules for parsing it, and is
 not considered a regular comment. Find out more about [contracts](/language-common/contracts/).
 
-#### Type qualifiers
+## Type Qualifiers
 
 Qualifiers like `const` and `volatile` are removed, but `const` before a constant
 will make it treated as a compile time constant. The constant does not need to be typed.
@@ -324,7 +328,7 @@ $endif
 
 `volatile` is replaced by macros for volatile load and store.
 
-#### Goto removed
+## `goto` Removed
 
 `goto` is removed, but there is labelled `break` and `continue` as well as `defer`
 to handle the cases when it is commonly used in C.
@@ -369,7 +373,7 @@ if (modifyFoo(foo)) return false;
 return true;
 ```
 
-#### Changes to `switch`
+## Changes To `switch`
 
 - `case` statements automatically break.
 - Use `nextcase` to fallthrough to the next statement.
@@ -450,7 +454,7 @@ switch (a)
 }
 ```
 
-#### Bitfields are replaced by explicit bitstructs
+## Bitfields Are Replaced By Explicit Bitstructs
 
 A bitstruct has an explicit container type, and each field has an exact bit range.
 
@@ -477,7 +481,7 @@ struct Flags : char
 
 For more information see [the section on bitstructs](/language-overview/types//#bitstructs).
 
-#### Other changes
+## Other Changes
 
 The following things are enhancements to C, that don't have an equivalent in C.
 
