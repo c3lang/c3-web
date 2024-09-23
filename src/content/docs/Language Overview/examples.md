@@ -5,7 +5,7 @@ sidebar:
     order: 35
 ---
 ## Overview
-This is meant for a quick reference, for more experienced C3 users, to the learn more of the details, check the relevant sections.
+This is meant for a quick reference, to the learn more of the details, check the relevant sections.
 
 ## If Statement
 ```c3
