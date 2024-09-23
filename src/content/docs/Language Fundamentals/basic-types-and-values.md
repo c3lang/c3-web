@@ -5,11 +5,6 @@ sidebar:
   order: 33
 ---
 
-:::note[Not installed the C3 compiler yet?]
-[Download C3](/install-c3/prebuilt-binaries/), available on Mac, Windows and Linux.
-:::
-
-
 C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointers. On top of this it 
 expands on this set by adding slices and vectors, as well as the `any` and `typeid` types for advanced use. 
 
