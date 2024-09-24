@@ -23,17 +23,18 @@ state.*
 
 ## Features
 
-- Full C ABI compatibility  
-- Module system 
-- Generic modules
-- Design by contract
-- Zero overhead errors
-- Semantic macro system
-- First-class SIMD vector types
-- Struct subtyping
-- Safe array access using slices
-- Easy to use inline assembly
-- Cross-platform standard library which includes dynamic containers and strings
+- [Full C ABI compatibility](/language-common/cinterop/)
+- [Module system](/language-fundamentals/modules/) 
+- [Generic modules](/generic-programming/generics/)
+- [Design by contract](/language-common/contracts/)
+- [Zero overhead errors](/language-common/optionals-essential/#what-is-an-optional)
+- [Semantic macro system](/generic-programming/macros/)
+- [First-class SIMD vector types](/language-common/vectors/)
+- [Struct subtyping](/language-overview/types/#struct-subtyping)
+- [Safe array access using slices](/language-common/arrays/#slice)
+- [Safe array iteration using foreach](/language-common/arrays/#iteration-over-arrays)
+- [Easy to use inline assembly](/misc-advanced/asm/)
+- [Cross-platform standard library which includes dynamic containers and strings](/standard-library/)
 - LLVM backend
 
 ## How to get C3
