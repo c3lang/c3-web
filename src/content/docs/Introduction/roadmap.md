@@ -25,10 +25,10 @@ left in terms of features for `1.0`](https://github.com/c3lang/c3c/issues/1456).
 The intended roadmap has one major `0.1` release per year:
 | Date       |  Release  |
 |------------|-----------|
-| 2024-04-01 |    0.7    |
-| 2025-04-01 |    0.8    |
-| 2026-04-01 |    0.9    |
-| 2027-04-01 |    1.0    |
+| 2025-04-01 |    0.7    |
+| 2026-04-01 |    0.8    |
+| 2027-04-01 |    0.9    |
+| 2028-04-01 |    1.0    |
 
 ### Compatability
 
