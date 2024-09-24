@@ -86,6 +86,7 @@ $ c3c compile-run hello_world.c3
 > Hello, World
 ```
 
+Want more options when compiling? [Check the c3c compiler build options](/build-your-project/build-commands/).
 ### 🎉 Successfully working? 
 Congratulations! You're now up and running with C3.
 

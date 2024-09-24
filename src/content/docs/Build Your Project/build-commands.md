@@ -1,6 +1,6 @@
 ---
-title: Project Build Commands
-description: Project Build Commands
+title: Build Commands
+description: Build Commands
 sidebar:
     order: 240
 ---
@@ -19,7 +19,7 @@ By default the compiler is compiling stand-alone files to output an executable b
 c3c <file1> <file2> <file3>
 ```
 
-## run
+## Run
 
 When starting out, with C3 it's natural to use `run` to try things out. For larger projects, the built-in build system is recommended instead. 
 
@@ -36,7 +36,7 @@ Additional parameters:
 - `--output <path>` override the output directory.
 - `--path <path>` execute as if standing at <path>
     
-## init
+## Init a new project
 
 ```bash
 c3c init <project_name> [optional path]`
@@ -78,7 +78,10 @@ $ tree .
     └── test
         └── hello_world
 ```
-## build
+
+Check the [project configuration docs](/build-your-project/project-config/) to learn more about configuring your project.
+
+## Build
 
 ```bash
 c3c build [target]
@@ -88,13 +91,13 @@ Build the project in the current path. It doesn't matter where in the project st
 
 The built-in templates define two targets: `debug` (which is the default) and `release`.
 
-## clean
+## Clean
 
 ```bash
 c3c clean
 ```
 
-## build-run
+## Build and Run
 
 ```bash
 c3c build-run [target]
@@ -102,7 +105,7 @@ c3c build-run [target]
 
 Build the target (if needed) and run the executable.
 
-## clean-run
+## Clean and Run
 
 ```bash
 c3c clean-run [target]
@@ -110,7 +113,7 @@ c3c clean-run [target]
 
 Clean, build and run the target.
 
-## dist
+## Dist
 
 ```bash
 c3c dist [target]
@@ -118,7 +121,7 @@ c3c dist [target]
 
 Clean, build and package the target for distribution.
 
-## docs
+## Docs
 
 
 ```bash
@@ -130,7 +133,7 @@ c3c docs [target]
 Rebuilds the documentation. 
 
 
-## bench
+## Bench
 
 ```bash
 c3c bench [target]
