@@ -14,7 +14,7 @@ sidebar:
 - Seamless C integration.
 - Ergonomic common patterns.
 - Data is inert.
-- Zero Is Initialised.
+- Zero Is Initialization (ZII).
 - Avoid "big ideas".
 
 ## Features
