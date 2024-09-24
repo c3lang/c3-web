@@ -1,6 +1,6 @@
 ---
-title: Standard Library Function Signatures
-description: Standard Library Function Signatures
+title: Standard Library Reference
+description: Standard Library Reference
 sidebar:
     order: 141
 ---

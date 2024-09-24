@@ -14,11 +14,11 @@ sidebar:
 - Seamless C integration.
 - Ergonomic common patterns.
 - Data is inert.
-- Zero Is Initialization (ZII)*.
+- Zero Is Initialization (ZII).<sup>*</sup>
 - Avoid "big ideas".
 
-*\*) "Zero Is Initialization" is an idiom where types and code
-is written so that the zero value is a meaningful, initialized
+<sup>*</sup> *"Zero Is Initialization" is an idiom where types and code
+are written so that the zero value is a meaningful, initialized
 state.*
 
 ## Features
