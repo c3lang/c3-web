@@ -84,3 +84,6 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
 - There are no `volatile` and `const` **qualifiers** like in C. 
     - C3 has [global constants](/language-fundamentals/naming/#global-constants) declared with `const`. 
     - Instead of the `volatile` type qualifier, there are standard library macros `@volatile_load` and `@volatile_store`.
+- In C3, fixed arrays do *not* decay into pointers like in C. 
+    - Inside a C3 binding to a C function with an array argument, pass a pointer to the C3 array to get the correct behaviour. 
+    - Inside a C binding to a C3 function with an array argument, the passed pointer eg `int[4]*` may be implicitly converted into an `int*`.
