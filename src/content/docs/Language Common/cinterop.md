@@ -85,5 +85,7 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
     - Instead of the `volatile` type qualifier, there are standard library macros `@volatile_load` and `@volatile_store`.
 - Passing arrays by value like in C3 must be represented as passing a struct containing the array.
 - In C3, fixed arrays do *not* decay into pointers like in C. 
-    - Inside a C3 binding to a C function with an array argument, pass a pointer to the C3 array to get the correct behaviour. 
-    - Inside a C binding to a C3 function with an array argument, the passed pointer eg `int[4]*` may be implicitly converted into an `int*`.
+    - When defining a C function that has an array argument, replace the array type with a pointer. E.g. `void test(int[] a)` should become
+     `extern fn void test(int* a)`. If the function has a sized array, like `void test2(int[4] b)`
+     replace it with a pointer to a sized array: `extern fn void test2(int[4]* b);`      
+    - Note that a pointer to an array is always implicitly convertable to a pointer to the first element For example, `int[4]*` may be implicitly converted to `int*`.
