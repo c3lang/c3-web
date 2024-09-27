@@ -78,12 +78,12 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
 - C bit fields must be manually converted to a C3 bitstruct with the correct layout for each target platform.
 - C assumes the enum size is `CInt`
 - C3 uses fixed integer sizes, this means that `int` and `CInt` does not *need* to be the same though in practice on 32/64 bit machines, `long` is usually the *only* type that differs in size between C and C3.
-- Passing arrays by value like in C3 must be represented as passing a struct containing the array.
 - Atomic types are not supported by C3.
     - In C3 there are generic Atomic types instead.
 - There are no `volatile` and `const` **qualifiers** like in C. 
     - C3 has [global constants](/language-fundamentals/naming/#global-constants) declared with `const`. 
     - Instead of the `volatile` type qualifier, there are standard library macros `@volatile_load` and `@volatile_store`.
+- Passing arrays by value like in C3 must be represented as passing a struct containing the array.
 - In C3, fixed arrays do *not* decay into pointers like in C. 
     - Inside a C3 binding to a C function with an array argument, pass a pointer to the C3 array to get the correct behaviour. 
     - Inside a C binding to a C3 function with an array argument, the passed pointer eg `int[4]*` may be implicitly converted into an `int*`.
