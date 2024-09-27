@@ -9,7 +9,7 @@ Attributes are compile-time annotations on functions, types, global constants an
 
 ## Built in attributes
 
-### @align(alignment) 
+### @adhoc 
 
 *Used for: type parameterized generic modules*
 
