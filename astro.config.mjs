@@ -25,7 +25,7 @@ export default defineConfig({
     }),
     starlight({
       favicon: "ico.svg",
-      title: "The C3 Handbook",
+      title: "The C3 Guide",
       customCss: ["./src/content/docs.css"],
       expressiveCode: {
         shiki: {

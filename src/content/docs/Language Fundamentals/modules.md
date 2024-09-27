@@ -47,7 +47,7 @@ Some details about the C3 module system:
 - A single file may have multiple module declarations.
 - Each declaration of a distinct module is called a *module section*.
 
-## Importing modules
+## Importing Modules
 
 Modules are imported using the `import` statement. Imports always *recursively import* sub-modules. Any module
 will automatically import all other modules with the same parent module.
@@ -103,7 +103,7 @@ import def, abc;
 abc::Context c = {};
 ```
 
-## Implicit imports
+## Implicit Imports
 
 The module system will also implicitly import:
 
@@ -143,7 +143,7 @@ fn void test()
 }
 ```
 
-## Overriding symbol visibility rules
+## Overriding Symbol Visibility Rules
 
 By using `import <module> @public`, it's possible to access another module´s private symbols.
 Many other module systems have hierarchal visibility rules, but the `import @public` feature allows
@@ -185,7 +185,7 @@ fn void test()
 
 *Note: `@local` visibility cannot be overridden using a "@public" import.*
 
-## Changing the default visibility
+## Changing The Default Visibility
 
 In a normal module, global declarations will be public by default. If some other
 visibility is desired, it's possible to declare `@private` or `@local` after the module name.
@@ -219,7 +219,7 @@ fn void ab_private() { ... }        // Private
 fn void ab_public() @public { ... } // Public
 ```
 
-## Linker visibility and exports
+## Linker Visibility and Exports
 
 A function or global prefixed `extern` will be assumed to be linked in later.
 An "extern" function may not have a body, and global variables are prohibited
@@ -229,7 +229,7 @@ The attribute `@export` explicitly marks a function as being exported when
 creating a (static or dynamic) library. It can also change the linker name of
 the function.
 
-## Using functions and types from other modules
+## Using Functions and Types From Other Modules
 
 As a rule, functions, macros, constants, variables and types in the same module do not need any namespace prefix. For imported modules the following rules hold:
 
@@ -291,7 +291,7 @@ This means that the rule for the common case can be summarized as
 > Types are used without prefix; functions, variables, macros and constants are prefixed with the sub module name.
 
 
-## Module sections
+## Module Sections
 
 A single file may have multiple module declarations, even for the same module. This allows us to write
 for example:
@@ -319,7 +319,7 @@ fn void test_hello() // @test by default
 }
 ```
 
-## Versioning and dynamic inclusion
+## Versioning and Dynamic Inclusion
 
 _NOTE: This feature may significantly change._
 
@@ -396,7 +396,7 @@ fn void testme2()
 This allows things like optionally loading dynamic libraries on the 
 platforms where this is available.
 
-## Textual includes
+## Textual Includes
 
 ### $include
 
@@ -468,7 +468,7 @@ Using `$exec` requires **full trust level**, which is enabled with `-trust=full`
 '$exec' will by default run from the `/scripts` directory for projects, for non-project builds,
 the current directory is used as well.
 
-#### $exec scripting
+#### `$exec` Scripting
 
 `$exec` allows a special scripting mode, where one or more C3 files are compiled on the fly and
 run by `$exec`.
@@ -485,3 +485,58 @@ fn void main()
 	...
 }
 ```
+
+## Non-Recursive Imports
+In specific circumstances you only wish to import a module *without* it's submodules. This is helpful to avoid naming confusion, or in larger codebases where the user may not control the content of the submodules.
+
+Modules in C3 are used as namespaces, a bit like how classes are used in other languages, so not using the default recursive import is going against the intent of the language. 
+
+Non-recursive imports also do not benefit as much from things like path-shortening and other design ergonomics. Only use non-recursive import as a last resort, when you know you need it.
+
+
+The syntax for non-recursive imports is `import <module_name>^;` for example:
+```c
+// Non-recursive import
+import module1^; 
+
+// Normal recursive import
+import module1; 
+```
+
+For example only importing "module1" into "my_code" and not wishing to import "module2".
+
+```text
+my_code
+└── module1
+    └── module2
+```
+
+```c
+module module1;
+import std::io;
+fn void only_want_this()
+{
+    io::printn("only_want_this");
+}
+
+module module1::module2;
+import std::io;
+fn void undesired_fn()
+{
+    io::printn("undesired_fn");
+}
+
+module my_code;
+// Using Non-recursive import undesired_fn not found
+import module1^; 
+
+// Using Recursive import undesired_fn is found
+// import module1;
+
+fn void main()
+{
+    module1::only_want_this();
+    module2::undesired_fn(); // This should error
+}
+```
+
