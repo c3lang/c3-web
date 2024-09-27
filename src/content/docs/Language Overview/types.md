@@ -368,7 +368,8 @@ def IntMyList = MyList(<Foo>);
 MyListFoo working_example;
 
 // ❌ An inline type definition will give an error.
-// It is only allowed in a type definition or macro.
+// Only allowed in a type definition or macro 
+// To avoid this A type may be declared with @adhoc
 MyList<Foo> failing_example = MyList(<Foo>);
 ```
 Find out more about [generic types](/generic-programming/generics).
