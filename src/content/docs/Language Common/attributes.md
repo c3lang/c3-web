@@ -53,6 +53,48 @@ fn void main()
 
 ### @align(alignment) 
 
+*Used for: type parameterized generic modules*
+
+Normally a parameterized generic module needs to be defined before it is used like:
+```c3
+module my_lib(<Type>);
+
+struct MyType
+{
+	  Type value;
+}
+
+module my_code;
+
+// Definition here
+def MyType(<int>) = MyTypeInt; 
+
+fn void main()
+{
+    MyType(<int>) x;
+}
+```
+
+A type with `@adhoc` can be declared parameterized, without any warning being issued, for example:
+
+```c3
+module my_lib(<Type>);
+
+struct MyType @adhoc
+{
+	  Type value;
+}
+
+module my_code;
+
+fn void main()
+{
+    MyType(<int>) x;
+}
+```
+
+### @align(alignment) 
+
 *Used for: struct, bitstructs, union, var, function*
 
 This attribute sets the minimum alignment for a field or a variable, for example:
