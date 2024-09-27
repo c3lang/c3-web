@@ -103,20 +103,13 @@ import def, abc;
 abc::Context c = {};
 ```
 
-## Non-recursive Imports
+## Non-Recursive Imports
 In specific circumstances you only wish to import a module *without* it's submodules. This is helpful to avoid naming confusion, or in larger codebases where the user may not control the content of the submodules.
 
-For example only importing "module1" into "my_code" and not wishing to import "module2", "module3" and "module4".
+Modules in C3 are used as namespaces, a bit like how classes are used in other languages, so not using the default recursive import is going against the intent of the language. 
 
-```text
-my_code
-└── module1
-    ├── module2
-    ├── module3
-    └── module4
-```
+Non-recursive imports also do not benefit as much from things like path-shortening and other design ergonomics. Only use non-recursive import as a last resort, when you know you need it.
 
-Modules in C3 are used as namespaces, a bit like how classes are used in other languages, so not using the default recursive import is going against the intent of the language. It also does not benefit as much from things like path-shortening and other design ergonomics.
 
 The syntax for non-recursive imports is `import <module_name>^;` for example:
 ```c
@@ -127,7 +120,45 @@ import module1^;
 import module1; 
 ```
 
-The default import style using recursive import is idiomatic and is preferred in almost all cases. Only use non-recursive import as a last resort, when you know you need it.
+For example only importing "module1" into "my_code" and not wishing to import "module2".
+
+```text
+my_code
+└── module1
+    └── module2
+```
+
+```c
+module module1;
+import std::io;
+fn void only_want_this()
+{
+    io::printn("only_want_this");
+    return;
+}
+
+module module1::module2;
+import std::io;
+fn void undesired_fn()
+{
+    io::printn("undesired_fn");
+    return;
+}
+
+module my_code;
+// Using Non-recursive import undesired_fn not found
+import module1^; 
+
+// Using Recursive import undesired_fn is found
+// import module1;
+
+fn void main()
+{
+    module1::only_want_this();
+    module2::undesired_fn(); // This should error
+}
+```
+
 
 ## Implicit Imports
 
