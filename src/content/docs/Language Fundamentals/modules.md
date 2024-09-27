@@ -134,7 +134,6 @@ import std::io;
 fn void only_want_this()
 {
     io::printn("only_want_this");
-    return;
 }
 
 module module1::module2;
@@ -142,7 +141,6 @@ import std::io;
 fn void undesired_fn()
 {
     io::printn("undesired_fn");
-    return;
 }
 
 module my_code;
