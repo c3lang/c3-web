@@ -181,6 +181,12 @@ The return value may not be discarded.
 
 Prevents the compiler from zero initializing the variable.
 
+### @norecurse
+
+*Used for: import <module_name> @norecurse*
+
+Import the module but not sub-modules or parent-modules, see [Modules Section](/language-fundamentals/modules/#non-recursive-imports).
+
 ### @noreturn
 
 *Used for: function*

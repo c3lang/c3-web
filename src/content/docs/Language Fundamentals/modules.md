@@ -451,7 +451,7 @@ An alternative to `$include` is `$exec` which is similar to include, but instead
 program as the included text.
 
 An example:
-```c
+```c3
 import std::io;
 
 // On Linux or MacOS this will insert 'String a = "Hello world!";'
@@ -492,10 +492,10 @@ In specific circumstances you only wish to import a module *without* its submodu
 This can be helpful in certain situations where otherwise unnecessary name-collisions
 would occur, but should not be used in the general case.
 
-The syntax for non-recursive imports is `import <module_name>^;` for example:
-```c
+The syntax for non-recursive imports is `import <module_name> @norecurse;` for example:
+```c3
 // Non-recursive import
-import mylib^; 
+import mylib @norecurse; 
 
 // Normal import
 import mylib; 
@@ -509,7 +509,7 @@ my_code
     └── submod
 ```
 
-```c
+```c3
 module mylib;
 import std::io;
 fn void only_want_this()
@@ -517,7 +517,7 @@ fn void only_want_this()
     io::printn("only_want_this");
 }
 
-module mylib::submod
+module mylib::submod;
 import std::io;
 fn void undesired_fn()
 {
@@ -526,7 +526,7 @@ fn void undesired_fn()
 
 module my_code;
 // Using Non-recursive import undesired_fn not found
-import mylib^; 
+import mylib @norecurse; 
 
 // Using Recursive import undesired_fn is found
 // import mylib;
@@ -534,7 +534,19 @@ import mylib^;
 fn void main()
 {
     mylib::only_want_this();
-    sublib::undesired_fn(); // This should error
+    submod::undesired_fn(); // This should error
 }
 ```
 
+:::note 
+You can import multiple modules in one line:
+```c3
+import lib1, lib2;
+```
+`@norecurse` can be applied to one of those imports individually:
+
+```c3
+import lib1 @norecurse, lib2;
+```
+Here only `lib1` is imported non-recursively and `lib2` is imported normally, recursively.
+:::
