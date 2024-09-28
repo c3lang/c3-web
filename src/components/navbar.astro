@@ -113,11 +113,34 @@
   });
 </script>
 
-<header
-  class="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full border-b border-gray-200 text-sm py-3 sm:py-0 dark:border-stone-700"
+<!-- <header
+  class="flex
+  flex-wrap
+  sm:justify-start
+  sm:flex-nowrap
+  
+  z-50
+  py-3
+  sm:py-0
+  w-full
+  
+  text-sm
+  
+  border-b
+  border-gray-200
+  dark:border-stone-700"
 >
   <nav
-    class="relative max-w-7xl w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
+    class="relative
+    max-w-7xl
+    w-full
+    mx-auto
+    px-4
+    sm:flex
+    sm:items-center
+    sm:justify-between
+    sm:px-6
+    lg:px-8"
     aria-label="Global"
   >
     <div class="flex items-center justify-between">
@@ -271,4 +294,109 @@
       </div>
     </div>
   </nav>
+</header> -->
+<header class="w-full
+  
+  
+  text-xs
+  
+  
+  dark:border-stone-700">
+  <!-- border-b
+border-gray-200 -->
+  <div class="grid grid-cols-12 justify-center content-center py-2">
+    <!-- <div class="mx-2">Logo</div>
+    <h1 class="mx-2">C3</h1> -->
+    <div class="col-start-4 col-end-10 flex items-center justify-center">
+      <!-- <span class="sr-only">C3</span> -->
+      <!-- <img src="/logo.svg" alt="C3" class="w-4/12" /> -->
+      <span
+        class="select-none pb-1 text-2xl font-medium
+        bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-500"
+      >
+        🦋
+      </span>
+      <h1
+        class="pl-2 text-2xl font-medium
+        bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-600"
+      >
+        C3 Lang
+      </h1>
+    </div>
+  </div>
+
+  <nav class="w-full" aria-label="Global">
+    <!-- <div class="flex justify-center font-medium">Community</div>
+    <div class="flex justify-center font-medium">Docs</div>
+    <div class="flex justify-center font-medium">Examples</div>
+    <div class="flex justify-center font-medium">Download</div>
+    <div class="flex justify-center font-medium">Github</div>
+    <div class="flex justify-center font-medium">Support Us</div> -->
+
+    <div class="sm:hidden
+    grid
+    grid-rows-6
+    items-center
+  leading-5">
+      <button class="">
+        <a
+          href="/get-involved/"
+          class="select-none bg-white hover:text-slate-600 flex justify-center font-medium"
+          >Community
+        </a>
+      </button>
+      <!-- ================================= -->
+      <button class="pb-1">
+        <div
+          class="select-none bg-white hover:text-slate-600 flex justify-center font-medium"
+        >
+          Docs
+        </div>
+      </button>
+      <!-- ================================= -->
+      <button class="pb-1">
+        <div
+          class="bg-white hover:text-slate-600 flex justify-center font-medium"
+        >
+          Examples
+        </div>
+      </button>
+      <!-- ================================= -->
+      <button class="pb-1">
+        <div
+          class="select-none bg-white hover:text-slate-600 flex justify-center font-medium"
+        >
+          Download
+        </div>
+      </button>
+      <!-- ================================= -->
+      <button class="pb-1">
+        <div
+          class="select-none bg-white hover:text-slate-600 flex justify-center font-medium"
+        >
+          Github
+        </div>
+      </button>
+      <!-- ================================= -->
+      <button class="pb-2">
+        <div
+          class="select-none bg-white hover:text-slate-600 flex justify-center font-medium"
+        >
+          Sponsor
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- bg-white border-b dark:bg-gray-800 dark:border-gray-700" px-6 py-4 font-medium
+text-gray-900 whitespace-nowrap dark:text-white -->
+  <!-- max-w-7xl
+    w-full
+    mx-auto
+    px-4
+    sm:flex
+    sm:items-center
+    sm:justify-between
+    sm:px-6
+    lg:px-8 -->
 </header>
