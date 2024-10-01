@@ -145,7 +145,7 @@ identifiers, starting with a lower case letter.
 ```
 IDENTIFIER      ::=  "_"* LC_LETTER ALPHANUM_US*
 CONST_IDENT     ::=  "_"* UC_LETTER UC_ALPHANUM_US*
-TYPE_IDENT      ::=  "_"* UC_LETTER "_"* LC_LETTER ALPHANUM_US*
+TYPE_IDENT      ::=  "_"* UC_LETTER UC_ALPHANUM_US* LC_LETTER ALPHANUM_US*
 CT_IDENT        ::=  "$" IDENTIFIER
 CT_CONST_IDENT  ::=  "$" CONST_IDENT
 CT_TYPE_IDENT   ::=  "$" TYPE_IDENT
