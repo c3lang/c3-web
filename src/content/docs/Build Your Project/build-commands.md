@@ -16,17 +16,17 @@ You can also [customise the project build config](/build-your-project/project-co
 By default the compiler is compiling stand-alone files to output an executable binary.
 
 ```bash
-c3c <file1> <file2> <file3>
+c3c compile <file1> <file2> <file3>
 ```
 
 ## Run
 
-When starting out, with C3 it's natural to use `run` to try things out. For larger projects, the built-in build system is recommended instead. 
+When starting out, with C3 it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead. 
 
-The `run` command works same as compilation, but also immediately runs the resulting executable.
+The `compile-run` command works same as compilation, but also immediately runs the resulting executable.
 
 ```bash
-c3c run <file1> <file2> <file3>
+c3c compile-run <file1> <file2> <file3>
 ```
 
 ## Common additional parameters
@@ -100,7 +100,7 @@ c3c clean
 ## Build and Run
 
 ```bash
-c3c build-run [target]
+c3c run [target]
 ```
 
 Build the target (if needed) and run the executable.
@@ -118,6 +118,8 @@ Clean, build and run the target.
 ```bash
 c3c dist [target]
 ```
+
+*Not properly added yet*
 
 Clean, build and package the target for distribution.
 
