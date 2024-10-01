@@ -1,5 +1,5 @@
 ---
-title: Hello World in C3
+title: Hello World
 description: Learn to write hello world
 sidebar:
   order: 30

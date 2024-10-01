@@ -1,0 +1,108 @@
+---
+title: Projects
+description: Learn to create C3 projects
+sidebar:
+  order: 31
+---
+import { FileTree } from '@astrojs/starlight/components';
+
+:::note[Not installed the C3 compiler yet?]
+[Download C3](/install-c3/prebuilt-binaries/), available on Mac, Windows and Linux.
+:::
+
+## Projects in C3
+Projects are *optional*, but are a good way to manage compiling code when there
+ are a lot of files and modules.
+They also allow you to specify libraries to link, and define how your project should be built for specific targets.
+
+### 💡 Creating a new project
+
+The `c3c init` command will create a new directory containing your project structure.
+It requires a name of the project, we will use `myc3project` in its place.
+
+```bash
+c3c init myc3project
+```
+
+You can also customize the path where the project will be created or specify a *template*. For more information check the [init command reference](/build-your-project/build-commands/#init-a-new-project).
+
+### 📁 Project structure
+
+If you check the directory that was created you might find it a bit confusing with a bunch of different directories, but worry not because if you expand them you will realise that most of them are actually empty!
+
+<FileTree>
+- build/
+- docs/
+- lib/
+- resources/
+- scripts/
+- src/
+  - main.c3
+- test/
+- LICENSE
+- project.json
+- README.md
+</FileTree>
+
+#### Directory Overview
+| Directory       | Usage         |
+|-----------------|---------------|
+| `./build`       | Where your temporary files and build results will go. |
+| `./docs`        | Code Documentation |
+| `./lib`         | C3 libraries (with the .c3l suffix) |
+| `./resources`   | Non-code esources like images, sound effects etc. |
+| `./scripts`     | Scripts, including .c3 scripts that generate code at compile time. |
+| `./src`         | Storing our code, by default contains `main.c3` with "Hello World". |
+| `project.json`  | Record project information, similar to `package.json` in NodeJS. |
+| `LICENSE`       | Project license. |
+| `README.md`     | Help others understand and use your code. | 
+
+### 🔧 Building the project
+
+Assuming you have successfully initialized a project as seen above, we can now look at how to compile it.
+
+#### 🏃 Build & run
+
+C3 has a simple command to build & run our project.
+
+```bash {4}
+c3c run
+> Program linked to executable 'build/myc3project'.
+> Launching ./build/myc3project...
+> Hello, World
+```
+
+You can also specify the target to build & run.
+```bash
+c3c run myc3project
+```
+#### 🔧 Build
+
+If you only want to build the project, you can use the `build` command:
+
+```bash 
+c3c build
+```
+
+This command builds the project targets defined in our `project.json` file.
+
+:::note
+If you want to build a specific target, you can do so by specifying its name.
+The default target is created with the name of the project, such as `myc3project`.
+
+```bash 
+c3c build myc3project
+```
+:::
+
+We will now have a binary in `build`, which we can run:
+
+```bash
+./build/myc3project
+```
+
+It should print `Hello, World!` and return back to the command line prompt. 
+If you are on Windows, you will have `myc3project.exe` instead. Call it in the same way.
+
+
+If you need more detail later on check [C3 project build commands](/build-your-project/build-commands/) and [C3 project configuration](/build-your-project/project-config/) to learn more.
