@@ -1,2 +1,11 @@
 node_modules/
 vscode/
+dist
+
+# Devenv
+.devenv*
+devenv.*
+
+# direnv
+.direnv
+.envrc

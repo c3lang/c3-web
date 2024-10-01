@@ -10,11 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.15.2",
-    "@astrojs/svelte": "^5.0.2",
-    "@astrojs/tailwind": "^5.0.4",
+    "@astrojs/starlight": "^0.28.2",
+    "@astrojs/tailwind": "^5.1.1",
     "@preline/overlay": "^2.0.2",
-    "astro": "^4.0.7",
+    "astro": "^4.15.9",
     "astro-expressive-code": "^0.32.3",
     "boxicons": "^2.1.4",
     "preline": "^2.0.3",

@@ -122,6 +122,7 @@ c3c dist [target]
 *Not properly added yet*
 
 Clean, build and package the target for distribution.
+Will also run the target if it is a executable.
 
 ## Docs
 
