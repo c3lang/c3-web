@@ -31,6 +31,7 @@ It is possible to access properties on the type itself:
 - `membersof`
 - `min`
 - `nan`
+- `nameof`
 - `names`
 - `params`
 - `parentof`
@@ -151,6 +152,10 @@ Returns the minimum value of the type (only valid for integer and float types).
 ```c3
 ichar min_ichar = ichar.min; // -128
 ```
+
+#### nameof
+
+Returns the name of the type.
 
 #### names
 
