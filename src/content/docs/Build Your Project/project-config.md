@@ -6,37 +6,100 @@ sidebar:
 ---
 # Customizing A Project
 
-A new project is provided with a barebone structure in `project.json`:
+This is a description of the configuration options in `project.json`:
 
 
 ```json5
 {
-  "version": "0.1.0",
-  "authors": [
-    "John Doe <john.doe@example.com>"
-  ],
+  // Language version of C3.
   "langrev": "1",
+  // Warnings used for all targets.
   "warnings": [ "no-unused" ],
-  // sources compiled
-  "sources": [ "./**" ],
-  // directories where C3 library files may be found
+  // Directories where C3 library files may be found.
   "dependency-search-paths": [ "lib" ],
-  // libraries to use
-  "dependencies": [],
-  // c compiler
-  "cc": "cc",
-  // c sources
-  "c-sources": [ "./c-source/**" ],
+  // Libraries to use for all targets.
+  "dependencies": [ ],
+  // Authors, optionally with email.
+  "authors": [ "John Doe <john.doe@example.com>" ],
+  // Version using semantic versioning.
+  "version": "0.1.0",
+  // Sources compiled for all targets, and tests for all targets.
+  "sources": [ "src/**", "test/**" ],
+  // C sources if the project also compiles C sources
+  // relative to the project file.
+  // "c-sources": [ "csource/**" ],
+  // Include directories for C sources relative to the project file.
+  // "c-include-dirs: [ "csource/include" ],
+  // Output location, relative to project file.
+  "output": "../build",
+  // Architecture and OS target.
+  // You can use 'c3c --list-targets' to list all valid targets,
+  // "target": "windows-x64",
+  // Current Target options:
+  //    android-aarch64 
+  //    elf-aarch64 elf-riscv32 elf-riscv64 elf-x86 elf-x64 elf-xtensa
+  //    mcu-x86 mingw-x64 netbsd-x86 netbsd-x64 openbsd-x86 openbsd-x64
+  //    freebsd-x86 freebsd-x64 ios-aarch64 
+  //    linux-aarch64 linux-riscv32 linux-riscv64 linux-x86 linux-x64 
+  //    macos-aarch64 macos-x64 
+  //    wasm32 wasm64 
+  //    windows-aarch64 windows-x64 
   "targets": {
-    "hello_world": {
-      "type": "executable"
-    }
-  }
+    "linux-x64": {
+      // Executable or library.
+      "type": "executable",
+      // Additional libraries, sources
+      // and overrides of global settings here.
+    },
+  },
+  // Global settings.
+  // C compiler if the project also compiles C sources
+  // defaults to 'cc'.
+  "cc": "cc",
+  // CPU name, used for optimizations in the LLVM backend.
+  "cpu": "generic",
+  // Debug information, may be "none", "full" and "line-tables".
+  "debug-info": "full",
+  // FP math behaviour: "strict", "relaxed", "fast".
+  "fp-math": "strict",
+  // Link libc other default libraries.
+  "link-libc": true,
+  // Memory environment: "normal", "small", "tiny", "none".
+  "memory-env": "normal",
+  // Optimization: "O0", "O1", "O2", "O3", "O4", "O5", "Os", "Oz".
+  "opt": "O0",
+  // Code optimization level: "none", "less", "more", "max".
+  "optlevel": "none",
+  // Code size optimization: "none", "small", "tiny".
+  "optsize": "none",
+  // Relocation model: "none", "pic", "PIC", "pie", "PIE".
+  "reloc": "none",
+  // Trap on signed and unsigned integer wrapping for testing.
+  "trap-on-wrap": false,
+  // Turn safety (contracts, runtime bounds checking, null pointer checks etc).
+  "safe": true,
+  // Compile all modules together, enables more inlining.
+  "single-module": true,
+  // Use / don't use soft float, value is otherwise target default.
+  "soft-float": false,
+  // Strip unused code and globals from the output.
+  "strip-unused": true,
+  // The size of the symtab, which limits the amount
+  // of symbols that can be used. Should usually not be changed.
+  "symtab": 1048576,
+  // Use the system linker.
+  "linker": "cc",
+  // Include the standard library.
+  "use-stdlib": true,
+  // Set general level of x64 cpu: "baseline", "ssse3", "sse4", "avx1", "avx2-v1", "avx2-v2", "avx512", "native".
+  "x86cpu": "native",
+  // Set max type of vector use: "none", "mmx", "sse", "avx", "avx512", "native".
+  "x86vec": "sse",
 }
 ```
         
 
-By default, an executable in assumed, but changing the type to `"static-lib"` or `"dynamic-lib"` 
+By default, an executable is assumed, but changing the type to `"static-lib"` or `"dynamic-lib"` 
 creates static library and dynamic library targets respectively.
 
 *This part will be updated, stay tuned* 

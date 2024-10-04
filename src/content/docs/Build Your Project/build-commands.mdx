@@ -78,7 +78,14 @@ Check the [project configuration docs](/build-your-project/project-config/) to l
 ```bash
 c3c test
 ```
-Will run any tests in the project, tests are defined with a `@test` attribute and should be in the `project.json` `"sources"` directory, for example:
+Will run any tests in the project in the `"sources"` directory defined in your `project.json` for example:
+```json5
+...
+"sources": [ "src/**", "test/**" ],
+...
+```
+
+Tests are defined with a `@test` attribute, for example:
 
 ```c3
 fn void! test_fn() @test
