@@ -18,6 +18,7 @@ export default defineConfig({
     '/references/getting-started/setup': '/install-c3/compile',
     '/references/getting-started/primer': '/language-overview/primer',
     '/references/getting-started/allfeatures': '/faq/allfeatures',
+    '/references/docs/compare': '/faq/compare-languages'
   },
   integrations: [
     tailwind({

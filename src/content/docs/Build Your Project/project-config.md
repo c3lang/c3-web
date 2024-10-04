@@ -59,7 +59,7 @@ List of C3 libraries (".c3l") to use when compiling the target.
 
 #### sources
 
-List of source files to compile.
+List of source files to compile and for tests which will run.
 
 #### cc
 
