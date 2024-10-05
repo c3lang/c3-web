@@ -23,8 +23,8 @@ This is a description of the configuration options in `project.json`:
   "authors": [ "John Doe <john.doe@example.com>" ],
   // Version using semantic versioning.
   "version": "0.1.0",
-  // Sources compiled for all targets, and tests for all targets.
-  "sources": [ "src/**", "test/**" ],
+  // Sources compiled for all targets.
+  "sources": [ "src/**" ],
   // C sources if the project also compiles C sources
   // relative to the project file.
   // "c-sources": [ "csource/**" ],
