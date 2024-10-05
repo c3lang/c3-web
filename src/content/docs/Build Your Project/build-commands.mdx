@@ -4,6 +4,7 @@ description: Build Commands
 sidebar:
     order: 240
 ---
+import { FileTree } from '@astrojs/starlight/components';
 
 
 
@@ -34,12 +35,12 @@ c3c compile-run <file1> <file2> <file3>
 Additional parameters:
 - `--lib <path>` add a library to search.
 - `--output <path>` override the output directory.
-- `--path <path>` execute as if standing at <path>
+- `--path <path>` execute as if standing at `<path>`
     
 ## Init a new project
 
 ```bash
-c3c init <project_name> [optional path]`
+c3c init <project_name> [optional path]
 ```
 
 Create a new project structure in the current directory.
@@ -53,33 +54,46 @@ Use the `--template` to select a template. The following are built in:
 It is also possible to give the path to a custom template.
 
 Additional parameters:
-- `--template <path>` indicate an alternative template to use. 
+- `--template <path>` indicate an alternative template to use.
 
 For example `c3c init hello_world` creates the following structure:
 
-```
-$ tree .
-.
-└── hello_world
-    |
-    ├── LICENSE
-    ├── README.md
-    ├── build
-    ├── docs
-    │   ├── about.md
-    │   └── src
-    │       └── index.html
-    ├── lib
-    ├── project.c3p
-    ├── resources
-    ├── src
-    │   └── hello_world
-    │       └── main.c3
-    └── test
-        └── hello_world
-```
+<FileTree>
+- build/
+- docs/
+- lib/
+- resources/
+- scripts/
+- src/
+  - main.c3
+- test/
+- LICENSE
+- project.json
+- README.md
+</FileTree>
 
 Check the [project configuration docs](/build-your-project/project-config/) to learn more about configuring your project.
+
+## Test
+```bash
+c3c test
+```
+Will run any tests in the project in the `"sources"` directory defined in your `project.json` for example:
+```json5
+...
+"sources": [ "src/**" ],
+...
+```
+
+Tests are defined with a `@test` attribute, for example:
+
+```c3
+fn void! test_fn() @test
+{
+    assert(true == true, "true is definitely true");
+}
+```
+
 
 ## Build
 
