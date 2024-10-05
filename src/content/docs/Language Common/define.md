@@ -129,7 +129,7 @@ def TestFn = fn void(int y = 123);
 
 fn void test(int x = 5)
 {
-    io::printfn("X = %d");
+    io::printfn("X = %d", x);
 }
 
 fn void main()
