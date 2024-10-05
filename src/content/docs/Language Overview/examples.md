@@ -213,7 +213,7 @@ fn void! test(int x)
     defer try io::printn("X");
     defer catch io::printn("B");
     defer catch (err) io::printfn("%s", err.message);
-    if (x == 1) return FooError!;
+    if (x == 1) return FooError?;
     print("!")
 }
 
