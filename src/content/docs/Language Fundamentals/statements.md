@@ -20,7 +20,7 @@ fn void test()
 {
     int a = 0;
     {|
-        if (a) return;
+        if (!a) return;
         io::printf("Hello ");
         return;
     |};
