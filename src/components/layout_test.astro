@@ -1,0 +1,839 @@
+<script lang="js">
+    if (
+      localStorage["starlight-theme"] === "dark" ||
+      (!(["starlight-theme"] in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  
+    const HSThemeAppearance = {
+      init() {
+        const defaultTheme = "default";
+        let theme = localStorage.getItem("starlight-theme") || defaultTheme;
+  
+        if (document.querySelector("html").classList.contains("dark")) return;
+        this.setAppearance(theme);
+      },
+      _resetStylesOnLoad() {
+        const $resetStyles = document.createElement("style");
+        $resetStyles.innerText = `*{transition: unset !important;}`;
+        $resetStyles.setAttribute("data-hs-appearance-onload-styles", "");
+        document.head.appendChild($resetStyles);
+        return $resetStyles;
+      },
+      setAppearance(theme, saveInStore = true, dispatchEvent = true) {
+        const $resetStylesEl = this._resetStylesOnLoad();
+  
+        if (saveInStore) {
+          localStorage.setItem("starlight-theme", theme);
+        }
+  
+        if (theme === "auto") {
+          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "default";
+        }
+  
+        document.querySelector("html").classList.remove("dark");
+        document.querySelector("html").classList.remove("default");
+        document.querySelector("html").classList.remove("auto");
+  
+        document
+          .querySelector("html")
+          .classList.add(this.getOriginalAppearance());
+  
+        setTimeout(() => {
+          $resetStylesEl.remove();
+        });
+  
+        if (dispatchEvent) {
+          window.dispatchEvent(
+            new CustomEvent("on-hs-appearance-change", { detail: theme }),
+          );
+        }
+      },
+      getAppearance() {
+        let theme = this.getOriginalAppearance();
+        if (theme === "auto") {
+          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "default";
+        }
+        return theme;
+      },
+      getOriginalAppearance() {
+        const defaultTheme = "default";
+        return localStorage.getItem("starlight-theme") || defaultTheme;
+      },
+    };
+    HSThemeAppearance.init();
+  
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (HSThemeAppearance.getOriginalAppearance() === "auto") {
+          HSThemeAppearance.setAppearance("auto", false);
+        }
+      });
+  
+    window.addEventListener("load", () => {
+      const $clickableThemes = document.querySelectorAll(
+        "[data-hs-theme-click-value]",
+      );
+      const $switchableThemes = document.querySelectorAll(
+        "[data-hs-theme-switch]",
+      );
+  
+      $clickableThemes.forEach(($item) => {
+        $item.addEventListener("click", () =>
+          HSThemeAppearance.setAppearance(
+            $item.getAttribute("data-hs-theme-click-value"),
+            true,
+            $item,
+          ),
+        );
+      });
+  
+      $switchableThemes.forEach(($item) => {
+        $item.addEventListener("change", (e) => {
+          HSThemeAppearance.setAppearance(e.target.checked ? "dark" : "default");
+        });
+  
+        $item.checked = HSThemeAppearance.getAppearance() === "dark";
+      });
+  
+      window.addEventListener("on-hs-appearance-change", (e) => {
+        $switchableThemes.forEach(($item) => {
+          $item.checked = e.detail === "dark";
+        });
+      });
+    });
+  </script>
+
+<header
+class="
+    grid
+    grid-cols-3
+    grid-rows-4
+    md:grid-cols-[0.8fr_0.5fr_0.5fr_1.1fr_1.1fr_1.1fr_0.6fr_0.3fr_0.3fr_0.3fr_0.3fr]
+    md:grid-rows-1
+    justify-items-center
+    content-center
+    items-center
+    select-none
+    font-medium
+    text-indigo-950
+    bg-white
+    dark:bg-[hsl(224,10%,10%)]
+    md:h-14"    
+>
+    <span
+        class="
+        text-3xl 
+        font-bold 
+        row-span-1 
+        md:row-start-1
+        col-start-2
+        md:col-start-1  
+        bg-clip-text bg-gradient-to-l 
+        from-violet-600 
+        to-blue-600 
+        dark:from-violet-500 
+        dark:to-blue-500 
+        text-transparent
+        w-full
+        h-full
+        flex
+        items-center
+        justify-center
+            "
+    >
+        C3
+    </span>
+
+    <!-- ================================= -->
+    <button class="
+        row-span-1 
+        col-start-1
+        md:row-start-1 
+        md:col-start-3
+
+        hover:shadow-md 
+        hover:text-indigo-500 
+        transition-all 
+        delay-75
+
+        w-full
+        h-full
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+    >
+        <a
+            href="/get-involved/"
+            class=""
+        >
+            Docs
+        </a>
+    </button>
+    <!-- ================================= -->
+    <button class="
+        row-span-1 
+        md:row-start-1 md:col-start-4 
+
+        hover:shadow-md 
+        hover:text-indigo-500 
+        transition-all 
+        delay-75
+
+        w-full
+        h-full
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+    >
+        <a
+            href="/get-involved/"
+            class=""
+        >
+            Examples
+        </a>
+    </button>
+    <!-- ================================= -->
+    <button class="
+        row-span-1 
+        md:row-start-1 md:col-start-5 
+
+        hover:shadow-md 
+        hover:text-indigo-500 
+        transition-all 
+        delay-75
+
+        w-full
+        h-full
+        dark:text-gray-200 
+        dark:hover:text-indigo-400
+        "
+    >
+        <a
+            href="/get-involved/"
+            class=""
+        >
+            Download
+        </a>
+    </button>
+    <!-- ================================= -->
+    <button class="
+        row-span-1 
+        md:row-start-1 md:col-start-6 
+
+        hover:shadow-md 
+        hover:text-indigo-500 
+        transition-all 
+        delay-75
+
+        w-full
+        h-full
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+    >
+        <a
+            href="/get-involved/"
+            class=""
+        >
+            Sponsor
+        </a>
+    </button>
+    <!-- ================================= -->
+    <button class="
+        row-span-1 
+        md:row-start-1 md:col-start-7 
+
+        hover:shadow-md 
+        hover:text-indigo-500 
+        transition-all 
+        delay-75
+
+        w-full
+        h-full
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+    >
+        <a
+            href="/get-involved/"
+            class=""
+        >
+            News
+        </a>
+    </button>
+    <!-- ================================= -->
+
+    <div class="
+        hs-dark-mode-active:hidden 
+        hs-dark-mode 
+        group 
+        flex 
+        items-center
+        content-center
+        justify-center
+        font-medium 
+        md:col-start-8
+        md:row-start-1
+        h-full
+        w-full
+        cursor-pointer
+
+        hover:text-indigo-500 
+        hover:shadow-md 
+        transition-all 
+        delay-75
+        
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+        role="button"
+        data-hs-theme-click-value="dark"
+    >
+        <svg
+        class="w-4 h-4"
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+        >
+        <path
+            d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"
+        >
+        </path>
+        </svg>
+    </div>
+    <div class="
+        hs-dark-mode-active:flex 
+        hs-dark-mode 
+        hidden
+        group 
+        flex 
+        items-center
+        justify-center
+        
+        text-gray-600 
+        hover:text-blue-600 
+        font-medium 
+
+        md:col-start-8
+        md:row-start-1
+        w-full
+        h-full
+        cursor-pointer
+        dark:text-gray-200
+        dark:hover:text-indigo-400
+        "
+        data-hs-theme-click-value="light" 
+        role="button"
+    >
+            <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            >
+            <path
+                d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
+            >
+            </path>
+            </svg>
+        </a>
+    </div>
+
+    <!-- ================================= -->
+
+    <!-- Github Icon -->
+    <button class="
+        flex 
+        items-center 
+        justify-center 
+        justify-items-center 
+        md:row-start-1 
+        md:col-start-9
+
+        hover:shadow-md 
+        hover:fill-indigo-400 
+        dark:fill-white
+        transition-all delay-75
+        w-full
+        h-full
+        "
+    >
+        <svg 
+            class="
+            mx-2 h-4 
+            "
+            viewBox="0 0 100 96.36"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" />
+        </svg>
+    </button>
+
+    <!-- ================================= -->
+
+    <!-- Discourse Icon -->
+    <button class="
+        flex 
+        items-center 
+        justify-center 
+        justify-items-center 
+        md:row-start-1 
+        md:col-start-10
+
+        hover:shadow-md 
+        hover:fill-indigo-500 
+        dark:fill-white
+        transition-all 
+        delay-75
+        w-full
+        h-full
+        "
+    >
+        <svg 
+            class="
+            mx-2 h-4
+            "
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 24 24" 
+            role="img"
+        >
+        <path d="M12.103 0C18.666 0 24 5.485 24 11.997c0 6.51-5.33 11.99-11.9 11.99L0 24V11.79C0 5.28 5.532 0 12.103 0zm.116 4.563a7.395 7.395 0 0 0-6.337 3.57 7.247 7.247 0 0 0-.148 7.22L4.4 19.61l4.794-1.074a7.424 7.424 0 0 0 8.136-1.39 7.256 7.256 0 0 0 1.737-7.997 7.375 7.375 0 0 0-6.84-4.585h-.008z"/>
+        </svg>
+    </button>
+
+    <!-- ================================= -->
+
+    <!-- Discord -->
+    <button  class="
+        flex 
+        items-center 
+        justify-center 
+        justify-items-center 
+        md:row-start-1 
+        md:col-start-11
+
+        hover:shadow-md 
+        hover:fill-indigo-500 
+        dark:fill-white
+        transition-all 
+        delay-75
+        w-full
+        h-full
+        "
+    >
+        <svg class="
+            mx-2 h-4
+            "
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 127.14 96.36"
+        >
+            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        
+    </button>
+
+    <!-- ================================= -->
+
+    
+
+
+
+</header>
+
+<div
+    class="grid
+    grid-cols-4
+    grid-rows-2
+    lg:grid-cols-[repeat(12,minmax(0,1fr))]
+
+    w-full
+    h-[24rem]
+    from-[hsl(289,30%,75%)] to-gray-50
+    dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
+    bg-no-repeat
+    bg-gradient-to-b
+    "
+>
+
+
+    <div class="
+        col-start-8 
+        col-end-13 
+        row-span-2
+        row-start-1
+        bg-[url('/logo_big.png')]
+        dark:brightness-90
+        bg-no-repeat  
+        bg-center
+        z-10"
+    />
+
+    <div class="
+    flex 
+    flex-col
+    content-center 
+    justify-center
+    row-start-1 
+    row-span-2 
+    col-start-1 
+    col-end-9
+    p-8
+    md:p-12 
+    ">
+
+
+
+        <h1 class="
+        text-3xl
+        md:text-4xl 
+        font-bold 
+        dark:text-gray-100
+        ">
+            The 
+            <span class="
+                text-4xl 
+                font-bold 
+                row-span-1 
+                md:row-start-1  
+                bg-clip-text 
+                bg-gradient-to-l 
+                from-violet-600 
+                to-blue-600 
+                dark:from-violet-500 
+                dark:to-blue-500 
+                text-transparent"
+            >
+            C3
+            </span> 
+            Language
+        </h1>
+
+        <p class="
+        font-semibold 
+        mt-4 
+        mb-4
+        dark:text-gray-100
+        ">
+            Making it easier to write <b>Safe</b>, <b>High Performance</b> and <b>C-Like</b> code.
+        </p>
+
+
+
+    </div>
+
+
+</div>
+
+
+<!-- border-2
+    border-gray-200
+    dark:border-[hsl(224,15%,12%)] -->
+<div
+    class="grid
+    grid-cols-4
+    grid-rows-[0.5fr,5fr]
+    md:grid-cols-[repeat(12,minmax(0,1fr))]
+
+    w-full
+
+    bg-gray-50
+    
+    dark:bg-[hsl(224,12%,4%)]
+    dark:text-gray-200"
+>
+
+
+<div class="
+    flex
+    flex-col
+    items-center
+    p-12
+    col-span-4 
+">
+    <h3 class="
+        text-3xl 
+        font-bold"
+    >
+        Ergonomics & Safety 
+    </h3>
+
+
+    <ul class="list-disc mt-4">
+
+        <li class="my-4">
+            Optionals to safely and quickly handle errors and null.
+        </li>
+
+        <li class="my-4">
+            Defer to clean up resources.
+        </li>
+
+        <li class="my-4">
+            Slices and foreach for safe iteration.
+        </li>
+
+        <li class="my-4">
+            Contracts in comments, to add constraints to your code.
+        </li>
+
+    </ul>
+    
+</div>
+
+
+<div class="
+    flex
+    flex-col
+    items-center
+    p-12
+    col-span-4
+    bg-gray-100
+    dark:bg-[hsl(224,12%,6%)]
+">
+    <h3 class="
+        text-3xl 
+        font-bold"
+    >
+        Performance by default
+    </h3>
+
+    <ul class="list-disc mt-4">
+
+        <li class="my-4">
+            Write SIMD vectors to program the hardware directly.
+        </li>
+
+        <li class="my-4">
+            Access to different memory allocators to fine tune performance.
+        </li>
+
+        <li class="my-4">
+            Zero overhead errors.
+        </li>
+
+        <li class="my-4">
+            Fast compilation times.
+        </li>
+
+        <li class="my-4">
+            LLVM backend for industrial strength optimisations.
+        </li>
+
+        <li class="my-4">
+            Easy to use inline assembly.
+        </li>
+
+    </ul>
+
+</div>
+
+
+<div class="
+    flex
+    flex-col
+    items-center
+    p-12
+    col-span-4
+">
+    <h3 class="
+        text-3xl 
+        font-bold"
+    >
+        Batteries included standard library
+    </h3>
+
+    <ul class="list-disc mt-4">
+
+        <li class="my-4">
+            Dynamic containers and strings.
+        </li>
+
+        <li class="my-4">
+            Cross-platform abstractions for ease of use.
+        </li>
+
+        <li class="my-4">
+            Access to the native platform when you need it.
+        </li>
+
+    </ul>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- <p class="mt-4 mb-4">
+    We care deeply about; Ergonomics, Productivity, Safety and Familiarity.
+    </p>
+
+
+<p class="mt-4 mb-4">
+    C3 is a simple, productive, systems programming language, which answers the question: 
+    What would C be like if was allowed to improve and relax backwards compatability.
+    C3 makes systems programming fun and accessible for everyone.
+    </p> -->
+
+<!-- <div class="row-span-1 sm:row-auto md:row-start-1 
+bg-[url('/public/logo_small_test.png')] object-cover">
+   LOGO MA?
+</div> -->
+
+
+
+
+
+
+
+
+<!-- A modern take on the C language which integrates natively with C ABI. -->
+
+
+
+
+
+
+
+
+
+<!-- TESTING CODE -->
+
+
+
+<!-- <div class=" col-start-1 col-end-13 row-span-2
+from-[#e8daeb] to-[hsl(0.94,43%,79%)] bg-no-repeat
+ bg-gradient-to-b
+">
+
+    <div class="bg-[url('/logo_big.png')] row-span-1 h-1/2 
+    bg-no-repeat  bg-center">
+        
+    </div>
+
+
+
+
+    <div class="
+        row-start-3
+        col-start-4
+        md:col-start-2
+        flex
+
+        h-12
+        bg-red-500
+        "
+    >
+
+        <div class="
+            md:mr-10
+            w-max
+            flex
+            flex-shrink-0
+            items-center
+            bg-blue-600
+            border-blue-600
+            hover:border-slate-950
+            border-2
+            rounded-md
+            py-3
+            px-4
+            shadow-sm
+            focus:z-10
+            focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950
+            transition-all
+            text-md
+            text-white
+            font-medium
+            select-none
+            dark:bg-blue-600
+            dark:hover:border-blue-500
+            dark:border-blue-600
+            dark:text-gray-200
+            "
+        >
+
+            Examples
+
+            <svg
+                class="ml-2 w-4 h-4 "
+                viewBox="0 0 16 16"
+                fill="none"
+            >
+                <path
+                    d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round">
+                </path>
+            </svg>
+
+        </div>
+
+
+
+        <div class="
+            w-max
+            flex
+            flex-shrink-0
+            items-center
+            bg-blue-600
+            border-blue-600
+            hover:border-slate-950
+            border-2
+            rounded-md
+            py-3
+            px-4
+            shadow-sm
+            focus:z-10
+            focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950
+            transition-all
+            text-md
+            text-white
+            font-medium
+            select-none
+            dark:bg-blue-600
+            dark:hover:border-blue-500
+            dark:border-blue-600
+            dark:text-gray-200
+            "
+        >
+
+            Docs
+
+            <svg
+                class="ml-2 w-4 h-4 "
+                viewBox="0 0 16 16"
+                fill="none"
+            >
+                <path
+                    d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round">
+                </path>
+            </svg>
+
+        </div>
+    </div>
+
+
+</div>
+
+</div> -->

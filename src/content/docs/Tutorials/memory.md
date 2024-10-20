@@ -161,3 +161,58 @@ fn void main()
     io::printfn("Bar %3.2f per 64B cache line",  bar_per_cache_line);
 }
 ```
+
+## Arrays
+
+```c3
+fn void main()
+{
+    double[5] arr = {0.0, 1.1, 2.2, 3.3, 4.4};
+    io::printfn("arr: %s", arr);
+    io::printfn("arr.sizeof %s", $sizeof(arr));
+
+    // pointer to an array is a pointer to the first element
+    io::printfn("%s", &arr == &arr[0]);
+
+    // ever wondered why array indexes start from zero?
+    // Or wondered what the indexing of an array was doing under the hood?
+    io::printfn("%s", arr[4]);
+    io::printfn("%s", *((double*)((void*)&arr + 4*double.sizeof)) );
+
+    // lets break that down
+    // take the address of the first element of the array
+    // We use void* so we can manipulate the address
+    void* arr_ptr = (void*)&arr;
+
+    // to select index 4, we increment the arr_ptr by the sizeof 4 double elements
+    arr_ptr = arr_ptr + 4*double.sizeof;
+
+    // interpret the data at this address as a pointer to a double
+    // then dereference (take the value out)
+    double arr_4 =  *(double*)arr_ptr;
+    io::printfn("arr[4] == %s   arr_4 == %s", arr[4], arr_4);
+}
+```
+
+
+A specific application, format or protocol may require a particular array element alignment
+wrap the double with an aligned struct and make an array of those
+
+```c3
+struct Aligned16 @align(16) 
+{   
+    double a;
+}
+
+fn void main()
+{
+    Aligned16[5] arr_16 = {{0.0}, {1.1}, {2.2}, {3.3}, {4.4}};
+    io::printfn("arr_16: %s", arr_16);
+
+    io::printfn("arr_16.sizeof %s", $sizeof(arr_16)); // 80 bytes
+
+    // in contrast to 40 bytes earlier with default alignment of 8
+    double[5] arr = {0.0, 1.1, 2.2, 3.3, 4.4};
+    io::printfn("arr.sizeof %s", $sizeof(arr)); // 40 bytes
+}
+```

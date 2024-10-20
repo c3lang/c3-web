@@ -4,42 +4,134 @@ import Hero from "../components/hero.astro";
 import Sample from "../components/sample.astro";
 import Features from "../components/features.astro";
 import Community from "../components/community.astro";
+
+import Layout from "../components/layout_test.astro";
 ---
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta
-    name="description"
-    content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
-  />
-  <meta name="og:title" content="C3" />
-  <meta
-    name="og:description"
-    content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
-  />
-  <meta content="/logo.svg" property="og:image" />
-  <meta content="#4355ec" data-react-helmet="true" name="theme-color" />
-  <meta name="og:image" content="/logo.svg" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+        name="description"
+        content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+    />
+    <meta name="og:title" content="C3" />
+    <meta
+        name="og:description"
+        content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+    />
+    <meta content="/logo.svg" property="og:image" />
+    <meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+    <meta name="og:image" content="/logo.svg" />
 
-  <link rel="icon" href="/ico.svg" type="image/x-icon" />
+    <link rel="icon" href="/ico.svg" type="image/x-icon" />
 
-  <title>C3 | An evolution, not a revolution</title>
-  <script>
-    import "boxicons";
-    import "../../public/preline.min.js";
-    import "../../public/overlay.min.js";
-    import "../base.css";
-  </script>
+    <title>C3 | An evolution, not a revolution</title>
+    <script>
+        import "boxicons";
+        import "../../public/preline.min.js";
+        import "../../public/overlay.min.js";
+        import "../base.css";
+    </script>
 </head>
 
-<body class="dark:bg-stone-950 bg-white overflow-x-hidden">
-  <div style="height: auto">
-    <Navbar />
-    <!-- <Hero /> -->
-    <!-- <Sample /> -->
-    <!-- <Features /> -->
-    <!-- <Community /> -->
-  </div>
-  <link rel="stylesheet" href="/index.css" />
-</body>
+<!-- mx-auto -->
+<!-- grid-rows-[1fr-1fr-1fr]
+grid-cols-[1fr_1fr_1fr] -->
+<div class="
+grid
+grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
+
+    "
+>
+
+    <!-- left-space -->
+    <div class="
+        grid
+        grid-rows-[3.5rem_24rem_1fr]
+        w-full
+        h-full
+    ">
+        <div class="
+            bg-white
+            dark:bg-[hsl(224,10%,10%)]
+        "/>
+        <div class="    
+            from-[hsl(289,30%,75%)] to-gray-50
+            dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
+            bg-no-repeat
+            bg-gradient-to-b
+            "
+        />
+        <div class="
+            bg-gray-50
+            dark:bg-[hsl(224,12%,4%)]
+            "
+        />
+    </div>
+
+
+    <body class="
+        max-w-screen-2xl
+        ">
+        <div style="height: auto">
+            <Layout/>
+        </div>
+    </body>
+
+    <!-- right-space -->
+    <div class="
+        grid
+        grid-rows-[3.5rem_24rem_1fr]
+        w-full
+        h-full
+    ">
+        <div class="
+            bg-white
+            dark:bg-[hsl(224,10%,10%)]
+        "/>
+        <div class="    
+            from-[hsl(289,30%,75%)] to-gray-50
+            dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
+            bg-no-repeat
+            bg-gradient-to-b
+            "
+        />
+        <div class="
+            bg-gray-50
+            dark:bg-[hsl(224,12%,4%)]
+            "
+        />
+    </div>
+
+
+<!-- <link rel="stylesheet" href="/index.css" /> -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- <body class="
+    max-w-screen-2xl
+    col-start-2
+    dark:bg-stone-950 
+    mx-auto
+    
+    
+    ">
+    <div style="height: auto">
+        <Layout/> -->
+        <!-- <Navbar /> -->
+        <!-- <Hero /> -->
+        <!-- <Sample /> -->
+        <!-- <Features /> -->
+        <!-- <Community /> -->
+    <!-- </div>
+    <link rel="stylesheet" href="/index.css" />
+</body> -->
