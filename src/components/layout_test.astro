@@ -1,116 +1,60 @@
 <script lang="js">
-    if (
-      localStorage["starlight-theme"] === "dark" ||
-      (!(["starlight-theme"] in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+
+    // record browser preference
+    let browserPreferDark = false;
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        browserPreferDark = true;
     }
-  
-    const HSThemeAppearance = {
-      init() {
-        const defaultTheme = "default";
-        let theme = localStorage.getItem("starlight-theme") || defaultTheme;
-  
-        if (document.querySelector("html").classList.contains("dark")) return;
-        this.setAppearance(theme);
-      },
-      _resetStylesOnLoad() {
-        const $resetStyles = document.createElement("style");
-        $resetStyles.innerText = `*{transition: unset !important;}`;
-        $resetStyles.setAttribute("data-hs-appearance-onload-styles", "");
-        document.head.appendChild($resetStyles);
-        return $resetStyles;
-      },
-      setAppearance(theme, saveInStore = true, dispatchEvent = true) {
-        const $resetStylesEl = this._resetStylesOnLoad();
-  
-        if (saveInStore) {
-          localStorage.setItem("starlight-theme", theme);
+
+    // automatically set theme based on browser's theme preference
+    if (localStorage["starlight-theme"] === undefined) 
+    {
+        if (browserPreferDark) 
+        {
+            localStorage["starlight-theme"] = "dark";
+            document.documentElement.classList.add("dark");
+        } 
+        else 
+        {
+            localStorage["starlight-theme"] = "light";
+            document.documentElement.classList.remove("dark");
         }
-  
-        if (theme === "auto") {
-          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "default";
+    }
+
+    // read previously set value, apply the theme
+    if (localStorage["starlight-theme"] === "dark") 
+    {
+        document.documentElement.classList.add("dark");
+    }
+
+
+    // Change local storage value setting the theme
+    function clickhandler() {
+
+        // if was dark before set to light
+        if (localStorage["starlight-theme"] === "dark") {
+            localStorage["starlight-theme"] = "light";
         }
-  
-        document.querySelector("html").classList.remove("dark");
-        document.querySelector("html").classList.remove("default");
-        document.querySelector("html").classList.remove("auto");
-  
-        document
-          .querySelector("html")
-          .classList.add(this.getOriginalAppearance());
-  
-        setTimeout(() => {
-          $resetStylesEl.remove();
-        });
-  
-        if (dispatchEvent) {
-          window.dispatchEvent(
-            new CustomEvent("on-hs-appearance-change", { detail: theme }),
-          );
+        // if was light before set to dark
+        else if (localStorage["starlight-theme"] === "light") 
+        {
+            localStorage["starlight-theme"] = "dark";
         }
-      },
-      getAppearance() {
-        let theme = this.getOriginalAppearance();
-        if (theme === "auto") {
-          theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "default";
+
+        // use the local storage value to change the classes applied throughout
+        if (localStorage["starlight-theme"] === "dark") 
+        {
+            document.documentElement.classList.add("dark");
+        } 
+        else if (localStorage["starlight-theme"] === "light")
+        {
+            document.documentElement.classList.remove("dark");
         }
-        return theme;
-      },
-      getOriginalAppearance() {
-        const defaultTheme = "default";
-        return localStorage.getItem("starlight-theme") || defaultTheme;
-      },
-    };
-    HSThemeAppearance.init();
-  
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        if (HSThemeAppearance.getOriginalAppearance() === "auto") {
-          HSThemeAppearance.setAppearance("auto", false);
+
+        return;            
         }
-      });
-  
-    window.addEventListener("load", () => {
-      const $clickableThemes = document.querySelectorAll(
-        "[data-hs-theme-click-value]",
-      );
-      const $switchableThemes = document.querySelectorAll(
-        "[data-hs-theme-switch]",
-      );
-  
-      $clickableThemes.forEach(($item) => {
-        $item.addEventListener("click", () =>
-          HSThemeAppearance.setAppearance(
-            $item.getAttribute("data-hs-theme-click-value"),
-            true,
-            $item,
-          ),
-        );
-      });
-  
-      $switchableThemes.forEach(($item) => {
-        $item.addEventListener("change", (e) => {
-          HSThemeAppearance.setAppearance(e.target.checked ? "dark" : "default");
-        });
-  
-        $item.checked = HSThemeAppearance.getAppearance() === "dark";
-      });
-  
-      window.addEventListener("on-hs-appearance-change", (e) => {
-        $switchableThemes.forEach(($item) => {
-          $item.checked = e.detail === "dark";
-        });
-      });
-    });
+
+
   </script>
 
 <header
@@ -127,8 +71,11 @@ class="
     font-medium
     text-indigo-950
     bg-white
-    dark:bg-[hsl(224,10%,10%)]
-    md:h-14"    
+    dark:bg-[hsl(224,12%,4%)]
+    md:h-14
+    border-b-2
+    border-b-gray-300
+    dark:border-b-gray-800"    
 >
     <span
         class="
@@ -161,7 +108,7 @@ class="
         md:row-start-1 
         md:col-start-3
 
-        hover:shadow-md 
+         
         hover:text-indigo-500 
         transition-all 
         delay-75
@@ -184,7 +131,7 @@ class="
         row-span-1 
         md:row-start-1 md:col-start-4 
 
-        hover:shadow-md 
+         
         hover:text-indigo-500 
         transition-all 
         delay-75
@@ -207,7 +154,7 @@ class="
         row-span-1 
         md:row-start-1 md:col-start-5 
 
-        hover:shadow-md 
+         
         hover:text-indigo-500 
         transition-all 
         delay-75
@@ -230,7 +177,7 @@ class="
         row-span-1 
         md:row-start-1 md:col-start-6 
 
-        hover:shadow-md 
+         
         hover:text-indigo-500 
         transition-all 
         delay-75
@@ -253,7 +200,7 @@ class="
         row-span-1 
         md:row-start-1 md:col-start-7 
 
-        hover:shadow-md 
+         
         hover:text-indigo-500 
         transition-all 
         delay-75
@@ -274,10 +221,9 @@ class="
     <!-- ================================= -->
 
     <div class="
-        hs-dark-mode-active:hidden 
-        hs-dark-mode 
+        flex
+        dark:hidden 
         group 
-        flex 
         items-center
         content-center
         justify-center
@@ -289,7 +235,7 @@ class="
         cursor-pointer
 
         hover:text-indigo-500 
-        hover:shadow-md 
+         
         transition-all 
         delay-75
         
@@ -297,7 +243,7 @@ class="
         dark:hover:text-indigo-400
         "
         role="button"
-        data-hs-theme-click-value="dark"
+        onmousedown="clickhandler()"
     >
         <svg
         class="w-4 h-4"
@@ -314,16 +260,14 @@ class="
         </svg>
     </div>
     <div class="
-        hs-dark-mode-active:flex 
-        hs-dark-mode 
         hidden
-        group 
-        flex 
+        dark:flex
+        group  
         items-center
         justify-center
         
         text-gray-600 
-        hover:text-blue-600 
+        hover:text-indigo-500 
         font-medium 
 
         md:col-start-8
@@ -334,9 +278,9 @@ class="
         dark:text-gray-200
         dark:hover:text-indigo-400
         "
-        data-hs-theme-click-value="light" 
         role="button"
-    >
+        onmousedown="clickhandler()"
+        >
             <svg
             class="w-4 h-4"
             xmlns="http://www.w3.org/2000/svg"
@@ -350,7 +294,7 @@ class="
             >
             </path>
             </svg>
-        </a>
+
     </div>
 
     <!-- ================================= -->
@@ -364,8 +308,9 @@ class="
         md:row-start-1 
         md:col-start-9
 
-        hover:shadow-md 
+         
         hover:fill-indigo-400 
+        dark:hover:fill-indigo-400
         dark:fill-white
         transition-all delay-75
         w-full
@@ -394,8 +339,9 @@ class="
         md:row-start-1 
         md:col-start-10
 
-        hover:shadow-md 
+         
         hover:fill-indigo-500 
+        dark:hover:fill-indigo-400
         dark:fill-white
         transition-all 
         delay-75
@@ -426,8 +372,9 @@ class="
         md:row-start-1 
         md:col-start-11
 
-        hover:shadow-md 
+         
         hover:fill-indigo-500 
+        dark:hover:fill-indigo-400
         dark:fill-white
         transition-all 
         delay-75
@@ -448,11 +395,8 @@ class="
 
     <!-- ================================= -->
 
-    
-
-
-
 </header>
+
 
 <div
     class="grid
@@ -462,10 +406,9 @@ class="
 
     w-full
     h-[24rem]
-    from-[hsl(289,30%,75%)] to-gray-50
-    dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
-    bg-no-repeat
-    bg-gradient-to-b
+    bg-[hsl(288,15%,88%)]
+    dark:bg-[hsl(288,10%,12%)]
+
     "
 >
 
@@ -522,8 +465,7 @@ class="
             Language
         </h1>
 
-        <p class="
-        font-semibold 
+        <p class=" 
         mt-4 
         mb-4
         dark:text-gray-100
@@ -572,7 +514,7 @@ class="
     </h3>
 
 
-    <ul class="list-disc mt-4">
+    <ul class="list-disc mt-4 ml-6">
 
         <li class="my-4">
             Optionals to safely and quickly handle errors and null.
@@ -611,7 +553,7 @@ class="
         Performance by default
     </h3>
 
-    <ul class="list-disc mt-4">
+    <ul class="list-disc mt-4 ml-6">
 
         <li class="my-4">
             Write SIMD vectors to program the hardware directly.
@@ -656,7 +598,7 @@ class="
         Batteries included standard library
     </h3>
 
-    <ul class="list-disc mt-4">
+    <ul class="list-disc mt-4 ml-6">
 
         <li class="my-4">
             Dynamic containers and strings.

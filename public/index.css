@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-.projects {  
+
+
+
+
+/* .projects {  
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -17,4 +21,5 @@
   .card {
     width: 90%
   }
-}
+} */
+

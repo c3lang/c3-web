@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@layer base {
+
+    /* implementing custom fonts */
+    /* 
+      @font-face {
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400; 
+        font-display: swap;
+        src: url(./public/fonts/Montserrat-VariableFont_wght.ttf) format('truetype');
+      } */
+
+    
+
+      /* body {
+        letter-spacing: 0.02em;
+      } */
+      
+}
+

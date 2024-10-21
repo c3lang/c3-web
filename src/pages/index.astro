@@ -27,11 +27,15 @@ import Layout from "../components/layout_test.astro";
     <link rel="icon" href="/ico.svg" type="image/x-icon" />
 
     <title>C3 | An evolution, not a revolution</title>
-    <script>
-        import "boxicons";
-        import "../../public/preline.min.js";
-        import "../../public/overlay.min.js";
+    <!-- <script>
+        // import "boxicons";
+        // import "../../public/preline.min.js";
+        // import "../../public/overlay.min.js";
         import "../base.css";
+    </script> -->
+    <script>
+        import "../base.css";
+        
     </script>
 </head>
 
@@ -54,16 +58,20 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
     ">
         <div class="
             bg-white
-            dark:bg-[hsl(224,10%,10%)]
+            dark:bg-[hsl(224,12%,4%)]
+             border-b-2
+            border-b-gray-300
+            dark:border-b-gray-800
         "/>
         <div class="    
-            from-[hsl(289,30%,75%)] to-gray-50
-            dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
+            bg-[hsl(288,15%,88%)]
+            dark:bg-[hsl(288,10%,12%)]
             bg-no-repeat
             bg-gradient-to-b
             "
         />
         <div class="
+            dark:border-t-gray-700
             bg-gray-50
             dark:bg-[hsl(224,12%,4%)]
             "
@@ -77,6 +85,7 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
         <div style="height: auto">
             <Layout/>
         </div>
+        <link rel="stylesheet" href="/index.css" />
     </body>
 
     <!-- right-space -->
@@ -88,11 +97,14 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
     ">
         <div class="
             bg-white
-            dark:bg-[hsl(224,10%,10%)]
+            dark:bg-[hsl(224,12%,4%)]
+             border-b-2
+            border-b-gray-300
+            dark:border-b-gray-800
         "/>
         <div class="    
-            from-[hsl(289,30%,75%)] to-gray-50
-            dark:from-[hsl(289,25%,30%)] dark:to-[hsl(224,12%,4%)]
+            bg-[hsl(288,15%,88%)]
+            dark:bg-[hsl(288,10%,12%)]
             bg-no-repeat
             bg-gradient-to-b
             "
@@ -105,7 +117,6 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
     </div>
 
 
-<!-- <link rel="stylesheet" href="/index.css" /> -->
 </div>
 
 
