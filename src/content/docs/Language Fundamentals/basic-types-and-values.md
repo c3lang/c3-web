@@ -199,7 +199,7 @@ A raw string may span multiple lines.
 Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
-// Note: String is a distinct char*
+// Note: String is a distinct inline char[]
 String three_lines = 
 `multi
 line
