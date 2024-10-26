@@ -1,0 +1,306 @@
+---
+
+interface Props {
+    title: string;
+    heading: string;
+    bullets: string[];
+    buttons: string[];
+    code: {
+            name: string;
+            desktop_code: string;
+            mobile_code: string;
+        }[];
+}
+
+const { heading, bullets, buttons, code } = Astro.props;
+
+import CodeRender from "./code_render.astro";
+console.log(code)
+
+const localStorageKey =`${Astro.props.title}_selected_tab_id`;
+console.log("localStorageKey ", localStorageKey)
+
+
+
+
+---
+
+
+
+<script>
+    
+    
+function generateClickHandler(localStorageKey) {
+
+
+    return function buttonClickHandler(event) {
+
+        console.log("event.target.id ", event.target.id) 
+        console.log("localStorage[localStorageKey] ", localStorage[localStorageKey])
+        console.log("event.target.classList ", event.target.classList)
+
+
+
+        if (
+            localStorage[localStorageKey] != "" &&
+            localStorage[localStorageKey] != null &&
+            localStorage[localStorageKey] != undefined
+        ) {
+            // remove any style adjustments from previous tab was selected
+            if (event.target.id != localStorage[localStorageKey]) {
+
+                // console.log( "local storage ", document.getElementById(localStorage[localStorageKey] ) )
+
+                // let previousTabElement = document.getElementById(
+                //     localStorage[localStorageKey],
+                // );
+
+                // adjust styles showing new tab is selected
+                document.getElementById(localStorage[localStorageKey]).classList.remove("bg-gray-50");
+                document.getElementById(localStorage[localStorageKey]).classList.remove("border-b-indigo-500");
+                document.getElementById(localStorage[localStorageKey]).classList.remove("ring");
+                document.getElementById(localStorage[localStorageKey]).classList.remove("ring-indigo-50");
+                document.getElementById(localStorage[localStorageKey]).classList.add("bg-gray-100");
+                document.getElementById(localStorage[localStorageKey]).classList.add("dark:bg-gray-800");
+                document.getElementById(localStorage[localStorageKey]).classList.remove("dark:bg-gray-700");
+                document.getElementById(localStorage[localStorageKey]).classList.remove("dark:ring-indigo-700");
+                
+
+                // // make the code blocks hidden from previously selected tab
+                // let previousDesktopCode = document.getElementById(
+                //     `${localStorage[localStorageKey]}_desktop_code`,
+                // );
+
+                // let previousMobileCode = document.getElementById(
+                //     `${localStorage[localStorageKey]}_mobile_code`,
+                // );
+
+                document.getElementById(localStorage[localStorageKey] + "_desktop_code").classList.remove("lg:flex");
+                document.getElementById(localStorage[localStorageKey] + "_desktop_code").classList.add("hidden");
+
+                document.getElementById(localStorage[localStorageKey] + "_mobile_code").classList.remove("flex");
+                document.getElementById(localStorage[localStorageKey] + "_mobile_code").classList.add("hidden");
+
+            }
+        }
+
+        // Changing the button properties on click
+        event.target.classList.remove("bg-gray-100");
+        event.target.classList.remove("dark:bg-gray-800");
+        event.target.classList.add("bg-gray-50");
+        event.target.classList.add("border-b-indigo-500");
+        event.target.classList.add("ring");
+        event.target.classList.add("ring-indigo-50");
+        event.target.classList.add("dark:bg-gray-700");
+        event.target.classList.add("dark:border-gray-500");
+        event.target.classList.add("dark:ring-indigo-700");
+
+        // storing which button was clicked
+        localStorage[localStorageKey] = event.target.id;
+        
+
+        // changing the code visibility based on the button clicked
+        let newDesktopCode = document.getElementById(
+            `${localStorage[localStorageKey]}_desktop_code`,
+        );
+
+        let newMobileCode = document.getElementById(
+            `${localStorage[localStorageKey]}_mobile_code`,
+        );
+
+        newDesktopCode.classList.add("lg:flex");
+        newDesktopCode.classList.add("hidden");
+
+        newMobileCode.classList.add("flex");
+        newMobileCode.classList.add("lg:hidden");
+        newMobileCode.classList.remove("hidden");
+        // // console.log("localStorageKey ", localStorageKey)
+    }
+}
+
+
+    // const { title, buttons } = Astro.props;
+    // try{
+    //     const localStorageKey =`${Astro.props.title}_selected_tab_id`;
+    //     console.log("localStorageKey ", localStorageKey)
+    // } catch {
+        
+    // }
+    
+// // Setting default value for button selected to optionals
+// localStorage[localStorageKey] = buttons[0];
+
+
+
+
+const ergoLocalStorageKey =`ergo_selected_tab_id`;
+const ergoButtons = ["Optionals", "Defer", "Slices", "Contracts"]
+
+ergoButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("click", generateClickHandler(ergoLocalStorageKey));
+});
+
+localStorage[ergoLocalStorageKey] = ergoButtons[0];
+
+
+
+</script>
+
+
+<div class="
+    py-12
+    grid
+    grid-cols-[repeat(2,minmax(0,1fr))]
+    lg:grid-cols-[repeat(12,minmax(0,1fr))]
+    w-full
+    bg-gray-50
+    gap-0
+    
+    dark:bg-[hsl(224,12%,4%)]
+    dark:text-gray-200"
+>
+    <div class="
+        flex
+        flex-col
+    
+        md:px-12
+        md:pb-12
+        px-8
+        pb-8
+        col-span-4
+        bg-gray-50
+        dark:bg-[hsl(224,12%,4%)]
+        dark:text-gray-200"
+    >
+        <h3 class="
+            text-3xl
+            font-bold">
+        {heading}
+        </h3>
+
+        <ul class="
+            list-disc 
+            mt-4 
+            ml-4
+            "
+        >
+            {bullets.map((item) => (
+                <li class="my-4">
+                    {item}
+                </li>
+            ))}
+
+        </ul>
+        
+    </div>
+
+
+    <div class="
+        col-span-2
+        lg:col-span-8"
+    >
+
+        <!--  roundup integer division (7 - 7%2) / 2 + 7%2 -->
+        <div class=`
+            grid
+            grid-cols-[repeat(2,minmax(0,1fr))]
+            grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
+
+            md:grid-cols-[repeat(${buttons.length},minmax(0,1fr))]
+            md:grid-rows-[minmax(0,1fr))]
+            lg:grid-cols-[repeat(${buttons.length},minmax(0,1fr))]
+            lg:grid-rows-[minmax(0,max-content)]
+            gap-2
+
+            bg-gray-50
+            dark:bg-[hsl(224,12%,4%)]
+            dark:text-gray-200
+
+            px-2
+            
+        `>
+
+        <!--  // onmousedown="buttonClickHandler(event)" -->
+            {buttons.map((item, index) => (
+                <button class=`
+                    
+                    rounded-md
+                    border-2
+                    p-2
+                    border-gray-200
+                    flex
+                    justify-center
+                    items-center
+                    hover:text-indigo-500
+                    
+                    dark:hover:text-indigo-400
+                    ${index ===0 && "bg-gray-50 dark:bg-gray-700 dark:ring-indigo-700 ring ring-indigo-50 border-b-indigo-500"}
+                    ${index != 0 && "bg-gray-100 dark:bg-gray-800"}
+                    
+                    dark:border-gray-500
+                    transition-all
+                    delay-75`
+                    id={item}
+                   
+                >
+                    {item}
+                </button>
+            ))}
+
+            <!-- Code container -->
+            <div class="
+                col-span-2
+                md:col-span-4
+                
+                grid
+                grid-rows-1
+                w-full
+                overflow-x-auto
+                mt-8
+                lg:mt-12
+                bg-white
+                dark:bg-[hsl(224,14%,16%)]
+                "
+            >
+
+
+
+                {code.map((item, index) => (
+                    <CodeRender 
+                        is_default={index==0 ? true : false}
+                        name={item.name}
+                        desktop_code={item.desktop_code}
+                        mobile_code={item.mobile_code}
+                    />
+                ))}
+
+                <!-- <CodeRender 
+                    
+                /> -->
+         
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<!-- Style to make the code work in dark mode 
+ https://shiki.style/guide/dual-themes
+-->
+<style>
+    html.dark .shiki,
+    html.dark .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+
+</style>

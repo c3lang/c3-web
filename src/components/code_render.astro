@@ -1,0 +1,175 @@
+---
+// const mobile_code = await Astro.slots.render('mobile_code');
+// const desktop_code = await Astro.slots.render('desktop_code');
+import { Code } from 'astro/components';
+
+const { name, mobile_code, desktop_code, is_default } = Astro.props;
+
+import * as fs from 'fs';
+import { createHighlighter } from 'shiki'
+
+const highlighter = await createHighlighter({
+    themes: ['slack-dark', 'min-light', 'andromeeda', 'github-light-default', 'material-theme-lighter'],
+    langs: ['c']
+})
+// load the language
+await highlighter.loadLanguage(
+    JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))
+) 
+
+let mobile_code_html = highlighter.codeToHtml(
+    mobile_code,
+    { 
+        lang: 'c3', 
+        // theme: 'slack-dark' 
+        themes: { 
+            light: 'min-light',
+            // light: 'github-light-default',
+            dark: 'andromeeda',
+        }
+    }
+)
+
+let desktop_code_html = highlighter.codeToHtml(
+    desktop_code,
+    { 
+        lang: 'c3', 
+        // theme: 'slack-dark' 
+        themes: { 
+            light: 'min-light',
+            // light: 'github-light-default',
+            dark: 'andromeeda',
+        }
+    }
+)
+
+
+function processHtml(input) {
+
+    // remove the background
+    input = input.replaceAll(
+        `class="shiki shiki-themes min-light andromeeda" style="background-color:#ffffff;--shiki-dark-bg:#23262E;color:#24292eff;--shiki-dark:#D5CED9"`, 
+        `class="text-[#24292eff] dark:text-[#D5CED9]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#24292EFF;--shiki-dark:#D5CED9"`,
+        `class="text-[#24292EFF] dark:text-[#D5CED9]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#D32F2F;--shiki-dark:#EE5D43"`,
+        `class="text-[#D32F2F] dark:text-[#EE5D43]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#D32F2F;--shiki-dark:#C74DED"`,
+        `class="text-[#D32F2F] dark:text-[#C74DED]"`
+    )
+
+
+
+    input = input.replaceAll(
+        `style="color:#6F42C1;--shiki-dark:#FFE66D"`,
+        `class="text-[#6F42C1] dark:text-[#FFE66D]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#22863A;--shiki-dark:#96E072"`,
+        `class="text-[#22863A] dark:text-[#96E072]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#F39C12"`,
+        `class="text-[#1976D2] dark:text-[#F39C12]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#C2C3C5;--shiki-dark:#A0A1A7CC"`,
+        `class="text-[#C2C3C5] dark:text-[#A0A1A7CC]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#24292eff;--shiki-dark:#D5CED9"`,
+        `class="text-[#24292EFF] dark:text-[#D5CED9]"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#212121;--shiki-dark:#D5CED9"`,
+        `class="text-[#212121] dark:text-[#D5CED9]"`
+    )
+
+
+    input = input.replaceAll(
+        `style="color:#24292EFF;--shiki-dark:#00E8C6"`,
+        `class="text-[#24292EFF] dark:text-[#00E8C6]"`
+    )
+
+
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#00E8C6"`,
+        `class="text-[#1976D2] dark:text-[#00E8C6]"`
+    )
+
+
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#EE5D43"`,
+        `class="text-[#1976D2] dark:text-[#EE5D43]"`
+    )
+
+    return input;
+}
+
+mobile_code_html = processHtml(mobile_code_html)
+desktop_code_html = processHtml(desktop_code_html)
+
+
+
+
+---
+
+
+
+<div class="
+    lg:hidden
+    flex
+    rounded-md
+
+    p-4
+    md:p-8
+    "
+    id=`${name}_mobile_code`
+>
+    <Fragment set:html={mobile_code_html} />
+</div>
+<div
+    class="
+    hidden
+    lg:flex
+
+    rounded-md
+    p-8
+    "
+    id=`${name}_desktop_code`
+>
+    <Fragment set:html={desktop_code_html} />
+    <!-- <Fragment set:html={example} /> -->
+    <!-- <slot name="desktop_code"/> -->
+</div>
+<!-- <Code code={example} lang="c" /> -->
+
+<!-- Style to make the code work in dark mode 
+ https://shiki.style/guide/dual-themes
+-->
+<!-- <style>
+    html.dark .shiki,
+    html.dark .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
+
+</style> -->

@@ -1,3 +1,83 @@
+---
+
+import DemoSlice from "./demo_slice.astro";
+
+
+// color:#C2C3C5;--shiki-dark:#A0A1A7CC
+const code_input = [
+{
+    "name": "Optionals",
+    "desktop_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by adding '?' after the fault.
+    return IoError.FILE_NOT_FOUND?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty, assign the
+    // Excuse to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn("test() gave an Excuse: %s", excuse);
+    }
+}`,
+    "mobile_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by with
+    // '?' after the fault.
+    return IoError.READ_ONLY?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty
+    // assign the Excuse
+    // to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn(
+            "Excuse: %s", excuse
+        );
+    }
+}`    
+},
+{
+    "name": "Defer",
+    "desktop_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}
+`,
+    "mobile_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}`    
+}
+]
+---
+
+
 <script lang="js">
     // record browser preference
     let browserPreferDark = false;
@@ -119,6 +199,12 @@
 
     // Setting default value for button selected to optionals
     localStorage["selected_tab_id"] = "optionals";
+
+
+
+
+
+
 
 </script>
 
@@ -515,24 +601,24 @@
             ml-4
             "
         >
+            <li class="my-4">
+                Optionals to safely and quickly handle errors and null.
+            </li>
 
-        <li class="my-4">
-            Optionals to safely and quickly handle errors and null.
-        </li>
+            <li class="my-4">
+                Defer to clean up resources.
+            </li>
 
-        <li class="my-4">
-            Defer to clean up resources.
-        </li>
+            <li class="my-4">
+                Slices and foreach for safe iteration.
+            </li>
 
-        <li class="my-4">
-            Slices and foreach for safe iteration.
-        </li>
+            <li class="my-4">
+                Contracts in comments, to add constraints to your code.
+            </li>
 
-        <li class="my-4">
-            Contracts in comments, to add constraints to your code.
-        </li>
+        </ul>
 
-    </ul>
     </div>
 
 
@@ -665,6 +751,8 @@
                 dark:bg-[hsl(224,14%,16%)]
                 "
             >
+
+
 
                 
         <!-- ==================================== -->
@@ -875,21 +963,44 @@
 
 
 
+ 
+
 
             </div>
+            
+            </div>
+            </div>
+            
+            
+            
+            
+            
+            
+            
+            </div>
+            
 
-        </div>
-    </div>
-
-    
-
-    
-
-
-    
-</div>
-
-
+            <DemoSlice
+                title="performance"
+                heading="Ergonomics & Safety"
+                bullets={
+                    [
+                        "Optionals to safely and quickly handle errors and null.",
+                        "Defer to clean up resources.",
+                        "Slices and foreach for safe iteration.",
+                        "Contracts in comments, to add constraints to your code."
+                    ]
+                }
+                buttons={
+                    [
+                        "Optionals",
+                        "Defer",
+                        "Slices",
+                        "Contracts",
+                    ]
+                }
+                code={code_input}
+            />
 
 
 
