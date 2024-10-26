@@ -15,13 +15,8 @@ interface Props {
 const { heading, bullets, buttons, code } = Astro.props;
 
 import CodeRender from "./code_render.astro";
-console.log(code)
 
 const localStorageKey =`${Astro.props.title}_selected_tab_id`;
-console.log("localStorageKey ", localStorageKey)
-
-
-
 
 ---
 
@@ -35,12 +30,6 @@ function generateClickHandler(localStorageKey) {
 
     return function buttonClickHandler(event) {
 
-        console.log("event.target.id ", event.target.id) 
-        console.log("localStorage[localStorageKey] ", localStorage[localStorageKey])
-        console.log("event.target.classList ", event.target.classList)
-
-
-
         if (
             localStorage[localStorageKey] != "" &&
             localStorage[localStorageKey] != null &&
@@ -49,37 +38,30 @@ function generateClickHandler(localStorageKey) {
             // remove any style adjustments from previous tab was selected
             if (event.target.id != localStorage[localStorageKey]) {
 
-                // console.log( "local storage ", document.getElementById(localStorage[localStorageKey] ) )
 
-                // let previousTabElement = document.getElementById(
-                //     localStorage[localStorageKey],
-                // );
+                let previousTabElement = document.getElementById(localStorage[localStorageKey]);
 
                 // adjust styles showing new tab is selected
-                document.getElementById(localStorage[localStorageKey]).classList.remove("bg-gray-50");
-                document.getElementById(localStorage[localStorageKey]).classList.remove("border-b-indigo-500");
-                document.getElementById(localStorage[localStorageKey]).classList.remove("ring");
-                document.getElementById(localStorage[localStorageKey]).classList.remove("ring-indigo-50");
-                document.getElementById(localStorage[localStorageKey]).classList.add("bg-gray-100");
-                document.getElementById(localStorage[localStorageKey]).classList.add("dark:bg-gray-800");
-                document.getElementById(localStorage[localStorageKey]).classList.remove("dark:bg-gray-700");
-                document.getElementById(localStorage[localStorageKey]).classList.remove("dark:ring-indigo-700");
+                previousTabElement.classList.remove("bg-gray-50");
+                previousTabElement.classList.remove("border-b-indigo-500");
+                previousTabElement.classList.remove("ring");
+                previousTabElement.classList.remove("ring-indigo-50");
+                previousTabElement.classList.add("bg-gray-100");
+                previousTabElement.classList.add("dark:bg-gray-800");
+                previousTabElement.classList.remove("dark:bg-gray-700");
+                previousTabElement.classList.remove("dark:ring-indigo-700");
                 
 
-                // // make the code blocks hidden from previously selected tab
-                // let previousDesktopCode = document.getElementById(
-                //     `${localStorage[localStorageKey]}_desktop_code`,
-                // );
+                // make the code blocks hidden from previously selected tab
+                let previousDesktopCode = document.getElementById(localStorage[localStorageKey] + "_desktop_code")
 
-                // let previousMobileCode = document.getElementById(
-                //     `${localStorage[localStorageKey]}_mobile_code`,
-                // );
+                let previousMobileCode = document.getElementById(localStorage[localStorageKey] + "_mobile_code")
 
-                document.getElementById(localStorage[localStorageKey] + "_desktop_code").classList.remove("lg:flex");
-                document.getElementById(localStorage[localStorageKey] + "_desktop_code").classList.add("hidden");
+                previousDesktopCode.classList.remove("lg:flex");
+                previousDesktopCode.classList.add("hidden");
 
-                document.getElementById(localStorage[localStorageKey] + "_mobile_code").classList.remove("flex");
-                document.getElementById(localStorage[localStorageKey] + "_mobile_code").classList.add("hidden");
+                previousMobileCode.classList.remove("flex");
+                previousMobileCode.classList.add("hidden");
 
             }
         }
@@ -114,25 +96,10 @@ function generateClickHandler(localStorageKey) {
         newMobileCode.classList.add("flex");
         newMobileCode.classList.add("lg:hidden");
         newMobileCode.classList.remove("hidden");
-        // // console.log("localStorageKey ", localStorageKey)
     }
 }
 
-
-    // const { title, buttons } = Astro.props;
-    // try{
-    //     const localStorageKey =`${Astro.props.title}_selected_tab_id`;
-    //     console.log("localStorageKey ", localStorageKey)
-    // } catch {
-        
-    // }
-    
-// // Setting default value for button selected to optionals
-// localStorage[localStorageKey] = buttons[0];
-
-
-
-
+// Setup for "Ergonomics & Safety"
 const ergoLocalStorageKey =`ergo_selected_tab_id`;
 const ergoButtons = ["Optionals", "Defer", "Slices", "Contracts"]
 
@@ -142,7 +109,7 @@ ergoButtons.forEach(buttonName => {
 
 localStorage[ergoLocalStorageKey] = ergoButtons[0];
 
-
+// TODO: add setup for other sections
 
 </script>
 

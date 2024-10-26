@@ -73,6 +73,42 @@ fn void! main()
 
     io::printfn("x: %s", *x);
 }`    
+},
+{
+    "name": "Slices",
+    "desktop_code": 
+`fn void main()
+{
+    int[5] a = 1, 20, 50 ;
+    // selects [ 20, 50 ]
+    int[] c = a[1 .. 2]; 
+}`,
+    "mobile_code":
+`fn void main()
+{
+    int[5] a = 1, 20, 50 ;
+    // selects [ 20, 50 ]
+    int[] c = a[1 .. 2]; 
+}`
+},
+{
+    "name": "Contracts",
+    "desktop_code": 
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`,
+    "mobile_code":
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`
 }
 ]
 ---

@@ -123,53 +123,34 @@ function processHtml(input) {
 mobile_code_html = processHtml(mobile_code_html)
 desktop_code_html = processHtml(desktop_code_html)
 
-
-
-
 ---
 
 
-
-<div class="
-    lg:hidden
-    flex
+<!-- Mobile code -->
+<div class=`
+    ${is_default && "lg:hidden flex"}
+    ${!is_default && "hidden"}
     rounded-md
 
     p-4
     md:p-8
-    "
+    `
     id=`${name}_mobile_code`
 >
     <Fragment set:html={mobile_code_html} />
 </div>
-<div
-    class="
-    hidden
-    lg:flex
+
+<!-- Desktop code -->
+<div class=`
+    ${is_default && "hidden lg:flex"}
+    ${!is_default && "hidden"}
 
     rounded-md
-    p-8
-    "
+    p-12
+    `
     id=`${name}_desktop_code`
 >
     <Fragment set:html={desktop_code_html} />
-    <!-- <Fragment set:html={example} /> -->
-    <!-- <slot name="desktop_code"/> -->
 </div>
-<!-- <Code code={example} lang="c" /> -->
 
-<!-- Style to make the code work in dark mode 
- https://shiki.style/guide/dual-themes
--->
-<!-- <style>
-    html.dark .shiki,
-    html.dark .shiki span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    /* Optional, if you also want font styles */
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
-    }
 
-</style> -->
