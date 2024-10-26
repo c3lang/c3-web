@@ -10,6 +10,10 @@ export default {
       pattern: /(row|col)-(span|start)-(1|2|3|4|8)/,
       variants: ['sm', 'md', 'lg'],     
     },
+    {
+      pattern: /grid-(rows|cols)-[repeat\((1|2|3|4|8),minmax\(0,1fr\)\)]/,
+      variants: ['sm', 'md', 'lg'],     
+    },
   ],
 
   theme: {

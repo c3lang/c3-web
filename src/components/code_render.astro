@@ -1,7 +1,5 @@
 ---
-// const mobile_code = await Astro.slots.render('mobile_code');
-// const desktop_code = await Astro.slots.render('desktop_code');
-import { Code } from 'astro/components';
+// import { Code } from 'astro/components';
 
 const { name, mobile_code, desktop_code, is_default } = Astro.props;
 
@@ -21,7 +19,6 @@ let mobile_code_html = highlighter.codeToHtml(
     mobile_code,
     { 
         lang: 'c3', 
-        // theme: 'slack-dark' 
         themes: { 
             light: 'min-light',
             // light: 'github-light-default',
@@ -44,6 +41,7 @@ let desktop_code_html = highlighter.codeToHtml(
 )
 
 
+// Post-process the code-formatter output to link it to standard Tailwind classes
 function processHtml(input) {
 
     // remove the background
@@ -66,8 +64,6 @@ function processHtml(input) {
         `style="color:#D32F2F;--shiki-dark:#C74DED"`,
         `class="text-[#D32F2F] dark:text-[#C74DED]"`
     )
-
-
 
     input = input.replaceAll(
         `style="color:#6F42C1;--shiki-dark:#FFE66D"`,

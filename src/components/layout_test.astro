@@ -1,9 +1,7 @@
 ---
-
 import DemoSlice from "./demo_slice.astro";
 
 
-// color:#C2C3C5;--shiki-dark:#A0A1A7CC
 const code_input = [
 {
     "name": "Optionals",
@@ -111,6 +109,114 @@ fn float divide(int x)
 }`
 }
 ]
+
+const code_input_test = [
+{
+    "name": "Optionals_",
+    "desktop_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by adding '?' after the fault.
+    return IoError.FILE_NOT_FOUND?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty, assign the
+    // Excuse to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn("test() gave an Excuse: %s", excuse);
+    }
+}`,
+    "mobile_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by with
+    // '?' after the fault.
+    return IoError.READ_ONLY?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty
+    // assign the Excuse
+    // to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn(
+            "Excuse: %s", excuse
+        );
+    }
+}`    
+},
+{
+    "name": "Defer_",
+    "desktop_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}
+`,
+    "mobile_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}`    
+},
+{
+    "name": "Slices_",
+    "desktop_code": 
+`fn void main()
+{
+    int[5] a = 1, 20, 50 ;
+    // selects [ 20, 50 ]
+    int[] c = a[1 .. 2]; 
+}`,
+    "mobile_code":
+`fn void main()
+{
+    int[5] a = 1, 20, 50 ;
+    // selects [ 20, 50 ]
+    int[] c = a[1 .. 2]; 
+}`
+},
+{
+    "name": "Contracts_",
+    "desktop_code": 
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`,
+    "mobile_code":
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`
+}
+]
 ---
 
 
@@ -157,90 +263,6 @@ fn float divide(int x)
 
         return;
     }
-
-    function ergonomicsSafetyClickHandler(event) {
-
-        if (
-            localStorage["selected_tab_id"] != "" &&
-            localStorage["selected_tab_id"] != null &&
-            localStorage["selected_tab_id"] != undefined
-        ) {
-            // remove any style adjustments from previous tab was selected
-            if (event.target.id != localStorage["selected_tab_id"]) {
-                let previousTabElement = document.getElementById(
-                    localStorage["selected_tab_id"],
-                );
-
-                // adjust styles showing new tab is selected
-                previousTabElement.classList.remove("bg-gray-50");
-                previousTabElement.classList.remove("border-b-indigo-500");
-                previousTabElement.classList.remove("ring");
-                previousTabElement.classList.remove("ring-indigo-50");
-                previousTabElement.classList.add("bg-gray-100");
-                previousTabElement.classList.remove("dark:bg-gray-700");
-                previousTabElement.classList.remove("dark:ring-indigo-700");
-                previousTabElement.classList.add("dark:bg-gray-800");
-                
-
-                // make the code blocks hidden from previously selected tab
-                let previousDesktopCode = document.getElementById(
-                    `${localStorage["selected_tab_id"]}_desktop_code`,
-                );
-
-                let previousMobileCode = document.getElementById(
-                    `${localStorage["selected_tab_id"]}_mobile_code`,
-                );
-
-                previousDesktopCode.classList.remove("lg:flex");
-                previousDesktopCode.classList.add("hidden");
-
-                previousMobileCode.classList.remove("flex");
-                previousMobileCode.classList.add("hidden")
-
-            }
-        }
-        
-        // Changing the button properties on click
-        event.target.classList.remove("bg-row-100");
-        event.target.classList.add("bg-gray-50");
-        event.target.classList.add("border-b-indigo-500");
-        event.target.classList.add("ring");
-        event.target.classList.add("ring-indigo-50");
-        event.target.classList.add("dark:bg-gray-700");
-        event.target.classList.add("dark:border-gray-500");
-        event.target.classList.add("dark:ring-indigo-700");
-
-        // storing which button was clicked
-        localStorage["selected_tab_id"] = `${event.target.id}`;
-
-        // changing the code visibility based on the button clicked
-        let newDesktopCode = document.getElementById(
-            `${localStorage["selected_tab_id"]}_desktop_code`,
-        );
-
-        let newMobileCode = document.getElementById(
-            `${localStorage["selected_tab_id"]}_mobile_code`,
-        );
-
-        newDesktopCode.classList.add("lg:flex");
-        newDesktopCode.classList.add("hidden");
-
-        newMobileCode.classList.add("flex");
-        newMobileCode.classList.add("lg:hidden");
-        newMobileCode.classList.remove("hidden");
-
-
-
-    }
-
-    // Setting default value for button selected to optionals
-    localStorage["selected_tab_id"] = "optionals";
-
-
-
-
-
-
 
 </script>
 
@@ -528,6 +550,7 @@ fn float divide(int x)
     <!-- ================================= -->
 </header>
 
+<!-- Hero banner -->
 <div class="
     grid
     grid-cols-4
@@ -600,459 +623,51 @@ fn float divide(int x)
     </div>
 </div>
 
-<div class="
-    py-12
-    grid
-    grid-cols-[repeat(2,minmax(0,1fr))]
-    lg:grid-cols-[repeat(12,minmax(0,1fr))]
-    w-full
-    bg-gray-50
-    gap-0
-    
-    dark:bg-[hsl(224,12%,4%)]
-    dark:text-gray-200"
->
-    <div class="
-        flex
-        flex-col
-    
-        md:px-12
-        md:pb-12
-        px-8
-        pb-8
-        col-span-4
-        bg-gray-50
-        dark:bg-[hsl(224,12%,4%)]
-        dark:text-gray-200"
-    >
-        <h3 class="
-            text-3xl
-            font-bold">
-        Ergonomics & Safety
-        </h3>
 
-        <ul class="
-            list-disc 
-            mt-4 
-            ml-4
-            "
-        >
-            <li class="my-4">
-                Optionals to safely and quickly handle errors and null.
-            </li>
-
-            <li class="my-4">
-                Defer to clean up resources.
-            </li>
-
-            <li class="my-4">
-                Slices and foreach for safe iteration.
-            </li>
-
-            <li class="my-4">
-                Contracts in comments, to add constraints to your code.
-            </li>
-
-        </ul>
-
-    </div>
-
-
-    <div class="
-        col-span-2
-        lg:col-span-8"
-    >
-        <div class="
-            grid
-            grid-cols-[repeat(2,minmax(0,1fr))]
-            grid-rows-2
-
-            md:grid-cols-[repeat(4,minmax(0,1fr))]
-            md:grid-rows-[minmax(0,max-content)_minmax(0,max-content)]
-            lg:grid-cols-[repeat(4,minmax(0,1fr))]
-            lg:grid-rows-[minmax(0,max-content)]
-            gap-2
-
-            bg-gray-50
-            dark:bg-[hsl(224,12%,4%)]
-            dark:text-gray-200
-
-            px-2
-            
-        ">
-
-
-            <button class="
-                bg-gray-50
-                rounded-md
-                border-2
-                border-gray-200
-                flex
-                justify-center
-                items-center
-                hover:text-indigo-500
-                ring
-                ring-indigo-50
-                border-b-indigo-500
-                dark:hover:text-indigo-400
-                dark:ring-indigo-700
-                dark:bg-gray-700
-                dark:border-gray-500
-                transition-all
-                delay-75"
-                id="optionals"
-                onmousedown="ergonomicsSafetyClickHandler(event)"
-            >
-                Optionals
-            </button>
-
-            <button class="
-                bg-gray-100
-                border-2
-                border-gray-200
-                rounded-md
-                p-2
-                flex
-                justify-center
-                items-center
-                hover:text-indigo-500
-                dark:hover:text-indigo-400
-                dark:bg-gray-800
-                dark:border-gray-500
-                transition-all
-                delay-75"
-                id="defer"
-                onmousedown="ergonomicsSafetyClickHandler(event)"
-            >
-                Defer
-            </button>
-
-
-            <button class="
-                flex
-                bg-gray-100
-                border-2
-                border-gray-200
-                rounded-md
-                p-2
-                justify-center
-                items-center
-                hover:text-indigo-500
-                dark:hover:text-indigo-400
-                dark:bg-gray-800
-                dark:border-gray-500
-                transition-all
-                delay-75"
-                id="slices"
-                onmousedown="ergonomicsSafetyClickHandler(event)"
-            >
-                Slices
-            </button>
-
-
-            <button class="
-                flex
-                bg-gray-100
-                border-2
-                border-gray-200
-                rounded-md
-                p-2
-                justify-center
-                items-center
-                hover:text-indigo-500
-                dark:hover:text-indigo-400
-                dark:bg-gray-800
-                dark:border-gray-500
-                transition-all
-                delay-75"
-                id="contracts"
-                onmousedown="ergonomicsSafetyClickHandler(event)"
-            >
-                Contracts
-            </button>
-
-
-            <!-- Code container -->
-            <div class="
-                col-span-2
-                md:col-span-4
-                
-                grid
-                grid-rows-1
-                w-full
-                overflow-x-auto
-                mt-8
-                lg:mt-12
-                bg-white
-                dark:bg-[hsl(224,14%,16%)]
-                "
-            >
-
-
-
-                
-        <!-- ==================================== -->
-        <!-- Optionals code - mobile version -->
-        <div class="
-        lg:hidden
-        flex
-        rounded-md
-       
-        p-4
-        md:p-8
-        "
-        id="optionals_mobile_code"
-    >
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">import std::io;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> test</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // Return an Excuse by with</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // '?' after the fault.</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    return</span><span style="color:#1976D2;--shiki-dark:#00E8C6"> IoError</span><span style="color:#212121;--shiki-dark:#D5CED9">.</span><span style="color:#24292EFF;--shiki-dark:#00E8C6">READ_ONLY</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">?</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(String</span><span style="color:#D32F2F;--shiki-dark:#C74DED">[]</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> args)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // If the Optional is empty</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // assign the Excuse</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // to a variable:</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    if</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> (catch excuse </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> test</span><span style="color:#6F42C1;--shiki-dark:#D5CED9">()</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    &#123;</span></span>
-<span class="line"><span style="color:#6F42C1;--shiki-dark:#FFE66D">        io::printfn</span><span style="color:#6F42C1;--shiki-dark:#D5CED9">(
-            </span><span style="color:#22863A;--shiki-dark:#96E072">"Excuse: </span><span style="color:#1976D2;--shiki-dark:#EE5D43">%s</span><span style="color:#22863A;--shiki-dark:#96E072">"</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#6F42C1;--shiki-dark:#D5CED9"> excuse
-        )</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    &#125;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-    
-</div>
-
-
-<!-- Optionals code - desktop version -->
-<div
-    class="
-    hidden
-    lg:flex
-
-    rounded-md
-    p-8
-    "
-    id="optionals_desktop_code"
->
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">import std::io;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> test</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // Return an Excuse by adding '?' after the fault.</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    return</span><span style="color:#1976D2;--shiki-dark:#00E8C6"> IoError</span><span style="color:#212121;--shiki-dark:#D5CED9">.</span><span style="color:#24292EFF;--shiki-dark:#00E8C6">FILE_NOT_FOUND</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">?</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(String</span><span style="color:#D32F2F;--shiki-dark:#C74DED">[]</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> args)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // If the Optional is empty, assign the</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // Excuse to a variable:</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    if</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> (catch excuse </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> test</span><span style="color:#6F42C1;--shiki-dark:#D5CED9">()</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    &#123;</span></span>
-<span class="line"><span style="color:#6F42C1;--shiki-dark:#FFE66D">        io::printfn</span><span style="color:#6F42C1;--shiki-dark:#D5CED9">(</span><span style="color:#22863A;--shiki-dark:#96E072">"test() gave an Excuse: </span><span style="color:#1976D2;--shiki-dark:#EE5D43">%s</span><span style="color:#22863A;--shiki-dark:#96E072">"</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#6F42C1;--shiki-dark:#D5CED9"> excuse)</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    &#125;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-
-</div>
-
-
-<!-- ==================================== -->
-<!-- Defer code - mobile version -->
-<div
-    class="
-    hidden
-    
-    rounded-md
-    p-4
-    md:p-8
-    "
-    id="defer_mobile_code"
->
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">import std::io;</span></span>
-<span class="line"></span>
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">*</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> mem</span><span style="color:#212121;--shiki-dark:#D5CED9">::</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">new</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#D32F2F;--shiki-dark:#C74DED">int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">);</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // free(x) At Scope exit</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    defer </span><span style="color:#6F42C1;--shiki-dark:#FFE66D">free</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(x); </span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    io</span><span style="color:#212121;--shiki-dark:#D5CED9">::</span><span style="color:#6F42C1;--shiki-dark:#FFE66D">printfn</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#22863A;--shiki-dark:#96E072">"x: </span><span style="color:#1976D2;--shiki-dark:#EE5D43">%s</span><span style="color:#22863A;--shiki-dark:#96E072">"</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#D32F2F;--shiki-dark:#EE5D43"> *</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">x);</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-    
-</div>
-
-
-<!-- Defer code - desktop version -->
-<div
-    class="
-    hidden
-
-    rounded-md
-    p-8
-    max-h-min
-    "
-    id="defer_desktop_code"
->
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">import std::io;</span></span>
-<span class="line"></span>
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">*</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> mem</span><span style="color:#212121;--shiki-dark:#D5CED9">::</span><span style="color:#D32F2F;--shiki-dark:#EE5D43">new</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#D32F2F;--shiki-dark:#C74DED">int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">);</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // Free memory on scope exit</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    defer </span><span style="color:#6F42C1;--shiki-dark:#FFE66D">free</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(x); </span></span>
-<span class="line"></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">    io</span><span style="color:#212121;--shiki-dark:#D5CED9">::</span><span style="color:#6F42C1;--shiki-dark:#FFE66D">printfn</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#22863A;--shiki-dark:#96E072">"x: </span><span style="color:#1976D2;--shiki-dark:#EE5D43">%s</span><span style="color:#22863A;--shiki-dark:#96E072">"</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#D32F2F;--shiki-dark:#EE5D43"> *</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">x);</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-    
-</div>
-
-
-<!-- ==================================== -->
-    <!-- Slices code - mobile version -->
-
-
-    <div class="
-        hidden
-        
-        rounded-md
-        p-4
-        md:p-8
-        "
-        id="slices_mobile_code"
-    >
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[</span><span style="color:#1976D2;--shiki-dark:#F39C12">5</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">] a </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> { </span><span style="color:#1976D2;--shiki-dark:#F39C12">1</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 20</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 50</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> };</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // selects [ 20, 50 ]</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[] c </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#1976D2;--shiki-dark:#00E8C6"> a</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[</span><span style="color:#1976D2;--shiki-dark:#F39C12">1</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> .. </span><span style="color:#1976D2;--shiki-dark:#F39C12">2</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">]; </span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-
-    </div>
-
-
-<!-- Slices code - desktop version -->
-<div
-    class="
-    hidden
-
-    rounded-md
-    p-8
-    "
-    id="slices_desktop_code"
-    >
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">void</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> main</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">()</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[</span><span style="color:#1976D2;--shiki-dark:#F39C12">5</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">] a </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> { </span><span style="color:#1976D2;--shiki-dark:#F39C12">1</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 20</span><span style="color:#212121;--shiki-dark:#D5CED9">,</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 50</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> };</span></span>
-<span class="line"><span style="color:#C2C3C5;--shiki-dark:#A0A1A7CC">    // selects [ 20, 50 ]</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[] c </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">=</span><span style="color:#1976D2;--shiki-dark:#00E8C6"> a</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">[</span><span style="color:#1976D2;--shiki-dark:#F39C12">1</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> .. </span><span style="color:#1976D2;--shiki-dark:#F39C12">2</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">]; </span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-    
-</div>
-
-
-<!-- ==================================== -->
-    <!-- Contracts code - mobile version -->
-    <div
-        class="
-        hidden
-
-        rounded-md
-        p-4
-        md:p-8
-        
-        "
-        id="contracts_mobile_code"
-    >
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#D32F2F;--shiki-dark:#EE5D43">&#x3C;*</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9"> @require x </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!=</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 0</span><span style="color:#22863A;--shiki-dark:#96E072"> "infinite result"</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> </span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#EE5D43">*></span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">float</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> divide</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#D32F2F;--shiki-dark:#C74DED">int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    return</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 1.0</span><span style="color:#D32F2F;--shiki-dark:#C74DED">f</span><span style="color:#D32F2F;--shiki-dark:#EE5D43"> /</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-
-    </div>
-
-
-<!-- Contracts code - desktop version -->
-<div class="
-    hidden
-    
-    rounded-md
-    p-8
-    "
-    id="contracts_desktop_code"
-    >
-<pre class="shiki shiki-themes min-light andromeeda" style="color:#24292eff;--shiki-dark:#D5CED9" tabindex="0"><code><span class="line"><span style="color:#D32F2F;--shiki-dark:#EE5D43">&#x3C;*</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9"> @require x </span><span style="color:#D32F2F;--shiki-dark:#EE5D43">!=</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 0</span><span style="color:#22863A;--shiki-dark:#96E072"> "infinite result"</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> </span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#EE5D43">*></span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">fn </span><span style="color:#D32F2F;--shiki-dark:#C74DED">float</span><span style="color:#6F42C1;--shiki-dark:#FFE66D"> divide</span><span style="color:#24292EFF;--shiki-dark:#D5CED9">(</span><span style="color:#D32F2F;--shiki-dark:#C74DED">int</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x)</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#123;</span></span>
-<span class="line"><span style="color:#D32F2F;--shiki-dark:#C74DED">    return</span><span style="color:#1976D2;--shiki-dark:#F39C12"> 1.0</span><span style="color:#D32F2F;--shiki-dark:#C74DED">f</span><span style="color:#D32F2F;--shiki-dark:#EE5D43"> /</span><span style="color:#24292EFF;--shiki-dark:#D5CED9"> x;</span></span>
-<span class="line"><span style="color:#24292EFF;--shiki-dark:#D5CED9">&#125;</span></span></code></pre>
-    
-</div>
-
-
-
- 
-
-
-            </div>
-            
-            </div>
-            </div>
-            
-            
-            
-            
-            
-            
-            
-            </div>
             
 
-            <DemoSlice
-                title="performance"
-                heading="Ergonomics & Safety"
-                bullets={
-                    [
-                        "Optionals to safely and quickly handle errors and null.",
-                        "Defer to clean up resources.",
-                        "Slices and foreach for safe iteration.",
-                        "Contracts in comments, to add constraints to your code."
-                    ]
-                }
-                buttons={
-                    [
-                        "Optionals",
-                        "Defer",
-                        "Slices",
-                        "Contracts",
-                    ]
-                }
-                code={code_input}
-            />
-
-
-
-
-<!-- Style to make the code work in dark mode 
- https://shiki.style/guide/dual-themes
--->
-<style>
-    html.dark .shiki,
-    html.dark .shiki span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    /* Optional, if you also want font styles */
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+<DemoSlice
+    title="ergonomics_and_safety"
+    heading="Ergonomics & Safety"
+    bullets={
+        [
+            "Optionals to safely and quickly handle errors and null.",
+            "Defer to clean up resources.",
+            "Slices and foreach for safe iteration.",
+            "Contracts in comments, to add constraints to your code."
+        ]
     }
+    buttons={
+        [
+            "Optionals",
+            "Defer",
+            "Slices",
+            "Contracts",
+        ]
+    }
+    code={code_input}
+/>
 
-</style>
+
+<DemoSlice
+    title="testing123_and_safety"
+    heading="Ergonomics & Safety"
+    bullets={
+        [
+            "Optionals to safely and quickly handle errors and null.",
+            "Defer to clean up resources.",
+            "Slices and foreach for safe iteration.",
+            "Contracts in comments, to add constraints to your code."
+        ]
+    }
+    buttons={
+        [
+            "Optionals_",
+            "Defer_",
+            "Slices_",
+            "Contracts_",
+        ]
+    }
+    code={code_input_test}
+/>
+
