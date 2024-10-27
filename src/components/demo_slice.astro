@@ -48,12 +48,13 @@ function generateClickHandler(localStorageKey) {
                 // adjust styles showing new tab is selected
                 previousTabElement.classList.remove("bg-gray-50");
                 previousTabElement.classList.remove("border-b-indigo-500");
+                previousTabElement.classList.remove("dark:border-b-indigo-900");
+                previousTabElement.classList.remove("dark:ring-indigo-950");
                 previousTabElement.classList.remove("ring");
                 previousTabElement.classList.remove("ring-indigo-50");
                 previousTabElement.classList.add("bg-gray-100");
                 previousTabElement.classList.add("dark:bg-gray-800");
-                previousTabElement.classList.remove("dark:bg-gray-700");
-                previousTabElement.classList.remove("dark:ring-indigo-700");
+                previousTabElement.classList.remove("dark:ring-gray-950");
                 
 
                 // make the code blocks hidden from previously selected tab
@@ -72,14 +73,15 @@ function generateClickHandler(localStorageKey) {
 
         // Changing the button properties on click
         event.target.classList.remove("bg-gray-100");
-        event.target.classList.remove("dark:bg-gray-800");
         event.target.classList.add("bg-gray-50");
         event.target.classList.add("border-b-indigo-500");
         event.target.classList.add("ring");
         event.target.classList.add("ring-indigo-50");
         event.target.classList.add("dark:bg-gray-700");
-        event.target.classList.add("dark:border-gray-500");
-        event.target.classList.add("dark:ring-indigo-700");
+        event.target.classList.add("dark:border-gray-700");
+        event.target.classList.add("dark:ring-indigo-950");
+        event.target.classList.add("dark:border-b-indigo-900");
+        
 
         // storing which button was clicked
         localStorage[localStorageKey] = event.target.id;
@@ -113,21 +115,51 @@ ergoButtons.forEach(buttonName => {
     document.getElementById(buttonName).addEventListener("mousedown", ergoHandler);
 });
 
+// default select the first element
 localStorage[ergoLocalStorageKey] = ergoButtons[0];
 
 //========================================
-// example working on another section
-// Note that the button ids should be unique
+// Performance By Default
 
-const testing123LocalStorageKey = "testing123_and_safety_selected_tab_id";
-const testing123Buttons = ["Optionals_", "Defer_", "Slices_", "Contracts_"]
-const testing123Handler = generateClickHandler(testing123LocalStorageKey);
+const perfByDefaultLocalStorageKey = "perf_by_default_selected_tab_id";
 
-testing123Buttons.forEach(buttonName => {
-    document.getElementById(buttonName).addEventListener("mousedown", testing123Handler);
+const perfByDefaultButtons = [
+    "SIMD",
+    "Allocators",
+    "Inline ASM",
+];
+
+const perfByDefaultHandler = generateClickHandler(perfByDefaultLocalStorageKey);
+
+perfByDefaultButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("mousedown", perfByDefaultHandler);
 });
 
-localStorage[testing123LocalStorageKey] = testing123Buttons[0];
+// default select the first element
+localStorage[perfByDefaultLocalStorageKey] = perfByDefaultButtons[0];
+
+//========================================
+// Batteries Included Standard Library
+
+const stdLibLocalStorageKey = "perf_by_default_selected_tab_id";
+
+const stdLibButtons = [
+    "Containers",
+    "Strings",
+    "Cross Platform",
+    "Platform Access",
+];
+
+const stdLibHandler = generateClickHandler(stdLibLocalStorageKey);
+
+stdLibButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("mousedown", stdLibHandler);
+});
+
+// default select the first element
+localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
+
+
 
 
 
@@ -169,6 +201,7 @@ localStorage[testing123LocalStorageKey] = testing123Buttons[0];
             list-disc 
             mt-4 
             ml-4
+            text-lg
             "
         >
             {bullets.map((item) => (
@@ -212,17 +245,19 @@ localStorage[testing123LocalStorageKey] = testing123Buttons[0];
                     border-2
                     p-2
                     border-gray-200
+                    dark:border-gray-700
                     flex
                     justify-center
                     items-center
                     hover:text-indigo-500
                     dark:hover:text-indigo-400
-                    ${index ===0 && "bg-gray-50 dark:bg-gray-700 dark:ring-indigo-700 ring ring-indigo-50 border-b-indigo-500"}
-                    ${index != 0 && "bg-gray-100 dark:bg-gray-800"}
+                    ${index ===0 && "bg-gray-50 dark:bg-black dark:ring-indigo-950 ring ring-indigo-50 border-b-indigo-500 dark:border-b-indigo-900"}
+                    ${index != 0 && "bg-gray-100 dark:bg-black"}
                     
                     dark:border-gray-500
                     transition-all
-                    delay-75`
+                    delay-75
+                    text-lg`
                     id={item}
                    
                 >

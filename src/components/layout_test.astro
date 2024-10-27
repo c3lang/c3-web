@@ -128,9 +128,13 @@ fn float divide(int x)
 }
 ]
 
-const code_input_test = [
+
+//=============================================
+
+
+const code_input_perf = [
 {
-    "name": "Optionals_",
+    "name": "SIMD",
     "desktop_code": 
 `import std::io;
 
@@ -173,7 +177,102 @@ fn void main(String[] args)
 }`    
 },
 {
-    "name": "Defer_",
+    "name": "Allocators",
+    "desktop_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}
+`,
+    "mobile_code": 
+`import std::io;
+
+fn void! main()
+{
+    int* x = mem::new(int);
+    // Free memory on scope exit
+    defer free(x); 
+
+    io::printfn("x: %s", *x);
+}`,
+},
+{
+    "name": "Inline ASM",
+    "desktop_code": 
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`,
+    "mobile_code":
+`<*
+ @require x != 0 "infinite result" 
+*>
+fn float divide(int x)
+{
+    return 1.0f / x;
+}`
+}
+]
+
+
+//=======================================
+
+
+const code_input_stdlib = [
+{
+    "name": "Containers",
+    "desktop_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by adding '?' after the fault.
+    return IoError.FILE_NOT_FOUND?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty, assign the
+    // Excuse to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn("test() gave an Excuse: %s", excuse);
+    }
+}`,
+    "mobile_code": 
+`import std::io;
+
+fn void! test()
+{
+    // Return an Excuse by with
+    // '?' after the fault.
+    return IoError.READ_ONLY?;
+}
+
+fn void main(String[] args)
+{
+    // If the Optional is empty
+    // assign the Excuse
+    // to a variable:
+    if (catch excuse = test())
+    {
+        io::printfn(
+            "Excuse: %s", excuse
+        );
+    }
+}`    
+},
+{
+    "name": "Strings",
     "desktop_code": 
 `import std::io;
 
@@ -199,7 +298,7 @@ fn void! main()
 }`    
 },
 {
-    "name": "Slices_",
+    "name": "Cross Platform",
     "desktop_code": 
 `fn void main()
 {
@@ -216,7 +315,7 @@ fn void! main()
 }`
 },
 {
-    "name": "Contracts_",
+    "name": "Platform Access",
     "desktop_code": 
 `<*
  @require x != 0 "infinite result" 
@@ -589,7 +688,7 @@ await setTimeout(highlighter.dispose, 2000)
     lg:py-0
     lg:h-[24rem]
     bg-[hsl(288,15%,88%)]
-    dark:bg-[hsl(288,10%,12%)]"
+    dark:bg-[hsl(288,2%,7%)]"
 >
     <div class="
         col-start-8
@@ -597,7 +696,7 @@ await setTimeout(highlighter.dispose, 2000)
         row-span-2
         row-start-1
         bg-[url('/logo_big.png')]
-        dark:brightness-90
+        dark:brightness-75
         bg-no-repeat
         bg-center
         z-10"
@@ -642,9 +741,12 @@ await setTimeout(highlighter.dispose, 2000)
             Language
         </h1>
 
-        <p class="mt-4
-        mb-4
-        dark:text-gray-100">
+        <p class="
+            mt-4
+            mb-4
+            dark:text-gray-100
+            text-lg
+        ">
             Making it <b>easier</b> to write <b>Safe</b>, <b>High Performance</b
             > and <b>C-Like</b> code.
         </p>
@@ -656,7 +758,7 @@ await setTimeout(highlighter.dispose, 2000)
 
 <DemoSlice
     title="ergonomics_and_safety"
-    heading="Ergonomics & Safety"
+    heading="🦺 Ergonomics & Safety"
     bullets={
         [
             "Optionals to safely and quickly handle errors and null.",
@@ -670,7 +772,7 @@ await setTimeout(highlighter.dispose, 2000)
             "Optionals",
             "Defer",
             "Slices",
-            "Contracts",
+            "Contracts"
         ]
     }
     code={code_input}
@@ -679,24 +781,49 @@ await setTimeout(highlighter.dispose, 2000)
 
 
 <DemoSlice
-    title="testing123_and_safety"
-    heading="Ergonomics & Safety"
+    title="perf_by_default"
+    heading="⚡ Performance by Default"
     bullets={
         [
-            "Optionals to safely and quickly handle errors and null.",
-            "Defer to clean up resources.",
-            "Slices and foreach for safe iteration.",
-            "Contracts in comments, to add constraints to your code."
+            "Write SIMD vectors to program the hardware directly.",
+            "Access to different memory allocators to fine tune performance.",
+            "Zero overhead errors.",
+            "Fast compilation times.",
+            "LLVM backend for industrial strength optimisations.",
+            "Easy to use inline assembly."
         ]
     }
     buttons={
         [
-            "Optionals_",
-            "Defer_",
-            "Slices_",
-            "Contracts_",
+            "SIMD",
+            "Allocators",
+            "Inline ASM"
         ]
     }
-    code={code_input_test}
+    code={code_input_perf}
     highlighter={highlighter}
 />
+
+<DemoSlice
+    title="std_lib"
+    heading="🔋 Batteries Included Standard Library"
+    bullets={
+        [
+            "Dynamic containers",
+            "Strings",
+            "Cross-platform abstractions for ease of use.",
+            "Access to the native platform when you need it."
+        ]
+    }
+    buttons={
+        [
+            "Containers",
+            "Strings",
+            "Cross Platform",
+            "Platform Access"
+        ]
+    }
+    code={code_input_stdlib}
+    highlighter={highlighter}
+/>
+
