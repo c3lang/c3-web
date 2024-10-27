@@ -2,6 +2,24 @@
 import DemoSlice from "./demo_slice.astro";
 
 
+//=======================================
+// Code highlighting
+import * as fs from 'fs';
+import { createHighlighter } from 'shiki'
+import type StarlightIntegration from "@astrojs/starlight"
+
+const highlighter = await createHighlighter({
+    themes: ['slack-dark', 'min-light', 'andromeeda', 'github-light-default', 'material-theme-lighter'],
+    langs: ['c']
+})
+// load the language
+await highlighter.loadLanguage(
+    JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))
+) 
+
+
+//=======================================
+// Code to highlight
 const code_input = [
 {
     "name": "Optionals",
@@ -217,6 +235,10 @@ fn float divide(int x)
 }`
 }
 ]
+
+// Clear up the formatter resources after 2s
+await setTimeout(highlighter.dispose, 2000)
+
 ---
 
 
@@ -268,7 +290,12 @@ fn float divide(int x)
 
 
 <header
-    class="grid
+    class="
+    md:sticky
+    md:top-0
+    md:z-50
+
+    grid
     grid-cols-3
     grid-rows-4
     md:grid-cols-[0.8fr_0.5fr_0.5fr_1.1fr_1.1fr_1.1fr_0.6fr_0.3fr_0.3fr_0.3fr_0.3fr]
@@ -283,7 +310,7 @@ fn float divide(int x)
     dark:bg-[hsl(224,12%,4%)]
     md:h-14
     border-b-2
-    border-b-gray-300
+    border-b-gray-200
     dark:border-b-gray-800"
 >
     <span
@@ -308,6 +335,7 @@ fn float divide(int x)
     >
         C3
     </span>
+
 
     <!-- ================================= -->
     <button
@@ -646,6 +674,7 @@ fn float divide(int x)
         ]
     }
     code={code_input}
+    highlighter={highlighter}
 />
 
 
@@ -669,5 +698,5 @@ fn float divide(int x)
         ]
     }
     code={code_input_test}
+    highlighter={highlighter}
 />
-

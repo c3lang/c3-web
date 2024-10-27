@@ -1,5 +1,11 @@
 ---
 
+import type { 
+    HighlighterGeneric, 
+    BundledLanguage, 
+    BundledTheme 
+} from 'shiki'
+
 interface Props {
     title: string;
     heading: string;
@@ -10,11 +16,13 @@ interface Props {
             desktop_code: string;
             mobile_code: string;
         }[];
+    highlighter: HighlighterGeneric<BundledLanguage, BundledTheme>
 }
 
-const { heading, bullets, buttons, code } = Astro.props;
+const { heading, bullets, buttons, code, highlighter } = Astro.props;
 
 import CodeRender from "./code_render.astro";
+
 
 ---
 
@@ -244,6 +252,7 @@ localStorage[testing123LocalStorageKey] = testing123Buttons[0];
                         name={item.name}
                         desktop_code={item.desktop_code}
                         mobile_code={item.mobile_code}
+                        highlighter={highlighter}
                     />
                 ))}
 

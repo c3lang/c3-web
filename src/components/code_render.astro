@@ -1,19 +1,7 @@
 ---
-// import { Code } from 'astro/components';
 
-const { name, mobile_code, desktop_code, is_default } = Astro.props;
+const { name, mobile_code, desktop_code, is_default, highlighter } = Astro.props;
 
-import * as fs from 'fs';
-import { createHighlighter } from 'shiki'
-
-const highlighter = await createHighlighter({
-    themes: ['slack-dark', 'min-light', 'andromeeda', 'github-light-default', 'material-theme-lighter'],
-    langs: ['c']
-})
-// load the language
-await highlighter.loadLanguage(
-    JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))
-) 
 
 let mobile_code_html = highlighter.codeToHtml(
     mobile_code,
