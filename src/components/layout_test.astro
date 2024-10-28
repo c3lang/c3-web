@@ -397,7 +397,7 @@ await setTimeout(highlighter.dispose, 2000)
     grid
     grid-cols-3
     grid-rows-4
-    md:grid-cols-[0.8fr_0.5fr_0.5fr_1.1fr_1.1fr_1.1fr_0.6fr_0.3fr_0.3fr_0.3fr_0.3fr]
+    md:grid-cols-[max-content_max-content_max-content_max-content_max-content_max-content_1fr_max-content_max-content_max-content_max-content]
     md:grid-rows-1
     justify-items-center
     content-center
@@ -413,7 +413,9 @@ await setTimeout(highlighter.dispose, 2000)
     dark:border-b-gray-800"
 >
     <span
-        class="text-3xl
+        class="
+        px-12
+        text-3xl
         font-bold
         row-span-1
         md:row-start-1
@@ -438,10 +440,12 @@ await setTimeout(highlighter.dispose, 2000)
 
     <!-- ================================= -->
     <button
-        class="row-span-1
+        class="
+        px-3
+        row-span-1
         col-start-1
         md:row-start-1
-        md:col-start-3
+        md:col-start-2
          
         hover:text-indigo-500
         transition-all
@@ -455,8 +459,11 @@ await setTimeout(highlighter.dispose, 2000)
     </button>
     <!-- ================================= -->
     <button
-        class="row-span-1
-        md:row-start-1 md:col-start-4
+        class="
+        px-3
+        row-span-1
+        md:row-start-1 
+        md:col-start-3
          
         hover:text-indigo-500
         transition-all
@@ -470,8 +477,11 @@ await setTimeout(highlighter.dispose, 2000)
     </button>
     <!-- ================================= -->
     <button
-        class="row-span-1
-        md:row-start-1 md:col-start-5
+        class="
+        px-3
+        row-span-1
+        md:row-start-1 
+        md:col-start-4
          
         hover:text-indigo-500
         transition-all
@@ -485,8 +495,11 @@ await setTimeout(highlighter.dispose, 2000)
     </button>
     <!-- ================================= -->
     <button
-        class="row-span-1
-        md:row-start-1 md:col-start-6
+        class="
+        px-3
+        row-span-1
+        md:row-start-1 
+        md:col-start-5
          
         hover:text-indigo-500
         transition-all
@@ -500,8 +513,11 @@ await setTimeout(highlighter.dispose, 2000)
     </button>
     <!-- ================================= -->
     <button
-        class="row-span-1
-        md:row-start-1 md:col-start-7
+        class="
+        px-3
+        row-span-1
+        md:row-start-1 
+        md:col-start-6
          
         hover:text-indigo-500
         transition-all
@@ -515,8 +531,8 @@ await setTimeout(highlighter.dispose, 2000)
     </button>
     <!-- ================================= -->
 
-    <div
-        class="
+    <div class="
+        px-2
         group
         flex
         dark:hidden
@@ -550,10 +566,10 @@ await setTimeout(highlighter.dispose, 2000)
             🌙
         </p>
         
-
     </div>
     <div
         class="
+        px-2
         group
         hidden
         dark:flex
@@ -585,8 +601,9 @@ await setTimeout(highlighter.dispose, 2000)
     <!-- ================================= -->
 
     <!-- Github Icon -->
-    <button
-        class="flex
+    <button class="
+        px-2
+        flex
         items-center
         justify-center
         justify-items-center
@@ -601,7 +618,7 @@ await setTimeout(highlighter.dispose, 2000)
         h-full"
     >
         <svg
-            class="mx-2 h-4"
+            class="ml-1 h-4"
             viewBox="0 0 100 96.36"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -616,8 +633,9 @@ await setTimeout(highlighter.dispose, 2000)
     <!-- ================================= -->
 
     <!-- Discourse Icon -->
-    <button
-        class="flex
+    <button class="
+        px-2
+        flex
         items-center
         justify-center
         justify-items-center
@@ -633,7 +651,7 @@ await setTimeout(highlighter.dispose, 2000)
         h-full"
     >
         <svg
-            class="mx-2 h-4"
+            class="ml-1 h-4"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             role="img"
@@ -648,7 +666,9 @@ await setTimeout(highlighter.dispose, 2000)
 
     <!-- Discord -->
     <button
-        class="flex
+        class="
+        px-2
+        flex
         items-center
         justify-center
         justify-items-center
@@ -664,7 +684,7 @@ await setTimeout(highlighter.dispose, 2000)
         h-full"
     >
         <svg
-            class="mx-2 h-4"
+            class="h-4"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 127.14 96.36"
         >
@@ -742,19 +762,196 @@ await setTimeout(highlighter.dispose, 2000)
         </h1>
 
         <p class="
-            mt-4
-            mb-4
+            my-6
             dark:text-gray-100
             text-lg
         ">
-            Making it <b>easier</b> to write <b>Safe</b>, <b>High Performance</b
+            Making it <b>Easier</b> to write <b>Safe</b>, <b>High Performance</b
             > and <b>C-Like</b> code.
         </p>
     </div>
 </div>
 
 
+<div class="
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
+    dark:text-gray-200
+    px-8
+    py-8
+    md:px-12
+    md:py-16
+    "
+>
+    <h2 class="
+        text-4xl
+        font-bold
+        pb-8
+        "
+    >
+        Why C3?
+    </h2>
+    <div class="
+        grid
+        grid-rows-[repeat(4,max-content)]
+        md:grid-cols-2
+        md:grid-rows-[repeat(2,max-content)]
+        gap-10
+        "
+    >
+        <div>
+            <h3 class="
+                text-2xl
+                font-bold
+                pb-4
+                "
+            >
+                Write Safer Programs
+            </h3>
+
+            <ul class="
+                list-disc
+                list-outside
+                ml-4
+                "
+            >
+                <li class="my-4">
+                    Null safety and error handling with Optionals.
+                </li>
+
+                <li class="my-4">
+                    Safe array iteration with foreach.
+                </li>
+
+                <li class="my-4">
+                    Safe subarray creation with slices.
+                </li>
+
+                <li class="my-4">
+                    Impossible situations are errors, enforced with contracts.
+                </li>
+                
+            </ul>
+        </div>
+
+
+
+        <div>
+            <h3 class="
+                text-2xl
+                font-bold
+                pb-4
+                "
+            >
+                Simpler Generic Code
+            </h3>
+
+            <ul class="
+                list-disc
+                list-outside
+                ml-4
+                "
+            >
+                <li class="my-4">
+                    Simple generic datatypes and functions with generic modules.
+                </li>
+
+                <li class="my-4">
+                    Flexible code which can use runtime or compile reflection.
+                </li>
+
+                <li class="my-4">
+                    Extensible macros are similar to regular code, but they run at compile-time, not pre-processor based. 
+                </li>
+
+
+            </ul>
+        </div>
+
+        
+
+
+        <div>
+            <h3 class="
+                text-2xl
+                font-bold
+                pb-4
+                "
+            >
+                High Performance
+            </h3>
             
+            <ul class="
+                list-disc
+                list-outside
+                ml-4
+                "
+            >
+                <li class="my-4">
+                    Manual memory management is key to performance, C3 gives you flexibility and control.
+                </li>
+
+                <li class="my-4">
+                    Flexible to use either scoped allocation, custom allocators, defer cleanup or explicit control. 
+                </li>
+
+                <li class="my-4">
+                    Avoid memory leaks and use-after free with scoped memory management, memory automatically freed at scope exit.
+                </li>
+
+                <li class="my-4">
+                    Custom allocators include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.  
+                </li>
+
+                <li class="my-4">
+                    Write SIMD without complex intrinsics.
+                </li>
+
+                <li class="my-4">
+                    Error handling has no performance impact, unlike C++.
+                </li>
+            </ul>
+        </div>
+
+
+        <div>
+            <h3 class="
+                text-2xl
+                font-bold
+                pb-4
+                "
+            >
+                Ergonomic And Productive
+            </h3>
+
+            <ul class="
+                list-disc
+                list-outside
+                ml-4
+                "
+            >
+                <li class="my-4">
+                    Easy to learn, C3 aims to minimise differences from C.
+                </li>
+
+                <li class="my-4">
+                    Designed to be easy to read and write.
+                </li>
+
+                <li class="my-4">
+                    C3 programs can be 20–30% shorter than their C equivalents, while also increasing their readability.
+                </li>
+
+                <li class="my-4">
+                    Fully featured standard library to get productive, fast!
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+    
+</div>
 
 <DemoSlice
     title="ergonomics_and_safety"
