@@ -48,14 +48,18 @@ function generateClickHandler(localStorageKey) {
                 // adjust styles showing new tab is selected
                 previousTabElement.classList.remove("bg-gray-50");
                 previousTabElement.classList.remove("border-b-indigo-500");
-                previousTabElement.classList.remove("dark:border-b-indigo-900");
-                previousTabElement.classList.remove("dark:ring-indigo-950");
                 previousTabElement.classList.remove("ring");
                 previousTabElement.classList.remove("ring-indigo-50");
                 previousTabElement.classList.add("bg-gray-100");
-                previousTabElement.classList.add("dark:bg-gray-800");
-                previousTabElement.classList.remove("dark:ring-gray-950");
-                
+                previousTabElement.classList.add("dark:bg-gray-900");
+                previousTabElement.classList.remove("dark:border-b-indigo-500");
+                previousTabElement.classList.remove("dark:bg-gray-300");
+                previousTabElement.classList.remove("dark:text-black");
+                previousTabElement.classList.add("dark:text-white");
+                previousTabElement.classList.remove("dark:shadow-md");
+                previousTabElement.classList.remove("dark:hover:text-indigo-700");
+                previousTabElement.classList.add("dark:hover:text-indigo-400");
+
 
                 // make the code blocks hidden from previously selected tab
                 let previousDesktopCode = document.getElementById(localStorage[localStorageKey] + "_desktop_code")
@@ -71,16 +75,25 @@ function generateClickHandler(localStorageKey) {
             }
         }
 
+
         // Changing the button properties on click
         event.target.classList.remove("bg-gray-100");
+        event.target.classList.remove("dark:bg-gray-900");
+        
         event.target.classList.add("bg-gray-50");
         event.target.classList.add("border-b-indigo-500");
         event.target.classList.add("ring");
         event.target.classList.add("ring-indigo-50");
-        event.target.classList.add("dark:bg-gray-700");
+        event.target.classList.add("dark:ring-0");
+        event.target.classList.add("dark:bg-gray-300");
+        event.target.classList.add("dark:text-black");
         event.target.classList.add("dark:border-gray-700");
-        event.target.classList.add("dark:ring-indigo-950");
-        event.target.classList.add("dark:border-b-indigo-900");
+        event.target.classList.add("dark:shadow-md");
+        event.target.classList.add("dark:shadow-indigo-500");
+        event.target.classList.add("dark:border-b-indigo-500");
+        event.target.classList.add("dark:hover:text-indigo-700");
+        
+        
         
 
         // storing which button was clicked
@@ -192,7 +205,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
         dark:text-gray-200"
     >
         <h3 class="
-            text-4xl
+            text-2xl
             font-bold">
         {heading}
         </h3>
@@ -217,7 +230,8 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
     
     <div class="
         col-span-2
-        lg:col-span-8"
+        lg:col-span-8
+        lg:pr-8"
     >
         <div class=`
             grid
@@ -250,14 +264,14 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
                     justify-center
                     items-center
                     hover:text-indigo-500
-                    dark:hover:text-indigo-400
-                    ${index ===0 && "bg-gray-50 dark:bg-black dark:ring-indigo-950 ring ring-indigo-50 border-b-indigo-500 dark:border-b-indigo-900"}
-                    ${index != 0 && "bg-gray-100 dark:bg-black"}
+                    
+                    ${index ===0 && "dark:hover:text-indigo-700 dark:text-black bg-gray-50 dark:bg-gray-300 dark:ring-0 ring ring-indigo-50 border-b-indigo-500 dark:shadow-md dark:shadow-indigo-500"}
+                    ${index != 0 && "dark:hover:text-indigo-400 bg-gray-100 dark:bg-gray-900"}
                     
                     dark:border-gray-500
                     transition-all
                     delay-75
-                    text-lg`
+                    `
                     id={item}
                    
                 >
@@ -266,8 +280,10 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
             ))}
 
             <!-- Code container -->
+            <!-- dark:bg-[hsl(224,14%,16%)] -->
             <div class="
                 col-span-2
+                
                 md:col-span-4
                 
                 grid
@@ -277,7 +293,9 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
                 mt-8
                 lg:mt-12
                 bg-white
-                dark:bg-[hsl(224,14%,16%)]
+                dark:bg-gradient-to-tr
+                dark:from-[hsl(224,12%,15%)]
+                dark:to-[hsl(224,12%,20%)]
                 "
             >
 

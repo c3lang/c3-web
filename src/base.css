@@ -7,20 +7,32 @@
 @layer base {
 
     /* implementing custom fonts */
-    /* 
+/*     
       @font-face {
-        font-family: 'Montserrat';
+        font-family: 'Atkinson_Hyperlegible';
         font-style: normal;
         font-weight: 400; 
         font-display: swap;
-        src: url(./public/fonts/Montserrat-VariableFont_wght.ttf) format('truetype');
-      } */
+        src: url(./public/fonts/Atkinson_Hyperlegible/AtkinsonHyperlegible-Regular.ttf) format('truetype');
+      }
+
+      @font-face {
+        font-family: 'Rubik';
+        font-style: normal;
+        font-weight: 400; 
+        font-display: swap;
+        kerning: none;
+        src: url(./public/fonts/Rubik/Rubik-VariableFont_wght.ttf) format('truetype');
+      }
 
     
 
-      /* body {
+      body {
+        kerning: auto;
+        font-optical-sizing: auto;
         letter-spacing: 0.02em;
-      } */
+      } 
+      */
       
 }
 

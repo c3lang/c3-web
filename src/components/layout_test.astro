@@ -95,14 +95,14 @@ fn void! main()
     "desktop_code": 
 `fn void main()
 {
-    int[5] a = 1, 20, 50 ;
+    int[3] a = { 1, 20, 50 };
     // selects [ 20, 50 ]
     int[] c = a[1 .. 2]; 
 }`,
     "mobile_code":
 `fn void main()
 {
-    int[5] a = 1, 20, 50 ;
+    int[3] a = { 1, 20, 50 };
     // selects [ 20, 50 ]
     int[] c = a[1 .. 2]; 
 }`
@@ -418,8 +418,8 @@ await setTimeout(highlighter.dispose, 2000)
         text-3xl
         font-bold
         row-span-1
-        md:row-start-1
         col-start-2
+        md:row-start-1
         md:col-start-1
         bg-gradient-to-l
         from-violet-600
@@ -437,15 +437,33 @@ await setTimeout(highlighter.dispose, 2000)
         C3
     </span>
 
-
     <!-- ================================= -->
     <button
         class="
         px-3
         row-span-1
         col-start-1
-        md:row-start-1
+        md:row-start-1 
         md:col-start-2
+         
+        hover:text-indigo-500
+        transition-all
+        delay-75
+        w-full
+        h-full
+        dark:text-gray-200
+        dark:hover:text-indigo-400"
+    >
+        <a href="/get-involved/" class=""> Download </a>
+    </button>
+    <!-- ================================= -->
+    <button
+        class="
+        px-3
+        row-span-1
+        col-start-2
+        md:row-start-1
+        md:col-start-3
          
         hover:text-indigo-500
         transition-all
@@ -463,24 +481,6 @@ await setTimeout(highlighter.dispose, 2000)
         px-3
         row-span-1
         md:row-start-1 
-        md:col-start-3
-         
-        hover:text-indigo-500
-        transition-all
-        delay-75
-        w-full
-        h-full
-        dark:text-gray-200
-        dark:hover:text-indigo-400"
-    >
-        <a href="/get-involved/" class=""> Examples </a>
-    </button>
-    <!-- ================================= -->
-    <button
-        class="
-        px-3
-        row-span-1
-        md:row-start-1 
         md:col-start-4
          
         hover:text-indigo-500
@@ -491,7 +491,7 @@ await setTimeout(highlighter.dispose, 2000)
         dark:text-gray-200
         dark:hover:text-indigo-400"
     >
-        <a href="/get-involved/" class=""> Download </a>
+        <a href="/get-involved/" class=""> Examples </a>
     </button>
     <!-- ================================= -->
     <button
@@ -707,8 +707,8 @@ await setTimeout(highlighter.dispose, 2000)
     py-8
     lg:py-0
     lg:h-[24rem]
-    bg-[hsl(288,15%,88%)]
-    dark:bg-[hsl(288,2%,7%)]"
+    
+    "
 >
     <div class="
         col-start-8
@@ -733,7 +733,8 @@ await setTimeout(highlighter.dispose, 2000)
         col-start-1
         col-end-9
         p-8
-        md:p-12"
+        md:p-12
+        "
     >
         <h1
             class="
@@ -744,7 +745,9 @@ await setTimeout(highlighter.dispose, 2000)
         >
             The
             <span
-                class="text-4xl
+                class="
+                text-3xl
+                md:text-4xl
                 font-bold
                 row-span-1
                 md:row-start-1
@@ -784,19 +787,40 @@ await setTimeout(highlighter.dispose, 2000)
     "
 >
     <h2 class="
-        text-4xl
+        text-3xl
+        md:text-4xl
         font-bold
-        pb-8
+        pb-10
+        md:pb-16
         "
     >
-        Why C3?
+        Why 
+        <span
+            class="
+            text-3xl
+            md:text-4xl
+            font-bold
+            row-span-1
+            md:row-start-1
+            bg-clip-text
+            bg-gradient-to-l
+            from-violet-600
+            to-blue-600
+            dark:from-violet-500
+            dark:to-blue-500
+            text-transparent"
+        >C3</span>?
+
     </h2>
     <div class="
         grid
         grid-rows-[repeat(4,max-content)]
         md:grid-cols-2
         md:grid-rows-[repeat(2,max-content)]
-        gap-10
+        gap-x-10
+        gap-y-10
+        md:gap-y-28
+        md:gap-x-28
         "
     >
         <div>
@@ -816,24 +840,24 @@ await setTimeout(highlighter.dispose, 2000)
                 "
             >
                 <li class="my-4">
-                    Null safety and error handling with Optionals.
+                    <b>Null safety and error handling</b> with Optionals.
                 </li>
 
                 <li class="my-4">
-                    Safe array iteration with foreach.
+                    <b>Safe iteration</b> with foreach.
                 </li>
 
                 <li class="my-4">
-                    Safe subarray creation with slices.
+                    <b>Safe subarrays</b> with bounds-checked slices.
                 </li>
 
                 <li class="my-4">
-                    Impossible situations are errors, enforced with contracts.
+                    <b>Enforce system constraints</b> with contracts preventing impossible situations.
+
                 </li>
                 
             </ul>
         </div>
-
 
 
         <div>
@@ -843,7 +867,7 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                Simpler Generic Code
+                Productive
             </h3>
 
             <ul class="
@@ -853,21 +877,27 @@ await setTimeout(highlighter.dispose, 2000)
                 "
             >
                 <li class="my-4">
-                    Simple generic datatypes and functions with generic modules.
+                    <b>Easy to learn and easy to read</b> C3 aims to minimise differences from C.
                 </li>
 
                 <li class="my-4">
-                    Flexible code which can use runtime or compile reflection.
+                    <b>C3 integrates with C/C++</b> with full C ABI compatibility.
                 </li>
 
                 <li class="my-4">
-                    Extensible macros are similar to regular code, but they run at compile-time, not pre-processor based. 
+                    <b>Get organised</b> with namespaced modules.
                 </li>
 
+                <li class="my-4">
+                    <b>Write concise code</b> C3 programs can be 20–30% shorter than their C equivalents.
+                </li>
+
+                <li class="my-4">
+                    <b>Fully featured standard library</b> to get productive, fast!
+                </li>
 
             </ul>
         </div>
-
         
 
 
@@ -888,27 +918,31 @@ await setTimeout(highlighter.dispose, 2000)
                 "
             >
                 <li class="my-4">
-                    Manual memory management is key to performance, C3 gives you flexibility and control.
+                    <b>Manual memory management</b> is key to performance, C3 has flexibility and control.
                 </li>
 
                 <li class="my-4">
-                    Flexible to use either scoped allocation, custom allocators, defer cleanup or explicit control. 
+                    <b>Flexible</b> using either scoped allocation, custom allocators, defer cleanup or manual. 
                 </li>
 
                 <li class="my-4">
-                    Avoid memory leaks and use-after free with scoped memory management, memory automatically freed at scope exit.
+                    <b>Avoid memory leaks</b> and use-after free with scoped memory management, memory automatically freed and unavailable after scope exit.
                 </li>
 
                 <li class="my-4">
-                    Custom allocators include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.  
+                    <b>Custom allocators</b> include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.  
                 </li>
 
                 <li class="my-4">
-                    Write SIMD without complex intrinsics.
+                    <b>Optimise throughput</b> with control over memory layout. 
                 </li>
 
                 <li class="my-4">
-                    Error handling has no performance impact, unlike C++.
+                    <b>SIMD</b> without complex intrinsics.
+                </li>
+
+                <li class="my-4">
+                    <b>Zero overhead</b> error handling in contrast to C++ exceptions.
                 </li>
             </ul>
         </div>
@@ -921,7 +955,7 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                Ergonomic And Productive
+                Simpler Generic Code
             </h3>
 
             <ul class="
@@ -930,29 +964,22 @@ await setTimeout(highlighter.dispose, 2000)
                 ml-4
                 "
             >
-
                 <li class="my-4">
-                    C3 fits into existing C/C++ applications with full C ABI compatibility.
+                    <b>Simple</b> generic datatypes and functions with generic modules.
                 </li>
 
                 <li class="my-4">
-                    Easy to learn, C3 aims to minimise differences from C.
+                    <b>Flexible</b> code which can use runtime or compile-time reflection.
                 </li>
 
                 <li class="my-4">
-                    Designed to be easy to read and write.
+                    <b>Extensible</b> with compile-time macros that are similar to regular code. 
                 </li>
 
-                <li class="my-4">
-                    C3 programs can be 20–30% shorter than their C equivalents, while also increasing their readability.
-                </li>
-
-                <li class="my-4">
-                    Fully featured standard library to get productive, fast!
-                </li>
 
             </ul>
         </div>
+        
 
     </div>
     

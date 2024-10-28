@@ -263,6 +263,27 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"Guides/memory.md": {
+	id: "Guides/memory.md";
+  slug: "guides/memory";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Guides/pointers.md": {
+	id: "Guides/pointers.md";
+  slug: "guides/pointers";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Guides/wasm.md": {
+	id: "Guides/wasm.md";
+  slug: "guides/wasm";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "Implementation Details/grammar.md": {
 	id: "Implementation Details/grammar.md";
   slug: "implementation-details/grammar";
@@ -515,27 +536,6 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".mdx"] };
-"Tutorials/memory.md": {
-	id: "Tutorials/memory.md";
-  slug: "tutorials/memory";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Tutorials/pointers.md": {
-	id: "Tutorials/pointers.md";
-  slug: "tutorials/pointers";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Tutorials/wasm.md": {
-	id: "Tutorials/wasm.md";
-  slug: "tutorials/wasm";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
 };
 
 	};

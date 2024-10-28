@@ -39,24 +39,23 @@ import Layout from "../components/layout_test.astro";
     </script>
 </head>
 
-<!-- mx-auto -->
-<!-- grid-rows-[1fr-1fr-1fr]
-grid-cols-[1fr_1fr_1fr] -->
-<div class="
-grid
-grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
 
+
+<div class="
+    grid
+    grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
+    
+    bg-gradient-to-tr
+    dark:from-[hsl(224,12%,11%)]
+    dark:to-[hsl(224,12%,22%)]
+    from-[hsl(224,12%,84%)]
+    to-[hsl(224,12%,95%)]
     "
 >
 
-    <!-- left-space -->
-    <div class="
-        grid
-        grid-rows-[3.5rem_24rem_1fr]
-        w-full
-        h-full
-    ">
+    <div class="row-start-1 col-start-1 col-span-1 row-span-full">
         <div class="
+            h-[3.5rem]
             md:sticky
             md:top-0
             md:z-50
@@ -67,33 +66,64 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
             border-b-gray-200
             dark:border-b-gray-800
         "/>
-        <div class="    
-            bg-[hsl(288,15%,88%)]
-            dark:bg-[hsl(288,2%,7%)]
-            bg-no-repeat
-            bg-gradient-to-b
-            "
-        />
-        <div class="
-            dark:border-t-gray-700
-            bg-gray-50
-            dark:bg-[hsl(224,12%,4%)]
-            "
-        />
+        <div class="row-span-1 h-[24rem]"/>
+        <!-- <div class="bg-gray-50 dark:bg-[hsl(224,12%,4%)] row-span-1"/> -->
     </div>
 
+    
+
+
+    <!-- <div class="row-start-1 col-start-2 bg-red-400 row-span-3">
+        content
+    </div> -->
 
     <body class="
-        max-w-screen-2xl
-        ">
-        <div style="height: auto">
+        col-start-2
+        col-span-1
+        row-span-full
+    ">
+        <div >
             <Layout/>
         </div>
         <link rel="stylesheet" href="/index.css" />
     </body>
 
+   
+    <div class="row-start-1 col-start-3 col-span-1 row-span-full">
+        <div class="
+            h-[3.5rem]
+            md:sticky
+            md:top-0
+            md:z-50
+
+            bg-white
+            dark:bg-[hsl(224,12%,4%)]
+            border-b-2
+            border-b-gray-200
+            dark:border-b-gray-800
+        "/>
+        <div class="row-span-1 h-[24rem]"/>
+        <!-- <div class="bg-gray-50 dark:bg-[hsl(224,12%,4%)] h-screen"> -->
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
     <!-- right-space -->
-    <div class="
+    <!-- <div class="
         grid
         grid-rows-[3.5rem_24rem_1fr]
         w-full
@@ -122,16 +152,7 @@ grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
             dark:bg-[hsl(224,12%,4%)]
             "
         />
-    </div>
-
-
-</div>
-
-
-
-
-
-
+    </div> -->
 
 
 

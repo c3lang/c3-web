@@ -18,8 +18,20 @@ export default {
 
   theme: {
     extend: {
+      backgroundImage: () => ({
+        'gradient-radial-to-tr': `radial-gradient(
+          70vw 200vh at 50vw -25vh, 
+          var(--tw-gradient-stops)
+        )`,
+        // 'gradient-radial-to-tr': 'radial-gradient(115% 90% at 0% 100%, var(--tw-gradient-stops))',
+        // 'gradient-radial-to-tl': 'radial-gradient(115% 90% at 100% 100%, var(--tw-gradient-stops))',
+        // 'gradient-radial-to-br': 'radial-gradient(90% 115% at 0% 0%, var(--tw-gradient-stops))',
+        // 'gradient-radial-to-bl': 'radial-gradient(90% 115% at 100% 0%, var(--tw-gradient-stops))',
+      }),
+
       fontFamily: {
-      // sans: ['Lato', ...defaultTheme.fontFamily.sans],
+        // sans: ['Atkinson_Hyperlegible', ...defaultTheme.fontFamily.sans],
+        // sans: ['Rubik', ...defaultTheme.fontFamily.sans],
       },
     },
   },
