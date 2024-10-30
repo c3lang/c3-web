@@ -185,29 +185,36 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
     grid-cols-[repeat(2,minmax(0,1fr))]
     lg:grid-cols-[repeat(12,minmax(0,1fr))]
     w-full
-    bg-gray-50
     gap-0
     
-    dark:bg-[hsl(224,12%,4%)]
-    dark:text-gray-200"
+    "
 >
     <div class="
         flex
         flex-col
     
-        md:px-12
+        md:pr-12
         md:pb-12
-        px-8
+        pr-8
         pb-8
         col-span-4
-        bg-gray-50
-        dark:bg-[hsl(224,12%,4%)]
-        dark:text-gray-200"
+        "
     >
+    <!-- Offset achor tag, so jump links don't get chopped off by header -->
+    <a class="
+        block
+        relative
+        -top-16
+        invisible
+        "            
+        id={heading}   
+    />
         <h3 class="
             text-2xl
-            font-bold">
-        {heading}
+            font-bold
+            "
+        >
+            {heading}
         </h3>
 
         <ul class="
@@ -231,7 +238,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
     <div class="
         col-span-2
         lg:col-span-8
-        lg:pr-8"
+        "
     >
         <div class=`
             grid
@@ -246,8 +253,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
             bg-gray-50
             dark:bg-[hsl(224,12%,4%)]
             dark:text-gray-200
-
-            px-2
+            -mx-2
             
         `>
 

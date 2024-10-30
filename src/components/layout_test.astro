@@ -6,16 +6,17 @@ import DemoSlice from "./demo_slice.astro";
 // Code highlighting
 import * as fs from 'fs';
 import { createHighlighter } from 'shiki'
-import type StarlightIntegration from "@astrojs/starlight"
+// import type StarlightIntegration from "@astrojs/starlight"
+
+
+// load the language
+const c3LangGrammar = JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))
 
 const highlighter = await createHighlighter({
     themes: ['slack-dark', 'min-light', 'andromeeda', 'github-light-default', 'material-theme-lighter'],
-    langs: ['c']
+    langs: [c3LangGrammar]
 })
-// load the language
-await highlighter.loadLanguage(
-    JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))
-) 
+
 
 
 //=======================================
@@ -780,10 +781,9 @@ await setTimeout(highlighter.dispose, 2000)
     bg-gray-50
     dark:bg-[hsl(224,12%,4%)]
     dark:text-gray-200
-    px-8
-    py-8
-    md:px-12
-    md:py-16
+    p-8
+    md:p-12
+    rounded-sm
     "
 >
     <h2 class="
@@ -830,7 +830,9 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                Write Safer Programs
+                <a href="#Write Safer Programs">
+                    Write Safer Programs ⭢
+                </a>
             </h3>
 
             <ul class="
@@ -853,8 +855,12 @@ await setTimeout(highlighter.dispose, 2000)
 
                 <li class="my-4">
                     <b>Enforce system constraints</b> with contracts preventing impossible situations.
-
                 </li>
+
+                <li class="my-4">
+                    <b>Avoid memory leaks and use-after free</b> with scoped memory management, memory automatically freed and unavailable after scope exit.
+                </li>
+
                 
             </ul>
         </div>
@@ -867,7 +873,7 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                Productive
+                Productive ⭢
             </h3>
 
             <ul class="
@@ -877,7 +883,7 @@ await setTimeout(highlighter.dispose, 2000)
                 "
             >
                 <li class="my-4">
-                    <b>Easy to learn and easy to read</b> C3 aims to minimise differences from C.
+                    <b>Easy to learn and easy to read</b> a design goal of C3 minimise differences from C.
                 </li>
 
                 <li class="my-4">
@@ -908,7 +914,7 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                High Performance
+                High Performance ⭢
             </h3>
             
             <ul class="
@@ -918,15 +924,7 @@ await setTimeout(highlighter.dispose, 2000)
                 "
             >
                 <li class="my-4">
-                    <b>Manual memory management</b> is key to performance, C3 has flexibility and control.
-                </li>
-
-                <li class="my-4">
-                    <b>Flexible</b> using either scoped allocation, custom allocators, defer cleanup or manual. 
-                </li>
-
-                <li class="my-4">
-                    <b>Avoid memory leaks</b> and use-after free with scoped memory management, memory automatically freed and unavailable after scope exit.
+                    <b>Manual memory management</b> using either scoped allocation, custom allocators, defer cleanup or manual. 
                 </li>
 
                 <li class="my-4">
@@ -955,7 +953,7 @@ await setTimeout(highlighter.dispose, 2000)
                 pb-4
                 "
             >
-                Simpler Generic Code
+                Simpler Generic Code ⭢
             </h3>
 
             <ul class="
@@ -985,74 +983,130 @@ await setTimeout(highlighter.dispose, 2000)
     
 </div>
 
-<DemoSlice
-    title="ergonomics_and_safety"
-    heading="Ergonomics & Safety"
-    bullets={
-        [
-            "Optionals to safely and quickly handle errors and null.",
-            "Defer to clean up resources.",
-            "Slices and foreach for safe iteration.",
-            "Contracts in comments, to add constraints to your code."
-        ]
-    }
-    buttons={
-        [
-            "Optionals",
-            "Defer",
-            "Slices",
-            "Contracts"
-        ]
-    }
-    code={code_input}
-    highlighter={highlighter}
-/>
+
+<!-- blank gap of background-->
+<div class="
+    grid
+    grid-cols-4
+    grid-rows-2
+    lg:grid-cols-[repeat(12,minmax(0,1fr))]
+    w-full
+    py-20    
+    "
+>
+</div>
+
+<!-- Features block -->
+<div class="
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
+    dark:text-gray-200
+    p-8
+    md:p-12
+    rounded-sm
+    "
+>
+    <h1
+        class="
+        text-3xl
+        md:text-4xl
+        font-bold
+        dark:text-gray-100
+        pb-0
+        md:pb-4
+        "
+    >
+        <span
+            class="
+            text-3xl
+            md:text-4xl
+            font-bold
+            row-span-1
+            md:row-start-1
+            bg-clip-text
+            bg-gradient-to-l
+            from-violet-600
+            to-blue-600
+            dark:from-violet-500
+            dark:to-blue-500
+            text-transparent"
+        >
+            C3
+        </span>
+        Features
+    </h1>
 
 
-<DemoSlice
-    title="perf_by_default"
-    heading="Performance by Default"
-    bullets={
-        [
-            "Write SIMD vectors to program the hardware directly.",
-            "Access to different memory allocators to fine tune performance.",
-            "Zero overhead errors.",
-            "Fast compilation times.",
-            "LLVM backend for industrial strength optimisations.",
-            "Easy to use inline assembly."
-        ]
-    }
-    buttons={
-        [
-            "SIMD",
-            "Allocators",
-            "Inline ASM"
-        ]
-    }
-    code={code_input_perf}
-    highlighter={highlighter}
-/>
+    <!-- TODO: buttons once clicked and gone back to need to have black text -->
+    <DemoSlice
+        title="ergonomics_and_safety"
+        heading="Write Safer Programs"
+        bullets={
+            [
+                "Optionals to safely and quickly handle errors and null.",
+                "Defer to clean up resources.",
+                "Slices and foreach for safe iteration.",
+                "Contracts in comments, to add constraints to your code."
+            ]
+        }
+        buttons={
+            [
+                "Optionals",
+                "Defer",
+                "Slices",
+                "Contracts"
+            ]
+        }
+        code={code_input}
+        highlighter={highlighter}
+    />
 
-<DemoSlice
-    title="std_lib"
-    heading="Batteries Included Standard Library"
-    bullets={
-        [
-            "Dynamic containers",
-            "Strings",
-            "Cross-platform abstractions for ease of use.",
-            "Access to the native platform when you need it."
-        ]
-    }
-    buttons={
-        [
-            "Containers",
-            "Strings",
-            "Cross Platform",
-            "Platform Access"
-        ]
-    }
-    code={code_input_stdlib}
-    highlighter={highlighter}
-/>
 
+    <DemoSlice
+        title="perf_by_default"
+        heading="Performance by Default"
+        bullets={
+            [
+                "Write SIMD vectors to program the hardware directly.",
+                "Access to different memory allocators to fine tune performance.",
+                "Zero overhead errors.",
+                "Fast compilation times.",
+                "LLVM backend for industrial strength optimisations.",
+                "Easy to use inline assembly."
+            ]
+        }
+        buttons={
+            [
+                "SIMD",
+                "Allocators",
+                "Inline ASM"
+            ]
+        }
+        code={code_input_perf}
+        highlighter={highlighter}
+    />
+
+    <DemoSlice
+        title="std_lib"
+        heading="Batteries Included Standard Library"
+        bullets={
+            [
+                "Dynamic containers",
+                "Strings",
+                "Cross-platform abstractions for ease of use.",
+                "Access to the native platform when you need it."
+            ]
+        }
+        buttons={
+            [
+                "Containers",
+                "Strings",
+                "Cross Platform",
+                "Platform Access"
+            ]
+        }
+        code={code_input_stdlib}
+        highlighter={highlighter}
+    />
+
+</div>
