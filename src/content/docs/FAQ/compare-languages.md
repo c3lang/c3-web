@@ -163,7 +163,8 @@ the language. For error handling it relies on Go style tuple returns.
 
 - Different syntax and behaviour compared to C.
 - Ad hoc parametric polymorphism.
-- Tuple returns.
+- Multiple return values.
+- Error handling through multiple returns.
 - A rich built in set of types.
 
 ##### In C3 but not in Odin
@@ -172,7 +173,7 @@ the language. For error handling it relies on Go style tuple returns.
 - Semantic macros.
 - Value methods.
 - Optional contracts.
-- Error handling support.
+- Built in error handling.
 - Dynamic interfaces.
 
 ## D
