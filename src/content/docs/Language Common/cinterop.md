@@ -89,3 +89,5 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
      `extern fn void test(int* a)`. If the function has a sized array, like `void test2(int[4] b)`
      replace it with a pointer to a sized array: `extern fn void test2(int[4]* b);`      
     - Note that a pointer to an array is always implicitly convertable to a pointer to the first element For example, `int[4]*` may be implicitly converted to `int*`.
+- The C3 names of functions are name-spaced with the module by default when using `@export`, so when
+ exporting a function with `@export` that is to be used from C, specify an explicit external name. E.g. `fn void myfunc() @export("myfunc") { ... }`.
