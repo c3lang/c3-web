@@ -186,19 +186,21 @@ fn void test(int x)
 {
     defer io::printn();
     defer io::print("A");
+
     if (x == 1) return;
-    {
-        defer io::print("B");
-        if (x == 0) return;
-    }
-    io::print("!");
+    
+    defer io::print("B");
+
+    if (x == 0) return;
+    
+    defer io::print("!");
 }
 
 fn void main()
 {
-    test(1); // Prints "A"
-    test(0); // Prints "BA"
-    test(10); // Prints "B!A"
+    test(1);  // Prints "A"
+    test(0);  // Prints "BA"
+    test(10); // Prints "!BA"
 }
 ```
 

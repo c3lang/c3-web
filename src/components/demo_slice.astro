@@ -46,7 +46,7 @@ function generateClickHandler(localStorageKey) {
                 let previousTabElement = document.getElementById(localStorage[localStorageKey]);
 
                 // adjust styles showing new tab is selected
-                previousTabElement.classList.remove("bg-gray-50");
+                previousTabElement.classList.remove("bg-white");
                 previousTabElement.classList.remove("border-b-indigo-500");
                 previousTabElement.classList.remove("ring");
                 previousTabElement.classList.remove("ring-indigo-50");
@@ -79,8 +79,11 @@ function generateClickHandler(localStorageKey) {
         // Changing the button properties on click
         event.target.classList.remove("bg-gray-100");
         event.target.classList.remove("dark:bg-gray-900");
+        event.target.classList.remove("dark:text-white");
+
         
-        event.target.classList.add("bg-gray-50");
+        
+        event.target.classList.add("bg-white");
         event.target.classList.add("border-b-indigo-500");
         event.target.classList.add("ring");
         event.target.classList.add("ring-indigo-50");
@@ -88,8 +91,6 @@ function generateClickHandler(localStorageKey) {
         event.target.classList.add("dark:bg-gray-300");
         event.target.classList.add("dark:text-black");
         event.target.classList.add("dark:border-gray-700");
-        event.target.classList.add("dark:shadow-md");
-        event.target.classList.add("dark:shadow-indigo-500");
         event.target.classList.add("dark:border-b-indigo-500");
         event.target.classList.add("dark:hover:text-indigo-700");
         
@@ -192,15 +193,11 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
     <div class="
         flex
         flex-col
-    
         md:pr-12
-        md:pb-12
-        pr-8
-        pb-8
         col-span-4
         "
     >
-    <!-- Offset achor tag, so jump links don't get chopped off by header -->
+    <!-- Offset anchor tag, so jump links don't get chopped off by header -->
     <a class="
         block
         relative
@@ -219,14 +216,14 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
 
         <ul class="
             list-disc 
-            mt-4 
+            my-12 
             ml-4
             
             "
         >
             {bullets.map((item) => (
                 <li class="my-4">
-                    {item}
+                    <Fragment set:html={item}/>
                 </li>
             ))}
 
@@ -253,8 +250,8 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
             bg-gray-50
             dark:bg-[hsl(224,12%,4%)]
             dark:text-gray-200
-            -mx-2
-            
+            -mx-7
+            md:mx-0
         `>
 
         <!--  Buttons -->
@@ -263,6 +260,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
                     
                     rounded-md
                     border-2
+                    border-b-[0.35rem]
                     p-2
                     border-gray-200
                     dark:border-gray-700
@@ -271,7 +269,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
                     items-center
                     hover:text-indigo-500
                     
-                    ${index ===0 && "dark:hover:text-indigo-700 dark:text-black bg-gray-50 dark:bg-gray-300 dark:ring-0 ring ring-indigo-50 border-b-indigo-500 dark:shadow-md dark:shadow-indigo-500"}
+                    ${index ===0 && "dark:hover:text-indigo-700 dark:text-black dark:border-b-indigo-500 bg-white dark:bg-gray-300 dark:ring-0 ring ring-indigo-50 border-b-indigo-500"}
                     ${index != 0 && "dark:hover:text-indigo-400 bg-gray-100 dark:bg-gray-900"}
                     
                     dark:border-gray-500
@@ -286,7 +284,6 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
             ))}
 
             <!-- Code container -->
-            <!-- dark:bg-[hsl(224,14%,16%)] -->
             <div class="
                 col-span-2
                 
@@ -300,8 +297,8 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
                 lg:mt-12
                 bg-white
                 dark:bg-gradient-to-tr
-                dark:from-[hsl(224,12%,12%)]
-                dark:to-[hsl(224,12%,18%)]
+                dark:from-[hsl(224,12%,10%)]
+                dark:to-[hsl(224,12%,12%)]
                 "
             >
 

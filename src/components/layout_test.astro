@@ -828,6 +828,7 @@ await setTimeout(highlighter.dispose, 2000)
                 text-2xl
                 font-bold
                 pb-4
+                hover:underline
                 "
             >
                 <a href="#Write Safer Programs">
@@ -841,7 +842,7 @@ await setTimeout(highlighter.dispose, 2000)
                 ml-4
                 "
             >
-                <li class="my-4">
+                <!-- <li class="my-4">
                     <b>Null safety and error handling</b> with Optionals.
                 </li>
 
@@ -859,7 +860,7 @@ await setTimeout(highlighter.dispose, 2000)
 
                 <li class="my-4">
                     <b>Avoid memory leaks and use-after free</b> with scoped memory management, memory automatically freed and unavailable after scope exit.
-                </li>
+                </li> -->
 
                 
             </ul>
@@ -871,38 +872,12 @@ await setTimeout(highlighter.dispose, 2000)
                 text-2xl
                 font-bold
                 pb-4
+                hover:underline
                 "
             >
                 Productive ⭢
             </h3>
 
-            <ul class="
-                list-disc
-                list-outside
-                ml-4
-                "
-            >
-                <li class="my-4">
-                    <b>Easy to learn and easy to read</b> a design goal of C3 minimise differences from C.
-                </li>
-
-                <li class="my-4">
-                    <b>C3 integrates with C/C++</b> with full C ABI compatibility.
-                </li>
-
-                <li class="my-4">
-                    <b>Get organised</b> with namespaced modules.
-                </li>
-
-                <li class="my-4">
-                    <b>Write concise code</b> C3 programs can be 20–30% shorter than their C equivalents.
-                </li>
-
-                <li class="my-4">
-                    <b>Fully featured standard library</b> to get productive, fast!
-                </li>
-
-            </ul>
         </div>
         
 
@@ -912,37 +887,12 @@ await setTimeout(highlighter.dispose, 2000)
                 text-2xl
                 font-bold
                 pb-4
+                hover:underline
                 "
             >
                 High Performance ⭢
             </h3>
             
-            <ul class="
-                list-disc
-                list-outside
-                ml-4
-                "
-            >
-                <li class="my-4">
-                    <b>Manual memory management</b> using either scoped allocation, custom allocators, defer cleanup or manual. 
-                </li>
-
-                <li class="my-4">
-                    <b>Custom allocators</b> include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.  
-                </li>
-
-                <li class="my-4">
-                    <b>Optimise throughput</b> with control over memory layout. 
-                </li>
-
-                <li class="my-4">
-                    <b>SIMD</b> without complex intrinsics.
-                </li>
-
-                <li class="my-4">
-                    <b>Zero overhead</b> error handling in contrast to C++ exceptions.
-                </li>
-            </ul>
         </div>
 
 
@@ -951,31 +901,12 @@ await setTimeout(highlighter.dispose, 2000)
                 text-2xl
                 font-bold
                 pb-4
+                hover:underline
                 "
             >
                 Simpler Generic Code ⭢
             </h3>
 
-            <ul class="
-                list-disc
-                list-outside
-                ml-4
-                "
-            >
-                <li class="my-4">
-                    <b>Simple</b> generic datatypes and functions with generic modules.
-                </li>
-
-                <li class="my-4">
-                    <b>Flexible</b> code which can use runtime or compile-time reflection.
-                </li>
-
-                <li class="my-4">
-                    <b>Extensible</b> with compile-time macros that are similar to regular code. 
-                </li>
-
-
-            </ul>
         </div>
         
 
@@ -1037,16 +968,22 @@ await setTimeout(highlighter.dispose, 2000)
     </h1>
 
 
-    <!-- TODO: buttons once clicked and gone back to need to have black text -->
     <DemoSlice
         title="ergonomics_and_safety"
         heading="Write Safer Programs"
         bullets={
             [
-                "Optionals to safely and quickly handle errors and null.",
-                "Defer to clean up resources.",
-                "Slices and foreach for safe iteration.",
-                "Contracts in comments, to add constraints to your code."
+                `<b>Null safety and error handling</b> with <a class="text-blue-500" href="/language-common/optionals-essential/"> Optionals</a>.`,
+
+                `<b>Safe iteration</b> with <a class="text-blue-500" href="/language-common/arrays/#foreach-element-by-copy">foreach</a>.`,
+
+                `<b>Safe subarrays</b> with bounds-checked <a class="text-blue-500" href="/language-common/arrays/#slicing-arrays">slices</a>.`,
+
+                `<b>Enforce system constraints</b> with <a class="text-blue-500" href="/language-common/contracts">contracts</a> preventing impossible situations.`,
+
+                `<b>Avoid memory leaks and use-after free</b> with <a class="text-blue-500" href="/faq/#memory-management">scoped memory management</a>, memory automatically freed and unavailable after scope exit.`,
+
+                `<b>Clean up resources</b> with <a class="text-blue-500" href="/language-common/defer/">defer</a> which runs at scope exit.`,
             ]
         }
         buttons={
@@ -1063,23 +1000,31 @@ await setTimeout(highlighter.dispose, 2000)
 
 
     <DemoSlice
-        title="perf_by_default"
-        heading="Performance by Default"
+        title="high_performance"
+        heading="High Performance"
         bullets={
             [
-                "Write SIMD vectors to program the hardware directly.",
-                "Access to different memory allocators to fine tune performance.",
-                "Zero overhead errors.",
-                "Fast compilation times.",
-                "LLVM backend for industrial strength optimisations.",
-                "Easy to use inline assembly."
+                `<b>Custom allocators</b> include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.`,
+
+                `<b>Manual memory management</b> using either scoped allocation, custom allocators, defer cleanup or manual.`,
+
+                `<b>Zero overhead error handling</b> in contrast to C++ exceptions.`,
+
+                `<b>SIMD</b> without complex intrinsics.`,
+
+                `<b>Optimise throughput</b> with control over memory layout.`,
+
+                `<b>Simple Inline ASM</b>`,
             ]
         }
         buttons={
             [
+                "Custom allocators",
+                "Manual memory management",
                 "SIMD",
-                "Allocators",
-                "Inline ASM"
+                "Zero overhead error handling",
+                "Memory Layout",
+                "Simple Inline ASM",
             ]
         }
         code={code_input_perf}
@@ -1108,5 +1053,64 @@ await setTimeout(highlighter.dispose, 2000)
         code={code_input_stdlib}
         highlighter={highlighter}
     />
+
+    <DemoSlice
+        title="productive"
+        heading="Productive"
+        bullets={
+            [
+                `<b>Easy to learn and easy to read</b> a design goal of C3 minimise differences from C.`,
+
+                `<b>C3 integrates with C</b> with full C ABI compatibility for <em>all</em> features.`,
+
+                `<b>Get organised</b> with namespaced modules.`,
+
+                `<b>Write concise code</b> C3 programs can be 20–30% shorter than their C equivalents.`,
+
+                `<b>Fully featured standard library</b> to get productive, fast!`,
+            ]
+        }
+        buttons={
+            [
+                "Containers",
+                "Strings",
+                "Cross Platform",
+                "Platform Access"
+            ]
+        }
+        code={code_input_stdlib}
+        highlighter={highlighter}
+    />
+
+    
+
+
+
+
+    <DemoSlice
+        title="generic_code"
+        heading="Simpler Generic Code"
+        bullets={
+            [
+                `<b>Simple</b> generic datatypes and functions with generic modules.`,
+                `<b>Flexible</b> code which can use runtime or compile-time reflection.`,
+                `<b>Extensible</b> with compile-time macros that are similar to regular code. `,
+            ]
+        }
+        buttons={
+            [
+                "Generic Modules",
+                "Compile-Time Reflection",
+                "Compile-Time Macros",
+            ]
+        }
+        code={code_input_stdlib}
+        highlighter={highlighter}
+    />
+
+
+
+
+
 
 </div>
