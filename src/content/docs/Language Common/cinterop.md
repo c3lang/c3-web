@@ -32,16 +32,16 @@ fn void main()
 ```
 
 While C3 functions are available from C using their external name, it's often useful to
-define an external name using `@extern` to match C usage.
+define an external name using `@extern` or `@export` with a name to match C usage.
 
 ```c3
 module foo;
-fn int square(int x)
+fn int square(int x) @export // @export ensures external visibility
 {
     return x * x;
 }
 
-fn int square2(int x) @extern("square")
+fn int square2(int x) @export("square")
 {
     return x * x;
 }
