@@ -190,7 +190,7 @@ Vector initialization and literals work the same way as arrays, using `{ ... }`
 String literals are special and can convert to several different types: 
 `String`, `char` and `ichar` arrays and slices and finally `ichar*` and `char*`.
 
-Like C, string literals is text enclosed in `" "` just like in C. These support
+String literals are text enclosed in `" "` just like in C. These support
 escape sequences like `\n` for line break and need to use `\"` for any `"` inside of the
 string.
 
