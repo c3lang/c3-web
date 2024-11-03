@@ -1,6 +1,6 @@
 ---
 import DemoSlice from "./demo_slice.astro";
-
+import DemoSliceCodeOnly from "./demo_slice_code_only.astro"
 
 //=======================================
 // Code highlighting
@@ -967,8 +967,23 @@ await setTimeout(highlighter.dispose, 2000)
         Features
     </h1>
 
+    
 
-    <DemoSlice
+    <DemoSliceCodeOnly
+        buttons={
+            [
+                "Optionals",
+                "Defer",
+                "Slices",
+                "Contracts"
+            ]
+        }
+        code={code_input}
+        highlighter={highlighter}
+    />
+
+
+    <!-- <DemoSlice
         title="ergonomics_and_safety"
         heading="Write Safer Programs"
         bullets={
@@ -996,7 +1011,7 @@ await setTimeout(highlighter.dispose, 2000)
         }
         code={code_input}
         highlighter={highlighter}
-    />
+    /> -->
 
 
     <DemoSlice

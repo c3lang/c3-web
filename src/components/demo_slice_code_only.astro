@@ -1,0 +1,276 @@
+---
+
+import type { 
+    HighlighterGeneric, 
+    BundledLanguage, 
+    BundledTheme 
+} from 'shiki'
+
+interface Props {
+    buttons: string[];
+    code: {
+            name: string;
+            desktop_code: string;
+            mobile_code: string;
+        }[];
+    highlighter: HighlighterGeneric<BundledLanguage, BundledTheme>
+}
+
+const { buttons, code, highlighter } = Astro.props;
+
+import CodeRender from "./code_render.astro";
+
+
+---
+
+
+<script>
+
+// make a click handler specific for one localStorageKey
+function generateClickHandler(localStorageKey) {
+
+    return function buttonClickHandler(event) {
+
+        if (
+            localStorage[localStorageKey] != "" &&
+            localStorage[localStorageKey] != null &&
+            localStorage[localStorageKey] != undefined
+        ) {
+            // remove any style adjustments from previous tab was selected
+            if (event.target.id != localStorage[localStorageKey]) {
+
+
+                let previousTabElement = document.getElementById(localStorage[localStorageKey]);
+
+                // adjust styles showing new tab is selected
+                previousTabElement.classList.remove("bg-white");
+                previousTabElement.classList.remove("border-b-indigo-500");
+                previousTabElement.classList.remove("ring");
+                previousTabElement.classList.remove("ring-indigo-50");
+                previousTabElement.classList.add("bg-gray-100");
+                previousTabElement.classList.add("dark:bg-gray-900");
+                previousTabElement.classList.remove("dark:border-b-indigo-500");
+                previousTabElement.classList.remove("dark:bg-gray-300");
+                previousTabElement.classList.remove("dark:text-black");
+                previousTabElement.classList.add("dark:text-white");
+                previousTabElement.classList.remove("dark:shadow-md");
+                previousTabElement.classList.remove("dark:hover:text-indigo-700");
+                previousTabElement.classList.add("dark:hover:text-indigo-400");
+
+
+                // make the code blocks hidden from previously selected tab
+                let previousDesktopCode = document.getElementById(localStorage[localStorageKey] + "_desktop_code")
+
+                let previousMobileCode = document.getElementById(localStorage[localStorageKey] + "_mobile_code")
+
+                previousDesktopCode.classList.remove("lg:flex");
+                previousDesktopCode.classList.add("hidden");
+
+                previousMobileCode.classList.remove("flex");
+                previousMobileCode.classList.add("hidden");
+
+            }
+        }
+
+
+        // Changing the button properties on click
+        event.target.classList.remove("bg-gray-100");
+        event.target.classList.remove("dark:bg-gray-900");
+        event.target.classList.remove("dark:text-white");
+
+        
+        
+        event.target.classList.add("bg-white");
+        event.target.classList.add("border-b-indigo-500");
+        event.target.classList.add("ring");
+        event.target.classList.add("ring-indigo-50");
+        event.target.classList.add("dark:ring-0");
+        event.target.classList.add("dark:bg-gray-300");
+        event.target.classList.add("dark:text-black");
+        event.target.classList.add("dark:border-gray-700");
+        event.target.classList.add("dark:border-b-indigo-500");
+        event.target.classList.add("dark:hover:text-indigo-700");
+        
+        
+        
+
+        // storing which button was clicked
+        localStorage[localStorageKey] = event.target.id;
+        
+
+        // changing the code visibility based on the button clicked
+        let newDesktopCode = document.getElementById(
+            `${localStorage[localStorageKey]}_desktop_code`,
+        );
+
+        let newMobileCode = document.getElementById(
+            `${localStorage[localStorageKey]}_mobile_code`,
+        );
+
+        newDesktopCode.classList.add("lg:flex");
+        newDesktopCode.classList.add("hidden");
+
+        newMobileCode.classList.add("flex");
+        newMobileCode.classList.add("lg:hidden");
+        newMobileCode.classList.remove("hidden");
+    }
+}
+
+//========================================
+// Setup for "Ergonomics & Safety"
+const ergoLocalStorageKey ="ergonomics_and_safety_selected_tab_id";
+const ergoButtons = ["Optionals", "Defer", "Slices", "Contracts"]
+const ergoHandler = generateClickHandler(ergoLocalStorageKey);
+
+ergoButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("mousedown", ergoHandler);
+});
+
+// default select the first element
+localStorage[ergoLocalStorageKey] = ergoButtons[0];
+
+//========================================
+// Performance By Default
+
+const perfByDefaultLocalStorageKey = "perf_by_default_selected_tab_id";
+
+const perfByDefaultButtons = [
+    "SIMD",
+    "Allocators",
+    "Inline ASM",
+];
+
+const perfByDefaultHandler = generateClickHandler(perfByDefaultLocalStorageKey);
+
+perfByDefaultButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("mousedown", perfByDefaultHandler);
+});
+
+// default select the first element
+localStorage[perfByDefaultLocalStorageKey] = perfByDefaultButtons[0];
+
+//========================================
+// Batteries Included Standard Library
+
+const stdLibLocalStorageKey = "perf_by_default_selected_tab_id";
+
+const stdLibButtons = [
+    "Containers",
+    "Strings",
+    "Cross Platform",
+    "Platform Access",
+];
+
+const stdLibHandler = generateClickHandler(stdLibLocalStorageKey);
+
+stdLibButtons.forEach(buttonName => {
+    document.getElementById(buttonName).addEventListener("mousedown", stdLibHandler);
+});
+
+// default select the first element
+localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
+
+
+
+
+
+</script>
+
+
+<div class="
+    py-12
+    grid
+    grid-cols-[repeat(2,minmax(0,1fr))]
+    lg:grid-cols-[repeat(12,minmax(0,1fr))]
+    w-full
+    gap-0
+    
+    "
+>
+    <div class="
+        col-span-2
+        lg:col-span-12
+        "
+    >
+        <div class=`
+            grid
+            grid-cols-[repeat(2,minmax(0,1fr))]
+            grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
+
+            md:grid-cols-${buttons.length}
+            md:grid-cols-1
+
+            gap-2
+
+            bg-gray-50
+            dark:bg-[hsl(224,12%,4%)]
+            dark:text-gray-200
+            -mx-7
+            md:mx-0
+        `>
+
+        <!--  Buttons -->
+            {buttons.map((item, index) => (
+                <button class=`
+                    
+                    rounded-md
+                    border-2
+                    border-b-[0.35rem]
+                    p-2
+                    border-gray-200
+                    dark:border-gray-700
+                    flex
+                    justify-center
+                    items-center
+                    hover:text-indigo-500
+                    
+                    ${index ===0 && "dark:hover:text-indigo-700 dark:text-black dark:border-b-indigo-500 bg-white dark:bg-gray-300 dark:ring-0 ring ring-indigo-50 border-b-indigo-500"}
+                    ${index != 0 && "dark:hover:text-indigo-400 bg-gray-100 dark:bg-gray-900"}
+                    
+                    dark:border-gray-500
+                    transition-all
+                    delay-75
+                    `
+                    id={item}
+                   
+                >
+                    {item}
+                </button>
+            ))}
+
+            <!-- Code container -->
+            <div class="
+                col-span-2
+                
+                md:col-span-4
+                
+                grid
+                grid-rows-1
+                w-full
+                overflow-x-auto
+                mt-8
+                lg:mt-12
+                bg-white
+                dark:bg-gradient-to-tr
+                dark:from-[hsl(224,12%,10%)]
+                dark:to-[hsl(224,12%,12%)]
+                "
+            >
+
+                {code.map((item, index) => (
+                    <CodeRender 
+                        is_default={index==0 ? true : false}
+                        name={item.name}
+                        desktop_code={item.desktop_code}
+                        mobile_code={item.mobile_code}
+                        highlighter={highlighter}
+                    />
+                ))}
+
+         
+            </div>
+
+        </div>
+    </div>
+
+</div>
