@@ -46,12 +46,12 @@ function generateClickHandler(localStorageKey) {
                 previousTabElement.classList.remove("bg-blue-500");
                 previousTabElement.classList.add("bg-gray-100");
 
-                previousTabElement.classList.remove("dark:bg-blue-500");
+                previousTabElement.classList.remove("dark:bg-blue-600");
                 previousTabElement.classList.add("dark:bg-gray-900");
 
                 previousTabElement.classList.remove("text-white");
                 previousTabElement.classList.add("text-black");
-                previousTabElement.classList.add("black:text-white");
+                previousTabElement.classList.add("dark:text-white");
                 previousTabElement.classList.add("dark:hover:text-blue-500");
                 previousTabElement.classList.add("hover:text-blue-500");
 
@@ -60,10 +60,11 @@ function generateClickHandler(localStorageKey) {
 
                 let previousMobileCode = document.getElementById(localStorage[localStorageKey] + "_mobile_code")
 
-                previousDesktopCode.classList.remove("lg:flex");
-                previousDesktopCode.classList.add("hidden");
+                previousDesktopCode.classList.remove("xl:flex");
+                // previousDesktopCode.classList.add("hidden");
 
                 previousMobileCode.classList.remove("flex");
+                previousMobileCode.classList.remove("xl:hidden");
                 previousMobileCode.classList.add("hidden");
 
             }
@@ -76,7 +77,7 @@ function generateClickHandler(localStorageKey) {
        
        
 
-        event.target.classList.add("dark:bg-blue-500");
+        event.target.classList.add("dark:bg-blue-600");
         event.target.classList.add("bg-blue-500");      
 
         event.target.classList.remove("text-black");
@@ -102,12 +103,12 @@ function generateClickHandler(localStorageKey) {
             `${localStorage[localStorageKey]}_mobile_code`,
         );
 
-        newDesktopCode.classList.add("lg:flex");
+        newDesktopCode.classList.add("xl:flex");
         newDesktopCode.classList.add("hidden");
 
-        newMobileCode.classList.add("flex");
-        newMobileCode.classList.add("lg:hidden");
         newMobileCode.classList.remove("hidden");
+        newMobileCode.classList.add("flex");
+        newMobileCode.classList.add("xl:hidden");
     }
 }
 
@@ -172,84 +173,76 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
 </script>
 
 
-<div class="
-    py-12
-    "
->
-    <div class=`
+<div class=`
+    grid
+    grid-cols-[repeat(2,minmax(0,1fr))]
+    grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
+
+    md:grid-cols-${buttons.length}
+    md:grid-cols-1
+
+    gap-2
+
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
+    dark:text-gray-200
+    md:mx-0
+`>
+
+    <!-- Code container -->
+    <div class="
+        col-span-2
+        
+        md:col-span-4
         grid
-        grid-cols-[repeat(2,minmax(0,1fr))]
-        grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
+        grid-rows-1
+        w-full
+        overflow-x-auto
+        bg-white
+        dark:bg-gradient-to-tr
+        dark:from-[hsl(224,12%,10%)]
+        dark:to-[hsl(224,12%,12%)]
+        "
+    >
 
-        md:grid-cols-${buttons.length}
-        md:grid-cols-1
-
-        gap-2
-
-        bg-gray-50
-        dark:bg-[hsl(224,12%,4%)]
-        dark:text-gray-200
-        -mx-7
-        md:mx-0
-    `>
-
-        <!-- Code container -->
-        <div class="
-            col-span-2
-            
-            md:col-span-4
-            grid
-            grid-rows-1
-            w-full
-            overflow-x-auto
-            mt-8
-            lg:mt-12
-            bg-white
-            dark:bg-gradient-to-tr
-            dark:from-[hsl(224,12%,10%)]
-            dark:to-[hsl(224,12%,12%)]
-            "
-        >
-
-            {code.map((item, index) => (
-                <CodeRender 
-                    is_default={index==0 ? true : false}
-                    name={item.name}
-                    desktop_code={item.desktop_code}
-                    mobile_code={item.mobile_code}
-                    highlighter={highlighter}
-                />
-            ))}
-
-        
-        </div>
-
-
-        
-        <!--  Buttons -->
-        {buttons.map((item, index) => (
-            <button class=`
-
-                rounded-lg
-                p-3
-                mt-4
-                border-2
-                border-blue-500
-                dark:border-blue-500
-                flex
-                justify-center
-                items-center
-                
-                ${index ===0 && "black:text-white text-white bg-blue-500"}
-                ${index != 0 && "black:text-white hover:text-blue-500 dark:hover:text-blue-500 bg-gray-100 dark:bg-gray-900"}
-                `
-                id={item}
-                
-            >
-                {item}
-            </button>
+        {code.map((item, index) => (
+            <CodeRender 
+                is_default={index==0 ? true : false}
+                name={item.name}
+                desktop_code={item.desktop_code}
+                mobile_code={item.mobile_code}
+                highlighter={highlighter}
+            />
         ))}
 
+    
     </div>
 
+
+    
+    <!--  Buttons -->
+    {buttons.map((item, index) => (
+        <button class=`
+
+            rounded-lg
+            p-3
+            mt-4
+            border-2
+            border-blue-500
+            dark:border-blue-500
+            flex
+            justify-center
+            items-center
+            
+            ${index ===0 && "dark:text-white text-white bg-blue-600"}
+            ${index != 0 && "dark:text-white hover:text-blue-500 dark:hover:text-blue-500 bg-gray-100 dark:bg-gray-900"}
+            `
+            id={item}
+            
+        >
+            {item}
+        </button>
+    ))}
+
 </div>
+
