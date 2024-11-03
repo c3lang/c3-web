@@ -174,94 +174,82 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
 
 <div class="
     py-12
-    grid
-    grid-cols-[repeat(2,minmax(0,1fr))]
-    lg:grid-cols-[repeat(12,minmax(0,1fr))]
-    w-full
-    gap-0
-    
     "
 >
-    <div class="
-        col-span-2
-        lg:col-span-12
-        "
-    >
-        <div class=`
-            grid
-            grid-cols-[repeat(2,minmax(0,1fr))]
-            grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
+    <div class=`
+        grid
+        grid-cols-[repeat(2,minmax(0,1fr))]
+        grid-rows-[repeat(${((buttons.length - buttons.length%2) / 2) + buttons.length%2},minmax(0,1fr))]
 
-            md:grid-cols-${buttons.length}
-            md:grid-cols-1
+        md:grid-cols-${buttons.length}
+        md:grid-cols-1
 
-            gap-2
+        gap-2
 
-            bg-gray-50
-            dark:bg-[hsl(224,12%,4%)]
-            dark:text-gray-200
-            -mx-7
-            md:mx-0
-        `>
+        bg-gray-50
+        dark:bg-[hsl(224,12%,4%)]
+        dark:text-gray-200
+        -mx-7
+        md:mx-0
+    `>
 
-            <!-- Code container -->
-            <div class="
-                col-span-2
-                
-                md:col-span-4
-                grid
-                grid-rows-1
-                w-full
-                overflow-x-auto
-                mt-8
-                lg:mt-12
-                bg-white
-                dark:bg-gradient-to-tr
-                dark:from-[hsl(224,12%,10%)]
-                dark:to-[hsl(224,12%,12%)]
-                "
-            >
-
-                {code.map((item, index) => (
-                    <CodeRender 
-                        is_default={index==0 ? true : false}
-                        name={item.name}
-                        desktop_code={item.desktop_code}
-                        mobile_code={item.mobile_code}
-                        highlighter={highlighter}
-                    />
-                ))}
-
-         
-            </div>
-
-
+        <!-- Code container -->
+        <div class="
+            col-span-2
             
-            <!--  Buttons -->
-            {buttons.map((item, index) => (
-                <button class=`
+            md:col-span-4
+            grid
+            grid-rows-1
+            w-full
+            overflow-x-auto
+            mt-8
+            lg:mt-12
+            bg-white
+            dark:bg-gradient-to-tr
+            dark:from-[hsl(224,12%,10%)]
+            dark:to-[hsl(224,12%,12%)]
+            "
+        >
 
-                    rounded-lg
-                    p-3
-                    mt-4
-                    border-2
-                    border-blue-500
-                    dark:border-blue-500
-                    flex
-                    justify-center
-                    items-center
-                    
-                    ${index ===0 && "black:text-white text-white bg-blue-500"}
-                    ${index != 0 && "black:text-white hover:text-blue-500 dark:hover:text-blue-500 bg-gray-100 dark:bg-gray-900"}
-                    `
-                    id={item}
-                   
-                >
-                    {item}
-                </button>
+            {code.map((item, index) => (
+                <CodeRender 
+                    is_default={index==0 ? true : false}
+                    name={item.name}
+                    desktop_code={item.desktop_code}
+                    mobile_code={item.mobile_code}
+                    highlighter={highlighter}
+                />
             ))}
 
+        
         </div>
+
+
+        
+        <!--  Buttons -->
+        {buttons.map((item, index) => (
+            <button class=`
+
+                rounded-lg
+                p-3
+                mt-4
+                border-2
+                border-blue-500
+                dark:border-blue-500
+                flex
+                justify-center
+                items-center
+                
+                ${index ===0 && "black:text-white text-white bg-blue-500"}
+                ${index != 0 && "black:text-white hover:text-blue-500 dark:hover:text-blue-500 bg-gray-100 dark:bg-gray-900"}
+                `
+                id={item}
+                
+            >
+                {item}
+            </button>
+        ))}
+
     </div>
 
 </div>
