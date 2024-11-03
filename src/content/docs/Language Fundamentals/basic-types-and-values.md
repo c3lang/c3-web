@@ -239,7 +239,7 @@ char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ## Pointer types
 
 Pointers have the syntax `Type*`. A pointer is a memory address where one or possibly more
-elements of the underlying address is stored. Pointers can be stacked: `Foo*` is a pointer to a `Foo`
+elements of the underlying address are stored. Pointers can be stacked: `Foo*` is a pointer to a `Foo`
 while `Foo**` is a pointer to a pointer to `Foo`.
 
 The pointer type has a special literal called `null`, which is an invalid, empty pointer.
