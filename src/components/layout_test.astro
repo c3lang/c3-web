@@ -1049,7 +1049,8 @@ await setTimeout(highlighter.dispose, 2000)
 
         <p class="pb-8">
             Bring your existing C code with you! C3 fits into 
-            existing C projects, or you can natively link C into C3 projects.
+            existing C projects (for example <a class="text-blue-500 underline" href="https://github.com/c3lang/vkQuake">VKQuake</a>), 
+            or you can natively link C into C3 projects.
         </p>
 
         <p class="pb-8">
@@ -1131,8 +1132,9 @@ await setTimeout(highlighter.dispose, 2000)
         </h1>
 
         <p class="pb-8">
-            Vendor is a collection of C libraries packaged 
-            for use in C3, which can be fetched conveniently via <a class="text-blue-500" href="">c3c vendor-fetch</a>.
+            <a class="text-blue-500 underline" href="https://github.com/c3lang/vendor">Vendor</a> 
+            is a collection of C libraries packaged for use in C3, which can be fetched 
+            conveniently by the <b>c3c vendor-fetch</b> command.
         </p>
 
         <p class="pb-8">
@@ -1160,7 +1162,8 @@ await setTimeout(highlighter.dispose, 2000)
         grid
         grid-cols-3
         grid-rows-2
-        gap-10
+        gap-4
+        md:gap-10
     ">
 
         <div class="
@@ -1174,7 +1177,8 @@ await setTimeout(highlighter.dispose, 2000)
             grid
             grid-rows-2
             grid-cols-3
-            gap-x-10
+            gap-x-4
+            md:gap-x-10
         ">
             <h3 class="
                 col-span-3
@@ -1203,8 +1207,24 @@ await setTimeout(highlighter.dispose, 2000)
                     items-center
                     justify-center
                 ">
-                    <p>Raylib</p>
-                    <p>SDL</p>
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/raylib5.c3l"
+                    >
+                        Raylib
+                    </a>
+
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/sdl2.c3l"
+                    >
+                        SDL
+                    </a>
+
                 </div>
 
             </div>  
@@ -1223,8 +1243,25 @@ await setTimeout(highlighter.dispose, 2000)
                     items-center
                     justify-center
                 ">
-                    <p>OpenGL</p>
-                    <p>Vulkan</p>
+
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/opengl.c3l"
+                    >
+                        OpenGL
+                    </a>
+
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/vulkan.c3l"
+                    >
+                        Vulkan
+                    </a>
+
                 </div>
 
             </div>  
@@ -1243,8 +1280,24 @@ await setTimeout(highlighter.dispose, 2000)
                     items-center
                     justify-center
                 ">
-                    <p>GLFW</p>
-                    <p>WebGPU</p>
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/glfw.c3l"
+                    >
+                        GLFW
+                    </a>
+
+                    <a class="
+                        underline 
+                        text-blue-500
+                        " 
+                        href="https://github.com/c3lang/vendor/tree/main/libraries/webgpu.c3l"
+                    >
+                        WebGPU
+                    </a>
+
                 </div>
 
             </div>  
@@ -1286,7 +1339,15 @@ await setTimeout(highlighter.dispose, 2000)
                 items-center
                 justify-center
             ">
-                <p>Tigr</p>
+                <a class="
+                    underline 
+                    text-blue-500
+                    " 
+                    href="https://github.com/c3lang/vendor/tree/main/libraries/tigr.c3l"
+                >
+                    Tigr
+                </a>
+
             </div>
 
         </div>
@@ -1325,7 +1386,15 @@ await setTimeout(highlighter.dispose, 2000)
                 items-center
                 justify-center
             ">
-                <p>Treesitter</p>
+                <a class="
+                    underline 
+                    text-blue-500
+                    " 
+                    href="https://github.com/c3lang/vendor/tree/main/libraries/tree_sitter.c3l"
+                >
+                    Treesitter
+                </a>
+
             </div>
 
         </div>
@@ -1365,7 +1434,14 @@ await setTimeout(highlighter.dispose, 2000)
                 items-center
                 justify-center
             ">
-                <p>Curl</p>
+                <a class="
+                    underline 
+                    text-blue-500
+                    " 
+                    href="https://github.com/c3lang/vendor/tree/main/libraries/curl.c3l"
+                >
+                    Curl
+                </a>
             </div>
 
         </div>       
