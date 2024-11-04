@@ -395,6 +395,8 @@ await setTimeout(highlighter.dispose, 2000)
     md:top-0
     md:z-50
 
+    pr-12
+
     grid
     grid-cols-3
     grid-rows-4
@@ -447,11 +449,11 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1 
         md:col-start-2
          
-        hover:text-indigo-500
+        hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
     >
         <a href="/get-involved/" class=""> Download </a>
     </button>
@@ -464,11 +466,11 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1
         md:col-start-3
          
-        hover:text-indigo-500
+        hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
     >
         <a href="/get-involved/" class=""> Docs </a>
     </button>
@@ -480,11 +482,11 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1 
         md:col-start-4
          
-        hover:text-indigo-500
+        hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
     >
         <a href="/get-involved/" class=""> Examples </a>
     </button>
@@ -496,11 +498,11 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1 
         md:col-start-5
          
-        hover:text-indigo-500
+        hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
     >
         <a href="/get-involved/" class=""> Sponsor </a>
     </button>
@@ -512,18 +514,18 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1 
         md:col-start-6
          
-        hover:text-indigo-500
+        hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
     >
         <a href="/get-involved/" class=""> News </a>
     </button>
     <!-- ================================= -->
 
     <div class="
-        px-2
+        px-3
         group
         flex
         dark:hidden
@@ -539,7 +541,7 @@ await setTimeout(highlighter.dispose, 2000)
         cursor-pointer
         
         dark:text-gray-200
-        dark:hover:text-indigo-400"
+        dark:hover:text-blue-400"
         role="button"
         onmousedown=lightModeClickhandler()
     >
@@ -549,7 +551,7 @@ await setTimeout(highlighter.dispose, 2000)
             bg-clip-text 
             text-transparent
             bg-black
-            group-hover:bg-indigo-400
+            group-hover:bg-blue-500
             ">
             🌙
         </p>
@@ -557,7 +559,7 @@ await setTimeout(highlighter.dispose, 2000)
     </div>
     <div
         class="
-        px-2
+        px-3
         group
         hidden
         dark:flex
@@ -579,7 +581,7 @@ await setTimeout(highlighter.dispose, 2000)
             bg-clip-text 
             text-transparent
             bg-white
-            group-hover:bg-indigo-400
+            group-hover:bg-blue-500
             ">
             ☀
         </p>
@@ -590,7 +592,7 @@ await setTimeout(highlighter.dispose, 2000)
 
     <!-- Github Icon -->
     <button class="
-        px-2
+        px-3
         flex
         items-center
         justify-center
@@ -598,8 +600,8 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1
         md:col-start-9
          
-        hover:fill-indigo-400
-        dark:hover:fill-indigo-400
+        hover:fill-blue-500
+        dark:hover:fill-blue-400
         dark:fill-white
         w-full
         h-full"
@@ -621,7 +623,7 @@ await setTimeout(highlighter.dispose, 2000)
 
     <!-- Discourse Icon -->
     <button class="
-        px-2
+        px-3
         flex
         items-center
         justify-center
@@ -629,8 +631,8 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1
         md:col-start-10
          
-        hover:fill-indigo-500
-        dark:hover:fill-indigo-400
+        hover:fill-blue-500
+        dark:hover:fill-blue-400
         dark:fill-white
         w-full
         h-full"
@@ -660,8 +662,8 @@ await setTimeout(highlighter.dispose, 2000)
         md:row-start-1
         md:col-start-11
          
-        hover:fill-indigo-500
-        dark:hover:fill-indigo-400
+        hover:fill-blue-500
+        dark:hover:fill-blue-400
         dark:fill-white
         w-full
         h-full"
@@ -691,7 +693,8 @@ await setTimeout(highlighter.dispose, 2000)
     w-full
     p-12
     md:p-24
-    bg-[hsl(224,12%,25%)]
+    bg-[hsl(228,13%,92%)]
+    dark:bg-[hsl(223,13%,22%)]
     "
 >
     <div class="
@@ -810,7 +813,7 @@ await setTimeout(highlighter.dispose, 2000)
                 stroke-linecap="round"></path>
             </svg>
         </a>
-        </div>
+    </div>
    
 </div>
 
@@ -866,21 +869,22 @@ await setTimeout(highlighter.dispose, 2000)
     grid
     grid-cols-1
     lg:grid-cols-12
-    bg-gray-50
-    dark:bg-[hsl(224,12%,4%)]
     dark:text-gray-200
     p-12
     rounded-sm
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
     "
 >
     <div class="
-        md:col-span-5
+        lg:row-start-1
+        lg:col-span-5
         flex
         flex-col
         justify-center
         
         md:p-12
-        
+        lg:pr-24
     ">
         <h1 class="
             text-3xl
@@ -900,7 +904,7 @@ await setTimeout(highlighter.dispose, 2000)
             use-after-free and memory leaks.
         </p>
 
-        <p>
+        <p class="pb-8">
             Flexibly choose how you manage safety, as each feature 
             is opt-in so you can tailor it to suit your domain.
         </p>
@@ -910,7 +914,7 @@ await setTimeout(highlighter.dispose, 2000)
     <div class="
         py-12
         -mx-8
-        md:mx-0
+        lg:mx-0
         lg:col-start-6
         lg:col-span-7
     ">
@@ -930,148 +934,652 @@ await setTimeout(highlighter.dispose, 2000)
 
 </div>
 
+<!-- Features block -->
+<div class="
+    grid
+    grid-cols-1
+    lg:grid-cols-12
+    dark:text-gray-200
+    p-12
+    rounded-sm
+    bg-[hsl(228,13%,92%)]
+    dark:bg-[hsl(223,13%,22%)]
+    "
+>
+    <div class="
+        lg:row-start-1
+        lg:col-start-8
+        lg:col-span-5
+        flex
+        flex-col
+        justify-center
+        
+        md:p-12
+        lg:pl-24
+    ">
+        <h1 class="
+            text-3xl
+            md:text-4xl
+            font-bold
+            dark:text-gray-100
+            py-12
+            "
+        >
+        High Performance
+        </h1>
+
+        <p class="pb-8">
+            Choose from multiple memory allocators to achieve 
+            high performance for your application. Ranging from 
+            throughput centered servers to latency critical embedded systems.
+        </p>
+
+        <p class="pb-8">
+            Optimise your code's throughput with control your program's 
+            memory layout, multi-threading and easy access to SIMD and 
+            inline ASM when you need it. 
+        </p>
+
+        <p class="pb-8">
+            You no longer have to choose between performance and correctness, 
+            error handling is natively supported without performance cost.
+        </p>
 
 
 
-    <!-- <DemoSlice
-        title="ergonomics_and_safety"
-        heading="Write Safer Programs"
-        bullets={
-            [
-                `<b>Null safety and error handling</b> with <a class="text-blue-500" href="/language-common/optionals-essential/"> Optionals</a>.`,
+    </div>
 
-                `<b>Safe iteration</b> with <a class="text-blue-500" href="/language-common/arrays/#foreach-element-by-copy">foreach</a>.`,
+    
+    <div class="
+        py-12
+        -mx-8
+        lg:mx-0
+        lg:col-start-1
+        lg:col-span-7
+    ">
+        <DemoSliceCodeOnly
+            buttons={
+                [
+                    "Optionals",
+                    "Defer",
+                    "Slices",
+                    "Contracts"
+                ]
+            }
+            code={code_input}
+            highlighter={highlighter}
+        />
+    </div>
 
-                `<b>Safe subarrays</b> with bounds-checked <a class="text-blue-500" href="/language-common/arrays/#slicing-arrays">slices</a>.`,
-
-                `<b>Enforce system constraints</b> with <a class="text-blue-500" href="/language-common/contracts">contracts</a> preventing impossible situations.`,
-
-                `<b>Avoid memory leaks and use-after free</b> with <a class="text-blue-500" href="/faq/#memory-management">scoped memory management</a>, memory automatically freed and unavailable after scope exit.`,
-
-                `<b>Clean up resources</b> with <a class="text-blue-500" href="/language-common/defer/">defer</a> which runs at scope exit.`,
-            ]
-        }
-        buttons={
-            [
-                "Optionals",
-                "Defer",
-                "Slices",
-                "Contracts"
-            ]
-        }
-        code={code_input}
-        highlighter={highlighter}
-    /> -->
+</div>
 
 
-    <!-- <DemoSlice
-        title="high_performance"
-        heading="High Performance"
-        bullets={
-            [
-                `<b>Custom allocators</b> include automatically freed arenas, temporary allocators for short lived variables, tracking allocators to monitor memory usage and more.`,
+<!-- Features block -->
+<div class="
+    grid
+    grid-cols-1
+    lg:grid-cols-12
+    dark:text-gray-200
+    p-12
+    rounded-sm
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
+    "
+>
+    <div class="
+        lg:row-start-1
+        lg:col-span-5
+        flex
+        flex-col
+        justify-center
+        
+        md:p-12
+        lg:pr-24
+    ">
+        <h1 class="
+            text-3xl
+            md:text-4xl
+            font-bold
+            dark:text-gray-100
+            py-12
+            "
+        >
+        Simple And Reusable
+        </h1>
 
-                `<b>Manual memory management</b> using either scoped allocation, custom allocators, defer cleanup or manual.`,
+        <p class="pb-8">
+            Bring your existing C code with you! C3 fits into 
+            existing C projects, or you can natively link C into C3 projects.
+        </p>
 
-                `<b>Zero overhead error handling</b> in contrast to C++ exceptions.`,
+        <p class="pb-8">
+            Code in C3 is organised into namespaced modules, with simple 
+            methods to share behaviour between structs via interfaces or 
+            struct subtyping and to abstract differences  in behaviour 
+            with typed function pointers.
+        </p>
 
-                `<b>SIMD</b> without complex intrinsics.`,
+        <p class="pb-8">
+            Generic modules make it easy to create abstract data types 
+            and functions, and you can expand this capability to compile-time 
+            reflection with C3's macros.
+        </p>
 
-                `<b>Optimise throughput</b> with control over memory layout.`,
 
-                `<b>Simple Inline ASM</b>`,
-            ]
-        }
-        buttons={
-            [
-                "Custom allocators",
-                "Manual memory management",
-                "SIMD",
-                "Zero overhead error handling",
-                "Memory Layout",
-                "Simple Inline ASM",
-            ]
-        }
-        code={code_input_perf}
-        highlighter={highlighter}
-    />
+        
+    </div>
 
-    <DemoSlice
-        title="std_lib"
-        heading="Batteries Included Standard Library"
-        bullets={
-            [
-                "Dynamic containers",
-                "Strings",
-                "Cross-platform abstractions for ease of use.",
-                "Access to the native platform when you need it."
-            ]
-        }
-        buttons={
-            [
-                "Containers",
-                "Strings",
-                "Cross Platform",
-                "Platform Access"
-            ]
-        }
-        code={code_input_stdlib}
-        highlighter={highlighter}
-    />
+    
+    <div class="
+        py-12
+        -mx-8
+        lg:mx-0
+        lg:col-start-6
+        lg:col-span-7
+        
+    ">
 
-    <DemoSlice
-        title="productive"
-        heading="Productive"
-        bullets={
-            [
-                `<b>Easy to learn and easy to read</b> a design goal of C3 minimise differences from C.`,
+        <div class="
+            w-full
+            h-[35rem]
+            bg-[url('/vkquake.jpg')]
+            dark:brightness-90
+            brightness-125
+            bg-no-repeat
+            bg-center
+            bg-cover
+            z-10"
+        />
+        
+    </div>
 
-                `<b>C3 integrates with C</b> with full C ABI compatibility for <em>all</em> features.`,
+</div>
 
-                `<b>Get organised</b> with namespaced modules.`,
 
-                `<b>Write concise code</b> C3 programs can be 20–30% shorter than their C equivalents.`,
+<!-- Features block -->
+<div class="
+    grid
+    grid-cols-1
+    lg:grid-cols-12
+    dark:text-gray-200
+    p-12
+    rounded-sm
+    bg-[hsl(228,13%,92%)]
+    dark:bg-[hsl(223,13%,22%)]
+    "
+>
+    <div class="
+        lg:row-start-1
+        lg:col-start-8
+        lg:col-span-5
+        flex
+        flex-col
+        justify-center
+        
+        md:p-12
+        lg:pl-24
+    ">
+        <h1 class="
+            text-3xl
+            md:text-4xl
+            font-bold
+            dark:text-gray-100
+            py-12
+            "
+        >
+        Packaged Libraries
+        </h1>
 
-                `<b>Fully featured standard library</b> to get productive, fast!`,
-            ]
-        }
-        buttons={
-            [
-                "Containers",
-                "Strings",
-                "Cross Platform",
-                "Platform Access"
-            ]
-        }
-        code={code_input_stdlib}
-        highlighter={highlighter}
-    />
+        <p class="pb-8">
+            Vendor is a collection of C libraries packaged 
+            for use in C3, which can be fetched conveniently via <a class="text-blue-500" href="">c3c vendor-fetch</a>.
+        </p>
 
+        <p class="pb-8">
+            Code in C3 is organised into namespaced modules, with simple 
+            methods to share behaviour between structs via interfaces or 
+            struct subtyping and to abstract differences  in behaviour 
+            with typed function pointers.
+        </p>
+
+        <p class="pb-8">
+            Generic modules make it easy to create abstract data types 
+            and functions, and you can expand this capability to compile-time 
+            reflection with C3's macros.
+        </p>
+
+    </div>
+
+    
+    <div class="
+        py-12
+        -mx-8
+        lg:mx-0
+        lg:col-start-1
+        lg:col-span-7
+        grid
+        grid-cols-3
+        grid-rows-2
+        gap-10
+    ">
+
+        <div class="
+            col-span-3
+            bg-gray-50
+            dark:bg-black
+            border-2
+            border-gray-400
+            dark:border-gray-500
+
+            grid
+            grid-rows-2
+            grid-cols-3
+            gap-x-10
+        ">
+            <h3 class="
+                col-span-3
+                font-bold
+                text-xl
+                md:text-2xl
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                Graphics Libraries
+            </h3>
+
+            <div class="
+                col-span-1
+                p-4
+                lg:p-12
+            ">
+                <div class="
+                    col-span-3
+                    text-lg
+                    font-semibold
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                ">
+                    <p>Raylib</p>
+                    <p>SDL</p>
+                </div>
+
+            </div>  
+
+            <div class="
+                col-span-1
+                p-4
+                lg:p-12
+            ">
+                <div class="
+                    col-span-3
+                    text-lg
+                    font-semibold
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                ">
+                    <p>OpenGL</p>
+                    <p>Vulkan</p>
+                </div>
+
+            </div>  
+
+            <div class="
+                col-span-1
+                p-4
+                lg:p-12
+            ">
+                <div class="
+                    col-span-3
+                    text-lg
+                    font-semibold
+                    flex
+                    flex-col
+                    items-center
+                    justify-center
+                ">
+                    <p>GLFW</p>
+                    <p>WebGPU</p>
+                </div>
+
+            </div>  
+
+        </div>
+
+
+        <div class="
+            col-span-1
+            bg-gray-50
+            dark:bg-black
+            border-2
+            border-gray-400
+            dark:border-gray-500
+            p-12
+            grid
+            grid-rows-2
+            grid-cols-3
+        ">
+            <h3 class="
+                col-span-full
+                font-bold
+                text-xl
+                md:text-2xl
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                GUI
+            </h3>
+
+            <div class="
+                col-span-full
+                text-lg
+                font-semibold
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                <p>Tigr</p>
+            </div>
+
+        </div>
+
+        <div class="
+            col-span-1
+            bg-gray-50
+            dark:bg-black
+            border-2
+            border-gray-400
+            dark:border-gray-500
+            p-12
+            grid
+            grid-rows-2
+            grid-cols-3
+        ">
+            <h3 class="
+                col-span-3
+                font-bold
+                text-xl
+                md:text-2xl
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                Parsing
+            </h3>
+
+            <div class="
+                col-span-3
+                text-lg
+                font-semibold
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                <p>Treesitter</p>
+            </div>
+
+        </div>
+
+
+        <div class="
+            col-span-1
+            bg-gray-50
+            dark:bg-black
+            border-2
+            border-gray-400
+            dark:border-gray-500
+            p-12
+            grid
+            grid-rows-2
+            grid-cols-3
+        ">
+            <h3 class="
+                col-span-3
+                font-bold
+                text-xl
+                md:text-2xl
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                Web
+            </h3>
+
+            <div class="
+                col-span-3
+                text-lg
+                font-semibold
+                flex
+                flex-col
+                items-center
+                justify-center
+            ">
+                <p>Curl</p>
+            </div>
+
+        </div>       
+            
+    </div>
+
+</div>
+
+<!-- Features block -->
+<div class="
+    grid
+    grid-rows-2
+
+    dark:text-gray-200
+    md:p-24
+    py-24
+    px-8
+    rounded-sm
+    bg-gray-50
+    dark:bg-[hsl(224,12%,4%)]
+    "
+>
+    <div class="
+        md:flex 
+        md:items-center
+        md:justify-center
+        "
+    >
+        <a
+            class="
+                flex
+                justify-center
+                items-center
+                gap-x-3 
+                text-center
+                bg-blue-600
+                border-blue-600
+                hover:border-slate-950
+                border-2
+                rounded-md
+                py-6
+                px-2
+                md:px-20
+                shadow-sm
+                focus:z-10
+                focus:outline-none focus:ring-2 dark:focus:ring-blue-200 focus:ring-blue-800 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950
+                transition-all
+                text-white
+                font-medium
+                select-none
+                dark:bg-blue-600
+                dark:hover:border-blue-500
+                dark:border-blue-600
+                dark:text-white"
+            href="introduction"
+        >
+            Get Started
+            <svg
+                class="w-3 h-3 ml-2"
+                viewBox="0 0 16 16"
+                fill="none"
+            >
+            <path
+                d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"></path>
+            </svg>
+        </a>
+    </div>
+
+    <div class="
+        flex
+        items-center
+        justify-center
+        text-2xl
+        md:text-3xl
+        font-bold
+        pt-8
+    ">
+        Get Involved
+    </div>
+
+    <div class="
+        flex
+        items-center
+        justify-center
+    ">
+        <div class="
+            grid
+            grid-cols-3
+            lg:pb-12
+            pb-8
+            pt-6
+        ">
+
+            <!-- ================================= -->
+
+            <!-- Github Icon -->
+            <button class="
+                px-4
+                flex
+                flex-col
+                items-center
+                justify-center
+                justify-items-center
+                
+                hover:fill-blue-500
+                dark:hover:fill-blue-400
+                dark:fill-white
+                w-full
+                h-full"
+            >
+                <svg
+                    class="ml-1 h-12"
+                    viewBox="0 0 100 96.36"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                    ></path>
+                </svg>
+
+            <p class="
+                py-3
+            ">
+                Github
+            </p>
+
+        </button>
+
+        <!-- ================================= -->
+
+        <!-- Discourse Icon -->
+        <button class="
+            px-4
+            flex
+            flex-col
+            items-center
+            justify-center
+            justify-items-center
+            
+            hover:fill-blue-500
+            dark:hover:fill-blue-400
+            dark:fill-white
+            w-full
+            h-full"
+        >
+            <svg
+                class="ml-1 h-12"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                role="img"
+            >
+                <path
+                    d="M12.103 0C18.666 0 24 5.485 24 11.997c0 6.51-5.33 11.99-11.9 11.99L0 24V11.79C0 5.28 5.532 0 12.103 0zm.116 4.563a7.395 7.395 0 0 0-6.337 3.57 7.247 7.247 0 0 0-.148 7.22L4.4 19.61l4.794-1.074a7.424 7.424 0 0 0 8.136-1.39 7.256 7.256 0 0 0 1.737-7.997 7.375 7.375 0 0 0-6.84-4.585h-.008z"
+                ></path>
+            </svg>
+
+            <p class="
+                py-3
+            ">
+                Forums
+            </p>
+
+        </button>
+
+        <!-- ================================= -->
+
+        <!-- Discord -->
+        <button
+            class="
+            px-4
+            flex
+            flex-col
+            items-center
+            justify-center
+            justify-items-center
+            
+            hover:fill-blue-500
+            dark:hover:fill-blue-400
+            dark:fill-white
+            w-full
+            h-full"
+        >
+            <svg
+                class="h-12"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 127.14 96.36"
+            >
+                <path
+                    d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"
+                ></path>
+            </svg>
+
+            <p class="
+                py-3
+            ">
+                Discord
+            </p>
+
+        </button>
+
+        <!-- ================================= -->
+
+
+
+        </div>
+    </div>
     
 
 
-
-
-    <DemoSlice
-        title="generic_code"
-        heading="Simpler Generic Code"
-        bullets={
-            [
-                `<b>Simple</b> generic datatypes and functions with generic modules.`,
-                `<b>Flexible</b> code which can use runtime or compile-time reflection.`,
-                `<b>Extensible</b> with compile-time macros that are similar to regular code. `,
-            ]
-        }
-        buttons={
-            [
-                "Generic Modules",
-                "Compile-Time Reflection",
-                "Compile-Time Macros",
-            ]
-        }
-        code={code_input_stdlib}
-        highlighter={highlighter}
-    /> -->
-
+</div>
 
 
