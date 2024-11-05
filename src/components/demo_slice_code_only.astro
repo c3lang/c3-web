@@ -129,22 +129,23 @@ localStorage[ergoLocalStorageKey] = ergoButtons[0];
 //========================================
 // Performance By Default
 
-const perfByDefaultLocalStorageKey = "perf_by_default_selected_tab_id";
+const perfLocalStorageKey = "perf_by_default_selected_tab_id";
 
-const perfByDefaultButtons = [
+const perfButtons = [
+    "Temp Allocator",
     "SIMD",
-    "Allocators",
     "Inline ASM",
+    "Threads"
 ];
 
-const perfByDefaultHandler = generateClickHandler(perfByDefaultLocalStorageKey);
+const perfByDefaultHandler = generateClickHandler(perfLocalStorageKey);
 
-perfByDefaultButtons.forEach(buttonName => {
+perfButtons.forEach(buttonName => {
     document.getElementById(buttonName).addEventListener("mousedown", perfByDefaultHandler);
 });
 
 // default select the first element
-localStorage[perfByDefaultLocalStorageKey] = perfByDefaultButtons[0];
+localStorage[perfLocalStorageKey] = perfButtons[0];
 
 //========================================
 // Batteries Included Standard Library

@@ -135,206 +135,160 @@ fn float divide(int x)
 
 const code_input_perf = [
 {
+    "name": "Temp Allocator",
+    "desktop_code": 
+`fn void! main()
+{
+    @pool()
+    {
+        DString message;
+        message.temp_init();
+        message.append("Welcome!\\n");
+        message.append("歡迎!");
+        io::printn(message);
+    };
+    // "message" is automatically freed here
+    // freed variables unavailable
+}`,
+    "mobile_code": 
+`fn void! main()
+{
+    @pool()
+    {
+        DString msg;
+        msg.temp_init();
+        msg.append("Hi!\\n");
+        msg.append("你好!");
+        io::printn(msg);
+    };
+    // "msg" is freed
+    // freed variables unavailable
+}`    
+},
+{
     "name": "SIMD",
     "desktop_code": 
 `import std::io;
 
-fn void! test()
-{
-    // Return an Excuse by adding '?' after the fault.
-    return IoError.FILE_NOT_FOUND?;
-}
+// Vectors are based on hardware SIMD vectors, 
+// and supports many different operations that 
+// work on all elements in parallel 
+// for example arithmetic:
 
-fn void main(String[] args)
+fn void main()
 {
-    // If the Optional is empty, assign the
-    // Excuse to a variable:
-    if (catch excuse = test())
-    {
-        io::printfn("test() gave an Excuse: %s", excuse);
-    }
-}`,
-    "mobile_code": 
-`import std::io;
-
-fn void! test()
-{
-    // Return an Excuse by with
-    // '?' after the fault.
-    return IoError.READ_ONLY?;
-}
-
-fn void main(String[] args)
-{
-    // If the Optional is empty
-    // assign the Excuse
-    // to a variable:
-    if (catch excuse = test())
-    {
-        io::printfn(
-            "Excuse: %s", excuse
-        );
-    }
-}`    
-},
-{
-    "name": "Allocators",
-    "desktop_code": 
-`import std::io;
-
-fn void! main()
-{
-    int* x = mem::new(int);
-    // Free memory on scope exit
-    defer free(x); 
-
-    io::printfn("x: %s", *x);
+    int[<2>] a = { 3, 8 };
+    int[<2>] b = { 7, 2 };
+    // c is { 21, 16 }
+    int[<2>] c = a * b;
+    io::print(c);
 }
 `,
     "mobile_code": 
 `import std::io;
 
-fn void! main()
-{
-    int* x = mem::new(int);
-    // Free memory on scope exit
-    defer free(x); 
+// Vectors are based on hardware 
+// SIMD vectors, and support 
+// operations that work on all 
+// elements in parallel
+// For example arithmetic:
 
-    io::printfn("x: %s", *x);
+fn void main()
+{
+    int[<2>] a = { 3, 8 };
+    int[<2>] b = { 7, 2 };
+    // c is { 21, 16 }
+    int[<2>] c = a * b;
+    io::print(c);
 }`,
 },
 {
     "name": "Inline ASM",
     "desktop_code": 
-`<*
- @require x != 0 "infinite result" 
-*>
-fn float divide(int x)
+`int x = 3;
+int g;
+int* gptr = &g;
+
+asm
 {
-    return 1.0f / x;
+    // Move 1 into the variable x
+    movl x, 1;
+
+    // Move value of x into address gptr
+    movl [gptr], x;      
+
+    // Move 23 + x into EAX register
+    movl $eax, (23 + x); 
 }`,
     "mobile_code":
-`<*
- @require x != 0 "infinite result" 
-*>
-fn float divide(int x)
+`int x = 3;
+int g;
+int* ptr = &g;
+
+asm
 {
-    return 1.0f / x;
+    // Move 1 into the variable x
+    movl x, 1;
+
+    // *ptr = x 
+    movl [ptr], x;      
+
+    // Move 23 + x into EAX
+    movl $eax, (23 + x); 
+}`
+},
+{
+    "name": "Threads",
+    "desktop_code": 
+`import std::thread;
+import std::io;
+
+fn int thread_fn(void* arg)
+{
+    int x = *(int*)arg;
+    io::printfn("x: %s", x);
+    return 0;
+}
+
+fn void! main()
+{
+    int arg = 7;
+    std::thread::Thread t1,t2;
+    t1.create(&thread_fn, &arg)!;
+    t2.create(&thread_fn, &arg)!;
+
+    t1.join()!;
+    t2.join()!;
+}`,
+    "mobile_code":
+`import std::thread;
+import std::io;
+
+fn int thread_fn(void* arg)
+{
+    int x = *(int*)arg;
+    io::printfn("x: %s", x);
+    return 0;
+}
+
+fn void! main()
+{
+    int arg = 7;
+    std::thread::Thread t1,t2;
+    t1.create(&thread_fn, &arg)!;
+    t2.create(&thread_fn, &arg)!;
+
+    t1.join()!;
+    t2.join()!;
 }`
 }
 ]
+
+
+
 
 
 //=======================================
-
-
-const code_input_stdlib = [
-{
-    "name": "Containers",
-    "desktop_code": 
-`import std::io;
-
-fn void! test()
-{
-    // Return an Excuse by adding '?' after the fault.
-    return IoError.FILE_NOT_FOUND?;
-}
-
-fn void main(String[] args)
-{
-    // If the Optional is empty, assign the
-    // Excuse to a variable:
-    if (catch excuse = test())
-    {
-        io::printfn("test() gave an Excuse: %s", excuse);
-    }
-}`,
-    "mobile_code": 
-`import std::io;
-
-fn void! test()
-{
-    // Return an Excuse by with
-    // '?' after the fault.
-    return IoError.READ_ONLY?;
-}
-
-fn void main(String[] args)
-{
-    // If the Optional is empty
-    // assign the Excuse
-    // to a variable:
-    if (catch excuse = test())
-    {
-        io::printfn(
-            "Excuse: %s", excuse
-        );
-    }
-}`    
-},
-{
-    "name": "Strings",
-    "desktop_code": 
-`import std::io;
-
-fn void! main()
-{
-    int* x = mem::new(int);
-    // Free memory on scope exit
-    defer free(x); 
-
-    io::printfn("x: %s", *x);
-}
-`,
-    "mobile_code": 
-`import std::io;
-
-fn void! main()
-{
-    int* x = mem::new(int);
-    // Free memory on scope exit
-    defer free(x); 
-
-    io::printfn("x: %s", *x);
-}`    
-},
-{
-    "name": "Cross Platform",
-    "desktop_code": 
-`fn void main()
-{
-    int[5] a = 1, 20, 50 ;
-    // selects [ 20, 50 ]
-    int[] c = a[1 .. 2]; 
-}`,
-    "mobile_code":
-`fn void main()
-{
-    int[5] a = 1, 20, 50 ;
-    // selects [ 20, 50 ]
-    int[] c = a[1 .. 2]; 
-}`
-},
-{
-    "name": "Platform Access",
-    "desktop_code": 
-`<*
- @require x != 0 "infinite result" 
-*>
-fn float divide(int x)
-{
-    return 1.0f / x;
-}`,
-    "mobile_code":
-`<*
- @require x != 0 "infinite result" 
-*>
-fn float divide(int x)
-{
-    return 1.0f / x;
-}`
-}
-]
 
 // Clear up the formatter resources after 2s
 await setTimeout(highlighter.dispose, 2000)
@@ -845,7 +799,7 @@ await setTimeout(highlighter.dispose, 2000)
     rounded-sm
     bg-gray-50
     dark:bg-[hsl(224,12%,4%)]
-    "
+"
 >
     <div class="
         lg:row-start-1
@@ -971,16 +925,16 @@ await setTimeout(highlighter.dispose, 2000)
         lg:col-span-7
     ">
         <DemoSliceCodeOnly
-            height="xl:h-[32rem] h-[37rem]"
+            height="xl:h-[36rem] h-[34rem]"
             buttons={
                 [
-                    "Optionals",
-                    "Defer",
-                    "Slices",
-                    "Contracts"
+                    "Temp Allocator",
+                    "SIMD",
+                    "Inline ASM",
+                    "Threads"
                 ]
             }
-            code={code_input}
+            code={code_input_perf}
             highlighter={highlighter}
         />
     </div>
