@@ -373,8 +373,7 @@ await setTimeout(highlighter.dispose, 2000)
     border-b-gray-200
     dark:border-b-gray-800"
 >
-    <span
-        class="
+    <span class="
         px-12
         text-3xl
         font-bold
@@ -399,8 +398,11 @@ await setTimeout(highlighter.dispose, 2000)
     </span>
 
     <!-- ================================= -->
-    <button
-        class="
+
+    <a class="
+        flex
+        items-center
+        justify-center
         px-3
         row-span-1
         col-start-1
@@ -412,46 +414,60 @@ await setTimeout(highlighter.dispose, 2000)
         h-full
         dark:text-gray-200
         dark:hover:text-blue-400"
+        href="/getting-started/"
     >
-        <a href="/getting-started/" class=""> Docs </a>
-    </button>
+        Docs 
+    </a>
+
     <!-- ================================= -->
-    <button
-        class="
+
+    <a class="
+        flex
+        items-center
+        justify-center
         px-3
         row-span-1
         md:row-start-1 
         md:col-start-3
-         
+        
         hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
         dark:hover:text-blue-400"
-    >
-        <a href="/language-overview/examples/" class=""> Examples </a>
-    </button>
+        href="/language-overview/examples/"
+    > 
+        Examples
+    </a>
+
     <!-- ================================= -->
     
-    <button
-        class="
+    <a class="
+        flex
+        items-center
+        justify-center
         px-3
         row-span-1
         col-start-3
         md:row-start-1 
         md:col-start-4
-         
+        
         hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
         dark:hover:text-blue-400"
+        href="/getting-started/prebuilt-binaries/"
     >
-        <a href="/getting-started/prebuilt-binaries/" class=""> Download </a>
-    </button>
+        Download
+    </a>
+
     <!-- ================================= --> 
-    <button
-        class="
+
+    <a class="
+        flex
+        items-center
+        justify-center
         px-3
         row-span-1
         md:row-start-1 
@@ -462,25 +478,31 @@ await setTimeout(highlighter.dispose, 2000)
         h-full
         dark:text-gray-200
         dark:hover:text-blue-400"
+        href="/get-involved/"
     >
-        <a href="/get-involved/" class=""> Community </a>
-    </button>
+        Community
+    </a>
+
     <!-- ================================= -->
-    <button
-        class="
+
+    <a class="
+        flex
+        items-center
+        justify-center
         px-3
         row-span-1
         md:row-start-1 
         md:col-start-6
-         
+        
         hover:text-blue-500
         w-full
         h-full
         dark:text-gray-200
         dark:hover:text-blue-400"
+        href="https://github.com/sponsors/c3lang"
     >
-        <a href="https://github.com/sponsors/c3lang" class=""> Sponsor </a>
-    </button>
+        Sponsor 
+    </a>
 
     <!-- ================================= -->
 
@@ -616,8 +638,7 @@ await setTimeout(highlighter.dispose, 2000)
     <!-- ================================= -->
 
     <!-- Discord -->
-    <a
-        class="
+    <a class="
         px-2
         flex
         items-center
@@ -1483,23 +1504,24 @@ await setTimeout(highlighter.dispose, 2000)
             <!-- ================================= -->
 
             <!-- Github Icon -->
-            <a href="https://github.com/c3lang/c3c/discussions"> 
-                <button class="
-                    px-4
-                    flex
-                    flex-col
-                    items-center
-                    justify-center
-                    justify-items-center
-                    
-                    hover:fill-blue-500
-                    hover:text-blue-500
-                    dark:hover:fill-blue-400
-                    dark:fill-white
-                    dark:hover:text-blue-400
-                    w-full
-                    h-full"
-                >
+            <a class="
+                px-4
+                flex
+                flex-col
+                items-center
+                justify-center
+                justify-items-center
+                
+                hover:fill-blue-500
+                hover:text-blue-500
+                dark:hover:fill-blue-400
+                dark:fill-white
+                dark:hover:text-blue-400
+                w-full
+                h-full"
+                href="https://github.com/c3lang/c3c/discussions"
+            > 
+
                 <svg
                     class="ml-1 h-12"
                     viewBox="0 0 100 96.36"
@@ -1519,86 +1541,85 @@ await setTimeout(highlighter.dispose, 2000)
                     Github
                 </p>
                 
-            </button>
-        </a>
+            </a>
 
-        <!-- ================================= -->
+            <!-- ================================= -->
 
-        <!-- Discourse Icon -->
-        <a class="
-            px-4
-            flex
-            flex-col
-            items-center
-            justify-center
-            justify-items-center
-            
-            hover:fill-blue-500
-            hover:text-blue-500
-            dark:hover:fill-blue-400
-            dark:fill-white
-            dark:hover:text-blue-400
-            w-full
-            h-full"
-            href="https://c3lang.discourse.group/"
-        > 
-            <svg
-                class="ml-1 h-12"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                role="img"
-            >
-                <path
-                    d="M12.103 0C18.666 0 24 5.485 24 11.997c0 6.51-5.33 11.99-11.9 11.99L0 24V11.79C0 5.28 5.532 0 12.103 0zm.116 4.563a7.395 7.395 0 0 0-6.337 3.57 7.247 7.247 0 0 0-.148 7.22L4.4 19.61l4.794-1.074a7.424 7.424 0 0 0 8.136-1.39 7.256 7.256 0 0 0 1.737-7.997 7.375 7.375 0 0 0-6.84-4.585h-.008z"
-                ></path>
-            </svg>
-
-            <p class="
-                py-3
-            ">
-                Forums
-            </p>
-        </a>
-
-        <!-- ================================= -->
-
-        <!-- Discord -->
-        <a class="
-            px-4
-            flex
-            flex-col
-            items-center
-            justify-center
-            justify-items-center
-            
-            hover:fill-blue-500
-            hover:text-blue-500
-            dark:hover:fill-blue-400
-            dark:fill-white
-            dark:hover:text-blue-400
-            w-full
-            h-full"
-            href="https://discord.gg/qN76R87"
-        >            
-            <svg
-                class="h-12"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 127.14 96.36"
-            >
-                <path
-                    d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"
-                ></path>
-            </svg>
-
-            <p class="
-                py-3
-            ">
-                Discord
-            </p>
+            <!-- Discourse Icon -->
+            <a class="
+                px-4
+                flex
+                flex-col
+                items-center
+                justify-center
+                justify-items-center
                 
-        </a>
+                hover:fill-blue-500
+                hover:text-blue-500
+                dark:hover:fill-blue-400
+                dark:fill-white
+                dark:hover:text-blue-400
+                w-full
+                h-full"
+                href="https://c3lang.discourse.group/"
+            > 
+                <svg
+                    class="ml-1 h-12"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    role="img"
+                >
+                    <path
+                        d="M12.103 0C18.666 0 24 5.485 24 11.997c0 6.51-5.33 11.99-11.9 11.99L0 24V11.79C0 5.28 5.532 0 12.103 0zm.116 4.563a7.395 7.395 0 0 0-6.337 3.57 7.247 7.247 0 0 0-.148 7.22L4.4 19.61l4.794-1.074a7.424 7.424 0 0 0 8.136-1.39 7.256 7.256 0 0 0 1.737-7.997 7.375 7.375 0 0 0-6.84-4.585h-.008z"
+                    ></path>
+                </svg>
 
-        <!-- ================================= -->
+                <p class="
+                    py-3
+                ">
+                    Forums
+                </p>
+            </a>
+
+            <!-- ================================= -->
+
+            <!-- Discord -->
+            <a class="
+                px-4
+                flex
+                flex-col
+                items-center
+                justify-center
+                justify-items-center
+                
+                hover:fill-blue-500
+                hover:text-blue-500
+                dark:hover:fill-blue-400
+                dark:fill-white
+                dark:hover:text-blue-400
+                w-full
+                h-full"
+                href="https://discord.gg/qN76R87"
+            >            
+                <svg
+                    class="h-12"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 127.14 96.36"
+                >
+                    <path
+                        d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"
+                    ></path>
+                </svg>
+
+                <p class="
+                    py-3
+                ">
+                    Discord
+                </p>
+                    
+            </a>
+
+            <!-- ================================= -->
 
 
 
