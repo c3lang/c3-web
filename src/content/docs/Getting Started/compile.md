@@ -4,7 +4,10 @@ description: Build C3 From Source
 sidebar:
   order: 21
 ---
-C3 has [precompiled binaries for Windows, MacOS and Ubuntu](/install-c3/prebuilt-binaries/). 
+
+:::note[Want A C3 Binary?]
+[Download C3](/getting-started/prebuilt-binaries/), available on Mac, Windows and Linux.
+:::
 
 For other platforms it should be possible to compile it on any platform LLVM can compile to. You will need `git` and `CMake` installed.
 

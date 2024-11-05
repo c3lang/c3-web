@@ -249,6 +249,20 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"Getting Started/compile.md": {
+	id: "Getting Started/compile.md";
+  slug: "getting-started/compile";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Getting Started/design-goals.md": {
+	id: "Getting Started/design-goals.md";
+  slug: "getting-started/design-goals";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "Getting Started/hello-world.md": {
 	id: "Getting Started/hello-world.md";
   slug: "getting-started/hello-world";
@@ -256,9 +270,30 @@ declare module 'astro:content' {
   collection: "docs";
   data: InferEntrySchema<"docs">
 } & { render(): Render[".md"] };
+"Getting Started/index.mdx": {
+	id: "Getting Started/index.mdx";
+  slug: "getting-started";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".mdx"] };
+"Getting Started/prebuilt-binaries.md": {
+	id: "Getting Started/prebuilt-binaries.md";
+  slug: "getting-started/prebuilt-binaries";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
 "Getting Started/projects.md": {
 	id: "Getting Started/projects.md";
   slug: "getting-started/projects";
+  body: string;
+  collection: "docs";
+  data: InferEntrySchema<"docs">
+} & { render(): Render[".md"] };
+"Getting Started/roadmap.md": {
+	id: "Getting Started/roadmap.md";
+  slug: "getting-started/roadmap";
   body: string;
   collection: "docs";
   data: InferEntrySchema<"docs">
@@ -294,41 +329,6 @@ declare module 'astro:content' {
 "Implementation Details/specification.md": {
 	id: "Implementation Details/specification.md";
   slug: "implementation-details/specification";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Install C3/compile.md": {
-	id: "Install C3/compile.md";
-  slug: "install-c3/compile";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Install C3/prebuilt-binaries.md": {
-	id: "Install C3/prebuilt-binaries.md";
-  slug: "install-c3/prebuilt-binaries";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Introduction/design-goals.md": {
-	id: "Introduction/design-goals.md";
-  slug: "introduction/design-goals";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".md"] };
-"Introduction/index.mdx": {
-	id: "Introduction/index.mdx";
-  slug: "introduction";
-  body: string;
-  collection: "docs";
-  data: InferEntrySchema<"docs">
-} & { render(): Render[".mdx"] };
-"Introduction/roadmap.md": {
-	id: "Introduction/roadmap.md";
-  slug: "introduction/roadmap";
   body: string;
   collection: "docs";
   data: InferEntrySchema<"docs">

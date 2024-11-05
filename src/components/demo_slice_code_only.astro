@@ -14,9 +14,10 @@ interface Props {
             mobile_code: string;
         }[];
     highlighter: HighlighterGeneric<BundledLanguage, BundledTheme>
+    height: string;
 }
 
-const { buttons, code, highlighter } = Astro.props;
+const { height, buttons, code, highlighter } = Astro.props;
 
 import CodeRender from "./code_render.astro";
 
@@ -182,6 +183,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
     md:grid-cols-1
 
     gap-2
+    
 
 
     dark:text-gray-200
@@ -189,7 +191,13 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
 `>
 
     <!-- Code container -->
-    <div class="
+    <div class=`
+        ${height}
+        flex
+        flex-col
+        justify-start 
+        lg:items-start
+        items-end
         col-span-2
         
         md:col-span-4
@@ -201,7 +209,7 @@ localStorage[stdLibLocalStorageKey] = stdLibButtons[0];
         dark:bg-gradient-to-tr
         dark:from-[hsl(224,12%,10%)]
         dark:to-[hsl(224,12%,12%)]
-        "
+        `
     >
 
         {code.map((item, index) => (
