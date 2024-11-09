@@ -6,6 +6,10 @@ sidebar:
 ---
 
 
+:::note[Want To Download C3?]
+[Download C3](/getting-started/prebuilt-binaries/), available on Mac, Windows and Linux.
+:::
+
 ## C3 Roadmap
 
 ### C3 Is Feature Stable
