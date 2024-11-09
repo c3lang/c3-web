@@ -455,7 +455,7 @@ An example:
 import std::io;
 
 // On Linux or MacOS this will insert 'String a = "Hello world!";'
-$exec("echo", "String a = \\\"Hello world!\\\"\\;");
+$exec("echo", { "String a = \\\"Hello world!\\\"\\;" });
 
 fn void main()
 {
