@@ -129,8 +129,8 @@ There are three types of regular comments:
 
 ### Doc comments
 
-1. `/** text **/` doc block comment. The text between `/**` and `**/` is optionally parsed using the doc comment
-   syntactic grammar. A compiler may choose to read `/** text **/` as a regular comment.
+1. `<* text *>` doc block comment. The text between `<*` and `*>` is optionally parsed using the doc comment
+   syntactic grammar. A compiler may choose to read `<* text *>` as a regular comment.
 
 ### Identifiers
 

@@ -61,10 +61,10 @@ foo_test::test(<int, double>)(1.0, &g);
 Just like for macros, optional constraints may be added to improve compile errors:
 
 ```c3
-/**
- * @require $assignable(1, TypeB) && $assignable(1, TypeC)
- * @require $assignable((TypeB)1, TypeA) && $assignable((TypeC)1, TypeA)
- */ 
+<*
+ @require $assignable(1, TypeB) && $assignable(1, TypeC)
+ @require $assignable((TypeB)1, TypeA) && $assignable((TypeC)1, TypeA)
+*> 
 module vector(<TypeA, TypeB, TypeC>);
 
 /* .. code * ../

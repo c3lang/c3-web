@@ -210,9 +210,9 @@ The parameters have different sigils: `$` means compile time evaluated (constant
 A basic swap:
 
 ```c3
-/**
-* @checked $assignable(*a, $typeof(*b)) && $assignable(*b, $typeof(*a))
-*/
+<*
+ @checked $assignable(*a, $typeof(*b)) && $assignable(*b, $typeof(*a))
+*>
 macro void @swap(&a, &b)
 {
     $typeof(*a) temp = *a;
@@ -297,12 +297,12 @@ To accept a trailing block, `; @name(param1, ...)` is placed after declaring the
 Here's an example to illustrate its use:
 
 ```c3
-/**
-* A macro looping through a list of values, executing the body once
-* every pass.
-*
-* @require $defined(a.len) && $defined(a[0])
-**/
+<*
+ A macro looping through a list of values, executing the body once
+ every pass.
+
+ @require $defined(a.len) && $defined(a[0])
+*>
 macro @foreach(a; @body(index, value))
 {
     for (int i = 0; i < a.len; i++)

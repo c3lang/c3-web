@@ -33,11 +33,11 @@ Notably bit operations have higher precedence than +/-, making code like this: `
 The const qualifier is only retained for actual constant variables. C3 uses a special type of [post condition](/language-common/contracts/) for functions to indicate that they do not alter in parameters.
 
 ```c3
-/**
- * This function ensures that foo is not changed in the function.
- * @param [in] foo
- * @param [out] bar
- **/
+<*
+ This function ensures that foo is not changed in the function.
+ @param [in] foo
+ @param [out] bar
+*>
 fn void test(Foo* foo, Bar* bar)
 {
     bar.y = foo.x;
