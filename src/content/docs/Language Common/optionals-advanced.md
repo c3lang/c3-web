@@ -26,11 +26,11 @@ Try running this code below with and without a file called `file_to_open.txt` in
 ```c3
 import std::io;
 
-/** 
- * Function modifies 'buffer'
- * Returns an Optional with a 'char[]' result 
- *  OR an empty Optional with an Excuse
-**/
+<*
+ Function modifies 'buffer'
+ Returns an Optional with a 'char[]' result 
+ OR an empty Optional with an Excuse
+*>
 fn char[]! read_file(String filename, char[] buffer)
 {
     // Return Excuse if opening a file failed, using Rethrow `!`

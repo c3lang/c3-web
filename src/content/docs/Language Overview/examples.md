@@ -384,22 +384,22 @@ Read more about optionals and error handling [here](/language-common/optionals-e
 
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
 ```c3
-/**
- * @param foo "the number of foos" 
- * @require foo > 0, foo < 1000
- * @return "number of foos x 10"
- * @ensure return < 10000, return > 0
- **/
+<*
+ @param foo "the number of foos" 
+ @require foo > 0, foo < 1000
+ @return "number of foos x 10"
+ @ensure return < 10000, return > 0
+*>
 fn int testFoo(int foo)
 {
     return foo * 10;
 }
 
-/**
- * @param array "the array to test"
- * @param length "length of the array"
- * @require length > 0
- **/
+<*
+ @param array "the array to test"
+ @param length "length of the array"
+ @require length > 0
+*>
 fn int getLastElement(int* array, int length)
 {
     return array[length - 1];
@@ -492,10 +492,10 @@ fn int test2()
 
 Improve macro errors with preconditions:
 ```c3
-/**
- * @param x "value to square"
- * @require types::is_numeric($typeof(x)) "cannot multiply"
- **/
+<*
+ @param x "value to square"
+ @require types::is_numeric($typeof(x)) "cannot multiply"
+*>
 macro square(x)
 {
     return x * x;

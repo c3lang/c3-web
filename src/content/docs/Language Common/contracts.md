@@ -15,9 +15,9 @@ Pre-conditions use the `@require` annotation, and optionally can have an
 error message to display after them.
 
 ```c3
-/**
- * @require foo > 0, foo < 1000, "optional error msg"
- **/
+<*
+ @require foo > 0, foo < 1000, "optional error msg"
+*>
 fn int testFoo(int foo)
 {
     return foo * 10;
@@ -32,10 +32,10 @@ The post condition uses the `@ensure` annotation. Where `return` is used to repr
 
     
 ```c3
-/**
- * @require foo != null
- * @ensure return > foo.x
- **/
+<*
+ @require foo != null
+ @ensure return > foo.x
+*>
 fn uint checkFoo(Foo* foo)
 {
     uint y = abs(foo.x) + 1;
@@ -68,9 +68,9 @@ fn void bad_func(int* i)
     *i = 2;
 }
 
-/**
- * @param [&in] i
- */
+<*
+ @param [&in] i
+*>
 fn void lying_func(int* i)
 {
     bad_func(i); // The compiler might not check this!
@@ -87,9 +87,9 @@ fn void test()
 However, compilers will usually detect this:
 
 ```c3
-/**
- * @param [&in] i
- */
+<*
+ @param [&in] i
+*>
 fn void bad_func(int* i)
 {
     *i = 2; // <- Compiler error: cannot write to "in" parameter
@@ -114,9 +114,9 @@ fn void bad_func()
     i = 2;
 }
 
-/**
- * @pure
- */
+<*
+ @pure
+*>
 fn void lying_func(SecretFn f)
 {
     f(); // The compiler cannot reason about this!
@@ -142,9 +142,9 @@ fn void bad_func()
     i = 2;
 }
 
-/**
- * @pure
- */
+<*
+ @pure
+*>
 fn void lying_func(SecretFn f)
 {
     f(); // <- ERROR: Only '@pure' functions may be called. 
@@ -168,11 +168,11 @@ function which returns true if the code inside would pass semantic checking.
 
 
 ```c3
-/**
- * @require $defined(resource.open, resource.open()), `Expected resource to have an "open" function`
- * @require resource != nil
- * @require $assignable(resource.open(), void*)
- **/
+<*
+ @require $defined(resource.open, resource.open()), `Expected resource to have an "open" function`
+ @require resource != nil
+ @require $assignable(resource.open(), void*)
+*>
 macro open_resource(resource)
 {
     return resource.open();

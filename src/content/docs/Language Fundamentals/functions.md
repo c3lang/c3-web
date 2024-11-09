@@ -356,12 +356,12 @@ C3's error handling is not intended to use errors to signal invalid data or to c
 As an example, the following code:
 
 ```c3
-/**
- * @param foo `the number of foos`
- * @require foo > 0, foo < 1000
- * @return `number of foos x 10`
- * @ensure return < 10000, return > 0
- **/
+<*
+ @param foo `the number of foos`
+ @require foo > 0, foo < 1000
+ @return `number of foos x 10`
+ @ensure return < 10000, return > 0
+*>
 fn int test_foo(int foo)
 {
     return foo * 10;
