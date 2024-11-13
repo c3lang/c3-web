@@ -308,7 +308,7 @@ The `/* */` comments are nesting
 /* This /* will all */ be commented out */
 ```
 
-Note that doc comments starting with `<*` and ending with `*>`, have special rules for parsing them, and are
+Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are
 _not_ considered a regular comment. Find out more about [contracts](/language-common/contracts/).
 
 ## Type Qualifiers

@@ -338,8 +338,8 @@ but nonetheless provided unique functionality:
 
 ## Contracts
 
-1. Doc comments (starting with `<*`) are parsed.
-2. The first part, up until the first `@` directive is ignored.
+1. Doc contracts (starting with `<*`) are parsed.
+2. The first part, up until the first `@` directive on a new line, is ignored.
 3. The `@param` directive for pointer arguments may define usage constraints `[in]` `[out]` and `[inout]`.
 4. Pointer argument constraints may add a `&` prefix to indicate that they may not be `null`, e.g. `[&inout]`.
 5. Contracts may be attached to generic modules, functions and macros.

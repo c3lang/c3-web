@@ -10,9 +10,11 @@ C3 uses three distinct comment types:
 2. The classic `/* ... */` multi-line C style comment, but unlike in C they are allowed to nest.
 3. Documentation comments `<* ... *>` the text within these comments will be parsed as documentation and optional [Contracts](/language-common/contracts/) on the following code.
 
-## Doc Comments
+## Doc contracts
 
-Documentation comments start with `<*` and must be terminated using `*>`. Note that any number of `*` may follow `<*` and any number of stars may preceed `*>`. Any space and `*` in the beginning of each line will be ignored.
+Documentation contracts start with `<*` and must be terminated using `*>`.
+Any initial text up until the first `@`-directive on a new line will be interpreted as
+free text documentation.
 
 For example:
 
@@ -30,7 +32,7 @@ void bar(int num_foo)
 }
 ```
  
-### Doc Comments Are Parsed
+### Doc Contracts Are Parsed
 The following was extracted:
 - The function description: *"Here are some docs."*
 - The `num_foo` parameter has the description: *"The number of foos"*.

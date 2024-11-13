@@ -43,13 +43,13 @@ A program consists of one or more _translation units_ stored in files written in
 stored as a sequence of bytes using the UTF-8 encoding. Except for comments and the contents of character and string
 literals, all input elements are formed only from the ASCII subset (U+0000 to U+007F) of Unicode.
 
-A raw byte stream is translated into a sequence of tokens which white space and non-doc comments are discarded. Doc
+A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. Doc
 comments may optionally be discarded as well. The resulting input elements form the tokens that are the terminal symbols
 of the syntactic grammar.
 
 ### Lexical Translations
 
-A raw byte stream is translated into a sequence of tokens which white space and non-doc comments are discarded. Doc
+A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. Doc
 comments may optionally be discarded as well. The resulting input elements form the tokens that are the terminal symbols
 of the syntactic grammar.
 
@@ -71,7 +71,7 @@ An input element may be:
 
 1. White space
 2. Comment
-3. Doc Comment
+3. Doc Contract
 4. Token
 
 A token may be:
@@ -82,7 +82,7 @@ A token may be:
 4. Separator
 5. Operator
 
-A Doc Comment consists of:
+A Doc Contract consists of:
 
 1. A stream of descriptive text
 2. A list of directive Tokens
@@ -127,7 +127,7 @@ There are three types of regular comments:
 2. `/* text */` block comments. The text between `/*` and `*/` is ignored. It has nesting behaviour, so for every `/*`
    discovered between the first `/*` and the last `*/` a corresponding `*/` must be found.
 
-### Doc comments
+### Doc contract
 
 1. `<* text *>` doc block comment. The text between `<*` and `*>` is optionally parsed using the doc comment
    syntactic grammar. A compiler may choose to read `<* text *>` as a regular comment.
