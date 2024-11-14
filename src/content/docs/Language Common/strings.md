@@ -175,8 +175,46 @@ fn double! String.to_double(s) => s.to_real(double);
 ```c3 implementation
 fn float! String.to_float(s) => s.to_real(float);
 ```
+```c3 implementation
+fn String String.new_ascii_to_upper(s, Allocator allocator = allocator::heap());
+```
+
+```c3 implementation
+fn Char16[]! String.to_new_utf16(s, Allocator allocator = allocator::heap());
+```
+
+```c3 implementation
+fn Char16[]! String.to_temp_utf16(s);
+```
+
+```c3 implementation
+fn Char32[]! String.to_utf32(s, Allocator allocator);
+```
+
+```c3 implementation
+fn Char32[]! String.to_new_utf32(s) => s.to_utf32(allocator::heap()) @inline;
+```
+
+```c3 implementation
+fn Char32[]! String.to_temp_utf32(s) => s.to_utf32(allocator::temp()) @inline;
+```
+
+```c3 implementation
+fn WString! String.to_wstring(s, Allocator allocator);
+```
+
+```c3
+fn WString! String.to_new_wstring(s) => s.to_wstring(allocator::heap());
+```
+```c3
+fn WString! String.to_temp_wstring(s) => s.to_wstring(allocator::temp());
+```
+```c3
+fn StringIterator String.iterator(s);
+```
 
 #### ZString :
+
 ```c3 implementation
 fn String ZString.str_view(str);
 ```
@@ -195,4 +233,3 @@ fn ZString String.zstr_copy(s, Allocator allocator = allocator::heap())
 ```c3 implementation
 fn ZString String.zstr_tcopy(s) => s.zstr_copy(allocator::temp()) @inline;
 ```
-
