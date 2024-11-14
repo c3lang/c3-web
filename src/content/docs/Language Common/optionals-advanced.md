@@ -2,7 +2,7 @@
 title: Advanced Error Handling
 description: Advanced Error Handling
 sidebar:
-    order: 64
+    order: 65
 ---
 
 ### Optionals are only defined in certain code

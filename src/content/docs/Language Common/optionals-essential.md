@@ -2,7 +2,7 @@
 title: Essential Error Handling
 description: Essential Error Handling
 sidebar:
-    order: 63
+    order: 64
 ---
 
 In this section we will go over the *essential* information about Optionals and safe methods for working with them, for example 
