@@ -411,12 +411,39 @@ See `print` for usage.
 
 ### usz! printf(String format, args...) @maydiscard
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+Will also print enums and vectors. Prints to stdout.
 
-Will also print enums and vectors.
+```c
+import std::io;
+
+enum Heat {
+    WARM,
+    WARMER,
+    REALLY_WARM,
+}
+
+fn void main() {
+    int[<2>] vec = {4, 2};
+    Heat weather = REALLY_WARM;
+    String dialogue = "Hello";
+
+    io::printf("%s", dialogue);  /* Outputs: Hello    */
+    io::printf("%d", 20);        /* Outputs: 20       */
+    io::printf("%f", 2.2);       /* Outputs: 2.200000 */
+    io::printf("%s", vec);       /* Outputs: [<4, 2>] */
+    io::printf("%s", weather);   /* Outputs: REALLY_WARM */
+}
+```
 
 Also available as `printfn` which appends a newline.
 
-`eprintf` and its matching function `eprintfn` print to stderr.
+### usz! eprintf(String format, args...) @maydiscard
+Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+Will also print enums and vectors. Prints to stderr.
+
+Also available as `eprintfn` which appends a newline.
+
+See `printf` for usage
 
 ### char[]! bprintf(char[] buffer, String format, args...) @maydiscard
 Prints using a 'printf'-style formatting string, to a string buffer.
