@@ -334,7 +334,7 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. Readline returns an optional, and must be handled accordingly.
+Read a `String!` from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. `Readline` returns an optional, and must be handled accordingly.
 
 ```c
 import std::io;
@@ -355,7 +355,7 @@ Note:
 `\r` will be filtered from the String.
 
 ### String! treadline(stream = io::stdin())
-Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. Readline returns an optional, and must be handled accordingly. Additionally, the difference from the regular readline, is that this uses the temporary allocator.
+Read a `String!` from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. `Treadline` returns an optional, and must be handled accordingly. Additionally, the difference from the regular `readline`, is that this uses the temporary allocator.
 
 ```c
 import std::io;
@@ -405,8 +405,9 @@ fn void main() {
 
 ### void eprint(x), void eprintn(x)
 Print any value to stderr.
-
 The `eprintn` variant appends a newline.
+
+See `print` for usage.
 
 ### usz! printf(String format, args...) @maydiscard
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
