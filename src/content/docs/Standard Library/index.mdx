@@ -296,7 +296,7 @@ Same as `@clone` but uses the temporary allocator.
 
 ## std::core::types
 
-### bool is_comparable($Type)
+### bool is_comparable_value($Type)
 
 Return true if the type can be used with comparison operators.
 
@@ -334,8 +334,24 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read from a stream (default is stdin) to the next "\n" or to the end of the stream, whatever comes first.
+Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream.
 
+```c
+import std::io;
+
+fn void! main() {
+    String! name; 
+
+    name = io::readline();
+    if (catch excuse = name) {
+        return excuse?;
+    }
+
+    io::printfn("The Matrix has you... Follow the white rabbit. Knock, knock, %s.", name);
+}
+```
+
+Note:
 `\r` will be filtered from the String.
 
 ### String! treadline(stream = io::stdin())
