@@ -334,7 +334,7 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream.
+Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. Readline returns an optional, and must be handled accordingly.
 
 ```c
 import std::io;
@@ -355,7 +355,25 @@ Note:
 `\r` will be filtered from the String.
 
 ### String! treadline(stream = io::stdin())
-Same as `readline` but uses the temporary allocator.
+Read a String from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. Readline returns an optional, and must be handled accordingly. Additionally, the difference from the regular readline, is that this uses the temporary allocator.
+
+```c
+import std::io;
+
+fn void! main() {
+    String! name; 
+
+    name = io::treadline();
+    if (catch excuse = name) {
+        return excuse?;
+    }
+
+    io::printfn("Hello %s! Hope you have a great day", name);
+}
+```
+
+Note:
+`\r` will be filtered from the String.
 
 ### void print(x), void printn(x = "")
 Print any value to stdout.
