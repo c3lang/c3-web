@@ -376,9 +376,32 @@ Note:
 `\r` will be filtered from the String.
 
 ### void print(x), void printn(x = "")
-Print any value to stdout.
-
+Print a value to stdout. Works for different types. 
 The `printn` variant appends a newline.
+```c
+import std::io;
+
+enum Heat {
+    WARM,
+    WARMER,
+    REALLY_WARM,
+}
+
+fn void main() {
+    int[<2>] vec = {4, 2};
+    Heat weather = WARM;
+    int[5] fib = { 0, 1, 1, 2, 3 };
+    String dialogue = "I will never tell you about the muffin man";
+
+    io::print("Hello");   /* Outputs: Hello                                      */
+    io::print(20);        /* Outputs: 20                                         */
+    io::print(2.2);       /* Outputs: 2.200000                                   */
+    io::print(vec);       /* Outputs: [<4, 2>]                                   */
+    io::print(weather);   /* Outputs: WARM                                       */
+    io::print(fib);       /* Outputs: [0, 1, 1, 2, 3]                            */
+    io::print(dialogue);  /* Outputs: I will never tell you about the muffin man */
+}
+```
 
 ### void eprint(x), void eprintn(x)
 Print any value to stderr.
