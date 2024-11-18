@@ -34,7 +34,7 @@ The intended roadmap has one major `0.1` release per year:
 | 2027-04-01 |    0.9    |
 | 2028-04-01 |    1.0    |
 
-### Compatability
+### Compatibility
 
 Minor releases in the same major release series are compatible. 
 
