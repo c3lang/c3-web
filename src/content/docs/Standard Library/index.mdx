@@ -416,27 +416,28 @@ See `print` for usage.
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stdout.
 
-```c
+```c3
 import std::io;
 
-enum Heat {
+enum Heat 
+{
     WARM,
     WARMER,
     REALLY_WARM,
 }
 
-fn void main() {
-    int[<2>] vec = {4, 2};
+fn void main() 
+{
+    int[<2>] vec = { 4, 2 };
     Heat weather = REALLY_WARM;
     String dialogue = "Hello";
 
-    io::printf("%s", dialogue);  /* Outputs: Hello    */
-    io::printf("%d", 20);        /* Outputs: 20       */
-    io::printf("%f", 2.2);       /* Outputs: 2.200000 */
-    io::printf("%s", vec);       /* Outputs: [<4, 2>] */
-    io::printf("%s", weather);   /* Outputs: REALLY_WARM */
+    io::printfn("%s", dialogue);  // Hello
+    io::printfn("%d", 20);        // 20
+    io::printfn("%f", 2.2);       // 2.200000
+    io::printfn("%s", vec);       // [<4, 2>]
+    io::printfn("%s", weather);   // REALLY_WARM
 }
-```
 
 Also available as `printfn` which appends a newline.
 
