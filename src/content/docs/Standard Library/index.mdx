@@ -334,7 +334,7 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read a `String!` from a file stream. Defaults to standard input (stdin). Reads to the next newline or to the end of stream. `Readline` returns an optional, and must be handled accordingly.
+Read a `String!` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream. `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
 ```c
 import std::io;
