@@ -359,10 +359,9 @@ Read a `String!` from a file stream which is standard input (stdin) by default, 
 ```c
 import std::io;
 
-fn void! main() {
-    String! name; 
-
-    name = io::treadline();
+fn void! main() 
+{
+    String! name = io::treadline();
     if (catch excuse = name) {
         return excuse?;
     }
