@@ -350,8 +350,9 @@ fn void! main()
     io::printfn("Name was: %s.", name);
 }
 
-Note:
+:::Note
 `\r` will be filtered from the String.
+:::
 
 ### String! treadline(stream = io::stdin())
 Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators. 
