@@ -296,7 +296,7 @@ Same as `@clone` but uses the temporary allocator.
 
 ## std::core::types
 
-### bool is_comparable($Type)
+### bool is_comparable_value($Type)
 
 Return true if the type can be used with comparison operators.
 
@@ -334,31 +334,120 @@ moving the output pointer 1 or 2 steps.
 ## std::io
 
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
-Read from a stream (default is stdin) to the next "\n" or to the end of the stream, whatever comes first.
+Read a `String!` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream. `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
+```c3
+import std::io;
+
+fn void! main() 
+{
+    String! name = io::readline();
+    if (catch excuse = name) 
+    {
+        return excuse?;
+    }
+
+    io::printfn("Name was: %s.", name);
+}
+
+:::Note
 `\r` will be filtered from the String.
+:::
 
 ### String! treadline(stream = io::stdin())
-Same as `readline` but uses the temporary allocator.
+Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators. 
+
+```c
+import std::io;
+
+fn void! main() 
+{
+    String! name = io::treadline();
+    if (catch excuse = name) {
+        return excuse?;
+    }
+
+    io::printfn("Hello %s! Hope you have a great day", name);
+}
+```
+
+:::Note
+`\r` will be filtered from the String.
+:::
 
 ### void print(x), void printn(x = "")
-Print any value to stdout.
 
+Print a value to stdout works for the majority of types, including structs, which can be helpful for debugging.
 The `printn` variant appends a newline.
+
+```c3
+import std::io;
+
+enum Heat 
+{
+    WARM,
+    WARMER,
+    REALLY_WARM,
+}
+
+fn void main() 
+{
+    int[<2>] vec = { 4, 2 };
+    Heat weather = WARM;
+    int[5] fib = { 0, 1, 1, 2, 3 };
+    String dialogue = "secret";
+
+    io::print("Hello");   // Hello
+    io::print(20);        // 20
+    io::print(2.2);       // 2.200000
+    io::print(vec);       // [<4, 2>]
+    io::print(weather);   // WARM
+    io::print(fib);       // [0, 1, 1, 2, 3] 
+    io::print(dialogue);  // secret
+}
 
 ### void eprint(x), void eprintn(x)
 Print any value to stderr.
-
 The `eprintn` variant appends a newline.
+
+See `print` for usage.
 
 ### usz! printf(String format, args...) @maydiscard
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+Will also print enums and vectors. Prints to stdout.
 
-Will also print enums and vectors.
+```c3
+import std::io;
+
+enum Heat 
+{
+    WARM,
+    WARMER,
+    REALLY_WARM,
+}
+
+fn void main() 
+{
+    int[<2>] vec = { 4, 2 };
+    Heat weather = REALLY_WARM;
+    String dialogue = "Hello";
+
+    io::printfn("%s", dialogue);  // Hello
+    io::printfn("%d", 20);        // 20
+    io::printfn("%f", 2.2);       // 2.200000
+    io::printfn("%s", vec);       // [<4, 2>]
+    io::printfn("%s", weather);   // REALLY_WARM
+}
 
 Also available as `printfn` which appends a newline.
 
-`eprintf` and its matching function `eprintfn` print to stderr.
+### usz! eprintf(String format, args...) @maydiscard
+Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+Will also print enums and vectors. Prints to stderr.
+
+Also available as `eprintfn` which appends a newline.
+
+See `printf` for usage
 
 ### char[]! bprintf(char[] buffer, String format, args...) @maydiscard
 Prints using a 'printf'-style formatting string, to a string buffer.
