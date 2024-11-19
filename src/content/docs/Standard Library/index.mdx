@@ -336,20 +336,19 @@ moving the output pointer 1 or 2 steps.
 ### String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
 Read a `String!` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream. `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
-```c
+```c3
 import std::io;
 
-fn void! main() {
-    String! name; 
-
-    name = io::readline();
-    if (catch excuse = name) {
+fn void! main() 
+{
+    String! name = io::readline();
+    if (catch excuse = name) 
+    {
         return excuse?;
     }
 
-    io::printfn("The Matrix has you... Follow the white rabbit. Knock, knock, %s.", name);
+    io::printfn("Name was: %s.", name);
 }
-```
 
 Note:
 `\r` will be filtered from the String.
