@@ -6,7 +6,7 @@ sidebar:
 ---
 In C3, multiple string types are available, each suited to different use cases.
 
-#### String
+### String
 
 ```c3
 
