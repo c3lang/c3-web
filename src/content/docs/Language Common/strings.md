@@ -28,7 +28,9 @@ distinct ZString = inline char*;
 \
 A ZString is a distinct type for null-terminated C-style strings ` char* `. Converting a ` char* ` to a ` ZString ` requires an explicit cast to ensure the safety and `\0` termination of the string data.
 
->  **⚠️**  Converting a `String` to a `ZString` should be done carefully to ensure \0 termination of the underlying `char*`.
+:::caution  
+Ensure the terminal `\0` when converting from `String` to `ZString`.
+:::
 
 #### WString
 
