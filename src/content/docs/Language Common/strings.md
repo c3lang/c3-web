@@ -217,7 +217,7 @@ fn WString! String.to_temp_wstring(s) => s.to_wstring(allocator::temp());
 fn StringIterator String.iterator(s);
 ```
 
-#### ZString :
+### ZString Member Functions
 
 ```c3 implementation
 fn String ZString.str_view(str);
