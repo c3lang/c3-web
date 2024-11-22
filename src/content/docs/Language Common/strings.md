@@ -56,7 +56,7 @@ distinct DString (OutStream) = void*;
 
 ## Member functions:
 
-#### String :
+### String Member Functions
 
 ```c3
 fn Char16[]! String.to_new_utf16(s, Allocator allocator = allocator::heap())
