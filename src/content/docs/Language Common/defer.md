@@ -21,7 +21,7 @@ fn void test()
     return;
 }
 ```
-The `defer` runs **after** the other print statments, at the function return.
+The `defer` runs **after** the other print statements, at the function return.
 
 :::note
 [Rethrow `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) unwraps the Optional result if present, afterwards the previously Optional variable is a normal variable again, if the Optional result is empty then the Excuse is returned from the function back to the caller.

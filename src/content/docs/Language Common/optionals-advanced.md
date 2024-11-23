@@ -128,7 +128,7 @@ fn void! main(String[] args)
     int! a = test(); // IoError.FILE_NOT_FOUND
     int! b = test(); // IoError.FILE_NOT_FOUND
 
-    // We can tell these appart by default assigning our own unique 
+    // We can tell these apart by default assigning our own unique
     // Excuse. Our custom Excuse is assigned only if an
     // empty Optional is returned.
     int! c = test() ?? NoHomework.DOG_ATE_MY_HOMEWORK?;

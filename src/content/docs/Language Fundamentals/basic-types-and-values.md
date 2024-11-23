@@ -98,7 +98,7 @@ ASCII value for a single character.
 
 It is also possible to use 2, 4 or 8 character wide character literals. Such are interpreted
 as `ushort`, `uint` and `ulong` respectively and are laid out in memory from left to right.
-This means that the actual value depends on the [endianess](https://en.wikipedia.org/wiki/Endianness)
+This means that the actual value depends on the [endianness](https://en.wikipedia.org/wiki/Endianness)
 of the target.
 
 - 2 character literals, e.g. `'C3'`, would convert to an ushort.
