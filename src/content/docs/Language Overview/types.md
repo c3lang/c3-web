@@ -99,7 +99,7 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 - 4 character strings, e.g. `'TEST'`, converts to an uint or int. 
 - 8 character strings, e.g. `'FOOBAR11'` converts to an ulong or long.
  
-Conversion is always done so that the character string has the correct ordering in memory. This means that the same characters may have different integer values on different architectures due to endianess.
+Conversion is always done so that the character string has the correct ordering in memory. This means that the same characters may have different integer values on different architectures due to endianness.
 
 ##### Base64 and hex data literals
 
