@@ -1,6 +1,6 @@
 ---
-title: Install C3 Compiler Binary
-description: Installing C3 Compiler Binary
+title: Install C3 Compiler
+description: Installing C3 Compiler
 sidebar:
   order: 20
 ---

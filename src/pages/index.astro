@@ -1,43 +1,126 @@
 ---
-import Hero from "../components/hero.astro";
-import Sample from "../components/sample.astro";
-import Features from "../components/features.astro";
-import Community from "../components/community.astro";
+
+import Layout from "../components/front_page_layout.astro";
+
 ---
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <meta
-    name="description"
-    content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
-  />
-  <meta name="og:title" content="C3" />
-  <meta
-    name="og:description"
-    content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
-  />
-  <meta content="/logo.svg" property="og:image" />
-  <meta content="#4355ec" data-react-helmet="true" name="theme-color" />
-  <meta name="og:image" content="/logo.svg" />
+    <meta lang="en"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+        name="description"
+        content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+    />
+    <meta name="og:title" content="C3" />
+    <meta
+        name="og:description"
+        content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+    />
+    <meta content="/logo.svg" property="og:image" />
+    <meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+    <meta name="og:image" content="/logo.svg" />
 
-  <link rel="icon" href="/ico.svg" type="image/x-icon" />
+    <link rel="icon" href="/ico.svg" type="image/x-icon" />
 
-  <title>C3 | An evolution, not a revolution</title>
-  <script>
-    import "boxicons";
-    import "../../public/preline.min.js";
-    import "../../public/overlay.min.js";
-    import "../base.css";
-  </script>
+    <title>C3 | An evolution, not a revolution</title>
+
+    <script>
+        import "../base.css";
+        
+    </script>
 </head>
 
-<body class="dark:bg-stone-950 bg-white">
-  <div style="height: auto">
-    <Hero />
-    <Sample />
-    <Features />
-    <Community />
-  </div>
-  <link rel="stylesheet" href="/index.css" />
-</body>
+
+<!-- <div class="
+    grid
+    grid-cols-[minmax(0,1fr)_minmax(0,1536px)_minmax(0,1fr)]
+    
+    bg-gradient-to-tr
+    dark:from-[hsl(224,12%,10%)]
+    dark:to-[hsl(224,12%,25%)]
+    from-[hsl(224,12%,70%)]
+    to-[hsl(224,12%,95%)]
+    "
+>
+
+    <div class="row-start-1 col-start-1 col-span-1 row-span-full">
+        <div class="
+            h-[3.5rem]
+            md:sticky
+            md:top-0
+            md:z-50
+
+            bg-white
+            dark:bg-[hsl(224,12%,4%)]
+            border-b-2
+            border-b-gray-200
+            dark:border-b-gray-800
+        "/>
+        <div class="row-span-1 h-[24rem]"/>
+    </div> -->
+
+    
+
+    <!-- bg-[hsl(224,25%,96%)]
+    dark:bg-[hsl(224,27%,2%)] -->
+    <body class="
+        relative
+        bg-gray-50
+        dark:bg-[hsl(224,32%,6%)]
+    ">
+
+    <!-- <div class="
+        pointer-events-none
+        absolute
+        left-[-20rem]
+        bg-indigo-200/50
+        w-[50vw]
+        h-[80rem]
+        rounded-full
+        blur-3xl
+        z-0
+        mix-blend-darken
+    "/>
+
+    <div class="
+        pointer-events-none
+        absolute
+        right-[-45rem]
+
+        bg-purple-200/50
+        w-[50vw]
+        h-[80rem]
+        rounded-full
+        blur-3xl
+        z-0
+        mix-blend-darken
+    "/> -->
+
+        <div >
+            <Layout/>
+        </div>
+
+
+        <link rel="stylesheet" href="/index.css" />
+    </body>
+
+   
+    <!-- <div class="row-start-1 col-start-3 col-span-1 row-span-full">
+        <div class="
+            h-[3.5rem]
+            md:sticky
+            md:top-0
+            md:z-50
+
+            bg-white
+            dark:bg-[hsl(224,12%,4%)]
+            border-b-2
+            border-b-gray-200
+            dark:border-b-gray-800
+        "/>
+        <div class="row-span-1 h-[24rem]"/>
+    </div>
+
+    
+</div> -->

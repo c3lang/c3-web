@@ -1,0 +1,204 @@
+---
+
+import type { 
+    HighlighterGeneric, 
+    BundledLanguage, 
+    BundledTheme 
+} from 'shiki'
+
+interface Props {
+    selectID: string;
+    buttons: string[];
+    code: {
+            name: string;
+            mobile_code: string;
+        }[];
+    highlighter: HighlighterGeneric<BundledLanguage, BundledTheme>
+}
+
+const {  selectID, buttons, code, highlighter } = Astro.props;
+
+import CodeRender from "./code_render.astro";
+
+---
+
+
+<script>
+
+    // make a click handler specific for one localStorageKey
+    function generateClickHandler(localStorageKey) {
+
+        return function buttonClickHandler(event) {
+
+
+            if (
+                localStorage[localStorageKey] != null &&
+                localStorage[localStorageKey] != undefined &&
+                localStorage[localStorageKey] != ""
+            ) {
+                // remove any style adjustments from previous tab was selected
+                if (event.target.value != localStorage[localStorageKey]) {
+
+                    let previousMobileCode = document.getElementById(localStorage[localStorageKey])
+
+                    previousMobileCode.classList.remove("flex");
+                    previousMobileCode.classList.add("hidden");
+
+                }
+            }            
+
+            // storing which button was clicked
+            localStorage[localStorageKey] = event.target.value;
+            
+
+            let newMobileCode = document.getElementById(localStorage[localStorageKey]);
+
+            newMobileCode.classList.remove("hidden");
+            newMobileCode.classList.add("flex");
+        }
+    }
+
+    //========================================
+    // Setup for "Ergonomics & Safety"
+    const safetyLocalStorageKey ="safety_selected_tab_id";
+    const ergoButtons = [
+        "Optionals", 
+        "Defer", 
+        "Slices", 
+        "Contracts",
+    ]
+    const ergoHandler = generateClickHandler(safetyLocalStorageKey);
+
+
+    document.getElementById("safety_code_examples").addEventListener("change", ergoHandler);
+
+    // default select the first element
+    localStorage[safetyLocalStorageKey] = ergoButtons[0];
+
+    //========================================
+    // Performance By Default
+
+    const perfLocalStorageKey = "perf_selected_tab_id";
+
+    const perfButtons = [
+        "Temp Allocator",
+        "SIMD",
+        "Inline ASM",
+        "Threads"
+    ];
+
+    const perfByDefaultHandler = generateClickHandler(perfLocalStorageKey);
+
+
+    document.getElementById("perf_code_examples").addEventListener("change", perfByDefaultHandler);
+
+    // default select the first element
+    localStorage[perfLocalStorageKey] = perfButtons[0];
+
+
+</script>
+
+
+<div class="
+    bg-white
+    dark:bg-[hsl(224,32%,12%)]
+    rounded-2xl
+    overflow-x-auto
+
+    border-[3px]
+    border-[hsl(224,12%,90%)]
+    dark:border-gray-800
+    "
+>
+    <form>
+        <label 
+            class="
+                sr-only
+            "
+            for={selectID} 
+        >
+        Choose Code Example
+        </label>
+
+
+        <select class=`
+            mx-10
+            text-center
+            w-[calc(100%-5rem)]
+
+            
+            mt-5
+            mb-5
+            md:mx-8
+            md:text-left
+            md:w-max
+            pr-6
+            pl-4
+
+            py-3
+            
+            text-black
+            bg-white
+            dark:text-gray-100
+            dark:bg-[hsl(224,20%,6%)]
+            border-2
+            border-gray-300
+            dark:border-gray-700
+        
+            rounded-2xl
+
+            ring-2
+            dark:ring-[hsl(224,12%,12%)]
+            ring-[hsl(224,12%,95%)]
+            dark:hover:border-gray-600
+            hover:border-gray-400
+            ` 
+            
+            name={selectID} 
+            id={selectID}
+        >
+
+            {buttons.map((item, index) => (
+                <option class="
+                    
+                    "
+                    
+                    value={item}
+                    id=`${selectID}_${item}`
+                    
+                >
+                    {item}
+                </option>
+            ))}
+
+        </select>
+    </form>
+
+
+    <!-- Code container -->
+    <div class=`
+        overflow-x-auto
+
+        px-3
+        sm:px-4
+        pb-4
+        pt-8
+        sm:p-8
+        lg:p-8
+        `
+    >
+
+        {code.map((item, index) => (
+            <CodeRender 
+                is_default={index==0 ? true : false}
+                name={item.name}
+
+                mobile_code={item.mobile_code}
+                highlighter={highlighter}
+            />
+        ))}
+    
+    </div>
+
+</div>
+
