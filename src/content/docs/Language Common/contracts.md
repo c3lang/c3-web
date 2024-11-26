@@ -2,7 +2,7 @@
 title: Contracts
 description: Contracts
 sidebar:
-    order: 66
+    order: 67
 ---
 
 Contracts are optional pre- and post-conditions checks that the compiler may use for optimization and runtime checks. Note that _compilers are not obliged to process pre- and post-conditions at all_. However, violating either pre- or post-conditions is considered undefined behaviour, so a compiler may optimize as if they always hold – even if a potential bug may cause them to be violated.
