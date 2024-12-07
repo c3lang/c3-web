@@ -105,6 +105,22 @@ fn int[] buggy_code()
 }
 ```
 
+**Q:** How do I pass varargs to another function that takes varargs?
+
+**A:** Use the splat operator, `...`
+
+```c3
+fn void test(String format, args...)
+{
+	io::printfn(format, ...args);
+}
+
+fn void! main()
+{
+	test("Format: %s %d", "Foo", 123);
+}
+```
+
 **Q:** What are vectors?
 
 **A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`, the element type may also only
@@ -201,22 +217,6 @@ Allocator* temp = allocator::temp();
     // but the memory pointed to by "foo" is still valid.
     return foo;
 };
-```
-
-**Q:** How do I pass varargs to another function that takes varargs?
-
-**A:** Use the splat operator, `...`
-
-```c3
-fn void test(String format, args...)
-{
-	io::printfn(format, ...args);
-}
-
-fn void! main()
-{
-	test("Format: %s %d", "Foo", 123);
-}
 ```
 
 ## Interfacing with C code
