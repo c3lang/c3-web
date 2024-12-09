@@ -13,8 +13,9 @@ that any contribution right now will have a big impact on the language.
 So if you find the project interesting, here’s what you can do to help:
 
 ### 💬 Discuss The Language
-- Join us on [C3 Discord](https://discord.gg/qN76R87). 
+- Join us on the [C3 Discord](https://discord.gg/qN76R87). 
 - Open a thread on [Discourse](https://c3lang.discourse.group).
+- Open a discussion on [Github Disucssions](https://github.com/c3lang/c3c/discussions)
 
 ### 💡 Suggest Improvements
 - Found a bug? [File an issue for C3 compiler](https://github.com/c3lang/c3c/issues/new)
