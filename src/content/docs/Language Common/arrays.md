@@ -326,8 +326,8 @@ fn void test()
     {
         io::printn(str);   // Prints "Hello", then "World"
     }
-    String str = list[1]; // str == "World"
-    list.free();        // Free all memory associated with list.
+    String str = list_str[1]; // str == "World"
+    list_str.free();        // Free all memory associated with list.
 }
 ```
 

@@ -405,7 +405,7 @@ fn int test_example(int bar)
 
 In this case the compiler can look at the post condition of `result > 0` to determine that `testFoo(foo) == 0` must always be false.
 
-Looking closely at this code, we not that nothing guarantees that `bar` is not violating the preconditions. In Safe builds this will usually be checked in runtime, but a sufficiently smart compiler will warn about the lack of checks on `bar`. Execution of code violating pre and post conditions has unspecified behaviour.
+Looking closely at this code, we note that nothing guarantees that `bar` is not violating the preconditions. In Safe builds this will usually be checked in runtime, but a sufficiently smart compiler will warn about the lack of checks on `bar`. Execution of code violating pre and post conditions has unspecified behaviour.
 
 ## Short function declaration syntax
 
