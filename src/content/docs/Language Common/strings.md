@@ -110,6 +110,10 @@ fn usz! String.index_of_char(s, char needle);
 ```
 
 ```c3 implementation
+fn usz! String.index_of_char_from(s, char needle, usz start_index);
+```
+
+```c3 implementation
 fn usz! String.index_of(s, String needle)
 ```
 
