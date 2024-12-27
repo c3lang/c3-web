@@ -470,12 +470,16 @@ test(State.RUNNING); // Uses enum constant.
 
 An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `!`. 
 An Optional type behaves like a tagged union, containing either the
-result or an Excuse of type [fault](#optional-excuses-are-of-type-fault). 
+result or an Excuse that is of a [fault](#optional-excuses-are-of-type-fault) type.
+
+Once extracted, any specific fault can be converted to an `anyfault`.
 
 ```c3
 int! i;
 i = 5; // Assigning a real value to i.
 i = IOResult.IO_ERROR?; // Assigning an optional result to i.
+anyfault b = SearchError.MISSING;
+b = @catch(i); // Assign the Excuse in i to b (IO_ERROR) 
 ```
 
 Only variables, expressions and function returns may be Optionals. 
@@ -492,7 +496,8 @@ Read more about the Optional types on the page about [Optionals and error handli
 
 ### Optional Excuses are of type Fault
 
-When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is of type `fault`.
+When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
+The `anyfault` type may contain any such fault.
 
 ```c3
 fault IOResult
