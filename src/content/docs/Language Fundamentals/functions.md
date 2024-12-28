@@ -210,7 +210,7 @@ fn void testme(int a, double... x, double rate = 1.0) { /* ... */ }
 fn void test()
 {
     // x is { 2.0, 5.0 } rate would be 6.0
-    testme(3, 2.0, 5.0, .rate = 6.0);
+    testme(3, 2.0, 5.0, rate: 6.0);
 }
 ```
 
