@@ -554,16 +554,16 @@ Field ptr, offset: 16, size: 8, type: int*
 Macros with only compile time variables are completely evaluated at compile time:
 
 ```c3
-macro long @fib(long $n)
+macro long fib(long $n)
 {
     $if $n <= 1:
         return $n;
     $else
-        return @fib($n - 1) + @fib($n - 2);
+        return fib($n - 1) + fib($n - 2);
     $endif
 }
 
-const long FIB19 = @fib(19); 
+const long FIB19 = fib(19); 
 // Same as const long FIB19 = 4181;
 ```
 :::note
