@@ -4,7 +4,8 @@ description: Macros
 sidebar:
     order: 83
 ---
-The macro capabilities of C3 reaches across several constructs: macros (prefixed with `@` at invocation), [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values) (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
+The macro capabilities of C3 reaches across several constructs: 
+macros, [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values) (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
 ## A quick comparison of C and C3 macros
 
@@ -205,7 +206,7 @@ disable declarations. This makes the code easier to read, but at the cost of exp
 A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `&` or `#` parameters.
 
 The parameters have different sigils: `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, but is bound to where it was defined. Finally `&` is used to *implicitly* pass a parameter by reference.
-`@` is required on macros that use `#` and `&` parameters.
+`@` is required on macros that use `#` and `&` parameters or trailing macro bodies.
 
 A basic swap:
 
