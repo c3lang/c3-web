@@ -452,8 +452,8 @@ fn int test()
 {
     int a = 2;
     int b = 3;    
-    return @foo(&square, 2) + a + b; // 9
-    // return @foo(square, 2) + a + b; 
+    return foo(&square, 2) + a + b; // 9
+    // return foo(square, 2) + a + b; 
     // Error the symbol "square" cannot be used as an argument.
 }
 ```
@@ -461,12 +461,12 @@ fn int test()
 Macro arguments may have deferred evaluation, which is basically text expansion using `#var` syntax.
 
 ```c3
-macro foo(#a, b, #c)
+macro @foo(#a, b, #c)
 {
     c = a(b) * b;
 }
 
-macro foo2(#a)
+macro @foo2(#a)
 {
     return a * a;
 }
@@ -480,13 +480,13 @@ fn int test1()
 {
     int a = 2;
     int b = 3; 
-    foo(square, a + 1, b);
+    @foo(square, a + 1, b);
     return b; // 27   
 }
 
 fn int test2()
 {
-    return foo2(1 + 1); // 1 + 1 * 1 + 1 = 3
+    return @foo2(1 + 1); // 1 + 1 * 1 + 1 = 3
 }
 ```
 
@@ -554,16 +554,16 @@ Field ptr, offset: 16, size: 8, type: int*
 Macros with only compile time variables are completely evaluated at compile time:
 
 ```c3
-macro long @fib(long $n)
+macro long fib(long $n)
 {
     $if $n <= 1:
         return $n;
     $else
-        return @fib($n - 1) + @fib($n - 2);
+        return fib($n - 1) + fib($n - 2);
     $endif
 }
 
-const long FIB19 = @fib(19); 
+const long FIB19 = fib(19); 
 // Same as const long FIB19 = 4181;
 ```
 :::note
