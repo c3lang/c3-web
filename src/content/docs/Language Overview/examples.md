@@ -209,16 +209,16 @@ Similarly using `defer try` can be used to only run if the scope exits in a regu
 fn void! test(int x)
 {
     defer io::printn("");
-    defer io::printn("A");
-    defer try io::printn("X");
-    defer catch io::printn("B");
-    defer catch (err) io::printfn("%s", err.message);
-    if (x == 1) return FooError?;
-    print("!")
+    defer io::print("A");
+    defer try io::print("X");
+    defer catch io::print("B");
+    defer (catch err) io::printf("%s", err);
+    if (x == 1) return SearchResult.MISSING?;
+    io::print("!");
 }
 
 test(0); // Prints "!XA"
-test(1); // Prints "FOOBA" and returns a FooError
+test(1); // Prints "MISSINGBA" and returns a FooError
 ```
 
 ## Struct Types
