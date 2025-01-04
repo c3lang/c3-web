@@ -130,7 +130,7 @@ switch (true)
 
 The above would be equivalent to writing:
 ```c3
-if (c < 0)
+if (x < 0)
 {
     xless();
 }
