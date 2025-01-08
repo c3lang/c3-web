@@ -83,9 +83,9 @@ fn void! test()
     return;
 }
 
-fn void! main(String[] args) 
+fn void main(String[] args) 
 {
-    test();
+    (void)test();
 }
 ```
 Function returns an [Optional result](/language-common/optionals-essential/#what-is-an-optional) value, 
@@ -99,9 +99,10 @@ fn void! test()
     return IoError.FILE_NOT_FOUND?;
 }
 
-fn void! main(String[] args) 
+fn void main(String[] args) 
 {
-    if (catch err = test()) {
+    if (catch err = test()) 
+    {
         io::printfn("test() returned a fault: %s", err);
     }
 }

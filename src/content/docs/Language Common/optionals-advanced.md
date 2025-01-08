@@ -45,7 +45,7 @@ fn char[]! read_file(String filename, char[] buffer)
     return buffer; // return a buffer result
 }
 
-fn void! main()
+fn void! test_read()
 {
     char[] buffer = mem::new_array(char, 100);
     defer free(buffer); // Free memory on scope exit
@@ -64,6 +64,11 @@ fn void! main()
     // because the Optional being empty was handled by 'if (catch)'
     // which automatically unwrapped 'read_buffer' at this point.
     io::printfn("read_buffer: %s", read_buffer);
+}
+
+fn void main()
+{
+    test_read()!!; // Panic on failure.
 }
 ```
 
@@ -123,7 +128,7 @@ fn int! test()
     return IoError.FILE_NOT_FOUND?;
 }
 
-fn void! main(String[] args) 
+fn void! examples() 
 {
     int! a = test(); // IoError.FILE_NOT_FOUND
     int! b = test(); // IoError.FILE_NOT_FOUND
@@ -248,7 +253,7 @@ fn int! reliable_function()
     return 7; // Return a result
 }
 
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! reliable_result = reliable_function();
 
@@ -271,7 +276,7 @@ fn int! reliable_function()
     return 7; // Return an Optional result
 }
 
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! reliable_result1 = reliable_function();
     int! reliable_result2 = reliable_function();
@@ -303,7 +308,7 @@ is not the only way to get the `Excuse` from an Optional, we can use the macro `
 Unlike `if (catch)` this will never cause automatic [unwrapping](/language-common/optionals-essential/#-unwrapping-an-optional).
 
 ```c3
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! optional_value = IoError.FILE_NOT_FOUND?;
     
@@ -322,7 +327,7 @@ The `@ok` macro will return `true` if an Optional result is present and
 Functionally this is equivalent to [`!@catch`](#getting-the-excuse), meaning no Excuse was found, for example:
 
 ```c3
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! optional_value = 7;
     

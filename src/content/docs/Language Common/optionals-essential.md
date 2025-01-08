@@ -96,7 +96,7 @@ import std::io;
 // Function returning an Optional
 fn int! maybe_func() { /* ... */ }
 
-fn void! main() 
+fn void! test() 
 {
     // ❌ This will be a compile error
     // maybe_function() returns an Optional
@@ -121,7 +121,7 @@ expression will be an Optional too.
 ```c3
 import std::io;
 
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     // Returns Optional with result of type `int` or an Excuse
     int! first_optional = 7;
@@ -142,7 +142,7 @@ fn int test(int input)
     return input;
 }
 
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! optional_argument = 7;
 
@@ -168,7 +168,7 @@ fn int test(int input, int input2)
     return input;
 }
 
-fn void! main(String[] args)
+fn void main(String[] args)
 {
     int! first_optional = IoError.FILE_NOT_FOUND?;
     int! second_optional = 7;
