@@ -24,12 +24,12 @@ Mutable compile time variables are *not* allowed in the global scope.
 `$if <const expr>:` takes a compile time constant value and evaluates it to true or false.
 
 ```c3
-macro @foo($x, &y)
+macro @foo($x, #y)
 {
     $if $x > 3:
-        *y += $x * $x;
+        #y += $x * $x;
     $else
-        *y += $x;
+        #y += $x;
     $endif
 }
 
@@ -48,17 +48,17 @@ fn void test()
 For switching between multiple possibilities, use `$switch`.
 
 ```c3
-macro @foo($x, &y)
+macro @foo($x, #y)
 {
     $switch ($x)
         $case 1: 
-            *y += $x * $x;
+            #y += $x * $x;
         $case 2:
-            *y += $x;
+            #y += $x;
         $case 3:
-            *y *= $x;
+            #y *= $x;
         $default:
-            *y -= $x;
+            #y -= $x;
     $endswitch
 }
 ```
@@ -66,15 +66,15 @@ macro @foo($x, &y)
 Switching without argument is also allowed, which works like an if-else chain:
 
 ```c3
-macro @foo($x, &y)
+macro @foo($x, #y)
 {
     $switch 
         $case $x > 10: 
-            *y += $x * $x;
+            #y += $x * $x;
         $case $x < 0:
-            *y += $x;
+            #y += $x;
         $default:
-            *y -= $x;
+            #y -= $x;
     $endswitch
 }
 ```
@@ -298,10 +298,6 @@ Return a vaarg as a `$constant` parameter.
 ### `$vaexpr`
 
 Return a vaarg as an `#expr` parameter.
-
-### `$varef`
-
-Return a vaarg as a `&ref` parameter.
 
 ### `$vasplat`
 

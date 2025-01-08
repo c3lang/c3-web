@@ -65,11 +65,8 @@ int x = Z();
 ... currently no corresponding functionality ...
 ```
 
-### Reference arguments
+### Expression arguments
 
-Use `&` in front of a parameter to capture the variable and pass it by reference without having to explicitly use `&` and pass a pointer. 
-(Note that in C++ this is allowed for normal functions, whereas for C3 it is only permitted with macros. Also, 
-in C3 the captured argument isn't automatically dereferenced)
 
 ```c
 // C Macro
@@ -80,9 +77,9 @@ M(x, 3);
 
 ```c3
 // C3 Macro
-macro @m(&x, y)
+macro @m(#x, y)
 {
-    *x = 2 * y;
+    #x = 2 * y;
 }
 ...
 @m(x, 3);
@@ -205,20 +202,21 @@ disable declarations. This makes the code easier to read, but at the cost of exp
 
 A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `&` or `#` parameters.
 
-The parameters have different sigils: `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, but is bound to where it was defined. Finally `&` is used to *implicitly* pass a parameter by reference.
-`@` is required on macros that use `#` and `&` parameters or trailing macro bodies.
+The parameters have different sigils:
+`$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, 
+but is bound to where it was defined. `@` is required on macros that use `#` parameters or trailing macro bodies.
 
 A basic swap:
 
 ```c3
 <*
- @checked $assignable(*a, $typeof(*b)) && $assignable(*b, $typeof(*a))
+ @checked $defined(#a = #b, #b = #a)
 *>
-macro void @swap(&a, &b)
+macro void @swap(#a, #b)
 {
-    $typeof(*a) temp = *a;
-    *a = *b;
-    *b = temp;
+    var temp = #a;
+    #a = #b;
+    #b = temp;
 }
 ```
 
@@ -244,12 +242,12 @@ fn void test()
 }
 ```
 
-Note the necessary `&`. Here is an incorrect swap and what it would expand to:
+Note the necessary `#`. Here is an incorrect swap and what it would expand to:
 
 ```c3
 macro void badswap(a, b)
 {
-    $typeof(a) temp = a;
+    var temp = a;
     a = b;
     b = temp;
 }
@@ -416,12 +414,7 @@ evaluate the expression multiple times, this corresponds to `#` parameters.
 ### $vatype
 
 Returns the argument as a type. This corresponds to `$Type` style parameters, 
-e.g. `$vatype(2) a = 2` 
-
-### $varef
-
-Returns the argument as an lvalue. This corresponds to `&myref` style parameters,
-e.g. `*$varef(1) = 123`.
+e.g. `$vatype(2) a = 2`
 
 ### $vasplat
 
