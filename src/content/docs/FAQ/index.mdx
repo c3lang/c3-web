@@ -295,12 +295,18 @@ You can try this:
 
 `compile --reloc=none --target wasm32 -g0 --link-libc=no --no-entry mywasm.c3`
 
+Unless you are compiling with something that already runs initializers,
+you will need to call the function `runtime::wasm_initialize()` early in your
+main *or* call it externally (for example from JS) with the name `_initialize()`,
+otherwise globals might not be set up properly.
+
 This should yield an `out.wasm` file, but there is no CI running on the WASM code
 and no one is really using it yet, so the quality is low.
 
 We do want WASM to be working really well, so if you're interested in 
 writing something in WASM - please reach out to the developer team and we'll
 help you get things working.
+
 
 
 **Q:** How do I conditionally compile based on compiler flags?
