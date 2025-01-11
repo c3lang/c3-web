@@ -130,7 +130,20 @@ C compiler to use for compiling C sources (if C sources are compiled together wi
 
 #### c-sources
 
-List of C sources to compile.
+List of C sources to compile, using the default C compiler.
+
+#### linker-search-paths
+
+This adds paths for the linker to search, when linking normal C libraries.
+
+#### linked-libraries
+
+This is a list of C libraries to link to. The names need to follow the normal
+naming standard for how libraries are provided to the system linker,
+so for example on Linux, libraries have names like `libfoo.a` but when
+presented to the linker the name is `foo`. As an example `"linked-libraries": ["curl"]`
+would on Linux look for the library `libcurl.a` and `libcurl.so` in the 
+paths given by "linker-search-paths".
 
 #### version
 
@@ -150,23 +163,20 @@ List of authors to add for library compilation.
 
 The language revision to use. 
 
-#### config
+#### features
 
-*Not added yet*
-
-Under the config you define external constants ("key: value") that will be included in compilation as if they were global macro constants.
-
-#### export
-
-*Not added yet*
-
-Define the list of modules to be exported by a library. Not valid for executables.
+This is a list of upper-case constants that can be tested for
+in the source code using `$feature(NAME_OF_FEATURE)`.
 
 #### warnings
 
 *Not completely supported yet*
 
 List of warnings to enable during compilation.
+
+#### opt
+
+Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
 
 ## Target options
 
