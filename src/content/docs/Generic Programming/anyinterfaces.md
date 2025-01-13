@@ -152,7 +152,7 @@ from the `any` type.
 
 ### Referring to an interface by pointer
 
-An interface e.g. `MyName` is can be cast back and forth to `any`, but only types which 
+An interface e.g. `MyName`, can be cast back and forth to `any`, but only types which 
 implement the interface completely may implicitly be cast to the interface.
 
 So for example:
