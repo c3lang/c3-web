@@ -93,21 +93,29 @@ switch (i)
 }
 ```
 
-It's also possible to use `nextcase` with an expression, to jump to an arbitrary case:
+It's also possible to use `nextcase` with an expression, to jump to an arbitrary case or between labeled switch statements:
 
 ```c3
-switch (i)
-{
-    case 1:
-        doSomething();
-        nextcase 3; // Jump to case 3
-    case 2:
-        doSomethingElse();
-    case 3:
-        nextcase rand(); // Jump to random case
+switch MAIN: (enum_var)
+    case FOO:
+        switch (i)
+        {
+            case 1:
+                doSomething();
+                nextcase 3; // Jump to case 3
+            case 2:
+                doSomethingElse();
+            case 3:
+                nextcase rand(); // Jump to random case
+            default:
+                io::printn("Ended");
+                nextcase MAIN: BAR;  // Jump to outer (MAIN) switch
+        } 
+    case BAR:
+        io::printn("BAR");
     default:
-        io::printn("Ended");
-}  
+        break;
+}
 ```
 
 Which can be used as structured `goto` when creating state machines.
