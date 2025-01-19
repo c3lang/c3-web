@@ -16,7 +16,7 @@ error message to display after them.
 
 ```c3
 <*
- @require foo > 0, foo < 1000, "optional error msg"
+ @require foo > 0, foo < 1000 : "optional error msg"
 *>
 fn int testFoo(int foo)
 {
