@@ -1,0 +1,127 @@
+---
+
+const { name, mobile_code,  is_default, highlighter } = Astro.props;
+
+
+let mobile_code_html = highlighter.codeToHtml(
+    mobile_code,
+    { 
+        lang: 'c3', 
+        themes: { 
+            light: 'min-light',
+            // light: 'github-light-default',
+            dark: 'andromeeda',
+        }
+    }
+)
+
+
+
+// Post-process the code-formatter output to link it to standard Tailwind classes
+// This is so that darkmode works as expected
+function processHtml(input) {
+
+    // remove the background
+    input = input.replaceAll(
+        `class="shiki shiki-themes min-light andromeeda" style="background-color:#ffffff;--shiki-dark-bg:#23262E;color:#24292eff;--shiki-dark:#D5CED9"`, 
+        `class="text-gray-800 dark:text-white"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#24292EFF;--shiki-dark:#D5CED9"`,
+        `class="text-gray-800 dark:text-white"`
+    )
+
+    // Question marks
+    input = input.replaceAll(
+        `style="color:#D32F2F;--shiki-dark:#EE5D43"`,
+        `class="text-red-800 dark:text-red-500"`
+    )
+
+    // Language keywords
+    input = input.replaceAll(
+        `style="color:#D32F2F;--shiki-dark:#C74DED"`,
+        `class="text-purple-700 dark:text-purple-400"`
+    )
+
+    // Function names
+    input = input.replaceAll(
+        `style="color:#6F42C1;--shiki-dark:#FFE66D"`,
+        `class="text-orange-700 dark:text-amber-400"`
+    )
+
+    // Strings
+    input = input.replaceAll(
+        `style="color:#22863A;--shiki-dark:#96E072"`,
+        `class="text-green-800 dark:text-lime-500"`
+    )
+
+    // Strings special chars
+    input = input.replaceAll(
+        `style="color:#22863A;--shiki-dark:#EE5D43"`,
+        `class="text-green-800 dark:text-lime-600"`
+    )
+    
+
+    // Numbers
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#F39C12"`,
+        `class="text-rose-700 dark:text-rose-400"`
+    )
+
+    // Comments
+    input = input.replaceAll(
+        `style="color:#C2C3C5;--shiki-dark:#A0A1A7CC"`,
+        `class="text-gray-600 dark:text-gray-300"`
+    )
+
+    // Variables
+    input = input.replaceAll(
+        `style="color:#24292eff;--shiki-dark:#D5CED9"`,
+        `class="text-gray-800 dark:text-green-400"`
+    )
+
+    input = input.replaceAll(
+        `style="color:#212121;--shiki-dark:#D5CED9"`,
+        `class="text-[#212121] dark:text-[#D5CED9]"`
+    )
+
+    // Enums 
+    input = input.replaceAll(
+        `style="color:#24292EFF;--shiki-dark:#00E8C6"`,
+        `class="text-blue-800 dark:text-cyan-400"`
+    )
+
+    // Library functions or errors
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#00E8C6"`,
+        `class="text-blue-800 dark:text-cyan-400"`
+    )
+
+    // Floating point
+    input = input.replaceAll(
+        `style="color:#1976D2;--shiki-dark:#EE5D43"`,
+        `class="text-blue-800 dark:text-red-500"`
+    )
+
+    return input;
+}
+
+mobile_code_html = processHtml(mobile_code_html)
+
+---
+
+
+<div class=`
+    ${is_default && "block"}
+    ${!is_default && "hidden"}
+
+    `
+    id={name}
+    aria-label="C3 example code"
+>
+    <Fragment set:html={mobile_code_html} />
+</div>
+
+
+
