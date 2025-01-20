@@ -9,3 +9,6 @@ devenv.*
 # direnv
 .direnv
 .envrc
+
+# It gets generates with `npm run dev`
+.astro
