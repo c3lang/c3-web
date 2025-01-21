@@ -299,15 +299,15 @@ and parameter names are not taken into account when determining function pointer
 def Callback = fn void(int value = 1);
 fn void test(int a = 0) { /* ... */ }
 
-Callback callback = &main; // Ok
+Callback callback = &test; // Ok
 
 fn void main()
 {
     callback(); // Works, same as test(0);
     test(); // Works, same as test(1);
-    callback(.value = 3); // Works, same as test(3)
-    test(.a = 4); // Works, same as test(4)
-    // callback(.a = 3); ERROR!
+    callback(value: 3); // Works, same as test(3)
+    test(a: 4); // Works, same as test(4)
+    // callback(a: 3); // ERROR!
 }
 ```
 
