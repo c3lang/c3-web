@@ -178,3 +178,16 @@ switch
         baz();
 }
 ```
+
+## Jumptable switches with "@jump"
+
+Regular switches which jump to an enum or integer can take the `@jump`
+attribute. This makes sure that the switch is implemented as
+a jump using a jumptable. In C this is possible to do manually using labels and
+calculated as extensions in GCC and Clang.
+
+The behaviour of the switch itself does not change with a jumptable,
+but some restrictions will apply. However, it might perform worse 
+or better than a regular switch depending on the situation.
+`nextcase` statements will also use this jumptable dispatch when
+`@jump` is used.
