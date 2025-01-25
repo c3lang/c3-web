@@ -115,18 +115,17 @@ are implemented.
 
 ## std::core::mem
 
-### malloc, malloc_checked, malloc_aligned
+### malloc, malloc_aligned
 
 Allocate the given number of bytes. `malloc` will panic on out of memory, 
-whereas `malloc_checked` and `malloc_aligned` returns an optional value.
+whereas `malloc_aligned` returns an optional value.
 `malloc_aligned` adds an alignment, which must be a power of 2. Any pointer
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
 the normal `free` or memory corruption may result.
 
 ```c
 char* data = malloc(8);
-char*! data2 = malloc_checked(8);
-int[<16>]*! data3 = malloc_aligned(16 * int.sizeof), 128);
+int[<16>]*! data2 = malloc_aligned(16 * int.sizeof), 128);
 ```
 
 ### new($Type, #initializer), new_aligned($Type, #initializer)
