@@ -225,16 +225,16 @@ Providing two variables to `foreach`, the first is assumed to be the index and t
 ```c3
 fn void test()
 {
-    float[4] arr = { };
+    int[4] arr = { };
     foreach (idx, &item : arr)
     {
-        item = 7 + idx; // Mutates the array element
+        *item = 7 + idx; // Mutates the array element
     }
 
     // Or equivalently, writing the types
-    foreach (int idx, Foo* &&item  : arr)
+    foreach (int idx, int* &item : arr)
     {
-        item = 7 + idx; // Mutates the array element
+        *item = 7 + idx; // Mutates the array element
     }
 }
 ```

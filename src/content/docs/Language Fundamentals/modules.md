@@ -84,10 +84,10 @@ struct Context
 }
 ```
 
-`def.c3`
+`de.c3`
 
 ```c3
-module def;
+module de;
 struct Context
 {
     void* ptr;
@@ -98,7 +98,7 @@ struct Context
 
 ```c3
 module test1;
-import def, abc;
+import de, abc;
 // Context c = {} <- ambiguous
 abc::Context c = {};
 ```
@@ -131,15 +131,15 @@ local context.
 ```c3
 // File foo.c3
 module foo;
-fn void abc() @private { ... }
-fn void def() @local { ... }
+fn void abc() @private { }
+fn void de() @local { }
 
 // File foo2.c3
 module foo;
 fn void test()
 {
     abc(); // Access of private in the same module is ok
-    // def(); <- Error: function is local to foo.c3
+    // de(); <- Error: function is local to foo.c3
 }
 ```
 
@@ -443,7 +443,7 @@ fn void test()
 The include may use an absolute or relative path, the relative path is always relative to the source file in which the include appears.
 
 Note that to use it, the **trust level** of the compiler must be set to at least 2 with
-the --trust option (i.e. use `--trust=include` or `--trust=full` from the command line).
+the `--trust` option (i.e. use `--trust=include` or `--trust=full` from the command line).
 
 ### $exec
 
@@ -463,9 +463,9 @@ fn void main()
 }
 ```
 
-Using `$exec` requires **full trust level**, which is enabled with `-trust=full` from the command line.
+Using `$exec` requires **full trust level**, which is enabled with `--trust=full` from the command line.
 
-'$exec' will by default run from the `/scripts` directory for projects, for non-project builds,
+`$exec` will by default run from the `/scripts` directory for projects, for non-project builds,
 the current directory is used as well.
 
 #### `$exec` Scripting
