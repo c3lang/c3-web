@@ -180,7 +180,7 @@ Regardless of how they are allocated, they can be freed using `free()`
 
 **Q:** How does the temporary allocator work?
 
-**A:** The temporary allocator is a kind of stack allocator. `talloc`, `tcalloc` and `trealloc` correspond to
+**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to
 `malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are free when pool of temporary
 objects are released. You use the `@pool()` macro to create a temporary allocation scope. When execution exits
 this scope, the temporary objects are all freed:
@@ -188,7 +188,7 @@ this scope, the temporary objects are all freed:
 ```c3
 @pool()
 {
-    void* some_mem = talloc(128);
+    void* some_mem = tmalloc(128);
     foo(some_mem);
 }; 
 // Temporary allocations are automatically freed here.
@@ -209,9 +209,9 @@ Allocator* temp = allocator::temp();
 @pool(temp)
 {
     // Note, 'allocator::temp() != temp' here!
-    void* some_mem = talloc(128);
+    void* some_mem = tmalloc(128);
     // Allocate this on the external temp allocator
-    Foo* foo = temp.new(Foo); 
+    Foo* foo = allocator::new(temp, Foo);
     foo.z = foo(some_mem);
     // Now "some_mem" will be released,
     // but the memory pointed to by "foo" is still valid.
