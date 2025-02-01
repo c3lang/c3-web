@@ -322,12 +322,14 @@ fn void test()
 // Expands to code similar to:
 fn void test()
 {
-    int[] a = { 1, 2, 3 };
+    double[] a = { 1.0, 2.0, 3.0 };
     {
-        int[] __a = a;
-        for (int __i = 0; i < __a.len; i++)
+        double[] __a = a;
+        for (int __i = 0; __i < __a.len; __i++)
         {
-            io::printfn("Value: %d, x2: %d", __value1, __value2);
+            int __index = __i;
+            double __value = __a[__i];
+            io::printfn("a[%d] = %f", __index, __value);
         }
     }
 }
