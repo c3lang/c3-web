@@ -205,7 +205,7 @@ new temp allocator aware of the external temp allocator:
 
 ```c3
 // Store the temp allocator
-Allocator* temp = allocator::temp();
+Allocator temp = allocator::temp();
 @pool(temp)
 {
     // Note, 'allocator::temp() != temp' here!

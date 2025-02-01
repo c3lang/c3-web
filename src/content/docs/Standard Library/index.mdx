@@ -174,7 +174,7 @@ pointers created using `calloc_aligned` or `alloc_aligned`.
 Frees memory allocated using `malloc` or `calloc`. Any memory allocated using "_aligned" variants
 must be freed using `free_aligned`.
 
-### @scoped(Allocator* allocator; @body())
+### @scoped(Allocator allocator; @body())
 
 Swaps the current memory allocator for the duration of the call.
 
