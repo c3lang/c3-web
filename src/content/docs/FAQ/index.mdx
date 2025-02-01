@@ -273,12 +273,12 @@ We can now create a macro method on `Obj` which compiles to different calls depe
 macro void Obj.func(&self, ...)
 {
     // Does it have a single argument of type 'Foo*'?
-    $if $vacount == 1 && @typeis($vaarg(0), Foo*):
+    $if $vacount == 1 && @typeis($vaarg[0], Foo*):
         // If so, dispatch to func2
-        return self.func2($vaarg(0));
+        return self.func2($vaarg[0]);
     $else
         // Otherwise, dispatch all varargs to func1 
-        return self.func1($vasplat());
+        return self.func1($vasplat);
     $endif
 }
 ```
