@@ -453,7 +453,7 @@ fn void test(State s) { ... }
 test(RUNNING); // State.RUNNING is inferred
 ```
 
-If the `enum` without it's name matches with a global in the same scope, it needs the enum name to be added as a qualifier, for example:
+If the `enum` without its name matches with a global in the same scope, it needs the enum name to be added as a qualifier, for example:
 ```c3
 module test;
 
@@ -465,6 +465,53 @@ test(RUNNING);       // Ambiguous
 test(test::RUNNING); // Uses global variable.
 test(State.RUNNING); // Uses enum constant.
 ```
+
+### Enum to and from ordinal
+
+You can convert an enum to its ordinal with `.ordinal`, and convert it
+back with `EnumName.from_ordinal(...)`:
+
+```c3
+fn void store_enum(State s)
+{
+    write_int_to_file(s.ordinal);
+}
+
+fn State read_enum()
+{
+    return State.from_ordinal(read_int_from_file());
+}
+```
+
+### Enum conversions using "inline"
+
+It is possible to make an enum implicitly convert to its ordinal
+value or one of its associated values using `inline`:
+
+```c3
+enum MyEnum : char (inline String s)
+{
+    FOO = "Hello",
+    BAR = "C3"
+}
+
+enum OtherEnum : inline int
+{
+    ABC,
+    DEF,
+    GHI
+}
+
+fn void main()
+{
+    String a = MyEnum.FOO; // Same as MyEnum.FOO.s due to inline
+    String b = MyEnum.BAR;
+    io::printfn("%s %s!", a, b); // Print "Hello C3!"
+    int x = OtherEnum.GHI; // Assigns the value 2 to x.
+}
+```
+
+An enum may only declare *one* `inline` parameter.
 
 ## Optional Type
 
