@@ -85,12 +85,12 @@ Lays out the bits as if the data was stored in a big endian type, regardless of 
 Allows a macro, function, global or constant be used from another module without the module path prefixed.
 Should be used sparingly.
 
-### @callc
+### @callconv
 
 *Used for: function*
 
-Sets the call convention, which may be ignored if the convention is not supported on the target.
-Valid arguments are `veccall`, `ccall`, `stdcall`.
+Sets the calling convention, which may be ignored if the convention is not supported on the target.
+Valid arguments are `veccall`, `cdecl`, `stdcall`.
 
 ### @deprecated
 
