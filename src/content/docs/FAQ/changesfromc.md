@@ -144,25 +144,6 @@ is very common. By offering zero initialization by default this **avoids a whole
 but this adds a lot of extra boilerplate. 
 - C3 also offers a way to opt out of zero-initialization, so the change comes at no performance loss.
 
-##### Compound literal syntax changed
-
-```c
-// C style:
-call_foo((Foo) { 1, 2, 3 });
-
-// C++ style (1):
-call_foo(Foo(1, 2, 3));
-
-// C++ style (2):
-call_foo(Foo { 1, 2, 3 });
-
-// C3:
-call_foo(Foo { 1, 2, 3 } );
-
-// C3 with inference:
-call_foo({ 1, 2, 3 });
-```
-
 ##### Bitfields replaced by bitstructs
 
 Bitfields are replaced by bitstructs that have a well-defined encapsulating type, and 

@@ -27,8 +27,8 @@ Expressions have a well-defined evaluation order:
 
 ## Compound literals
 
-C3 has C's compound literals, but unlike C's cast style syntax `(MyStruct) { 1, 2 }`, 
-it uses C++ syntax: `MyStruct { 1, 2 }`.
+C3 has C's compound literals:
+
 ```c3
 struct Foo
 {
@@ -40,7 +40,7 @@ fn void test1(Foo x) { ... }
 
 ... 
 
-test1(Foo { 1, 2.0 });
+test1((Foo){ 1, 2.0 });
 ```
 
 Arrays follow the same syntax:
@@ -49,10 +49,10 @@ fn void test2(int[3] x) { ... }
 
 ...
 
-test2(int[3] { 1, 2, 3 });
+test2((int[3]){ 1, 2, 3 });
 ```
 
-Note that when it's possible, inferring the type is allowed, so we have for the above examples:
+Note that when it's possible, inferring the type is allowed and preferred, so we have for the above examples:
 ```c3
 test1({ 1, 2.0 });
 test2({ 1, 2, 3 });
@@ -65,13 +65,13 @@ Passing a [slice](/language-common/arrays/#slice)
 fn void test(int[] y) { ... }
 
 // Using &&
-test(&&int[3]{ 1, 2, 3 });
+test(&&(int[3]){ 1, 2, 3 });
 
 // Explicitly slicing:
-test(int[3]{ 1, 2, 3 }[..]);
+test(((int[3]){ 1, 2, 3 })[..]);
 
 // Using a slice directly as a temporary:
-test(int[]{ 1, 2, 3 });
+test((int[]){ 1, 2, 3 });
 
 // Same as above but with inferred type:
 test({ 1, 2, 3 });
@@ -83,8 +83,8 @@ Passing the pointer to an [array](/language-common/arrays)
 fn void test1(int[3]* z) { ... }
 fn void test2(int* z) { ... }
 
-test1(&&int[3]{ 1, 2, 3 });
-test2(&&int[3]{ 1, 2, 3 });
+test1(&&(int[3]){ 1, 2, 3 });
+test2(&&(int[3]){ 1, 2, 3 });
 ```
 
 ## Constant expressions

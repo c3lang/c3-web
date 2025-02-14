@@ -139,13 +139,12 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Changed
 
-1. Compound literals use `Type { ... }` rather than `(Type) { ... }`
-2. Operator precedence of bit operations is higher than `+` and `-`.
-3. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
-4. `sizeof` is `$sizeof` and only works on expressions. Use `Type.sizeof` on types.
-5. `alignof` is `$alignof` for expressions. Types use `Type.alignof`.
-6. Narrowing conversions are only allowed if all sub-expressions is as small or smaller than the type.
-7. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened)
+1. Operator precedence of bit operations is higher than `+` and `-`.
+2. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
+3. `sizeof` is `$sizeof` and only works on expressions. Use `Type.sizeof` on types.
+4. `alignof` is `$alignof` for expressions. Types use `Type.alignof`.
+5. Narrowing conversions are only allowed if all sub-expressions is as small or smaller than the type.
+6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened)
 
 ### Removed
 

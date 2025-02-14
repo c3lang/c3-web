@@ -765,7 +765,7 @@ not `n[array] = 33`. This is a change from C.
 Compound literals have the format
 
 ```
-compound_literal   ::= TYPE_IDENTIFIER '(' initializer_list ')'
+compound_literal   ::= (type) initializer_list
 initializer_list   ::= '{' (initializer_param (',' initializer_param)* ','?)? '}'
 initializer_param  ::= expression | designator '=' expression
 designator         ::= array_designator | range_designator | field_designator

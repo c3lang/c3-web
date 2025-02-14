@@ -197,23 +197,6 @@ int a;
 int b @noinit;
 ```
 
-## Compound Literals
-
-Compound literals use C++ style brace initialization, not cast style like in C.
-For convenience, assigning to a struct will infer the type even if it's not an initializer.
-
-```c
-// C
-Foo f = { 1, 2 };
-f = (Foo) { 1, 2 };
-callFoo((Foo) { 2, 3 });
-
-// C3
-Foo f = { 1, 2 };
-f = { 1, 2 };
-callFoo(Foo{ 2, 3 });
-```
-
 ## typedef and #define becomes 'def'
 
 `typedef` is replaced by `def`:
