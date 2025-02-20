@@ -42,14 +42,17 @@ The following was extracted:
 
 ### Available annotations
 
-| Name        |                               format |
-|-------------|-------------------------------------:|
-| @param      |       `@param <param> <description>` |
-| @return     |              `@return <description>` |
-| @return!    |   `@return! <fault1>, <fault2>, ...` |
-| @deprecated | `@deprecated <optional description>` |
-| @require    |     `@require <expr1>, <expr2>, ...` |
-| @ensure     |     `@ensure <expre1>, <expr2>, ...` |
-| @pure       |                              `@pure` |
+| Name        |                                              format |
+|-------------|----------------------------------------------------:|
+| @param      |            `@param [<ref>] <param> [<description>]` |
+| @return     |                             `@return <description>` |
+| @return!    | `@return! <fault1>, <fault2>, ..., [<description>]` |
+| @deprecated |                       `@deprecated [<description>]` |
+| @require    |   `@require <expr1>, <expr2>, ..., [<description>]` |
+| @ensure     |   `@ensure <expre1>, <expr2>, ..., [<description>]` |
+| @pure       |                                             `@pure` |
     
 See [Contracts](/language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
+
+\*`[<ref>]` is an optional mutability description e.g. `[&in]`
+\*`[<description>]` denotes that a description is optional.
