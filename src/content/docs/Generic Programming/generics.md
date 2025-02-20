@@ -18,8 +18,8 @@ module vector(<TypeA, TypeB, TypeC>);
 
 It is also possible to parameterize by an `int` or `bool` constant, for example:
 ```c3
-// module custom_type<Type, VALUE>  
-module custom_type<float, 3>;
+// module custom_type(<Type, VALUE>)  
+module custom_type(<float, 3>);
 ```
 
 
