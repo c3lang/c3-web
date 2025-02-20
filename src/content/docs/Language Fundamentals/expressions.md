@@ -17,6 +17,12 @@ test(&&1);
 // int x = 1;
 // test(&x);
 ```
+
+A pointer created with `&&` is only valid until the end of the 
+current function. In other words, you should never return the 
+pointer created by `&&` from a function as it will never be safe
+to use.
+
 ## Well-defined evaluation order
 
 Expressions have a well-defined evaluation order:

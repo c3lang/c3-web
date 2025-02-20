@@ -349,6 +349,19 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 - When taking a function pointer of a method, use the full name.
 - Using subtypes, overlapping function names will be shadowed.
 
+### Guidelines on method use
+
+Methods are customary associated with Object-Oriented programming.
+In this style one will often encounter code like `some_object.run_everythin()`.
+C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
+Both the standard library and the design of the language instead follows
+the principle that functions are used whenever the system is mutating
+global data, whereas methods are used for mutating a particular value, or
+extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`
+are all good uses of methods. On the flip side, methods usage like
+`context.parse_data(data)`, `game.run(settings)` and `url.make_request()` 
+are emphatically *not* recommended.
+
 ## Contracts
 
 C3's error handling is not intended to use errors to signal invalid data or to check invariants and post conditions. Instead C3's approach is to add annotations to the function, that conditionally will be compiled into asserts.
@@ -447,8 +460,11 @@ fn void main()
 
 ## Static initializer and finalizers
 
-It is sometimes useful to run code at startup and shutdown. Static initializers and finalizers
-are regular functions annotated with `@init` and `@finalizer` that are run at startup and shutdown respectively:
+It is sometimes useful to run code at startup and shutdown of a program. 
+Static initializers and finalizers are regular functions annotated with 
+`@init` and `@finalizer` that are run at startup and shutdown respectively.
+(Note: this should not be confused with constructors and destructors
+in object-oriented languages.)
 
 ```c3
 fn void run_at_startup() @init

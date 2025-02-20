@@ -111,31 +111,28 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Added
 
-1. Expression block using `{| ... |}`. Somewhat similar to GCC statement expressions.
-2. Array initializers may use ranges. (e.g. `int[256] x = { [0..128] = 1 }`)
-3. `?:` operator, returning the first value if it can be converted to a boolean true, otherwise the second value is returned.
-4. Orelse `??` returning the first value if it is a result, the second if the first value was an optional value.
-5. Rethrow `!` suffix operator with an implicit `return` the value if it was an optional value.
-6. Dynamic calls, allowing calls to be made on the `any` and interfaces dispatched using a dynamic mechanism.
-7. Create a slice using a range subscript (e.g. `a[4..8]` to form a slice from element 4 to element 8).
-8. Two range subscript methods: `[start..inclusive_end]` and `[start:length]`. Start, end and length may be omitted for default values.
-9. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
-10. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
-11. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
-12. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers. 
-13. `?` suffix operator turns a fault into an optional value.
-14. `!!` suffix panics if the value is an optional value.
-15. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
-16. `$and(...)` `$or(...)` perform compile time logic, and may also be written as `&&&` and `|||` respectively. 
-- It does not check any elements after the first false value found for `$and()` also written as `&&&`. To check both conditions are false use: `!false_condition &&& !false_condition`.
-- It does not check any values after the first true found for `$or()` also written as `|||`.
-17. Lambdas (anonymous functions) may be defined, they work just like functions and do not capture any state.
-18. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
-19. Structs may implicitly convert to their `inline` member if they have one.
-20. Pointers to arrays may implicitly convert to slices.
-21. Any pointer may implicitly convert to an `any` with type being the pointee.
-22. Optional values will implicitly invoke "flatmap" on an expression it is a subexpression of.
-23. Swizzling for arrays and vectors.
+1. Array initializers may use ranges. (e.g. `int[256] x = { [0..128] = 1 }`)
+2. `?:` operator, returning the first value if it can be converted to a boolean true, otherwise the second value is returned.
+3. Orelse `??` returning the first value if it is a result, the second if the first value was an optional value.
+4. Rethrow `!` suffix operator with an implicit `return` the value if it was an optional value.
+5. Dynamic calls, allowing calls to be made on the `any` and interfaces dispatched using a dynamic mechanism.
+6. Create a slice using a range subscript (e.g. `a[4..8]` to form a slice from element 4 to element 8).
+7. Two range subscript methods: `[start..inclusive_end]` and `[start:length]`. Start, end and length may be omitted for default values.
+8. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
+9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
+10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
+11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers. 
+12. `?` suffix operator turns a fault into an optional value.
+13. `!!` suffix panics if the value is an optional value.
+14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
+15. Compile time "and" and "or" using `&&&` and `|||`. Both sides of the operator should be compile-time constants. If the left hand side of `&&&` is false, the right hand side is not type-checked. For `|||` the right hand side is not type-checked if the left hand side is true.
+16. Lambdas (anonymous functions) may be defined, they work just like functions and do not capture any state.
+17. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
+18. Structs may implicitly convert to their `inline` member if they have one.
+19. Pointers to arrays may implicitly convert to slices.
+20. Any pointer may implicitly convert to an `any` with type being the pointee.
+21. Optional values will implicitly invoke "flatmap" on an expression it is a subexpression of.
+22. Swizzling for arrays and vectors.
 
 ### Changed
 

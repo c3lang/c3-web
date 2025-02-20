@@ -160,33 +160,32 @@ The following keywords are reserved and may not be used as identifiers:
 ```
 asm         any         anyfault
 assert      attribute   break
-case        cast        catch
-const       continue    default
-defer       def         do
-else        enum        extern
-errtype     false       fn
-generic     if          import
-inline      macro
+case        catch       const       
+continue    default     defer       
+def         do          else        
+enum        extern      false
+fault       fn          if          
+import      inline      macro
 module      nextcase    null
 public      return      struct
 switch      true        try
 typeid      var         void        
 while
 
-bool        quad        double      
+bool        int128      double      
 float       long        ulong
 int         uint        byte
 short       ushort      char
 isz         usz         float16
-float128
+float128    uint128     bfloat16
 
-$and        $assert     $case       
-$default    $echo       $else       
-$error      $endfor     $endforeach 
-$endif      $endswitch  $for        
-$foreach    $if         $switch     
-$typef      $vaarg      $vaconst
-$vacount    $varef      $vatype             
+$assert     $case       $default    
+$echo       $else       $error      
+$endfor     $endforeach $endif      
+$endswitch  $for        $foreach    
+$if         $switch     $typef      
+$vaarg      $vaconst    $vacount    
+$vaexpr     $vatype             
                   
 ```
 
@@ -1505,11 +1504,6 @@ An example:
     // is equivalent to:
     int temp = foo()!;
     return temp;
-
-#### Return from expression blocks
-
-A `return` from an expression block only returns out of the expression block, it never returns from the
-expression block's enclosing scope.
 
 #### Empty returns
 

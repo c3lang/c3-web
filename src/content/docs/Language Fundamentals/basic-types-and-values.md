@@ -145,6 +145,10 @@ int[3] abc = { 1, 2, 3 }; // Explicit int[3]
 int[*] bcd = { 1, 2, 3 }; // Implicit int[3]
 ```
 
+\* Please note that in later versions of 0.6.x you'll see the syntax `int[?]` instead of `int[*]`
+as an alternative. Either will work in the most recent compiler, and
+it's not yet decided whether `[*]` or `[?]` will be picked for 0.7.
+
 ## Slices
 
 [Slices](/language-common/arrays/#slice) have the format `Type[]`. Unlike the array, a slice does not hold the values themselves
@@ -162,6 +166,16 @@ int[] slice = &abc;       // A slice pointing to abc with length 3
 
 Because indexing into slices is range checked in safe mode, slices are vastly more safe
 providing pointer + length separately.
+
+The internal representation of a slice is a two element struct:
+```c3
+struct SliceRaw
+{
+	void* ptr;
+	usz len;
+}
+```
+This definition can be found in the module `std::core::runtime`.
 
 ## Vectors
 

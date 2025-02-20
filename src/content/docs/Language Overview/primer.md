@@ -468,7 +468,6 @@ For more information see [the section on bitstructs](/language-overview/types//#
 
 The following things are enhancements to C, that don't have an equivalent in C.
 
-- [Expression blocks](/language-fundamentals/statements/#expression-blocks)
 - [Defer](/language-common/defer/)
 - [Methods](/language-fundamentals/functions/#methods)
 - [Optionals](/language-common/optionals-essential/#what-is-an-optional)
