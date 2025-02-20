@@ -51,7 +51,7 @@ Calling from C:
 
 ```c3
 extern int square(int);
-int foo_square(int) __attribute__ ((weak, alias ("foo.square")));
+int foo_square(int) __attribute__ ((weak, alias ("foo__square")));
 
 void test()
 {
