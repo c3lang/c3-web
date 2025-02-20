@@ -34,6 +34,16 @@ int[3] a = { 1, 2, 3 };
 int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
 ```
 
+You can get the length of an array using the `.len` property:
+
+```c3
+int len1 = int[4].len; // 4
+int[3] a = { 1, 2, 3 };
+int len2 = a.len; // 3
+int[*] b = { 1, 2 };
+int len3 = b.len; // 2
+```
+
 ## Slice
 
 The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers.
