@@ -324,12 +324,6 @@ Sets the visibility to "private", which means it is visible in the same module, 
 Used to annotate a non pure function as "pure" when checking for conformance to `@pure` on 
 functions.
 
-### @packed
-
-*Used for: struct, union, enum*
-
-If used on a struct or enum: packs the type, including any components to minimum size. On an enum, it uses the smallest representation containing all its values.
-
 ### @reflect
 
 *Used for: any declaration*
