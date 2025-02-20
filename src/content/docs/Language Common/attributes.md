@@ -65,6 +65,11 @@ struct Foo @align(32)
 }
 ```
 
+Note that following C behaviour, `align` is only able to *increase*
+the alignment. If setting a smaller alignment than default is 
+desired, then use `@packed` (which sets the alignment to 1 for all members)
+and then `@align`.
+
 ### @benchmark
 
 *Used for: function*
@@ -92,11 +97,38 @@ Should be used sparingly.
 Sets the calling convention, which may be ignored if the convention is not supported on the target.
 Valid arguments are `veccall`, `cdecl`, `stdcall`.
 
+\*Please note that on Windows, many calls are tagged `stdcall` in the C
+headers. However, this calling convention is only ever used on 32-bit Windows, 
+and is a no-op on 64-bit Windows.
+
+### @compact
+
+*Used for: struct, union*
+
+When placed on a struct or union, it allows the value to be compared
+using `==` and `!=`. The restriction is that it may not have any
+padding, as if it had the `@nopadding` attribute.
+
+### @const
+
+*Used for: macro*
+
+This attribute will ensure that the macro is always compile time
+folded (to a constant). Otherwise, a compile time error will
+be issued.
+
 ### @deprecated
 
 *Used for: types, function, macro, global, const, member*
 
 Marks the particular type, global, const or member as deprecated, making use trigger a warning.
+
+### @dynamic
+
+*Used for: methods*
+
+Mark a method for dynamic invocation. This allows the method
+to be invoked through interfaces.
 
 ### @export
 
@@ -111,6 +143,9 @@ added with that name.
 *Used for: function, global, const, enum, union, struct, fault*
 
 Sets the external (linkage) name of this declaration.
+
+\*Note, do not confuse this with `@export`, which is required
+to export a function or global.
 
 ### @finalizer
 
@@ -144,6 +179,17 @@ The function must be a void function taking no arguments.
 
 Declares a function to always be inlined or if placed on a call, that the call should be inlined.
 
+### @link
+
+*Used for: module, function, macro, global, const*
+
+Syntax for this attribute is `@link(cond, link1, link2, ...)`,
+where "link1" etc are strings names for libraries to implicitly
+link to when this symbol is used.
+
+In the case of a module section, adding `@link` implicitly places the
+attribute on all of its symbols.
+
 ### @littleendian 
 
 *Used for: bitstruct*
@@ -168,6 +214,15 @@ used sparingly.
 *Used for: function*
 
 This attribute disables prologue / epilogue emission for the function.
+The body of the function should be a text `asm` statement.
+
+### @noalias
+
+*Used for: function parameters*
+
+This is similar to `restrict` in C. A parameter with `@noalias` should
+be a pointer type, and the pointer is assumed not to alias to any other
+pointer.
 
 ### @nodiscard
 
@@ -181,6 +236,19 @@ The return value may not be discarded.
 
 Prevents the compiler from zero initializing the variable.
 
+### @noinline
+
+*Used for: function, function call*
+
+Prevents the compiler from inlining the function or a particular function call.
+
+### @nopadding
+
+*Used for: struct, union*
+
+Ensures that a struct of union has no padding, emits a
+compile time error otherwise.
+
 ### @norecurse
 
 *Used for: import <module_name> @norecurse*
@@ -189,9 +257,15 @@ Import the module but not sub-modules or parent-modules, see [Modules Section](/
 
 ### @noreturn
 
-*Used for: function*
+*Used for: function, macro*
 
 Declares that the function will never return.
+
+### @nosanitize
+
+*Used for: function*
+
+This prevents sanitizers from being added to this function.
 
 ### @nostrip
 
@@ -214,6 +288,15 @@ on faults and enums to remove the stored names.
 This attribute has arguments `[]` `[]=` `&[]` and `len` allowing [operator overloading](/generic-programming/operator-overloading/) for `[]` and `foreach`.
 By implementing `[]` and `len`, `foreach` and `foreach_r` is enabled. In order to do `foreach` by reference,
 `&[]` must be implemented as well.
+
+### @optional
+
+*Used for: interface methods*
+
+Placed on an interface method, this makes the method optional to 
+implement for types that implements the interface.
+
+See the `Printable` interface for an example.
 
 ### @overlap
 
@@ -259,6 +342,15 @@ Adds additional reflection information. Has no effect currently.
 
 Declares that a global variable or function should appear in a specific section.
 
+### @tag(name, value)
+
+*Used for: function, macro, user defined type, struct/union/bitstruct member*
+
+Adds a compile time tag to a type, function or member which can be retrieved
+at compile time using reflection: `.has_tagof` and `.tagof`.
+Example: `Foo.has_tagof("bar")` will return true if `Foo` has a tag "bar".
+`Foo.tagof("bar")` will return the value associated with that tag.
+
 ### @test
 
 *Used for: function*
@@ -277,6 +369,28 @@ Marks the declaration as possibly unused (but should not emit a warning).
 *Used for: any declaration*
 
 Marks a parameter, value etc. as must being used.
+
+### @wasm 
+
+*Used for: function, global, const*
+
+This attribute may take 0, 1 or 2 arguments. With 0 or 1 arguments
+it behaves identical to `@export` if it is non-extern. For extern
+symbols it behaves like `@extern`.
+
+When used with 2 arguments, the first argument is the wasm module,
+and the second is the name. It can only be used for `extern` symbols.
+
+### @winmain
+
+*Used for: function*
+
+This attribute is ignored on non-windows targets. On Windows,
+it will create a `WinMain` entry point that will which calls
+the main function. This will give other options for the `main`
+argument, and is recommended for Windows GUI applications.
+
+It is only valid for the `main` function.
 
 ### @weak
 
