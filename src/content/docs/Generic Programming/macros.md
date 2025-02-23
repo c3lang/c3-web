@@ -421,8 +421,8 @@ e.g. `$vatype(2) a = 2`
 ### $vasplat
 
 `$vasplat` allows you to paste the varargs in the call into another call. For example,
-if the macro was called with values `"foo"` and `1`, the code `foo($vasplat())`, would become `foo("foo", 1)`.
-You can even extract provide a range as the argument: `$vasplat(2..4)` (in this case, this would past in 
+if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`.
+You can even extract provide a range as the argument: `$vasplat[2..4]` (in this case, this would paste in 
 arguments 2, 3 and 4).
 
 Nor is it limited to function arguments, you can also use it with initializers:
