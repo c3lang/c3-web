@@ -478,7 +478,7 @@ import std::io;
 
 // Compile foo.c3 and bar.c3 in the /scripts directory, invoke the resulting binary
 // with the argument 'test'
-$exec("foo.c3;bar.c3", "test");
+$exec("foo.c3;bar.c3", { "test" });
 
 fn void main()
 {
