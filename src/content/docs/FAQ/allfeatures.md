@@ -212,7 +212,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 1. Match-style variant of the `switch` statement, allows each `case` to hold an expression to test.
 2. Switching over type with `typeid`.
-3. Unpack `any` to the underlying type with an `any`-switch.
+3. `asm` blocks for inline assembly.
 4. `nextcase` to fallthrough to the next case.
 5. `nextcase <expr>` to jump to the case with the expression value (this may be an expression evaluated at runtime).
 6. `nextcase default` to jump to the `default` clause.
@@ -227,10 +227,9 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 15. `defer catch` and `defer try` similar to `defer` but executes only on optional exit or regular exit of scope respectively.
 16. `do` statements may omit `while`, behaving same as `while (0)`
 17. `if` may have a label. Labelled `if` may be exited using labelled break.
-18. `asm` blocks for inline assembly. 
-19. if-try statements allows you to run code where an expression is a result.
-20. if-catch statements runs code on fault. It can be used to implicitly unwrap variables.
-21. Exhaustive switching on enums.
+18. if-try statements allows you to run code where an expression is a result.
+19. if-catch statements runs code on fault. It can be used to implicitly unwrap variables.
+20. Exhaustive switching on enums.
 
 ### Changed
 

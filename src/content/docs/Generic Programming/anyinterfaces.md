@@ -25,18 +25,6 @@ switch (my_any.type)
 }
 ```
 
-Or the special `any`-version of the switch:
-
-```c3
-switch (my_any)
-{
-    case Foo:
-        // my_any can be used as if it was Foo* here
-    case Bar:
-        // my_any can be used as if it was Bar* here
-}
-```
-
 Sometimes one needs to manually construct an any-pointer, which
 is typically done using the `any_make` function: `any_make(ptr, type)`
 will create an `any` pointing to `ptr` and with typeid `type`.
