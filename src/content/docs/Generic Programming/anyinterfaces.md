@@ -13,14 +13,14 @@ It can be thought of as a typed `void*`.
 An `any` can be created by assigning any pointer to it. You can then query the `any` type for the typeid of 
 the enclosed type (the type the pointer points to) using the `type` field.
 
-This allows switching over the typeid, either using a normal switch:
+This allows switching over the typeid, using a normal switch:
 
 ```c3
 switch (my_any.type)
 {
     case Foo.typeid:
         ...
-    case Bar.typeid:
+    case Bar: // .typeid can be elided
         ...
 }
 ```
