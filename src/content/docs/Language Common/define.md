@@ -5,7 +5,7 @@ sidebar:
     order: 61
 ---
 
-# The "def" statement
+# The `def` statement
 
 The `def` statement in C3 is intended for aliasing identifiers and types.
 

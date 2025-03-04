@@ -19,7 +19,7 @@ that are also prefixed using `$` (e.g. `$MyType` `$ParamType`).
 
 Mutable compile time variables are *not* allowed in the global scope.
 
-### $if and $switch
+### `$if` and `$switch`
 
 `$if <const expr>:` takes a compile time constant value and evaluates it to true or false.
 
@@ -79,7 +79,7 @@ macro @foo($x, #y)
 }
 ```
 
-### Loops using $foreach and $for
+### Loops using `$foreach` and `$for`
 
 `$for` ... `$endfor` works analogous to `for`, only it is limited to using compile time variables. `$foreach` ... `$endforeach` similarly 
 matches the behaviour of `foreach`.
@@ -128,8 +128,10 @@ fn void test()
 }
 ```
 
-An important thing to note is that the content of the `$foreach` or `$for` body must be at least a complete statement.
+:::note
+The content of the `$foreach` or `$for` body must be at least a complete statement.
 It's not possible to compile partial statements.
+:::
 
 ### Compile time macro execution
 
@@ -163,7 +165,7 @@ It is important to remember that if we had replaced `$n` with `n` the compiler w
 is not be considered to be a constant expression, even if the actual argument to the macro was a constant.
 This limitation is deliberate, to offer control over what is compiled out and what isn't.
 
-### Conditional compilation at the top level using @if
+### Conditional compilation at the top level using `@if`
 
 At the top level, conditional compilation is controlled using with `@if` attributes on declarations
 
@@ -204,7 +206,7 @@ rely on this ordering.
 
 ## Compile time introspection
 
-At compile time, full type information is available. This allows for creation of reusable, code generating, macros for things
+At compile time, full type information is available. This allows for creation of reusable, code generating macros for things
 like serialization.
 
 ```c3    

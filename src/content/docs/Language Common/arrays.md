@@ -22,13 +22,13 @@ int x[3] = { 1, 2, 3 };
 foo(x);
 
 // C3
-fn int foo(int *a) { ... }
+fn int foo(int* a) { ... }
 
 int[3] x = { 1, 2, 3 };
 foo(&x);
 ```
 
-When you want to initialize a fixed array without specifying the size, use the [*] array syntax:
+When you want to initialize a fixed array without specifying the size, use the `[*]` array syntax:
 ```c3
 int[3] a = { 1, 2, 3 };
 int[*] b = { 4, 5, 6 }; // Type inferred to be int[3]
@@ -69,7 +69,7 @@ fn void test()
 
 It's possible to use the range syntax to create slices from pointers, arrays, and other slices.
 
-This is written `arr[<start-index> .. <end-index>]`, where the `end-index` is *inclusive*. 
+This is written `arr[<start-index> .. <end-index>]`, where `end-index` is *inclusive*. 
 ```c3
 fn void test() 
 {
@@ -80,7 +80,7 @@ fn void test()
 }
 ```  
 
-You can also use the `arr[<start-index> : <slice-length>]`
+You can also use `arr[<start-index> : <slice-length>]`
 ```c3
 fn void test()
 {
@@ -92,8 +92,8 @@ fn void test()
 ```
 
 It’s possible to omit the first and last indices of a range:
-- `arr[..<end-index>]` Omitting the `start-index` will default it to 0
-- `arr[<start-index>..]` Omitting the `end-index` will assign it to `arr.len-1` (this is not allowed on pointers)
+- `arr[..<end-index>]` Omitting the start index will default it to 0
+- `arr[<start-index>..]` Omitting the end index will assign it to `arr.len-1` (this is not allowed on pointers)
 
 Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index` 
 
@@ -160,12 +160,12 @@ Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is unspecified 
     
 ### Conversion List
 
-| | int[4] | int[] | int[4]* | int* |
+| | `int[4]` | `int[]` | `int[4]*` | `int*` |
 |:-:|:-:|:-:|:-:|:-:|
-| int[4] | copy | - | - | - |
-| int[] | - | assign | assign | - |
-| int[4]* | - | cast | assign | cast |
-| int* | - | assign | assign | assign |
+| `int[4]` | copy | - | - | - |
+| `int[]` | - | assign | assign | - |
+| `int[4]*` | - | cast | assign | cast |
+| `int*` | - | assign | assign | assign |
 
 Note that all casts above are inherently unsafe and will only work if the type cast is indeed compatible.
 
@@ -205,7 +205,7 @@ struct SliceRaw
 
 ## Iteration Over Arrays
 
-### Foreach element by copy
+### `foreach` element by copy
 
 You may iterate over slices, arrays and vectors using `foreach (Type x : array)`. 
 Using compile-time type inference this can be abbreviated 
@@ -228,7 +228,7 @@ fn void test()
 }
 ```
 
-### Foreach element by reference
+### `foreach` element by reference
 Using `&` it is possible to get an element by reference rather than by copy.
 Providing two variables to `foreach`, the first is assumed to be the index and the second the value:
 
@@ -249,7 +249,7 @@ fn void test()
 }
 ```
 
-### Foreach_r reverse iterating
+### `foreach_r` reverse iterating
 With `foreach_r` arrays or slices can be iterated over in reverse order 
 
 ```c3
