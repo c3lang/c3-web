@@ -398,7 +398,7 @@ platforms where this is available.
 
 ## Textual Includes
 
-### $include
+### `$include`
 
 It's sometimes useful to include an entire file, doing so employs the `$include` function.
 Includes are only valid at the top level.
@@ -445,7 +445,7 @@ The include may use an absolute or relative path, the relative path is always re
 Note that to use it, the **trust level** of the compiler must be set to at least 2 with
 the `--trust` option (i.e. use `--trust=include` or `--trust=full` from the command line).
 
-### $exec
+### `$exec`
 
 An alternative to `$include` is `$exec` which is similar to include, but instead includes the output of an external
 program as the included text.

@@ -41,7 +41,7 @@ It is possible to access properties on the type itself:
 - `typeid`
 - `values`
 
-#### alignof
+#### `alignof`
 
 Returns the alignment in bytes needed for the type.
 
@@ -54,7 +54,7 @@ struct Foo @align(8)
 uint a = Foo.alignof; // 8
 ```
 
-#### associated
+#### `associated`
 
 *Only available for enums.*
 Returns an array containing the types of associated values if any.
@@ -68,7 +68,7 @@ enum Foo : int (double d, String s)
 String s = Foo.associated[0].nameof; // "double"
 ```
 
-#### elements
+#### `elements`
 
 Returns the element count of an enum or fault.
 
@@ -81,13 +81,13 @@ enum FooEnum
 int x = FooEnum.elements; // 2
 ```
 
-#### inf
+#### `inf`
 
 *Only available for floating point types*
 
 Returns a representation of floating point "infinity".
 
-#### inner
+#### `inner`
 
 This returns a typeid to an "inner" type. What this means is different for each type:
 
@@ -100,7 +100,7 @@ This returns a typeid to an "inner" type. What this means is different for each 
 
 It is not defined for other types.
 
-#### kindof
+#### `kindof`
 
 Returns the underlying `TypeKind` as defined in std::core::types.
 
@@ -108,7 +108,7 @@ Returns the underlying `TypeKind` as defined in std::core::types.
 TypeKind kind = int.kindof; // TypeKind.SIGNED_INT
 ```
 
-#### len
+#### `len`
 
 Returns the length of the array.
 
@@ -116,7 +116,7 @@ Returns the length of the array.
 usz len = int[4].len; // 4
 ```
 
-#### max
+#### `max`
 
 Returns the maximum value of the type (only valid for integer and float types).
 
@@ -124,7 +124,7 @@ Returns the maximum value of the type (only valid for integer and float types).
 ushort max_ushort = ushort.max; // 65535
 ```
 
-#### membersof
+#### `membersof`
 
 *Only available for bitstruct, struct and union types.*
 
@@ -145,7 +145,7 @@ String x = Baz.membersof[1].nameof; // "z"
 
 A `member_ref` has properties `alignof`, `kindof`, `membersof`, `nameof`, `offsetof`, `sizeof` and `typeid`.
 
-#### min
+#### `min`
 
 Returns the minimum value of the type (only valid for integer and float types).
 
@@ -153,11 +153,11 @@ Returns the minimum value of the type (only valid for integer and float types).
 ichar min_ichar = ichar.min; // -128
 ```
 
-#### nameof
+#### `nameof`
 
 Returns the name of the type.
 
-#### names
+#### `names`
 
 Returns a slice containing the names of an enum or fault.
 
@@ -170,7 +170,7 @@ enum FooEnum
 String[] x = FooEnum.names; // ["BAR", "BAZ"]
 ```
 
-#### paramsof
+#### `paramsof`
 
 *Only available for function pointer types.*
 Returns a ReflectParam struct for all function pointer parameters.
@@ -181,7 +181,7 @@ String s = TestFunc.paramsof[1].name; // "f"
 typeid t = TestFunc.paramsof[1].type; // double.typeid
 ```
 
-#### parentof
+#### `parentof`
 
 *Only available for bitstruct and struct types.*
 Returns the typeid of the parent type.
@@ -200,7 +200,7 @@ struct Bar
 String x = Bar.parentof.nameof; // "Foo"
 ```
 
-#### returns
+#### `returns`
 
 *Only available for function types.*
 Returns the typeid of the return type.
@@ -210,7 +210,7 @@ def TestFunc = fn int(int, double);
 String s = TestFunc.returns.nameof; // "int"
 ```
 
-#### sizeof
+#### `sizeof`
 
 Returns the size in bytes for the given type, like C `sizeof`.
 
@@ -218,7 +218,7 @@ Returns the size in bytes for the given type, like C `sizeof`.
 usz x = Foo.sizeof;
 ```
 
-#### typeid
+#### `typeid`
 
 Returns the typeid for the given type. `def`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
 
@@ -226,7 +226,7 @@ Returns the typeid for the given type. `def`s will return the typeid of the unde
 typeid x = Foo.typeid;
 ```
 
-#### values
+#### `values`
 
 Returns a slice containing the values of an enum or fault.
 
@@ -255,7 +255,7 @@ There are several built-in functions to inspect the code during compile time.
 - `$stringify`
 - `$typeof`
 
-### $alignof
+#### `$alignof`
 
 Returns the alignment in bytes needed for the type or member.
 
@@ -275,7 +275,7 @@ $alignof(Foo);   // => returns 8 on 64 bit
 $alignof(g);     // => returns 4
 ```
 
-### $defined
+#### `$defined`
 
 Returns true if the expression inside is defined and all sub expressions are valid.
 
@@ -289,7 +289,7 @@ $defined((int)abc);  // => returns false
 // $defined(abc.len() + 1)  would be an error
 ```
 
-### $eval
+#### `$eval`
 
 Converts a compile time string with the corresponding variable:
 
@@ -314,7 +314,7 @@ fn void test()
 }
 ```
 
-### $evaltype
+#### `$evaltype`
 
 Similar to `$eval` but for types:
 
@@ -322,7 +322,7 @@ Similar to `$eval` but for types:
 $evaltype("float") f = 12.0f;
 ```
 
-### $extnameof
+#### `$extnameof`
 
 Returns the external name of a type, variable or function. The external name is
 the one used by the linker.
@@ -333,7 +333,7 @@ String a = $extnameof(g); // => "test.bar.g";
 string b = $extnameof(testfn); // => "test.bar.testfn"
 ```
 
-### $nameof
+#### `$nameof`
 
 Returns the name of a function or variable as a string without module prefixes.
 
@@ -345,7 +345,7 @@ String a = $nameof(g); // => "g"
 String b = $nameof(test); // => "test"
 ```
 
-### $offsetof
+#### `$offsetof`
 
 Returns the offset of a member in a struct.
 
@@ -354,7 +354,7 @@ Foo z;
 $offsetof(z.y); // => returns 8 on 64 bit, 4 on 32 bit
 ```
 
-### $qnameof
+#### `$qnameof`
 
 Returns the same as `$nameof`, but with the full module name prepended.
 
@@ -367,7 +367,7 @@ String a = $qnameof(g); // => "abc::g"
 String b = $qnameof(test); // => "abc::test"
 ```
 
-### $sizeof
+#### `$sizeof`
 
 This is used on a value to determine the allocation size needed. `$sizeof(a)` is equivalent
 to doing `$typeof(a).sizeof`. Note that this is only used on values and not on types.
@@ -377,13 +377,13 @@ $typeof(a)* x = allocate_bytes($sizeof(a));
 *x = a;
 ```
 
-### $stringify
+#### `$stringify`
 
 Returns the expression as a string. It has a special behaviour for macro expression parameters,
 where `$stringify(#foo)` will return the expression contained in `#foo` rather than simply return
 "#foo"
 
-### $typeof
+#### `$typeof`
 
 Returns the type of an expression or variable as a type itself.
 

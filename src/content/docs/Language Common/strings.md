@@ -6,7 +6,7 @@ sidebar:
 ---
 In C3, multiple string types are available, each suited to different use cases.
 
-### String
+### `String`
 
 ```c3
 
@@ -14,11 +14,11 @@ distinct String = inline char[];
 
 ```
 \
-Strings are usually the typical type to use, they can be sliced , compared etc ... \
+`String`s are usually the typical type to use, they can be sliced , compared etc ... \
 It is possible to access the length of a `String` instance through the  ` .len  `  operator.
 
 
-### ZString
+### `ZString`
 
 ```c3
 
@@ -26,15 +26,15 @@ distinct ZString = inline char*;
 ```
 
 \
-ZString is used when working with C code, which expects null-terminated C-style strings of type `char*`. it is a distinct type so converting to a `ZString` requires an explicit cast. This helps to remind the user to check there is appropriate `\0` termination of the string data. 
+`ZString` is used when working with C code, which expects null-terminated C-style strings of type `char*`. It is a distinct type so converting to a `ZString` requires an explicit cast. This helps to remind the user to check there is appropriate `\0` termination of the string data. 
 
-The [ZString methods](#zstring-member-functions) are outlined below.
+The [`ZString` methods](#zstring-member-functions) are outlined below.
 
 :::caution  
 Ensure the terminal `\0` when converting from `String` to `ZString`.
 :::
 
-#### WString
+#### `WString`
 
 ```c3
 
@@ -44,7 +44,7 @@ distinct WString = inline Char16*;
 \
 The `WString` type is similar to `ZString` but uses `Char16*`, typically for UTF-16 encoded strings. This type is useful for applications where 16-bit character encoding is required.
 
-#### DString
+#### `DString`
 
 ```c3
 
@@ -56,7 +56,7 @@ distinct DString (OutStream) = void*;
 
 ## Member functions:
 
-### String Member Functions
+### `String` Member Functions
 
 ```c3
 fn Char16[]! String.to_new_utf16(s, Allocator allocator = allocator::heap())
@@ -221,7 +221,7 @@ fn WString! String.to_temp_wstring(s) => s.to_wstring(allocator::temp());
 fn StringIterator String.iterator(s);
 ```
 
-### ZString Member Functions
+### `ZString` Member Functions
 
 ```c3 implementation
 fn String ZString.str_view(str);

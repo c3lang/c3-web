@@ -69,7 +69,7 @@ If the file named `filename` is found the function will read the content into a 
 Note that if a scope exit happens before the `defer` declaration, the `defer` will not run, this a useful property because if the file failed to open, we don't need to close it.
 
 
-## Defer try
+## `defer try`
 
 A `defer try` is called at [end of a scope](#end-of-a-scope) when the returned [Optional contained a result](/language-common/optionals-essential/#what-is-an-optional) value.
 
@@ -110,7 +110,7 @@ fn void main(String[] args)
 Function returns an [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional), 
 this means the `defer try` does *not* run on [scope exit](#end-of-a-scope).
 
-## Defer catch
+## `defer catch`
 
 A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting exiting with an 
 [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional), and is helpful for logging, cleanup and freeing resources.
@@ -148,7 +148,7 @@ fn char[]! test()
 }
 ```
 
-## Pitfalls with defer and defer catch
+:::caution[Pitfalls with `defer` and `defer catch`]
 If cleaning up memory allocations or resources make sure the `defer` or `defer catch` 
 are declared as close to the resource declaration as possible. 
 This helps to avoid unwanted memory leaks or unwanted resource usage from other code [rethrowing `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) before the `defer catch` was even declared. 
@@ -180,3 +180,4 @@ fn String! test()
     return (String)data; 
 }
 ```
+:::

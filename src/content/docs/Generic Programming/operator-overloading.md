@@ -7,7 +7,7 @@ sidebar:
 
 C3 allows some *limited* operator overloading for working with containers. 
 
-## "Element at" operator []
+## "Element at" operator `[]`
 
 Implementing `[]` allows a type to use the `my_type[<value>]` syntax:
 
@@ -32,11 +32,11 @@ fn double Bar.get(&self, String str) @operator([])
 }
 ```
 
-Only a single [] overload is allowed.
+Only a single `[]` overload is allowed.
 
-## "Element ref" operator &[]
+## "Element ref" operator `&[]`
 
-Similar to [], the operator returns a value for `&my_type[<value>]`, which may
+Similar to `[]`, the operator returns a value for `&my_type[<value>]`, which may
 be retrieved in a different way. If this overload isn't defined, then `&my_type[<value>]` would
 be a syntax error.
 
@@ -47,9 +47,9 @@ fn double* Foo.get_ref(&self, usz i) @operator(&[])
 }
 ```
 
-## "Element set" operator []=
+## "Element set" operator `[]=`
 
-The counterpart of [] allows setting an element using `my_type[<index>] = <value>`.
+The counterpart of `[]` allows setting an element using `my_type[<index>] = <value>`.
 
 ```c3
 fn void Foo.set(&self, usz i, double new_val) @operator([]=)
@@ -64,7 +64,7 @@ Unlike the previous operator overloads, the "len" operator simply enables functi
 which augments the `[]`-family of operators: you can use the "from end" syntax e.g `my_type[^1]` 
 to get the last element assuming the indexing uses integers.
 
-## Enabling 'foreach'
+## Enabling `foreach`
 
 In order to use a type with foreach, e.g. `foreach(d : foo)`, at a minimum methods 
 with overloads for `[]` (`@operator([])`) and `len` (`@operator(len)`) need to be added. 
