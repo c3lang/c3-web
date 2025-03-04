@@ -20,7 +20,7 @@ Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3,
 11. `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=`
 
 
-The main difference is that bitwise operations and shift has higher precedence than addition/subtraction and multiplication/division in C3. Bitwise operations also have higher precedence than the relational operators. Also, there is no difference in precedence between && || or between the bitwise operators.
+The main difference is that bitwise operations and shift has higher precedence than addition/subtraction and multiplication/division in C3. Bitwise operations also have higher precedence than the relational operators. Also, there is no difference in precedence between `&&` and `||` or between the bitwise operators.
 
 Examples:
 

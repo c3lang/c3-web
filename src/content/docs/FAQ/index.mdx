@@ -41,6 +41,8 @@ invoking libc functions. `std::os` for working with OS specific code and
 
 **Q:** How do strings work?
 
+(see [Strings](/language-common/strings) for more info.)
+
 **A:** C3 defines a native string type `String`, which is a distinct `char[]`. Because
 `char[]` is essentially a pointer + length, some care has to be taken to
 ensure that the pointer is properly managed.
@@ -59,6 +61,8 @@ with C.
 ## Language features
 
 **Q:** How do I use slices?
+
+(see [Arrays/Slice](/language-common/arrays/#slice) for more info.)
 
 **A:** Slices are typically preferred in any situation where one in C would pass
 a pointer + length. It is a struct containing a pointer + a length.
@@ -122,6 +126,8 @@ fn void main()
 ```
 
 **Q:** What are vectors?
+
+(see [Vectors](/language-common/vectors) for more info.)
 
 **A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`, the element type may also only
 be of integer, float, bool or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetics
@@ -220,6 +226,8 @@ Allocator temp = allocator::temp();
 ```
 
 ## Interfacing with C code
+
+(see [C Interoperability](/language-common/cinterop) for more info.)
 
 **Q:** How do I call a C function from C3?
 
@@ -333,7 +341,7 @@ fn int test()
 
 **Q:** Why does C3 require that types start with upper case but functions with lower case?
 
-**A:** C grammar is ambiguous. Usually compilers implement either the so-called lexer hack, but other methods
+**A:** C grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
 exist as well, such as delayed parsing. It is also possible to make it unambiguous using infinite lookahead.
 
 However, all of those methods makes it much harder for tools to search the source code accurately. By making
@@ -405,7 +413,7 @@ For Windows the following target would be needed:
 
 `c3c compile main.c3 --target windows-x64`
 
-*You need the MSVC SDK Files, which includes the Windows SDK. To be able to cross-compile to Windows*
+*You need the MSVC SDK Files, which includes the Windows SDK to be able to cross-compile to Windows.*
 
 To get the MSVC SDK Files, head to your C3 directory and run the following command:
 

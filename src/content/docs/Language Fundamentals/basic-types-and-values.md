@@ -126,10 +126,10 @@ for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
 While floating point numbers default to `double` it is possible to type a 
 floating point by adding a suffix:
 
-| Suffix       | type     |
-| ------------ | --------:|
-| f32 *or* f   | float    |
-| f64          | double   |
+| Suffix           | type       |
+| ---------------- | ----------:|
+| `f32` *or* `f`   | `float`    |
+| `f64`            | `double`   |
 
 ## Arrays
 

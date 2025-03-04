@@ -9,7 +9,7 @@ Attributes are compile-time annotations on functions, types, global constants an
 
 ## Built in attributes
 
-### @adhoc 
+### `@adhoc` 
 
 *Used for: type parameterized generic modules*
 
@@ -51,7 +51,7 @@ fn void main()
 }
 ```
 
-### @align(alignment) 
+### `@align(alignment)`
 
 *Used for: struct, bitstructs, union, var, function*
 
@@ -65,43 +65,45 @@ struct Foo @align(32)
 }
 ```
 
-Note that following C behaviour, `align` is only able to *increase*
+Note that following C behaviour, `@align` is only able to *increase*
 the alignment. If setting a smaller alignment than default is 
 desired, then use `@packed` (which sets the alignment to 1 for all members)
 and then `@align`.
 
-### @benchmark
+### `@benchmark`
 
 *Used for: function*
 
 Marks the function as a benchmark function. Will be added to the list of benchmark functions when the benchmarks are run,
 otherwise the function will not be included in the compilation.
 
-### @bigendian
+### `@bigendian`
 
 *Used for: bitstruct*
 
 Lays out the bits as if the data was stored in a big endian type, regardless of host system endianness.
 
-### @builtin
+### `@builtin`
 
 *Used for: function, macro, global, const*
 
 Allows a macro, function, global or constant be used from another module without the module path prefixed.
 Should be used sparingly.
 
-### @callconv
+### `@callconv`
 
 *Used for: function*
 
 Sets the calling convention, which may be ignored if the convention is not supported on the target.
 Valid arguments are `veccall`, `cdecl`, `stdcall`.
 
-\*Please note that on Windows, many calls are tagged `stdcall` in the C
+:::caution
+On Windows, many calls are tagged `stdcall` in the C
 headers. However, this calling convention is only ever used on 32-bit Windows, 
 and is a no-op on 64-bit Windows.
+:::
 
-### @compact
+### `@compact`
 
 *Used for: struct, union*
 
@@ -109,7 +111,7 @@ When placed on a struct or union, it allows the value to be compared
 using `==` and `!=`. The restriction is that it may not have any
 padding, as if it had the `@nopadding` attribute.
 
-### @const
+### `@const`
 
 *Used for: macro*
 
@@ -117,20 +119,20 @@ This attribute will ensure that the macro is always compile time
 folded (to a constant). Otherwise, a compile time error will
 be issued.
 
-### @deprecated
+### `@deprecated`
 
 *Used for: types, function, macro, global, const, member*
 
 Marks the particular type, global, const or member as deprecated, making use trigger a warning.
 
-### @dynamic
+### `@dynamic`
 
 *Used for: methods*
 
 Mark a method for dynamic invocation. This allows the method
 to be invoked through interfaces.
 
-### @export
+### `@export`
 
 *Used for: function, global, const, enum, union, struct, fault*
 
@@ -138,32 +140,34 @@ Marks this declaration as an export, this ensures it is never removed and expose
 The attribute takes an optional string value, which is the external name. This acts as if `@extern` had been
 added with that name.
 
-### @extern
+### `@extern`
 
 *Used for: function, global, const, enum, union, struct, fault*
 
 Sets the external (linkage) name of this declaration.
 
-\*Note, do not confuse this with `@export`, which is required
+:::caution
+Do not confuse this with [`@export`](#export), which is required
 to export a function or global.
+:::
 
-### @finalizer
+### `@finalizer`
 
 *Used for: function*
 
-Make this function run at shutdown. See `@init` for the optional priority. Note that running a
+Make this function run at shutdown. See [`@init`](#init) for the optional priority. Note that running a
 finalizer is a "best effort" attempt by the OS. During abnormal termination it is not guaranteed to run.
 
 The function must be a void function taking no arguments.
 
-### @if
+### `@if`
 
 *Used for: all declarations*
 
 Conditionally includes the declaration in the compilation. It takes a constant compile time value argument, if this
 value is `true` then the declaration is retained, on false it is removed.
 
-### @init
+### `@init`
 
 *Used for: function*
 
@@ -173,13 +177,13 @@ reserved and using them may interfere with standard program initialization.
 
 The function must be a void function taking no arguments.
 
-### @inline
+### `@inline`
 
 *Used for: function, call*
 
 Declares a function to always be inlined or if placed on a call, that the call should be inlined.
 
-### @link
+### `@link`
 
 *Used for: module, function, macro, global, const*
 
@@ -190,33 +194,33 @@ link to when this symbol is used.
 In the case of a module section, adding `@link` implicitly places the
 attribute on all of its symbols.
 
-### @littleendian 
+### `@littleendian `
 
 *Used for: bitstruct*
 
 Lays out the bits as if the data was stored in a little endian type, regardless of host system endianness.
 
-### @local
+### `@local`
 
 *Used for: any declaration*
 
 Sets the visibility to "local", which means it's only visible in the current module section.
 
-### @maydiscard
+### `@maydiscard`
 
 *Used for: function, macro*
 
 Allows the return value of the function or macro to be discarded even if it is an optional. Should be
 used sparingly.
 
-### @naked
+### `@naked`
 
 *Used for: function*
 
 This attribute disables prologue / epilogue emission for the function.
 The body of the function should be a text `asm` statement.
 
-### @noalias
+### `@noalias`
 
 *Used for: function parameters*
 
@@ -224,64 +228,64 @@ This is similar to `restrict` in C. A parameter with `@noalias` should
 be a pointer type, and the pointer is assumed not to alias to any other
 pointer.
 
-### @nodiscard
+### `@nodiscard`
 
 *Used for: function, macro*
 
 The return value may not be discarded.
 
-### @noinit
+### `@noinit`
 
 *Used for: global, local variable*
 
 Prevents the compiler from zero initializing the variable.
 
-### @noinline
+### `@noinline`
 
 *Used for: function, function call*
 
 Prevents the compiler from inlining the function or a particular function call.
 
-### @nopadding
+### `@nopadding`
 
 *Used for: struct, union*
 
 Ensures that a struct of union has no padding, emits a
 compile time error otherwise.
 
-### @norecurse
+### `@norecurse`
 
 *Used for: import <module_name> @norecurse*
 
 Import the module but not sub-modules or parent-modules, see [Modules Section](/language-fundamentals/modules/#non-recursive-imports).
 
-### @noreturn
+### `@noreturn`
 
 *Used for: function, macro*
 
 Declares that the function will never return.
 
-### @nosanitize
+### `@nosanitize`
 
 *Used for: function*
 
 This prevents sanitizers from being added to this function.
 
-### @nostrip
+### `@nostrip`
 
 *Used for: any declaration*
 
 This causes the declaration never to be stripped from the executable, even if it's not used. This
 also transitively applies to any dependencies the declaration might have.
 
-### @obfuscate
+### `@obfuscate`
 
 *Used for: any declaration*
 
 Removes any string values that would identify the declaration in some way. Mostly this is used
 on faults and enums to remove the stored names.
 
-### @operator
+### `@operator`
 
 *Used for: method, macro method*
 
@@ -289,54 +293,54 @@ This attribute has arguments `[]` `[]=` `&[]` and `len` allowing [operator overl
 By implementing `[]` and `len`, `foreach` and `foreach_r` is enabled. In order to do `foreach` by reference,
 `&[]` must be implemented as well.
 
-### @optional
+### `@optional`
 
 *Used for: interface methods*
 
 Placed on an interface method, this makes the method optional to 
 implement for types that implements the interface.
 
-See the `Printable` interface for an example.
+See the [`Printable`](/standard-library/stdlib_refcard#:~:text=interface%20Printable) interface for an example.
 
-### @overlap
+### `@overlap`
 
 *Used for: bitstruct*
 
 Allows bitstruct fields to have overlapping bit ranges.
 
-### @packed
+### `@packed`
 
 *Used for: struct, union*
 
 Causes all members to be packed as if they had alignment 1. The alignment of the struct/union is set to 1.
-This alignment can be overridden with `@align`.
+This alignment can be overridden with [`@align`](#alignalignment).
 
-### @private
+### `@private`
 
 *Used for: any declaration*
 
 Sets the visibility to "private", which means it is visible in the same module, but not from other modules.
 
-### @pure
+### `@pure`
 
 *Used for: call*
 
 Used to annotate a non pure function as "pure" when checking for conformance to `@pure` on 
 functions.
 
-### @reflect
+### `@reflect`
 
 *Used for: any declaration*
 
 Adds additional reflection information. Has no effect currently.
 
-### @section(name)
+### `@section(name)`
 
 *Used for: function, const, global*
 
 Declares that a global variable or function should appear in a specific section.
 
-### @tag(name, value)
+### `@tag(name, value)`
 
 *Used for: function, macro, user defined type, struct/union/bitstruct member*
 
@@ -345,37 +349,37 @@ at compile time using reflection: `.has_tagof` and `.tagof`.
 Example: `Foo.has_tagof("bar")` will return true if `Foo` has a tag "bar".
 `Foo.tagof("bar")` will return the value associated with that tag.
 
-### @test
+### `@test`
 
 *Used for: function*
 
 Marks the function as a test function. Will be added to the list of test functions when the tests are run,
 otherwise the function will not be included in the compilation.
 
-### @unused
+### `@unused`
 
 *Used for: any declaration*
 
 Marks the declaration as possibly unused (but should not emit a warning).
 
-### @used
+### `@used`
 
 *Used for: any declaration*
 
 Marks a parameter, value etc. as must being used.
 
-### @wasm 
+### `@wasm `
 
 *Used for: function, global, const*
 
 This attribute may take 0, 1 or 2 arguments. With 0 or 1 arguments
-it behaves identical to `@export` if it is non-extern. For extern
-symbols it behaves like `@extern`.
+it behaves identical to [`@export`](#export) if it is non-extern. For extern
+symbols it behaves like [`@extern`](#extern).
 
 When used with 2 arguments, the first argument is the wasm module,
 and the second is the name. It can only be used for `extern` symbols.
 
-### @winmain
+### `@winmain`
 
 *Used for: function*
 
@@ -386,7 +390,7 @@ argument, and is recommended for Windows GUI applications.
 
 It is only valid for the `main` function.
 
-### @weak
+### `@weak`
 
 *Used for: function, const, global*
 
@@ -400,12 +404,12 @@ User defined attributes are intended for conditional application of built-in att
 def @MyAttribute = { @noreturn @inline };
 
 // The following two are equivalent:
-fn void foo() @MyAttribute { ... }
-fn void foo() @noreturn @inline { ... }
+fn void foo() @MyAttribute { /* */ }
+fn void foo() @noreturn @inline { /* */ }
 ```
 
 A user defined attribute may also be completely empty:
 
-```
+```c3
 def @MyAttributeEmpty = {};
 ```

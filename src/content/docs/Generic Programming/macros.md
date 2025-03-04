@@ -200,7 +200,7 @@ disable declarations. This makes the code easier to read, but at the cost of exp
 
 ## Macro declarations
 
-A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `&` or `#` parameters.
+A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `$` or `#` parameters.
 
 The parameters have different sigils:
 `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, 
@@ -393,32 +393,32 @@ $if compile_time_sum(1, 3) > 2: // Will compile to $if 4 > 2
 $endif
 ```
 
-### $vacount
+### `$vacount`
 
 Returns the number of arguments.
 
-### $vaarg
+### `$vaarg`
 
 Returns the argument as a regular parameter. The argument is
 guaranteed to be evaluated once, even if the argument is used multiple times.
 
-### $vaconst
+### `$vaconst`
 
 Returns the argument as a compile time constant, this is suitable for
 placing in a compile time variable or use for compile time evaluation,
 e.g. `$foo = $vaconst(1)`. This corresponds to `$` parameters.
 
-### $vaexpr
+### `$vaexpr`
 
 Returns the argument as an unevaluated expression. Multiple uses will
 evaluate the expression multiple times, this corresponds to `#` parameters.
 
-### $vatype
+### `$vatype`
 
 Returns the argument as a type. This corresponds to `$Type` style parameters, 
 e.g. `$vatype(2) a = 2`
 
-### $vasplat
+### `$vasplat`
 
 `$vasplat` allows you to paste the varargs in the call into another call. For example,
 if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`.

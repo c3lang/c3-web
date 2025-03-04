@@ -33,7 +33,7 @@ struct Foo
    Type1 a;
 }
 
-fn Type2 test(Type2 b, Foo *foo) 
+fn Type2 test(Type2 b, Foo* foo) 
 {
    return foo.a + b;
 }
@@ -67,7 +67,7 @@ Just like for macros, optional constraints may be added to improve compile error
 *> 
 module vector(<TypeA, TypeB, TypeC>);
 
-/* .. code * ../
+/* .. code  .. */
 ```
 
 ```c3

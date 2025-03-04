@@ -197,7 +197,7 @@ int a;
 int b @noinit;
 ```
 
-## typedef and #define becomes 'def'
+## `typedef` and `#define` becomes `def`
 
 `typedef` is replaced by `def`:
 
@@ -335,7 +335,7 @@ return false;
 // C3, direct translation:
 do FAIL:
 {
-    Foo *foo = malloc(sizeof(Foo));
+    Foo* foo = malloc(sizeof(Foo));
 
     if (tryFoo(foo)) break FAIL;
     if (modifyFoo(foo)) break FAIL;
@@ -347,7 +347,7 @@ free(foo);
 return false;
 
 // C3, using defer:
-Foo *foo = malloc(Foo);
+Foo* foo = malloc(Foo);
 defer free(foo);
 
 if (tryFoo(foo)) return false;

@@ -53,12 +53,12 @@ pointers may both be read from and written to without checks. If an `&` is place
 in front of the annotation (e.g. `[&in]`), then this means the pointer must be non-null
 and is checked for `null`.
 
-| Type          | readable? | writable? | use as "in"? | use as "out"? | use as "inout" |
-|---------------|:---------:|:---------:|:------------:|:-------------:|:--------------:|
-| no annotation |    Yes    |    Yes    |     Yes      |      Yes      |      Yes       |
-| `in`          |    Yes    |    No     |     Yes      |      No       |       No       |
-| `out`         |    No     |    Yes    |      No      |      Yes      |       No       |
-| `inout`       |    Yes    |    Yes    |     Yes      |      Yes      |      Yes       |
+| Type          | readable? | writable? | use as "in"? | use as "out"? | use as "inout"? |
+|---------------|:---------:|:---------:|:------------:|:-------------:|:---------------:|
+| no annotation |    Yes    |    Yes    |     Yes      |      Yes      |       Yes       |
+| `in`          |    Yes    |    No     |     Yes      |      No       |        No       |
+| `out`         |    No     |    Yes    |      No      |      Yes      |        No       |
+| `inout`       |    Yes    |    Yes    |     Yes      |      Yes      |       Yes       |
 
 However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
 
@@ -161,7 +161,7 @@ fn void main()
 Consequently, circumventing "pure" annotations is undefined behaviour.
 
 
-# Pre conditions for macros
+# Pre-conditions for macros
 
 In order to check macros, it's often useful to use the builtin `$defined`
 function which returns true if the code inside would pass semantic checking.

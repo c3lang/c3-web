@@ -67,7 +67,7 @@ values passed in this manner. Doing so would very likely break user expectations
 Most statically typed object-oriented languages implements extensibility using vtables. In C, and by extension
 C3, this is possible to emulate by passing around structs containing list of function pointers in addition to the data.
 
-While this is efficient and often the best solution, but it puts certain assumptions on the code and makes interfaces
+While this is efficient and often the best solution, it puts certain assumptions on the code and makes interfaces
 more challenging to evolve over time.
 
 As an alternative there are languages (such as Objective-C) which instead use message passing to dynamically typed
@@ -122,7 +122,7 @@ fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
 }
 ```
 
-### "@dynamic" methods
+### `@dynamic` methods
 
 A method must be declared `@dynamic` to implement an interface, but a method may also be declared `@dynamic` *without*
 the type declaring it implements a particular interface. For example, this allows us to write:

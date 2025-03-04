@@ -482,18 +482,18 @@ pointer_type       ::= type "*"
 
 The type of the memory pointed to is the **pointee type**. It may be any runtime type.
 
-#### iptr and uptr
+#### `iptr` and `uptr`
 
 A pointer may be losslessly cast to an `iptr` or `uptr`. An `iptr` or `uptr` may be cast to a pointer of any type.
 
-#### The wildcard pointer void*
+#### The wildcard pointer `void*`
 
 The `void*` may implicitly cast into any other pointer type. The `void*`
 [implicitly casts into any other pointer.
 
 A void* pointer may never be dereferenced.
 
-#### Pointer arithmetic on void*
+#### Pointer arithmetic on `void*`
 
 Performing pointer arithmetics on void* will assume that the element size is 1. This includes
 pointer arithmetics using subscripting.
@@ -578,15 +578,15 @@ This assigns a new type to a compile time type variable. The value of the expres
 
 #### Combined assign
 
-All assignment operations except for "=" are combined assign operation. They first perform the operation indicated
+All assignment operations except for `=` are combined assign operation. They first perform the operation indicated
 by the leftmost character(s) in the operator (e.g `+` for `+=`, `<<` for `<<=` etc) with the lhs and the rhs.
 The result is then assigned to the left hand side. The result of the operation is the new value of the left
 hand side.
 
 #### Implicit conversion
 
-If the left hand side is a pointer and the operation is "+=" or "-=" an attempt to implicitly convert to
-isz/usz will be tried.
+If the left hand side is a pointer and the operation is `+=` or `-=` an attempt to implicitly convert to
+`isz`/`usz` will be tried.
 
 For all other types and operations, **an implicit conversion** of rhs to the type of lhs will be tried.
 
@@ -642,14 +642,14 @@ suffix_group_exp   ::= or_group_expr | suffix_expr
 suffix_expr        ::= or_group_expr "?" "!"?
 ```
 
-#### Effect of "?"
+#### Effect of `?`
 
-The "?" will convert the expression into an optional. The left hand side must be a fault type.
-If an optional "!" follows, this optional is immediately returned, as if by a `return <expr>?` statement.
+The `?` will convert the expression into an optional. The left hand side must be a fault type.
+If an optional `!` follows, this optional is immediately returned, as if by a `return <expr>?` statement.
 
 #### Type of the expression
 
-The type is a **wildcard optional**. If "!" is added, it is a **wildcard** type.
+The type is a **wildcard optional**. If `!` is added, it is a **wildcard** type.
 
 ### Rethrow expression
 
@@ -1106,14 +1106,14 @@ A defer body may not contain a `break`, `continue`, `return` or rethrow that wou
 Defer statements are executed in the reverse order of their declaration, starting from the last declared
 defer statement.
 
-#### Defer try
+#### `defer try`
 
 A `defer try` type of defer will only execute if the scope is left through normal fallthrough, `break`,
 `continue` or a `return` with a result.
 
 It will not execute if the exit is through a rethrow or a `return` with an optional value.
 
-#### Defer catch
+#### `defer catch`
 
 A `defer catch` type of defer will only execute if the scope is left through a rethrow or a `return` with an optional
 value
@@ -1427,7 +1427,7 @@ omitted and there is no `break` out of the loop.
 
 A `while` loop is functionally equivalent to a `for` loop without init and incr expressions.
 
-### Foreach and foreach_r statements
+### `foreach` and `foreach_r` statements
 
 The `foreach` statement will loop over a sequence of values. The `foreach_r` is equivalent to
 `foreach` but the order of traversal is reversed.
@@ -1564,63 +1564,63 @@ statements (`$if`, `$switch`,
 
 Attributes are modifiers attached to modules, variables, type declarations etc.
 
-| name          | used with                                                                         |
-|---------------|-----------------------------------------------------------------------------------|
-| @align        | fn, const, variables, user-defined types, struct member                           |
-| @benchmark    | module, fn                                                                        |
-| @bigendian    | bitstruct only                                                                    |
-| @builtin      | macro, fn, global, constant                                                       |
-| @callconv     | fn, call                                                                          |
-| @deprecated   | fn, macro, interface, variables, constants, user-defined types, struct member     |
-| @dynamic      | fn                                                                                |
-| @export       | fn, globals, constants, struct, union, enum, fault                                |
-| @extern       | fn, globals, constants, user-defined types                                        |
-| @if           | all except local variables and calls                                              |
-| @inline       | fn, call                                                                          |
-| @interface    | fn                                                                                |
-| @littleendian | bitstruct only                                                                    |
-| @local        | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| @maydiscard   | fn, macro                                                                         |
-| @naked        | fn                                                                                |
-| @nodiscard    | fn, macro                                                                         |
-| @noinit       | variables                                                                         |
-| @noinline     | fn, call                                                                          |
-| @noreturn     | fn, macro                                                                         |
-| @nostrip      | fn, globals, constants, struct, union, enum, fault                                |
-| @obfuscate    | enum, fault                                                                       |
-| @operator     | fn, macro                                                                         |
-| @optional     | interface methods                                                                 |
-| @overlap      | bitstruct only                                                                    |
-| @packed       | struct, union                                                                     |
-| @priority     | initializer/finalizer                                                             |
-| @private      | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| @public       | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| @pure         | call                                                                              |
-| @reflect      | fn, globals, constants, user-defined types                                        |
-| @section      | fn, globals, constants                                                            |
-| @test         | module, fn                                                                        |
-| @unused       | all except call and initializer/finalizers                                        |
-| @used         | all except call and initializer/finalizers                                        |
-| @weak         | fn, globals, constants                                                            |
-| @winmain      | fn                                                                                |
+| name            | used with                                                                         |
+|-----------------|-----------------------------------------------------------------------------------|
+| `@align`        | fn, const, variables, user-defined types, struct member                           |
+| `@benchmark`    | module, fn                                                                        |
+| `@bigendian`    | bitstruct only                                                                    |
+| `@builtin`      | macro, fn, global, constant                                                       |
+| `@callconv`     | fn, call                                                                          |
+| `@deprecated`   | fn, macro, interface, variables, constants, user-defined types, struct member     |
+| `@dynamic`      | fn                                                                                |
+| `@export`       | fn, globals, constants, struct, union, enum, fault                                |
+| `@extern`       | fn, globals, constants, user-defined types                                        |
+| `@if`           | all except local variables and calls                                              |
+| `@inline`       | fn, call                                                                          |
+| `@interface`    | fn                                                                                |
+| `@littleendian` | bitstruct only                                                                    |
+| `@local`        | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
+| `@maydiscard`   | fn, macro                                                                         |
+| `@naked`        | fn                                                                                |
+| `@nodiscard`    | fn, macro                                                                         |
+| `@noinit`       | variables                                                                         |
+| `@noinline`     | fn, call                                                                          |
+| `@noreturn`     | fn, macro                                                                         |
+| `@nostrip`      | fn, globals, constants, struct, union, enum, fault                                |
+| `@obfuscate`    | enum, fault                                                                       |
+| `@operator`     | fn, macro                                                                         |
+| `@optional`     | interface methods                                                                 |
+| `@overlap`      | bitstruct only                                                                    |
+| `@packed`       | struct, union                                                                     |
+| `@priority`     | initializer/finalizer                                                             |
+| `@private`      | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
+| `@public`       | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
+| `@pure`         | call                                                                              |
+| `@reflect`      | fn, globals, constants, user-defined types                                        |
+| `@section`      | fn, globals, constants                                                            |
+| `@test`         | module, fn                                                                        |
+| `@unused`       | all except call and initializer/finalizers                                        |
+| `@used`         | all except call and initializer/finalizers                                        |
+| `@weak`         | fn, globals, constants                                                            |
+| `@winmain`      | fn                                                                                |
 
-#### @deprecated
+#### `@deprecated`
 
 Takes an optional constant string. 
 If the node is in use, print the deprecation and add the optional string if present.
 
-#### @optional
+#### `@optional`
 
 Marks an *interface* method as optional, and so does not need to be implemented by
 a conforming type.
 
-#### @winmain
+#### `@winmain`
 
 Marks a `main` function as a win32 winmain function, which is the entrypoint for a windowed 
 application on Windows. This allows the main function to take a different set of 
 arguments than usual.
 
-#### @callconv
+#### `@callconv`
 
 `@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv` 
 is applied to a function or call, the last one takes precedence.
@@ -1659,21 +1659,21 @@ may not be cyclic.
 
 `@operator` overloads may only be added to user defined types (distinct, unions, struct, enum and fault).
 
-##### Indexing operator ([])
+##### Indexing operator (`[]`)
 
 This requires a return type and a method parameter, which is the index.
 
-##### Reference indexing operator (&[])
+##### Reference indexing operator (`&[]`)
 
 This requires a return type and a method parameter, which is the index. If `[]` is implemented,
 it should return a pointer to `[]`.
 
-##### Assigning index operator (=[])
+##### Assigning index operator (`=[]`)
 
 This has a void return type, and index should match that of `[]` and `&[]`. Value should match that 
 of `[]` and be the pointee of the result of `&[]`.
 
-##### Len operator (len)
+##### Len operator (`len`)
 
 This must have an integer return type.
 

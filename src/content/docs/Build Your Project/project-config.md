@@ -112,31 +112,31 @@ and the actual target defines it to be `windows-x64`, then the `windows-x64` wil
 
 Similarly, compiler command line parameters can be used in turn to override the target setting.
 
-#### targets
+#### `targets`
 
 The list of targets that can be built.
 
-#### dependencies
+#### `dependencies`
 
 List of C3 libraries (".c3l") to use when compiling the target.
 
-#### sources
+#### `sources`
 
 List of source files to compile and for tests which will run.
 
-#### cc
+#### `cc`
 
 C compiler to use for compiling C sources (if C sources are compiled together with C3 files).
 
-#### c-sources
+#### `c-sources`
 
 List of C sources to compile, using the default C compiler.
 
-#### linker-search-paths
+#### `linker-search-paths`
 
 This adds paths for the linker to search, when linking normal C libraries.
 
-#### linked-libraries
+#### `linked-libraries`
 
 This is a list of C libraries to link to. The names need to follow the normal
 naming standard for how libraries are provided to the system linker,
@@ -145,42 +145,42 @@ presented to the linker the name is `foo`. As an example `"linked-libraries": ["
 would on Linux look for the library `libcurl.a` and `libcurl.so` in the 
 paths given by "linker-search-paths".
 
-#### version
+#### `version`
 
 *Not handled yet*
 
 Version for library, will also be provided as a compile time constant.
 
-#### authors
+#### `authors`
 
 *Not handled yet*
 
 List of authors to add for library compilation.
 
-#### langrev
+#### `langrev`
 
 *Not handled yet*
 
 The language revision to use. 
 
-#### features
+#### `features`
 
 This is a list of upper-case constants that can be tested for
 in the source code using `$feature(NAME_OF_FEATURE)`.
 
-#### warnings
+#### `warnings`
 
 *Not completely supported yet*
 
 List of warnings to enable during compilation.
 
-#### opt
+#### `opt`
 
 Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
 
 ## Target options
 
-#### type
+#### `type`
 
 This mandatory option should be one of "executable", "dynamic-lib" and "static-lib".
 
@@ -192,4 +192,4 @@ This mandatory option should be one of "executable", "dynamic-lib" and "static-l
 
 In addition to constants any values starting with "$" will be assumed to be environment variables.
 
-For example "$HOME" would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string "$HOME"
+For example `"$HOME"` would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.

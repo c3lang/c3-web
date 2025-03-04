@@ -146,7 +146,7 @@ switch
 }
 ```
 
-## Jumptable switches with "@jump"
+## Jumptable switches with `@jump`
 
 Regular switch statements with only enum or integer cases may use the `@jump`
 attribute. This attribute ensures that the switch is implemented as

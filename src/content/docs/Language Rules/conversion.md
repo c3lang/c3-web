@@ -135,7 +135,7 @@ substruct value cannot be assigned its parent struct.
 ### Pointer conversions
 
 Pointer conversion between types usually need explicit casts. 
-The exception is `void *` which any type may implicitly convert *to* or *from*. 
+The exception is `void*` which any type may implicitly convert *to* or *from*. 
 Conversion rules from and to arrays are detailed under [arrays](/language-common/arrays/)
 
 ### Vector conversions
@@ -174,7 +174,7 @@ These operations are only valid for integer and float types.
 #### 4. Subtraction with both sides pointers
 
 1. Resolve the operands.
-2. If the either side is a `void *`, it is cast to the other type.
+2. If the either side is a `void*`, it is cast to the other type.
 3. If the types of the sides are different, this is an error.   
 4. The result of the expression is isz.
 5. If this result exceeds the target width, this is an error.
@@ -249,7 +249,7 @@ These operations are only valid for integers.
 #### 5. `*`
 
 1. Resolve the inner operand.
-2. If the operand is not a pointer, or is a `void *` pointer, this is an error.
+2. If the operand is not a pointer, or is a `void* ` pointer, this is an error.
 3. The type is the pointee of the inner operand's type.
 
 Dereferencing 0 is implementation defined.

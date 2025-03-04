@@ -73,9 +73,13 @@ b.xy = b.zw;
 color.rg += { 1, 2 };
 ```
 
-\*Note: assignment, like `color.rg += { 1, 2 }` is only available in 0.7.0 and later.
+:::note
+Assignment, like `color.rg += { 1, 2 }` is only available in 0.7.0 and later.
+:::
 
 ## Array-like operations
 
-Like arrays, it's possible to make slices and iterate over vectors. It should be noted that the storage alignment of
-vectors are often different from arrays, which should be taken into account when storing vectors.
+Like arrays, it's possible to make slices and iterate over vectors. 
+:::note
+The storage alignment of vectors are often different from arrays, which should be taken into account when storing vectors.
+:::

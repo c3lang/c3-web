@@ -148,30 +148,30 @@ Floating point values may be written in decimal or hexadecimal. For decimal, the
 
 It is possible to type a floating point by adding a suffix:
 
-| Suffix     |     type |
-|------------|---------:|
-| bf16       | bfloat16 |
-| f16        |  float16 |
-| f32 *or* f |    float |
-| f64        |   double |
-| f128       | float128 |
+| Suffix         |       type |
+|----------------|-----------:|
+| `bf16`         | `bfloat16` |
+| `f16`          |  `float16` |
+| `f32` *or* `f` |    `float` |
+| `f64`          |   `double` |
+| `f128`         | `float128` |
 
 ### C compatibility
 
 For C compatibility the following types are also defined in std::core::cinterop
 
-| Name        | c type             |
-|-------------| ------------------:|
-| `CChar`       | char               |
-| `CShort`      | short int          |
-| `CUShort`     | unsigned short int |
-| `CInt`        | int                |
-| `CUInt`       | unsigned int       |
-| `CLong`       | long int           |
-| `CULong`      | unsigned long int  |
-| `CLongLong`   | long long          |
-| `CULongLong`  | unsigned long long |
-| `CLongDouble` | long double        |
+| Name          | C type               |
+|---------------| --------------------:|
+| `CChar`       | `char`               |
+| `CShort`      | `short int`          |
+| `CUShort`     | `unsigned short int` |
+| `CInt`        | `int`                |
+| `CUInt`       | `unsigned int`       |
+| `CLong`       | `long int`           |
+| `CULong`      | `unsigned long int`  |
+| `CLongLong`   | `long long`          |
+| `CULongLong`  | `unsigned long long` |
+| `CLongDouble` | `long double`        |
 
 `float` and `double` will always match their C counterparts.
     
