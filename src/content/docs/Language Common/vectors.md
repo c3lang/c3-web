@@ -69,7 +69,11 @@ int[<4>] b = a.xxzx;                         // b = { 11, 11, 33, 11 }
 int c = b.w;                                 // c = 11;
 char[<4>] color = { 0x11, 0x22, 0x33, 0xFF };
 char red = color.r;                          // red = 0x11
+b.xy = b.zw;
+color.rg += { 1, 2 };
 ```
+
+\*Note: assignment, like `color.rg += { 1, 2 }` is only available in 0.7.0 and later.
 
 ## Array-like operations
 
