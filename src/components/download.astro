@@ -1,3 +1,8 @@
+---
+const downloadUrl = (os: string, ext = "zip") =>
+  `https://github.com/c3lang/c3c/releases/latest/download/c3-${os}.${ext}`;
+---
+
 <div class="mt-3 flex">
   <a
     id="download-button"
@@ -21,7 +26,7 @@
       dark:hover:border-blue-500
       dark:border-blue-600
       dark:text-white"
-    href="https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-windows.zip"
+    href={downloadUrl("windows")}
   >
     Download for Windows
   </a>
@@ -98,7 +103,7 @@
         hover:shadow-sm hover:bg-blue-200
       dark:hover:bg-blue-700 dark:text-white
         focus:ring-2 focus:ring-blue-500"
-          href="https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-windows.zip"
+          href={downloadUrl("windows")}
         >
           Windows
         </a>
@@ -111,7 +116,7 @@
         hover:shadow-sm hover:bg-blue-200
       dark:hover:bg-blue-700 dark:text-white
         focus:ring-2 focus:ring-blue-500"
-          href="https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-macos.zip"
+          href={downloadUrl("macos")}
         >
           MacOS
         </a>
@@ -124,7 +129,7 @@
         hover:shadow-sm hover:bg-blue-200
       dark:hover:bg-blue-700 dark:text-white
         focus:ring-2 focus:ring-blue-500"
-          href="https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-linux.tar.gz"
+          href={downloadUrl("linux", "tar.gz")}
         >
           Linux
         </a>
@@ -150,18 +155,16 @@
   const macosDownloadLink = document.getElementById("macos-download");
   const linuxDownloadLink = document.getElementById("linux-download");
   if (os == "MacOS") {
-    downloadButton.setAttribute(
-      "href",
-      "https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-macos.zip",
-    );
+    if (macosDownloadLink instanceof HTMLAnchorElement) {
+      downloadButton.setAttribute("href", macosDownloadLink.href);
+    }
     downloadButton.innerText = "Download for MacOS";
     windowsDownloadLink.style.setProperty("display", "flex");
     macosDownloadLink.style.setProperty("display", "none");
   } else if (os == "Linux") {
-    downloadButton.setAttribute(
-      "href",
-      "https://github.com/c3lang/c3c/releases/download/v0.6.8/c3-linux.tar.gz",
-    );
+    if (linuxDownloadLink instanceof HTMLAnchorElement) {
+      downloadButton.setAttribute("href", linuxDownloadLink.href);
+    }
     downloadButton.innerText = "Download for Linux";
     windowsDownloadLink.style.setProperty("display", "flex");
     linuxDownloadLink.style.setProperty("display", "none");
@@ -193,7 +196,7 @@
 
         setTimeout(
           () => (document.getElementById("menuDiv").style.display = "none"),
-          200,
+          200
         );
 
         setTimeout(() => {
@@ -224,7 +227,7 @@
       //
       setTimeout(
         () => (document.getElementById("menuDiv").style.display = "none"),
-        200,
+        200
       );
 
       setTimeout(() => {
