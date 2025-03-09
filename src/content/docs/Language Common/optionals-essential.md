@@ -34,6 +34,10 @@ The Optional Excuse is set with `?` after the value.
 int! b = IoError.FILE_NOT_FOUND?; 
 ```
 
+\* Important note: for 0.7.0 the syntax is changing to `int?` rather than `int!` style.
+faults are declared without namespacing, so for example `IoError.FILE_NOT_FOUND` is `io::FILE_NOT_FOUND`.
+Other than that semantics is unchanged.
+
 ## 🎁 Unwrapping an Optional
 :::note
 
