@@ -5,7 +5,8 @@ sidebar:
     order: 83
 ---
 The macro capabilities of C3 reaches across several constructs:
-macros, [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values) (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
+macros, [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values)
+(prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
 ## A quick comparison of C and C3 macros
 
@@ -438,7 +439,7 @@ implicitly converted to initializer lists:
 
 ```c3
 var $a = { 1, 2 };
-$foreach ($x : $a)
+$foreach $x : $a:
     io::printfn("%d", $x);
 $endforeach
 int[2] x = $a;

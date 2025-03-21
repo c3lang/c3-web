@@ -518,7 +518,7 @@ An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is
 An Optional type behaves like a tagged union, containing either the
 result or an Excuse that is of a [fault](#optional-excuses-are-of-type-fault) type.
 
-Once extracted, a `fault` can be converted into another `fault`.
+Once extracted, a `fault` can be converted to another `fault`.
 
 ```c3
 faultdef MISSING; // define a fault

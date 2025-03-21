@@ -525,7 +525,7 @@ struct Foo
 
 macro print_fields($Type)
 {
-    $foreach ($field : $Type.membersof)
+    $foreach $field : $Type.membersof:
         io::printfn("Field %s, offset: %s, size: %s, type: %s",
                 $field.nameof, $field.offsetof, $field.sizeof, $field.typeid.nameof);
     $endforeach
