@@ -954,7 +954,7 @@ Statements in the branch not picked will not be semantically checked.
 ### Compile time switch statement
 
 ```
-ct_switch_stmt     ::= "$switch" ("(" ct_expr_or_type ")")? ct_case_stmt+ "$endswitch"
+ct_switch_stmt     ::= "$switch" (ct_expr_or_type)? ":"
 ct_case_stmt       ::= ("$default" | "$case" ct_expr_or_type) ":" stmt*
 ```
 
