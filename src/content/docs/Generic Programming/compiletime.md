@@ -89,7 +89,7 @@ Compile time looping:
 ```c3
 macro foo($a)
 {
-    $for (var $x = 0; $x < $a; $x++)
+    $for var $x = 0; $x < $a; $x++:
         io::printfn("%d", $x);
     $endfor
 }

@@ -384,7 +384,7 @@ the arguments:
 macro compile_time_sum(...)
 {
     var $x = 0;
-    $for (var $i = 0; $i < $vacount; $i++)
+    $for var $i = 0; $i < $vacount; $i++:
         $x += $vaconst[$i];
     $endfor
     return $x;
