@@ -2137,7 +2137,7 @@ fn DString new_join(String[] s, String joiner, Allocator allocator = allocator::
 fn DString new_with_capacity(usz capacity, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn DString temp_new(String s = "")
+fn DString tnew(String s = "")
 ```
 ```c3
 fn DString temp_with_capacity(usz capacity)
@@ -2319,13 +2319,13 @@ fn void* tcalloc(usz size, usz alignment = 0) @builtin @inline @nodiscard
 macro temp_alloc($Type) @nodiscard
 ```
 ```c3
-macro temp_alloc_array($Type, usz elements) @nodiscard
+macro talloc_array($Type, usz elements) @nodiscard
 ```
 ```c3
-macro temp_new($Type, ...) @nodiscard
+macro tnew($Type, ...) @nodiscard
 ```
 ```c3
-macro temp_new_array($Type, usz elements) @nodiscard
+macro temp_array($Type, usz elements) @nodiscard
 ```
 ```c3
 fn void temp_pop(TempState old_state)
@@ -3925,7 +3925,7 @@ fn void? rmtree(Path path)
 fn Path? temp_directory(Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path? temp_new(String path, PathEnv path_env = DEFAULT_PATH_ENV)
+fn Path? tnew(String path, PathEnv path_env = DEFAULT_PATH_ENV)
 ```
 ```c3
 fn Path? tgetcwd()
