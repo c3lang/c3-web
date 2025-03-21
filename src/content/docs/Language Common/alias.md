@@ -32,16 +32,16 @@ Callback cb = my_callback;
 cb(10, false);
 ```
 
-## Distinct types
+## typedef types
 
-Similar to `alias` aliases are `distinct` which create distinct new types. Unlike type aliases,
+Similar to `alias` aliases are `typedef` which create distinct new types. Unlike type aliases,
 they do not implicitly convert to or from any other type.
-Literals will convert to the distinct types if they would convert to the underlying type.
+Literals will convert to the `typedef` types if they would convert to the underlying type.
 
-Because a distinct type is a standalone type, it can have its own methods, like any other user-defined type.
+Because a `typedef` type is a new type, it can have its own methods, like any other user-defined type.
 
 ```c3
-distinct Foo = int;
+typedef Foo = int;
 Foo f = 0; // Valid since 0 converts to an int.
 f = f + 1;
 int i = 1;
@@ -49,16 +49,16 @@ int i = 1;
 f = f + (Foo)i; // Valid
 ```
 
-## Distinct inline
+## typedef inline
 
-When interacting with various APIs it is sometimes desirable for distinct types to implicitly convert *to*
+When interacting with various APIs it is sometimes desirable for `typedef` types to implicitly convert *to*
 its base type, but not *from* that type.
 
 Behaviour here is analogous how structs may use `inline` to create struct subtypes.
 
 ```c3
-distinct CString = char*;
-distinct ZString = inline char*;
+typedef CString = char*;
+typedef ZString = inline char*;
 ...
 CString abc = "abc";
 ZString alias = "alias";

@@ -43,7 +43,7 @@ Changes relating to literals, identifiers etc.
 1. Type declaration is left to right: `int[4]*[2] a;` instead of `int (*a[2])[4];`
 2. Simd vector types using `[<>]` syntax, e.g. `float[<4>]`, use `[<*>]` for inferred length.
 3. Slice type built in, using `[]` suffix, e.g. `int[]`
-4. Distinct types, similar to a typedef but forms a new type. (Example: the `String` type is a distinct `char[]`)
+4. `typedef` is similar to C's typedef but forms a new type. (Example: the `String` type is a new type with `char[]` internal representation)
 5. Built-in 128-bit integer on all platforms.
 6. `char` is an unsigned 8-bit integer. `ichar` is its signed counterpart.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
@@ -80,7 +80,7 @@ Changes relating to literals, identifiers etc.
 8. Distinct types, which are similar to aliases, but represent distinctly different types.
 9. Types may have methods. Methods can be added to any type, including built-in types.
 10. Subtyping: using `inline` on a struct member allows a struct to be implicitly converted to this member type and use corresponding methods.
-11. Using `inline` on a distinct type allows it to be implicitly converted *to* its base type (but not vice versa).
+11. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
 12. Types may add operator overloading to support `foreach` and subscript operations.
 13. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
 14. Interface types, `any` types which allows dynamic invocation of methods.

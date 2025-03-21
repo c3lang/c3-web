@@ -6,7 +6,7 @@ sidebar:
 ---
 ### `libc`
 ```c3
-distinct Errno = inline CInt;
+typedef Errno = inline CInt;
 ```
 ```c3
 struct DivResult
@@ -1113,7 +1113,7 @@ fn String EnumMap.to_tstring(&self) @dynamic
 ```
 ### `std::collections::enumset(&lt;Enum&gt;)`
 ```c3
-distinct EnumSet (Printable) = EnumSetType;
+typedef EnumSet (Printable) = EnumSetType;
 ```
 ```c3
 fn void EnumSet.add(&self, Enum v)
@@ -1679,10 +1679,10 @@ fn Object* new_string(String s, Allocator allocator)
 ```
 ### `std::collections::priorityqueue(&lt;Type&gt;)`
 ```c3
-distinct PriorityQueue = inline PrivatePriorityQueue{ Type, false };
+typedef PriorityQueue = inline PrivatePriorityQueue{ Type, false };
 ```
 ```c3
-distinct PriorityQueueMax = inline PrivatePriorityQueue{ Type, true };
+typedef PriorityQueueMax = inline PrivatePriorityQueue{ Type, true };
 ```
 ### `std::collections::priorityqueue::private(&lt;Type, MAX&gt;)`
 ```c3
@@ -2017,7 +2017,7 @@ fn void sig_segmentation_fault(CInt i)
 ```
 ### `std::core::dstring`
 ```c3
-distinct DString (OutStream) = void*;
+typedef DString (OutStream) = void*;
 ```
 ```c3
 macro void DString.append(&self, value)
@@ -2344,7 +2344,7 @@ macro type_alloc_must_be_aligned($Type)
 ```
 ### `std::core::mem::allocator`
 ```c3
-distinct LibcAllocator (Allocator) = uptr;
+typedef LibcAllocator (Allocator) = uptr;
 ```
 ```c3
 enum AllocInitType
@@ -2698,10 +2698,10 @@ fn void wasm_initialize() @extern("_initialize") @wasm
 ```
 ### `std::core::string`
 ```c3
-distinct WString = inline Char16*;
+typedef WString = inline Char16*;
 ```
 ```c3
-distinct ZString = inline char*;
+typedef ZString = inline char*;
 ```
 ```c3
 fault NumberConversion
@@ -3229,7 +3229,7 @@ fn ulong encode(char[] data)
 ```
 ### `std::hash::fnv32a`
 ```c3
-distinct Fnv32a = uint;
+typedef Fnv32a = uint;
 ```
 ```c3
 fn void Fnv32a.init(&self)
@@ -3245,7 +3245,7 @@ fn uint encode(char[] data)
 ```
 ### `std::hash::fnv64a`
 ```c3
-distinct Fnv64a = ulong;
+typedef Fnv64a = ulong;
 ```
 ```c3
 fn void Fnv64a.init(&self)
@@ -5529,58 +5529,58 @@ macro Matrix4f Quaternion.to_matrixf(Quaternion* q)
 ```
 ### `std::math::random`
 ```c3
-distinct Lcg128Random (Random) = uint128;
+typedef Lcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Lcg16Random (Random) = ushort;
+typedef Lcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Lcg32Random (Random) = uint;
+typedef Lcg32Random (Random) = uint;
 ```
 ```c3
-distinct Lcg64Random (Random) = ulong;
+typedef Lcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Mcg128Random (Random) = uint128;
+typedef Mcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Mcg16Random (Random) = ushort;
+typedef Mcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Mcg32Random (Random) = uint;
+typedef Mcg32Random (Random) = uint;
 ```
 ```c3
-distinct Mcg64Random (Random) = ulong;
+typedef Mcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Pcg128Random (Random) = uint128;
+typedef Pcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Pcg16Random (Random) = ushort;
+typedef Pcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Pcg32Random (Random) = uint;
+typedef Pcg32Random (Random) = uint;
 ```
 ```c3
-distinct Pcg64Random (Random) = ulong;
+typedef Pcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Sfc128Random (Random) = uint128[4];
+typedef Sfc128Random (Random) = uint128[4];
 ```
 ```c3
-distinct Sfc16Random (Random) = ushort[4];
+typedef Sfc16Random (Random) = ushort[4];
 ```
 ```c3
-distinct Sfc32Random (Random) = uint[4];
+typedef Sfc32Random (Random) = uint[4];
 ```
 ```c3
-distinct Sfc64Random (Random) = ulong[4];
+typedef Sfc64Random (Random) = ulong[4];
 ```
 ```c3
-distinct Sfc8Random (Random) = char[4];
+typedef Sfc8Random (Random) = char[4];
 ```
 ```c3
-distinct SimpleRandom (Random) = ulong;
+typedef SimpleRandom (Random) = ulong;
 ```
 ```c3
 interface Random
@@ -6354,10 +6354,10 @@ fn InetAddress? ipv6_from_str(String s)
 ```
 ### `std::net @if(os::SUPPORTS_INET)`
 ```c3
-distinct PollEvents = ushort;
+typedef PollEvents = ushort;
 ```
 ```c3
-distinct PollSubscribes = ushort;
+typedef PollSubscribes = ushort;
 ```
 ```c3
 enum SocketOption : char (CInt value)
@@ -6436,26 +6436,26 @@ fn ulong? poll_ms(Poll[] polls, long timeout_ms)
 ```
 ### `std::net::os`
 ```c3
-distinct AIFamily = CInt;
+typedef AIFamily = CInt;
 ```
 ```c3
-distinct AIFlags = CInt;
+typedef AIFlags = CInt;
 ```
 ```c3
-distinct AIProtocol = CInt;
+typedef AIProtocol = CInt;
 ```
 ```c3
-distinct AISockType = CInt;
+typedef AISockType = CInt;
 ```
 ```c3
-distinct SockAddrPtr = void*;
+typedef SockAddrPtr = void*;
 ```
 ```c3
 struct AddrInfo
 ```
 ### `std::net::os @if(env::POSIX &amp;&amp; SUPPORTS_INET)`
 ```c3
-distinct NativeSocket = inline Fd;
+typedef NativeSocket = inline Fd;
 ```
 ```c3
 struct Posix_pollfd
@@ -6477,7 +6477,7 @@ fn fault socket_error()
 ```
 ### `std::net::os @if(env::WIN32)`
 ```c3
-distinct NativeSocket = uptr;
+typedef NativeSocket = uptr;
 ```
 ```c3
 macro void? NativeSocket.close(self)
@@ -6493,10 +6493,10 @@ fn fault socket_error()
 ```
 ### `std::net::tcp @if(os::SUPPORTS_INET)`
 ```c3
-distinct TcpServerSocket = inline Socket;
+typedef TcpServerSocket = inline Socket;
 ```
 ```c3
-distinct TcpSocket = inline Socket;
+typedef TcpSocket = inline Socket;
 ```
 ```c3
 fn TcpSocket? accept(TcpServerSocket* server_socket)
@@ -6521,7 +6521,7 @@ fn TcpServerSocket? listen_to(AddrInfo* ai, uint backlog, SocketOption... option
 ```
 ### `std::net::udp @if(os::SUPPORTS_INET)`
 ```c3
-distinct UdpSocket = inline Socket;
+typedef UdpSocket = inline Socket;
 ```
 ```c3
 fn UdpSocket? connect(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
@@ -6631,22 +6631,22 @@ fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator)
 ```
 ### `std::os::macos::cf @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
-distinct CFAllocatorContextRef = void*;
+typedef CFAllocatorContextRef = void*;
 ```
 ```c3
-distinct CFAllocatorRef = void*;
+typedef CFAllocatorRef = void*;
 ```
 ```c3
-distinct CFArrayCallBacksRef = void*;
+typedef CFArrayCallBacksRef = void*;
 ```
 ```c3
-distinct CFArrayRef = void*;
+typedef CFArrayRef = void*;
 ```
 ```c3
-distinct CFMutableArrayRef = void*;
+typedef CFMutableArrayRef = void*;
 ```
 ```c3
-distinct CFTypeRef = void*;
+typedef CFTypeRef = void*;
 ```
 ```c3
 struct CFRange
@@ -6668,16 +6668,16 @@ macro CFAllocatorRef default_allocator()
 ```
 ### `std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
-distinct Class = void*;
+typedef Class = void*;
 ```
 ```c3
-distinct Ivar = void*;
+typedef Ivar = void*;
 ```
 ```c3
-distinct Method = void*;
+typedef Method = void*;
 ```
 ```c3
-distinct Selector = void*;
+typedef Selector = void*;
 ```
 ```c3
 fault ObjcFailure
@@ -6708,10 +6708,10 @@ macro Class[] class_get_list(Allocator allocator = allocator::heap())
 ```
 ### `std::os::posix @if(env::POSIX)`
 ```c3
-distinct DIRPtr = void*;
+typedef DIRPtr = void*;
 ```
 ```c3
-distinct Pthread_t = void*;
+typedef Pthread_t = void*;
 ```
 ```c3
 struct Posix_dirent
@@ -6797,7 +6797,7 @@ fn String? execute_stdout_to_buffer(char[] buffer, String[] command_line, SubPro
 ```
 ### `std::os::win32`
 ```c3
-distinct Win32_CRITICAL_SECTION = ulong[5];
+typedef Win32_CRITICAL_SECTION = ulong[5];
 ```
 ```c3
 enum Win32_ADDRESS_MODE
@@ -6885,7 +6885,7 @@ struct Win32_XMM_SAVE_AREA32
 ```
 ### `std::os::win32 @if(env::WIN32)`
 ```c3
-distinct WSAError = int;
+typedef WSAError = int;
 ```
 ```c3
 enum Win32_GET_FILEEX_INFO_LEVELS
@@ -6930,28 +6930,28 @@ fn void qsort(Type list, isz low, isz high, Comparer cmp)
 ```
 ### `std::thread`
 ```c3
-distinct ConditionVariable = NativeConditionVariable;
+typedef ConditionVariable = NativeConditionVariable;
 ```
 ```c3
-distinct Mutex = NativeMutex;
+typedef Mutex = NativeMutex;
 ```
 ```c3
-distinct MutexType = int;
+typedef MutexType = int;
 ```
 ```c3
-distinct OnceFlag = NativeOnceFlag;
+typedef OnceFlag = NativeOnceFlag;
 ```
 ```c3
-distinct RecursiveMutex = inline Mutex;
+typedef RecursiveMutex = inline Mutex;
 ```
 ```c3
-distinct Thread = NativeThread;
+typedef Thread = NativeThread;
 ```
 ```c3
-distinct TimedMutex = inline Mutex;
+typedef TimedMutex = inline Mutex;
 ```
 ```c3
-distinct TimedRecursiveMutex = inline Mutex;
+typedef TimedRecursiveMutex = inline Mutex;
 ```
 ```c3
 fault ThreadFault
@@ -7051,78 +7051,78 @@ fn uint native_cpu()
 ```
 ### `std::thread::os @if (!env::POSIX &amp;&amp; !env::WIN32)`
 ```c3
-distinct NativeConditionVariable = int;
+typedef NativeConditionVariable = int;
 ```
 ```c3
-distinct NativeMutex = int;
+typedef NativeMutex = int;
 ```
 ```c3
-distinct NativeOnceFlag = int;
+typedef NativeOnceFlag = int;
 ```
 ```c3
-distinct NativeThread = int;
+typedef NativeThread = int;
 ```
 ### `std::thread::os @if(env::LINUX)`
 ```c3
-distinct Pthread_attr_t = ulong[7]; // 24 on 32bit
+typedef Pthread_attr_t = ulong[7]; // 24 on 32bit
 ```
 ```c3
-distinct Pthread_cond_t = ulong[6];
+typedef Pthread_cond_t = ulong[6];
 ```
 ```c3
-distinct Pthread_condattr_t = uint;
+typedef Pthread_condattr_t = uint;
 ```
 ```c3
-distinct Pthread_key_t = uint;
+typedef Pthread_key_t = uint;
 ```
 ```c3
-distinct Pthread_mutex_t = ulong[5]; // 24 on 32 bit
+typedef Pthread_mutex_t = ulong[5]; // 24 on 32 bit
 ```
 ```c3
-distinct Pthread_mutexattr_t = uint;
+typedef Pthread_mutexattr_t = uint;
 ```
 ```c3
-distinct Pthread_once_t = int;
+typedef Pthread_once_t = int;
 ```
 ```c3
-distinct Pthread_rwlock_t = ulong[7]; // 32 on 3bit
+typedef Pthread_rwlock_t = ulong[7]; // 32 on 3bit
 ```
 ```c3
-distinct Pthread_rwlockattr_t = uint;
+typedef Pthread_rwlockattr_t = uint;
 ```
 ```c3
-distinct Pthread_sched_param = uint;
+typedef Pthread_sched_param = uint;
 ```
 ### `std::thread::os @if(env::POSIX &amp;&amp; !env::LINUX)`
 ```c3
-distinct Pthread_attr_t = ulong[8];
+typedef Pthread_attr_t = ulong[8];
 ```
 ```c3
-distinct Pthread_cond_t = ulong[6];
+typedef Pthread_cond_t = ulong[6];
 ```
 ```c3
-distinct Pthread_condattr_t = ulong[8];
+typedef Pthread_condattr_t = ulong[8];
 ```
 ```c3
-distinct Pthread_key_t = ulong;
+typedef Pthread_key_t = ulong;
 ```
 ```c3
-distinct Pthread_mutex_t = ulong[8];
+typedef Pthread_mutex_t = ulong[8];
 ```
 ```c3
-distinct Pthread_mutexattr_t = ulong[2];
+typedef Pthread_mutexattr_t = ulong[2];
 ```
 ```c3
-distinct Pthread_once_t = ulong[2];
+typedef Pthread_once_t = ulong[2];
 ```
 ```c3
-distinct Pthread_rwlock_t = ulong[25];
+typedef Pthread_rwlock_t = ulong[25];
 ```
 ```c3
-distinct Pthread_rwlockattr_t = ulong[3];
+typedef Pthread_rwlockattr_t = ulong[3];
 ```
 ```c3
-distinct Pthread_sched_param = ulong;
+typedef Pthread_sched_param = ulong;
 ```
 ### `std::thread::os @if(env::POSIX)`
 ```c3
@@ -7196,7 +7196,7 @@ fn void native_thread_yield()
 ```
 ### `std::thread::os @if(env::WIN32)`
 ```c3
-distinct NativeThread = inline Win32_HANDLE;
+typedef NativeThread = inline Win32_HANDLE;
 ```
 ```c3
 struct NativeConditionVariable
@@ -7291,16 +7291,16 @@ fn void? ThreadPool.stop_and_destroy(&self)
 ```
 ### `std::time`
 ```c3
-distinct Clock = ulong;
+typedef Clock = ulong;
 ```
 ```c3
-distinct Duration = long;
+typedef Duration = long;
 ```
 ```c3
-distinct NanoDuration (Printable) = long;
+typedef NanoDuration (Printable) = long;
 ```
 ```c3
-distinct Time = long;
+typedef Time = long;
 ```
 ```c3
 enum Month : char

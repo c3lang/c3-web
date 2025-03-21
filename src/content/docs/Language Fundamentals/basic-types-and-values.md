@@ -209,7 +209,7 @@ A raw string may span multiple lines.
 Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
-// Note: String is a distinct inline char[]
+// Note: String is a typedef inline char[]
 String three_lines =
 `multi
 line
@@ -223,9 +223,9 @@ String bar = "\"Say `hello`\"";
 ```
 
 `String` is a
-[distinct inline](/language-common/define/#distinct-inline) `char[]`, which can implicitly convert to `char[]` when required.
+[typedef inline](/language-common/alias/#typedef-inline) `char[]`, which can implicitly convert to `char[]` when required.
 
-`ZString` is a [distinct inline](/language-common/define/#distinct-inline) `char*`.`ZString` is a C compatible null terminated string, which can implicitly convert to `char*` when required.
+`ZString` is a [typedef inline](/language-common/alias/#typedef-inline) `char*`.`ZString` is a C compatible null terminated string, which can implicitly convert to `char*` when required.
 
 
 

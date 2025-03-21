@@ -18,7 +18,7 @@ uptr        ushort      usz         float128
 any         fault    	typeid      assert
 asm         bitstruct   break       case
 catch       const       continue    alias
-default     defer       distinct    do
+default     defer       typedef     do
 else        enum        extern      false
 for         foreach     foreach_r 	fn
 tlocal      if          inline      import

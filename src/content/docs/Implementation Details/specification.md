@@ -375,7 +375,7 @@ CHARACTER_LIT   ::= "'" (CHAR_LIT_BYTE+) | UNICODE_CHAR "'"
 
 ## Types
 
-Types consist of built-in types and user-defined types (enums, structs, unions, bitstructs, fault and distinct).
+Types consist of built-in types and user-defined types (enums, structs, unions, bitstructs, fault and typedef).
 
 ### Boolean types
 
@@ -1657,7 +1657,7 @@ may not be cyclic.
 
 #### Operator overloading
 
-`@operator` overloads may only be added to user defined types (distinct, unions, struct, enum and fault).
+`@operator` overloads may only be added to user defined types (typedef, unions, struct, enum and fault).
 
 ##### Indexing operator (`[]`)
 

@@ -229,7 +229,7 @@ char* my_string = "Party on";
 println(my_excellent_string);
 ```
 
-Find out more about [`alias`](/language-common/define/).
+Find out more about [`alias`](/language-common/alias/).
 
 ## Basic Types
 

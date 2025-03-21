@@ -43,7 +43,7 @@ invoking libc functions. `std::os` for working with OS specific code and
 
 (see [Strings](/language-common/strings) for more info.)
 
-**A:** C3 defines a native string type `String`, which is a distinct `char[]`. Because
+**A:** C3 defines a native string type `String`, which is a `typedef char[]`. Because
 `char[]` is essentially a pointer + length, some care has to be taken to
 ensure that the pointer is properly managed.
 
@@ -51,7 +51,7 @@ For dynamic strings, or as a string builder, use `DString`. To get a String from
 a DString you can either get a *view* using `str_view()` or make a copy using `copy_str()`.
 In the former case, the String may become invalid if DString is then mutated.
 
-`ZString` is a distinct zero terminated `char*`. It is used to model zero-terminated
+`ZString` is a zero terminated `typedef char*`. It is used to model zero-terminated
 strings like in C. It is mostly useful interfacing with C.
 
 `WString` is a `Char16*`, useful on those platforms, like Win32, where this

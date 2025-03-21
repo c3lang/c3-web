@@ -345,7 +345,7 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 ### Restrictions on methods
 
 - Methods on a struct/union may not have the same name as a member.
-- Methods only works on distinct, struct, union and enum types.
+- Methods only work on `typedef`, `struct`, `union` and `enum` types.
 - When taking a function pointer of a method, use the full name.
 - Using subtypes, overlapping function names will be shadowed.
 

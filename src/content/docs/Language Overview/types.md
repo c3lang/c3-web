@@ -311,14 +311,14 @@ fn void main()
 }
 ```
 
-### Distinct types
+### Typedef - Type definitions
 
-Distinct types is a kind of type alias which creates a new type that has the same properties as the original type
-but is - as the name suggests - distinct from it. It cannot implicitly convert into the other type using the syntax
-`distict <name> = <type>`
+`typedef` creates a new type, that has the same properties as the original type
+but is distinct from it. It cannot implicitly convert into the other type using the syntax
+`typedef <name> = <type>`
 
 ```c3
-distinct MyId = int;
+typedef MyId = int;
 fn void* get_by_id(MyId id) { ... }
 
 fn void test(MyId id)
@@ -332,13 +332,14 @@ fn void test(MyId id)
 }
 ```
 
-#### Inline distinct
+#### Inline typedef
 
-Using `inline` in the `distinct` declaration allows a distinct type to implicitly convert to its underlying type:
+Using `inline` in the `typedef` declaration allows a newly created `typedef` type to
+implicitly convert to its underlying type:
 
 ```c3
-distinct Abc = int;
-distinct Bcd = inline int;
+typedef Abc = int;
+typedef Bcd = inline int;
 
 fn void test()
 {
@@ -349,7 +350,7 @@ fn void test()
     int i = b; // This is valid
 
     // However, 'inline' does not allow implicit conversion from
-    // the inline type to the distinct type:
+    // the inline type to the typedef type:
     // a = i; Error: Can't implicitly convert 'int' to 'Abc'
     // b = i; Error: Can't implicitly convert 'int' to 'Bcd'
 }
