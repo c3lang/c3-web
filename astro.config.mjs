@@ -4,47 +4,46 @@ import starlight from "@astrojs/starlight"
 import fs from "node:fs"
 
 
-// Directories to be excluded from the top level docs navigation
-// by default the older C3 versions directory
-const excluded_dirs = ["Previous Versions"]
+const top_level_docs_config = function() {
 
-function isDirectory(fileName)
-{
-    return fs.lstatSync(fileName).isDirectory();
-};
+    // manually created directory list, to force a well defined sidebar items ordering
+    let directory_list = [
+        "Getting Started",
+        "Get Involved",
+        "Language Fundamentals",
+        "Language Overview",
+        "Language Common",
+        "Generic Programming",
+        "Standard Library",
+        "Language Rules",
+        "Misc Advanced",
+        "Build Your Project",
+        "FAQ",
+        "Implementation Details",
+        "Thank You",
+    ]
 
-const docsRootPath = "./src/content/docs"
+    let returnedConfig = []
 
-// Generate the docs config for the directories in "docsRootPath"
-// We do this because we can control the doc's path and prevent an extra level of nesting
-const top_level_docs_config = fs.readdirSync(docsRootPath).
-  filter(
-      // filter to only directories
-      function(file) {
-          const filePath = `${docsRootPath}/${file}`
+    for(let index=0; index<directory_list.length; index++)
+    {
+        returnedConfig.push(
+            {
+                label: directory_list[index],
+                // Not not collapse the group by default.
+                collapsed: false,
 
-          return isDirectory(filePath) && !excluded_dirs.includes(file)
-      }
-  ).
-  map(
-      // generate the config for each allowed directory
-      function(dirItem)
-      {
+                // Autogenerate a group of links for the directory.
+                autogenerate: {
+                    directory: directory_list[index],
+                    collapsed: false
+                }
+            }
+        )
+    }
 
-          return {
-              label: dirItem,
-              // Not not collapse the group by default.
-              collapsed: false,
-
-              // Autogenerate a group of links for the directory.
-              autogenerate: {
-                  directory: dirItem,
-                  collapsed: false
-              }
-          }
-
-      }
-)
+    return returnedConfig
+}()
 
 
 // https://astro.build/config
