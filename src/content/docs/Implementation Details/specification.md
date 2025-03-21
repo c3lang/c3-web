@@ -162,7 +162,7 @@ asm         any         anyfault
 assert      attribute   break
 case        catch       const
 continue    default     defer
-def         do          else
+alias         do          else
 enum        extern      false
 fault       fn          if
 import      inline      macro
@@ -742,7 +742,7 @@ Example:
 
 ```
 fn void test() { ... }
-def VoidFunc = fn void test();
+alias VoidFunc = fn void test();
 
 VoidFunc a = &test;
 int b = (int)null;
@@ -1630,7 +1630,7 @@ is applied to a function or call, the last one takes precedence.
 User defined attributes group a list of attributes.
 
 ```
-attribute_decl     ::= "def" AT_TYPE_IDENT ("(" parameters ")")? attribute* "=" "{" attribute* "}" ";"
+attribute_decl     ::= "attrdef" AT_TYPE_IDENT ("(" parameters ")")? attribute* "=" "{" attribute* "}" ";"
 ```
 
 #### Empty list of attributes

@@ -44,8 +44,8 @@ Including a generic module works as usual:
 ```c3
 import foo_test;
 
-def FooFloat = Foo{ float, double };
-def test_float = foo_test::test{ float, double };
+alias FooFloat = Foo{ float, double };
+alias test_float = foo_test::test{ float, double };
 
 ...
 
@@ -71,7 +71,7 @@ module vector{ TypeA, TypeB, TypeC };
 ```
 
 ```c3
-def testFunction = vector::testFunc{ Bar, float, int };
+alias testFunction = vector::testFunc{ Bar, float, int };
 
 // This would give the error
 // --> Parameter(s) failed validation:

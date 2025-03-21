@@ -1,28 +1,28 @@
 ---
-title: Define
-description: The `def` statement
+title: Alias
+description: The `alias` statement
 sidebar:
     order: 61
 ---
 
-# The `def` statement
+# The `alias` statement
 
-The `def` statement in C3 is intended for aliasing identifiers and types.
+The `alias` statement in C3 is intended for aliasing identifiers and types.
 
 ## Defining a type alias
 
-`def <type alias> = <type>` creates a type alias. Type aliases need to follow the name convention of user defined types (i.e. capitalized
+`alias <type alias> = <type>` creates a type alias. Type aliases need to follow the name convention of user defined types (i.e. capitalized
 names with at least one lower case letter).
 
 ```c3
-def CharPtr = char*;
-def Numbers = int[10];
+alias CharPtr = char*;
+alias Numbers = int[10];
 ```
 
 Function pointers _must_ be aliased in C3. The syntax is somewhat different from C:
 
 ```c3
-def Callback = fn void(int a, bool b);
+alias Callback = fn void(int a, bool b);
 ```
 
 This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample usage:
@@ -34,7 +34,7 @@ cb(10, false);
 
 ## Distinct types
 
-Similar to `def` aliases are `distinct` which create distinct new types. Unlike type aliases,
+Similar to `alias` aliases are `distinct` which create distinct new types. Unlike type aliases,
 they do not implicitly convert to or from any other type.
 Literals will convert to the distinct types if they would convert to the underlying type.
 
@@ -61,23 +61,23 @@ distinct CString = char*;
 distinct ZString = inline char*;
 ...
 CString abc = "abc";
-ZString def = "def";
+ZString alias = "alias";
 // char* from_abc = abc; // Error!
-char* from_def = def; // Valid!
+char* from_def = alias; // Valid!
 ```
 
 ## Function and variable aliases
 
-`def` can also be used to create aliases for functions and variables.
+`alias` can also be used to create aliases for functions and variables.
 
-The syntax is `def <alias> = <original identifier>`.
+The syntax is `alias <alias> = <original identifier>`.
 
 ```c3
 fn void foo() { ... }
 int foo_var;
 
-def bar = foo;
-def bar_var = foo_var;
+alias bar = foo;
+alias bar_var = foo_var;
 
 fn void test()
 {
@@ -91,24 +91,24 @@ fn void test()
 }
 ```
 
-## Using `def` to create generic types, functions and variables
+## Using `alias` to create generic types, functions and variables
 
-It is recommended to favour using def to create aliases for parameterized types, but it can also be used for parameterized functions and variables:
+It is recommended to favour using alias to create aliases for parameterized types, but it can also be used for parameterized functions and variables:
 
 ```c3
 import generic_foo;
 
 // Parameterized function aliases
-def int_foo_call = generic_foo::foo_call{ int };
-def double_foo_call = generic_foo::foo_call{ double };
+alias int_foo_call = generic_foo::foo_call{ int };
+alias double_foo_call = generic_foo::foo_call{ double };
 
 // Parameterized type aliases
-def IntFoo = Foo{ int };
-def DoubleFoo = Foo{ double };
+alias IntFoo = Foo{ int };
+alias DoubleFoo = Foo{ double };
 
 // Parameterized global aliases
-def int_max_foo = generic_foo::max_foo{ int };
-def double_max_foo = generic_foo::max_foo{ double };
+alias int_max_foo = generic_foo::max_foo{ int };
+alias double_max_foo = generic_foo::max_foo{ double };
 ```
 
 For more information, see the chapter on [generics](/generic-programming/generics/).
@@ -125,7 +125,7 @@ Similarly, named parameter arguments follow the alias definition when calling th
 function pointer:
 
 ```c3
-def TestFn = fn void(int y = 123);
+alias TestFn = fn void(int y = 123);
 
 fn void test(int x = 5)
 {

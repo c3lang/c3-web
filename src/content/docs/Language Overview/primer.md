@@ -6,9 +6,9 @@ sidebar:
 ---
 
 ## Overview
-This is intended for existing C programmers. 
+This is intended for existing C programmers.
 
-This primer is intended as a guide to how the C syntax – 
+This primer is intended as a guide to how the C syntax –
 and in some cases C semantics – is different in C3. It is intended to help you take a piece of C code and understand
 how it can be converted manually to C3.
 
@@ -197,19 +197,19 @@ int a;
 int b @noinit;
 ```
 
-## `typedef` and `#define` becomes `def`
+## `typedef` and `#define` becomes `alias`
 
-`typedef` is replaced by `def`:
+`typedef` is replaced by `alias`:
 
 ```c
 // C
 typedef Foo* FooPtr;
 
 // C3
-def FooPtr = Foo*;
+alias FooPtr = Foo*;
 ```
 
-`def` also allows you to do things that C uses `#define` for:
+`alias` also allows you to do things that C uses `#define` for:
 
 ```c
 // C
@@ -221,15 +221,15 @@ char *my_string = "Party on";
 println(my_excellent_string);
 
 // C3
-def println = puts;
-def my_excellent_string = my_string;
+alias println = puts;
+alias my_excellent_string = my_string;
 
 char* my_string = "Party on";
 ...
 println(my_excellent_string);
 ```
 
-Find out more about [`def`](/language-common/define/).
+Find out more about [`alias`](/language-common/define/).
 
 ## Basic Types
 
@@ -261,7 +261,7 @@ uptr j;     // Same as uintptr_t depends on target
 
 Find out more about [types](/language-overview/types/).
 
-## Modules And Import Instead Of `#include` 
+## Modules And Import Instead Of `#include`
 
 Declaring the module name is not mandatory, but if you leave it out the file name will be used
 as the module name. Imports are recursive.

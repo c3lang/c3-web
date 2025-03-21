@@ -320,7 +320,7 @@ For more information, see [operator overloading](/generic-programming/operator-o
 The standard library offers dynamic arrays and other collections in the `std::collections` module.
 
 ```c3
-def ListStr = List{ String };
+alias ListStr = List{ String };
 
 fn void test()
 {

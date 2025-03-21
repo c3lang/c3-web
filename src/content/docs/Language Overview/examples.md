@@ -224,7 +224,7 @@ test(1); // Prints "MISSINGBA" and returns a FooError
 ## Struct Types
 
 ```c3
-def Callback = fn int(char c);
+alias Callback = fn int(char c);
 
 enum Status : int
 {
@@ -277,7 +277,7 @@ struct MyData
 ```c3
 module demo;
 
-def Callback = fn int(char* text, int value);
+alias Callback = fn int(char* text, int value);
 
 fn int my_callback(char* text, int value)
 {
@@ -612,7 +612,7 @@ fn bool Stack.empty(Stack* this)
 Testing it out:
 
 ```c3
-def IntStack = Stack{ int };
+alias IntStack = Stack{ int };
 
 fn void test()
 {

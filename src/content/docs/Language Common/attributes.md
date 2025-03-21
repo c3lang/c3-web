@@ -359,7 +359,7 @@ Emits a weak symbol rather than a global.
 User defined attributes are intended for conditional application of built-in attributes.
 
 ```c3
-def @MyAttribute = { @noreturn @inline };
+attrdef @MyAttribute = { @noreturn @inline };
 
 // The following two are equivalent:
 fn void foo() @MyAttribute { /* */ }
@@ -369,5 +369,5 @@ fn void foo() @noreturn @inline { /* */ }
 A user defined attribute may also be completely empty:
 
 ```c3
-def @MyAttributeEmpty = {};
+attrdef @MyAttributeEmpty = {};
 ```

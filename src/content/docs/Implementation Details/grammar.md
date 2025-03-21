@@ -17,7 +17,7 @@ short       uint128     uint        ulong
 uptr        ushort      usz         float128
 any         anyfault    typeid      assert
 asm         bitstruct   break       case
-catch       const       continue    def
+catch       const       continue    alias
 default     defer       distinct    do
 else        enum        extern      false
 fault       for         foreach     foreach_r
@@ -25,7 +25,7 @@ fn          tlocal      if          inline
 import      macro       module      nextcase
 null        return      static      struct
 switch      true        try         union
-var         while
+var         while 		attrdef
 ```
 
 ```

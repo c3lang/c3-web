@@ -10,7 +10,7 @@ sidebar:
 The `any` type is recommended for writing code that is polymorphic at runtime where macros are not appropriate.
 It can be thought of as a typed `void*`.
 
-An `any` can be created by assigning any pointer to it. You can then query the `any` type for the typeid of 
+An `any` can be created by assigning any pointer to it. You can then query the `any` type for the typeid of
 the enclosed type (the type the pointer points to) using the `type` field.
 
 This allows switching over the typeid, using a normal switch:
@@ -37,7 +37,7 @@ For example, this would make a copy of the data and place it in the variable `an
 ```c3
 void* data = malloc(a.type.sizeof);
 mem::copy(data, a.ptr, a.type.sizeof);
-any any_copy = any_make(data, a.type);    
+any any_copy = any_make(data, a.type);
 ```
 
 ## Variable argument functions with implicit `any`
@@ -94,15 +94,15 @@ out the first "self", argument.
 To declare that a type implements an interface, add it after the type name:
 
 ```c3
-struct Baz (MyName) 
-{ 
-    int x; 
+struct Baz (MyName)
+{
+    int x;
 }
 
 // Note how the first argument differs from the interface.
-fn String Baz.myname(Baz* self) @dynamic 
-{ 
-    return "I am Baz!"; 
+fn String Baz.myname(Baz* self) @dynamic
+{
+    return "I am Baz!";
 }
 ```
 
@@ -130,17 +130,17 @@ the type declaring it implements a particular interface. For example, this allow
 ```c3
 // This will make "int" satisfy the MyName interface
 fn String int.myname(int*) @dynamic
-{ 
-    return "I am int!"; 
+{
+    return "I am int!";
 }
 ```
-    
+
 `@dynamic` methods have their reference retained in the runtime code and can also be searched for at runtime and invoked
 from the `any` type.
 
 ### Referring to an interface by pointer
 
-An interface e.g. `MyName`, can be cast back and forth to `any`, but only types which 
+An interface e.g. `MyName`, can be cast back and forth to `any`, but only types which
 implement the interface completely may implicitly be cast to the interface.
 
 So for example:
@@ -153,7 +153,7 @@ MyName a = &b;          // Valid, Bob implements MyName.
 // MyName c = &d;       // Error, double does not implement MyName.
 MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
 // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
-MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"    
+MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"
 ```
 
 ### Calling dynamic methods
@@ -204,7 +204,7 @@ fn void main()
     double d;
     Bob bob;
 
-    any a = &i; 
+    any a = &i;
     whoareyou2(a); // Prints "I am int!"
     a = &d;
     whoareyou2(a); // Prints "I don't know who I am."
@@ -219,7 +219,7 @@ fn void main()
 It is possible to retrieve any `@dynamic` function by name and invoke it:
 
 ```c3
-def VoidMethodFn = fn void(void*);
+alias VoidMethodFn = fn void(void*);
 
 fn void* int.test_something(&self) @dynamic
 {

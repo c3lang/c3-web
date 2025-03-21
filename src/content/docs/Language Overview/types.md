@@ -6,7 +6,7 @@ sidebar:
 ---
 ## Overview
 
-As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `def`). All types are defined on a global level.
+As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `alias`). All types are defined on a global level.
 
 ##### Naming
 
@@ -32,12 +32,12 @@ but is a storage class modifier, not a type qualifier.
 Instead of `volatile`, volatile loads and stores are used.
 Restrictions on function parameter usage are instead described by parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-`typedef` has a slightly different syntax and renamed `def`.
+`typedef` has a slightly different syntax and renamed `alias`.
 
-C3 also requires all function pointers to be used with a `def` for example:
+C3 also requires all function pointers to be used with a `alias` for example:
 
 ```c3
-def Callback = fn void();
+alias Callback = fn void();
 Callback a = null; // Ok!
 fn Callback getCallback() { /* ... */ } // Ok!
 
@@ -262,15 +262,15 @@ from the initializer. See the chapter on [arrays](/language-common/arrays/).
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
 of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
 
-## Types created using `def`
+## Types created using `alias`
 
 ### "typedef"
 
-Like in C, C3 has a "typedef" construct, `def <typename> = <type>`
+Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
 
 ```c3
-def Int32 = int;
-def Vector2 = float[<2>];
+alias Int32 = int;
+alias Vector2 = float[<2>];
 
 /* ... */
 
@@ -280,10 +280,10 @@ int b = a;
 
 ### Function pointer types
 
-Function pointers are always used through a `def`:
+Function pointers are always used through a `alias`:
 
 ```c3
-def Callback = fn void(int value);
+alias Callback = fn void(int value);
 Callback callback = &test;
 
 fn void test(int a) { /* ... */ }
@@ -292,11 +292,11 @@ fn void test(int a) { /* ... */ }
 To form a function pointer, write a normal function declaration but skipping the function name. `fn int foo(double x)` ->
 `fn int(double x)`.
 
-Function pointers can have default arguments, e.g. `def Callback = fn void(int value = 0)` but default arguments
+Function pointers can have default arguments, e.g. `alias Callback = fn void(int value = 0)` but default arguments
 and parameter names are not taken into account when determining function pointer assignability:
 
 ```c3
-def Callback = fn void(int value = 1);
+alias Callback = fn void(int value = 1);
 fn void test(int a = 0) { /* ... */ }
 
 Callback callback = &test; // Ok
@@ -363,8 +363,8 @@ struct Foo {
     int x;
 }
 
-// ✅ def for each type used with a generic module.
-def IntMyList = MyList{ Foo };
+// ✅ alias for each type used with a generic module.
+alias IntMyList = MyList{ Foo };
 MyListFoo working_example;
 
 // ❌ An inline type definition will give an error.
