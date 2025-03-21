@@ -340,7 +340,7 @@ but nonetheless provided unique functionality:
 6. `@require` directives are evaluated given the arguments provided. Failing them may be a compile time or runtime error.
 7. The `@ensure` directive is evaluated at exit - if the return is a result and not an optional.
 8. `return` can be used as a variable identifier inside of `@ensure`, and holds the return value.
-9. `@return!` optionally lists the errors used. This will be checked at compile time.
+9. `@return?` optionally lists the errors used. This will be checked at compile time.
 10. `@pure` says that no writing to globals is allowed inside and only `@pure` functions may be called.
 
 ## Benchmarking
