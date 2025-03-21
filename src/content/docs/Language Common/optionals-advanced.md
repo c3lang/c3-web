@@ -177,24 +177,7 @@ fn void test()
 
 ### Find empty Optional and switch on Excuse
 
-`if (catch)` can also immediately switch on the `Excuse` value:
-```c3
-fn void? test()
-{
-    if (catch excuse = optional_value)
-    {
-        case DOG_ATE_HOMEWORK:
-            io::printn("Dog ate your file");
-        case io::FILE_NOT_FOUND:
-            io::printn("File not found");
-        default:
-            io::printfn("Unexpected Excuse: %s", excuse);
-            return excuse?;
-    }
-}
-```
-
-Which is shorthand for:
+`if (catch)` can be used with switch on the `Excuse` value:
 
 ```c3
 fn void? test()
