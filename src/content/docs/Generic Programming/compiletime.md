@@ -50,7 +50,7 @@ For switching between multiple possibilities, use `$switch`.
 ```c3
 macro @foo($x, #y)
 {
-    $switch ($x)
+    $switch $x:
         $case 1:
             #y += $x * $x;
         $case 2:
