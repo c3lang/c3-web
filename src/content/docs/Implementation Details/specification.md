@@ -158,19 +158,19 @@ PATH_SEGMENT    ::= "_"* LC_LETTER LC_ALPHANUM_US*
 The following keywords are reserved and may not be used as identifiers:
 
 ```
-asm         any         anyfault
+asm         any         fault
 assert      attribute   break
 case        catch       const
 continue    default     defer
 alias         do          else
 enum        extern      false
-fault       fn          if
+while       fn          if
 import      inline      macro
 module      nextcase    null
 public      return      struct
 switch      true        try
 typeid      var         void
-while
+
 
 bool        int128      double
 float       long        ulong
@@ -529,11 +529,11 @@ details on changing the alignment.
 
 ### Fault types
 
-A fault is an extensible enum which can be used to create an Excuse for an empty [optional](/language-common/optionals-essential/#what-is-an-optional).
+A `fault` is a constant which can be used to create an Excuse for an empty [optional](/language-common/optionals-essential/#what-is-an-optional).
 
 #### Alignment
 
-A fault type has the same alignment as a pointer. See [align attribute](#attributes) for details on changing the
+A `fault` type has the same alignment as a pointer. See [align attribute](#attributes) for details on changing the
 alignment.
 
 ### Enum types
@@ -635,7 +635,7 @@ The resulting type of the orelse is the post conversion type of the rhs.
 
 ### Suffix expression
 
-Suffix expressions convert a fault to an optional.
+Suffix expressions convert a `fault` to an optional.
 
 ```
 suffix_group_exp   ::= or_group_expr | suffix_expr
@@ -644,7 +644,7 @@ suffix_expr        ::= or_group_expr "?" "!"?
 
 #### Effect of `?`
 
-The `?` will convert the expression into an optional. The left hand side must be a fault type.
+The `?` will convert the expression into an optional. The left hand side must be a `fault` type.
 If an optional `!` follows, this optional is immediately returned, as if by a `return <expr>?` statement.
 
 #### Type of the expression
@@ -1183,8 +1183,8 @@ implicitly unwrapped.
 Example:
 
 ```
-int! a = foo();
-int! b = foo();
+int? a = foo();
+int? b = foo();
 if (catch a, b)
 {
     // Do something
@@ -1204,7 +1204,7 @@ after the if-statement.
 Example:
 
 ```
-int! a = foo();
+int? a = foo();
 if (catch a)
 {
   return;
@@ -1573,8 +1573,8 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | `@callconv`     | fn, call                                                                          |
 | `@deprecated`   | fn, macro, interface, variables, constants, user-defined types, struct member     |
 | `@dynamic`      | fn                                                                                |
-| `@export`       | fn, globals, constants, struct, union, enum, fault                                |
-| `@extern`       | fn, globals, constants, user-defined types                                        |
+| `@export`       | fn, globals, constants, struct, union, enum, faultdef                             |
+| `@extern`       | fn, globals, constants, user-defined types, faultdef                              |
 | `@if`           | all except local variables and calls                                              |
 | `@inline`       | fn, call                                                                          |
 | `@interface`    | fn                                                                                |
@@ -1586,8 +1586,8 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | `@noinit`       | variables                                                                         |
 | `@noinline`     | fn, call                                                                          |
 | `@noreturn`     | fn, macro                                                                         |
-| `@nostrip`      | fn, globals, constants, struct, union, enum, fault                                |
-| `@obfuscate`    | enum, fault                                                                       |
+| `@nostrip`      | fn, globals, constants, struct, union, enum, faultdef                             |
+| `@obfuscate`    | enum, faultdef                                                                    |
 | `@operator`     | fn, macro                                                                         |
 | `@optional`     | interface methods                                                                 |
 | `@overlap`      | bitstruct only                                                                    |

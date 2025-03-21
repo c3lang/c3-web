@@ -206,7 +206,7 @@ Because it's often relevant to run different defers when having an error return 
 Similarly using `defer try` can be used to only run if the scope exits in a regular way.
 
 ```c3
-fn void! test(int x)
+fn void? test(int x)
 {
     defer io::printn("");
     defer io::print("A");
@@ -295,25 +295,22 @@ fn void example_cb()
 
 ## Error Handling
 
-Errors are handled using optional results, denoted with a '!' suffix. A variable of an optional
+Errors are handled using optional results, denoted with a '?' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
 
 ```c3
-fault MathError
-{
-    DIVISION_BY_ZERO
-}
+fault DIVISION_BY_ZERO;
 
-fn double! divide(int a, int b)
+fn double? divide(int a, int b)
 {
     // We return an optional result of type DIVISION_BY_ZERO
     // when b is zero.
-    if (b == 0) return MathError.DIVISION_BY_ZERO?;
+    if (b == 0) return DIVISION_BY_ZERO?;
     return (double)a / (double)b;
 }
 
-// Re-returning an optional result uses "!" suffix
-fn void! testMayError()
+// Re-returning an optional result uses "?" suffix
+fn void? testMayError()
 {
     divide(foo(), bar())!;
 }
@@ -321,13 +318,13 @@ fn void! testMayError()
 fn void main()
 {
     // ratio is an optional result.
-    double! ratio = divide(foo(), bar());
+    double? ratio = divide(foo(), bar());
 
     // Handle the optional result value if it exists.
     if (catch err = ratio)
     {
-        case MathError.DIVISION_BY_ZERO:
-            io::printn("Division by zero\n");
+        case DIVISION_BY_ZERO:
+            io::printn("Division by zero");
             return;
         default:
             io::printn("Unexpected error!");
@@ -342,15 +339,15 @@ fn void main()
 ```c3
 fn void print_file(String filename)
 {
-    String! file = io::load_file(filename);
+    String? file = io::load_file(filename);
 
     // The following function is not called on error,
     // so we must explicitly discard it with a void cast.
-    (void)io::printfn("Loaded %s and got:\n%s", filename, file);
+    (void)io::printfn("Loaded %s and got:%s", filename, file);
 
     if (catch err = file)
     {
-        case IoError.FILE_NOT_FOUND:
+        case io::FILE_NOT_FOUND:
             io::printfn("I could not find the file %s", filename);
         default:
             io::printfn("Could not load %s.", filename);
@@ -362,7 +359,7 @@ fn void print_file(String filename)
 
 fn void print_file2(String filename)
 {
-    String! file = io::load_file(filename);
+    String? file = io::load_file(filename);
 
     if (catch err = file)
     {

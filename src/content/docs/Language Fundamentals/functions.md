@@ -254,11 +254,11 @@ This allows us to chain functions:
 ```c3
 fn void print_input_with_explicit_checks()
 {
-    String! line = io::readline();
+    String? line = io::readline();
     if (try line)
     {
         // line is a regular "string" here.
-        int! val = line.to_int();
+        int? val = line.to_int();
         if (try val)
         {
             io::printfn("You typed the number %d", val);

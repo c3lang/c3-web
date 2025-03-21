@@ -32,8 +32,8 @@ Optionally cast the value `v` to type `$Type*` on failure returns `CastResult.TY
 ```c
 int b;
 any a = &b;
-float*! c = anycast(a, float); // Will return TYPE_MISMATCH
-int*! d = anycast(a, int);     // Works!
+float*? c = anycast(a, float); // Will return TYPE_MISMATCH
+int*? d = anycast(a, int);     // Works!
 ```
 
 ### `void unreachable($string = "Unreachable statement reached.")`
@@ -69,7 +69,7 @@ on failure.
 ```c
 enum Foo { ABC, CDE, EFG }
 
-fn void! test()
+fn void? test()
 {
     Foo f = enum_by_name(Foo, "CDE")!;
     // same as Foo f = Foo.CDE;
@@ -125,7 +125,7 @@ the normal `free` or memory corruption may result.
 
 ```c
 char* data = malloc(8);
-int[<16>]*! data2 = malloc_aligned(16 * int.sizeof), 128);
+int[<16>]*? data2 = malloc_aligned(16 * int.sizeof), 128);
 ```
 
 ### `new($Type, #initializer), new_aligned($Type, #initializer)`
@@ -321,7 +321,7 @@ ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 
 ## `std::core::str::conv`
 
-### `usz! char32_to_utf8(Char32 c, char* output, usz available)`
+### `usz? char32_to_utf8(Char32 c, char* output, usz available)`
 Convert a UTF32 codepoint to an UTF8 buffer. `size` has the number of
 writable bytes left. It returns the number of bytes used, or
 `UnicodeResult.CONVERSION_FAILED` if the buffer is too small.
@@ -332,15 +332,16 @@ moving the output pointer 1 or 2 steps.
 
 ## `std::io`
 
-### `String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())`
-Read a `String!` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream. `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
+### `String? readline(stream = io::stdin(), Allocator allocator = allocator::heap())`
+Read a `String?` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream.
+`Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
 ```c3
 import std::io;
 
-fn void! hello_name()
+fn void? hello_name()
 {
-    String! name = io::readline();
+    String? name = io::readline();
     if (catch excuse = name)
     {
         return excuse?;
@@ -354,15 +355,15 @@ fn void! hello_name()
 `\r` will be filtered from the String.
 :::
 
-### `String! treadline(stream = io::stdin())`
-Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators.
+### `String? treadline(stream = io::stdin())`
+Read a `String?` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators.
 
 ```c
 import std::io;
 
-fn void! hello_name()
+fn void? hello_name()
 {
-    String! name = io::treadline();
+    String? name = io::treadline();
     if (catch excuse = name) {
         return excuse?;
     }
@@ -413,7 +414,7 @@ The `eprintn` variant appends a newline.
 
 See `print` for usage.
 
-### `usz! printf(String format, args...) @maydiscard`
+### `usz? printf(String format, args...) @maydiscard`
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stdout.
 
@@ -443,7 +444,7 @@ fn void main()
 
 Also available as `printfn` which appends a newline.
 
-### `usz! eprintf(String format, args...) @maydiscard`
+### `usz? eprintf(String format, args...) @maydiscard`
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stderr.
 
@@ -451,16 +452,16 @@ Also available as `eprintfn` which appends a newline.
 
 See `printf` for usage
 
-### `char[]! bprintf(char[] buffer, String format, args...) @maydiscard`
+### `char[]? bprintf(char[] buffer, String format, args...) @maydiscard`
 Prints using a 'printf'-style formatting string, to a string buffer.
 
 Returns a slice of the `buffer` argument with the resulting length.
 
-### `usz! fprint(out, x)`, `usz! fprintn(out, x = "")`
+### `usz? fprint(out, x)`, `usz? fprintn(out, x = "")`
 Print a value to a stream. `out` must implement `OutStream`.
 The `fprintn` variant appends a newline.
 
-### `usz! fprintf(OutStream out, String format, args...)`
+### `usz? fprintf(OutStream out, String format, args...)`
 Prints to the specified OutStream using a 'printf'-style formatting string.
 
 Returns the number of characters printed.
@@ -470,7 +471,7 @@ Returns the number of characters printed.
 ### `void putchar(char c) @inline`
 Libc `putchar`, prints a single character to stdout.
 
-### `usz! DString.appendf(DString* str, String format, args...) @maydiscard`
+### `usz? DString.appendf(DString* str, String format, args...) @maydiscard`
 Same as printf but on dynamic strings.
 
 ### `File* stdout()`, `File* stdin()`, `File* stderr()`
@@ -478,57 +479,57 @@ Return stdout, stdin and stderr respectively.
 
 ## `std::io::file`
 
-### `File! open(String filename, String mode)`
+### `File? open(String filename, String mode)`
 Open a file with the given file name with the given mode (r, w etc)
 
-### `File! open_path(Path path, String mode)`
+### `File? open_path(Path path, String mode)`
 Open a file pointed to by a Path struct, with the given mode.
 
 ### `bool is_file(String path)`
 See whether the given path is a file.
 
-### `usz! get_size(String path)`
+### `usz? get_size(String path)`
 Get the size of a file.
 
-### `void! delete(String filename)`
+### `void? delete(String filename)`
 Delete a file.
 
-### `void! File.reopen(&self, String filename, String mode)`
+### `void? File.reopen(&self, String filename, String mode)`
 Reopen a file with a new filename and mode.
 
-### `usz! File.seek(&self, isz offset, Seek seek_mode = Seek.SET)`
+### `usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET)`
 Seek in a file. Based on the libc function.
 
-### `void! File.write_byte(&self, char c) @dynamic`
+### `void? File.write_byte(&self, char c) @dynamic`
 Write a single byte to a file.
 
-### `void! File.close(&self) @inline @dynamic`
+### `void? File.close(&self) @inline @dynamic`
 Close a file, based on the libc function.
 
 ### `bool File.eof(&self) @inline`
 True if EOF has been reached. Based on the libc function.
 
-### `usz! File.read(&self, char[] buffer)`
+### `usz? File.read(&self, char[] buffer)`
 Read into a buffer, based on the libc function.
 
-### `usz! File.write(&self, char[] buffer)`
+### `usz? File.write(&self, char[] buffer)`
 Write to a buffer, based on the libc function.
 
-### `char! File.read_byte(&self) @dynamic`
+### `char? File.read_byte(&self) @dynamic`
 Read a single byte from a file.
 
-### `char[]! load_buffer(String filename, char[] buffer)`
+### `char[]? load_buffer(String filename, char[] buffer)`
 Load up to buffer.len characters into the buffer.
 
 Returns IoError.OVERFLOW if the file is longer than the buffer.
 
-### `char[]! load_new(String filename, Allocator allocator = allocator::heap())`
+### `char[]? load_new(String filename, Allocator allocator = allocator::heap())`
 Load the entire file into a new buffer.
 
-### `char[]! load_temp(String filename)`
+### `char[]? load_temp(String filename)`
 Load the entire file into a buffer allocated using the temporary allocator.
 
-### `void! File.flush(&self) @dynamic`
+### `void? File.flush(&self) @dynamic`
 Flush a file, based on the libc function.
 
 ## `std::collections::list({ Type })`

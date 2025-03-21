@@ -70,7 +70,7 @@ String s = Foo.associated[0].nameof; // "double"
 
 #### `elements`
 
-Returns the element count of an enum or fault.
+Returns the element count of an enum.
 
 ```c3
 enum FooEnum
@@ -159,7 +159,7 @@ Returns the name of the type.
 
 #### `names`
 
-Returns a slice containing the names of an enum or fault.
+Returns a slice containing the names of an enum.
 
 ```c3
 enum FooEnum
@@ -228,7 +228,7 @@ typeid x = Foo.typeid;
 
 #### `values`
 
-Returns a slice containing the values of an enum or fault.
+Returns a slice containing the values of an enum.
 
 ```c3
 enum FooEnum

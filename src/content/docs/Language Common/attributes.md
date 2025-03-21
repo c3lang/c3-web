@@ -92,7 +92,7 @@ to be invoked through interfaces.
 
 ### `@export`
 
-*Used for: function, global, const, enum, union, struct, fault*
+*Used for: function, global, const, enum, union, struct, faultdef*
 
 Marks this declaration as an export, this ensures it is never removed and exposes it as public when linking.
 The attribute takes an optional string value, which is the external name. This acts as if `@extern` had been
@@ -100,7 +100,7 @@ added with that name.
 
 ### `@extern`
 
-*Used for: function, global, const, enum, union, struct, fault*
+*Used for: function, global, const, enum, union, struct, faultdef*
 
 Sets the external (linkage) name of this declaration.
 

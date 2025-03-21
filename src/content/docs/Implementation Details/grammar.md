@@ -15,17 +15,17 @@ float       float16     int128      ichar
 int         iptr        isz         long
 short       uint128     uint        ulong
 uptr        ushort      usz         float128
-any         anyfault    typeid      assert
+any         fault    	typeid      assert
 asm         bitstruct   break       case
 catch       const       continue    alias
 default     defer       distinct    do
 else        enum        extern      false
-fault       for         foreach     foreach_r
-fn          tlocal      if          inline
-import      macro       module      nextcase
-null        return      static      struct
-switch      true        try         union
-var         while 		attrdef
+for         foreach     foreach_r 	fn
+tlocal      if          inline      import
+macro       module      nextcase	null
+return      static      struct      switch
+true        try         union       var
+while       attrdef
 ```
 
 ```

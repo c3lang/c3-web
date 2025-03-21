@@ -514,26 +514,28 @@ An enum may only declare *one* `inline` parameter.
 
 ## Optional Type
 
-An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `!`.
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
 result or an Excuse that is of a [fault](#optional-excuses-are-of-type-fault) type.
 
-Once extracted, any specific fault can be converted to an `anyfault`.
+Once extracted, a `fault` can be converted into another `fault`.
 
 ```c3
-int! i;
-i = 5; // Assigning a real value to i.
-i = IOResult.IO_ERROR?; // Assigning an optional result to i.
-anyfault b = SearchError.MISSING;
-b = @catch(i); // Assign the Excuse in i to b (IO_ERROR)
+faultdef MISSING; // define a fault
+
+int? i;
+i = 5;              // Assigning a real value to i.
+i = io::EOF?;       // Assigning an optional result to i.
+fault b = MISSING;  // Assign a fault to b
+b = @catch(i);      // Assign the Excuse in i to b (EOF)
 ```
 
 Only variables, expressions and function returns may be Optionals.
 Function and macro parameters in their definitions may not be optionals.
 
 ```c3
-fn Foo*! getFoo() { /* ... */ } // ✅ Ok!
-int! x = 0; // ✅ Ok!
+fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
+int? x = 0; // ✅ Ok!
 fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 ```
 
@@ -543,24 +545,14 @@ Read more about the Optional types on the page about [Optionals and error handli
 ### Optional Excuses are of type Fault
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
-The `anyfault` type may contain any such fault.
 
 ```c3
-fault IOResult
-{
-    IO_ERROR,
-    PARSE_ERROR
-}
-
-fault MapResult
-{
-    NOT_FOUND
-}
+faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
 ```
 
 Like the [typeid type](#the-typeid-type), the constants are pointer sized
 and each value is globally unique. For example the underlying value of
-`MapResult.NOT_FOUND` is guaranteed to be different from `IOResult.IO_ERROR`.
+`NOT_FOUND` is guaranteed to be different from `IO_ERROR`.
 This is true even if they are separately compiled.
 
 :::note

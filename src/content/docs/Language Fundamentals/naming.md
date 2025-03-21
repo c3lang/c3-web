@@ -5,7 +5,7 @@ sidebar:
     order: 41
 ---
 
-C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools. 
+C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools.
 
 As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
 
@@ -20,23 +20,19 @@ struct Foo @extern("foo")
     Bar bar;
 }
 
-union Bar 
+union Bar
 {
     int i;
     double d;
 }
 
-enum Baz 
+enum Baz
 {
     VALUE_1,
     VALUE_2
 }
 
-fault Err 
-{
-    OOPS,
-    LOTS_OF_OOPS
-}
+faultdef OOPS, LOTS_OF_OOPS;
 ```
 
 ### Variables and parameters
@@ -48,35 +44,31 @@ int theGlobal = 1;
 
 fn void foo(int x)
 {
-    Foo foo = getFoo(x);    
+    Foo foo = getFoo(x);
     theGlobal++;
 }
 ```
 
 ### Global constants
 
-Global constants must start with A-Z after any optional initial `_`. `_FOO2`, `BAR_FOO`, `X` are all valid global constants, `_`, `_bar`, `x` are not. 
+Global constants must start with A-Z after any optional initial `_`. `_FOO2`, `BAR_FOO`, `X` are all valid global constants, `_`, `_bar`, `x` are not.
 
 ```c3
 const int A_VALUE = 12;
 ```
 
-### Enum / Fault values
+### Enum / Fault definitions
 
-Enum and fault values follow the same naming standard as global constants.
+`enum` and `faultdef` definitions follow the same naming standard as global constants.
 
 ```c3
-enum Baz 
+enum Baz
 {
     VALUE_1,
     VALUE_2
 }
 
-fault Err 
-{
-    OOPS,
-    LOTS_OF_OOPS
-}
+faultdef OOPS, LOTS_OF_OOPS;
 ```
 
 ### Struct / union members
@@ -96,12 +88,12 @@ module foo;
 Functions and macros must start with a-z after any optional initial `_`.
 
 ```c3
-fn void theMostAmazingFunction() 
-{ 
+fn void theMostAmazingFunction()
+{
     return;
 }
 
-macro justDoIt(x) 
+macro justDoIt(x)
 {
     justDo(x);
 }

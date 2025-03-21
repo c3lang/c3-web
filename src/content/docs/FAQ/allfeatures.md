@@ -53,7 +53,7 @@ Changes relating to literals, identifiers etc.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
 13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
-14. `anyfault` holds any `fault` value (see below).
+14. `fault` a constant representing an error (see below).
 
 ### Changed
 1. Inferred array type uses `[*]` (e.g. `int[*] x = { 1, 2 };`).
@@ -71,7 +71,7 @@ Changes relating to literals, identifiers etc.
 ### Added
 
 1. `bitstruct` a struct with a container type allowing precise control over bit-layout, replacing bitfields and enum masks.
-2. `fault` an enum type with unique values which are used together with optional.
+2. `fault` a constant with unique values which are used together with optional.
 3. Vector types.
 4. Optional types.
 5. `enum` allows a set of unique constants to be associated with each enum value.
@@ -122,7 +122,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
 10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
 11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers.
-12. `?` suffix operator turns a fault into an optional value.
+12. `?` suffix operator turns a `fault` into an optional value.
 13. `!!` suffix panics if the value is an optional value.
 14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
 15. Compile time "and" and "or" using `&&&` and `|||`. Both sides of the operator should be compile-time constants. If the left hand side of `&&&` is false, the right hand side is not type-checked. For `|||` the right hand side is not type-checked if the left hand side is true.
@@ -228,7 +228,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 16. `do` statements may omit `while`, behaving same as `while (0)`
 17. `if` may have a label. Labelled `if` may be exited using labelled break.
 18. if-try statements allows you to run code where an expression is a result.
-19. if-catch statements runs code on fault. It can be used to implicitly unwrap variables.
+19. if-catch statements runs code on `fault`. It can be used to implicitly unwrap variables.
 20. Exhaustive switching on enums.
 
 ### Changed
