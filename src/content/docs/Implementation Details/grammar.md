@@ -29,15 +29,15 @@ var         while
 ```
 
 ```
-$alignof    $assert     $case       $default    
+$alignof    $assert     $case       $default
 $defined    $echo       $embed      $exec
-$else       $endfor     $endforeach $endif      
-$endswitch  $eval       $evaltype   $error      
-$extnameof  $for        $foreach    $if         
-$include    $nameof     $offsetof   $qnameof    
-$sizeof     $stringify  $switch     $typefrom   
-$typeof     $vacount    $vatype     $vaconst    
-$varef      $vaarg      $vaexpr     $vasplat
+$else       $endfor     $endforeach $endif
+$endswitch  $eval       $evaltype   $error
+$extnameof  $for        $foreach    $if
+$include    $nameof     $offsetof   $qnameof
+$sizeof     $stringify  $switch     $typefrom
+$typeof     $vacount    $vatype     $vaconst
+$vaarg      $vaexpr     $vasplat
 ```
 
 The following attributes are built in:

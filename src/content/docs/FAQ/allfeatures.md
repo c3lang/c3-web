@@ -26,11 +26,11 @@ Changes relating to literals, identifiers etc.
 11. `\e` escape character.
 12. Source code must be UTF-8.
 13. Assumes `\n` for new row `\r` is stripped from source.
-14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/... 
+14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/...
 15. The `null` literal is a pointer value of 0.
 16. The `true` and `false` are boolean constants true and false.
 
-### Removed 
+### Removed
 
 1. Trigraphs / digraphs.
 2. 0123-style octal.
@@ -40,7 +40,7 @@ Changes relating to literals, identifiers etc.
 
 ### Added
 
-1. Type declaration is left to right: `int[4]*[2] a;` instead of `int (*a[2])[4];` 
+1. Type declaration is left to right: `int[4]*[2] a;` instead of `int (*a[2])[4];`
 2. Simd vector types using `[<>]` syntax, e.g. `float[<4>]`, use `[<*>]` for inferred length.
 3. Slice type built in, using `[]` suffix, e.g. `int[]`
 4. Distinct types, similar to a typedef but forms a new type. (Example: the `String` type is a distinct `char[]`)
@@ -121,7 +121,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 8. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
 9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
 10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
-11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers. 
+11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers.
 12. `?` suffix operator turns a fault into an optional value.
 13. `!!` suffix panics if the value is an optional value.
 14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
@@ -173,7 +173,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ## Attributes
 
-C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom 
+C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom
 attribute groups using `def` (e.g. `def MyAttribute(usz align) = { @aligned(align) @weak };`) which
 groups certain attributes. Empty attribute groups are permitted.
 
@@ -283,19 +283,18 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 1. `macro` for defining macros.
 2. "Function-like" macros have no prefix and has only regular parameters or type parameters.
-3. "At"-macros are prefixed with `@` and may also have compile time values, expression and ref parameters, and may have a trailing body.
+3. "At"-macros are prefixed with `@` and may also have compile time values, expression parameters, and may have a trailing body.
 4. Type parameters have the prefix `$` and conform to the type naming standard ("$TypeFoo").
-5. "ref" parameters are declared using with a `&` prefix operator. This is similar to C++ ref parameters.
-6. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
-7. Compile time values have a `$` prefix and must contain compile time constant values.
-8. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
-9. Macros may be recursively evaluated.
-10. Macros are inlined at the location where they are invoked.
-11. Unless resulting in a single constant, macros implicitly create a runtime scope.
+5. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
+6. Compile time values have a `$` prefix and must contain compile time constant values.
+7. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
+8. Macros may be recursively evaluated.
+9. Macros are inlined at the location where they are invoked.
+10. Unless resulting in a single constant, macros implicitly create a runtime scope.
 
 ### Removed
 
-1. No `#define` macros.  
+1. No `#define` macros.
 2. Macros cannot be incomplete statements.
 
 ## Features provided by builtins
