@@ -82,7 +82,7 @@ Changes relating to literals, identifiers etc.
 10. Subtyping: using `inline` on a struct member allows a struct to be implicitly converted to this member type and use corresponding methods.
 11. Using `inline` on a distinct type allows it to be implicitly converted *to* its base type (but not vice versa).
 12. Types may add operator overloading to support `foreach` and subscript operations.
-13. Generic types through generic modules, using `(< ... >)` for the generic parameter list (e.g. `List(<int>) list;`).
+13. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
 14. Interface types, `any` types which allows dynamic invocation of methods.
 
 ### Changed
@@ -327,7 +327,7 @@ but nonetheless provided unique functionality:
 8. `@local` means only visible to the current module section.
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
-11. Generic modules have a set of parameters after the module name `module arr(<Type, LEN>);`
+11. Generic modules have a set of parameters after the module name `module arr{ Type, LEN };`
 12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts

@@ -49,8 +49,8 @@ switch (x)
         bar();
     default:
         // Should never happen.
-        unreachable("x should have been 0 or 1");    
-}    
+        unreachable("x should have been 0 or 1");
+}
 ```
 
 On safe mode this will throw a runtime panic when reached. For release mode the
@@ -71,7 +71,7 @@ enum Foo { ABC, CDE, EFG }
 
 fn void! test()
 {
-    Foo f = enum_by_name(Foo, "CDE")!; 
+    Foo f = enum_by_name(Foo, "CDE")!;
     // same as Foo f = Foo.CDE;
 }
 ```
@@ -94,8 +94,8 @@ io::printfn("a = %d", a, b);
 ```
 
 ### `less`, `greater`, `less_eq`, `greater_eq`, `equals`
-All macros take two values and compare them. Any type implementing `Type.less` 
-or `Type.compare_to` may be compared (or if the type implements `<`). Types 
+All macros take two values and compare them. Any type implementing `Type.less`
+or `Type.compare_to` may be compared (or if the type implements `<`). Types
 implementing `Type.equals` may use `equals` even if neither `less` nor `compare_to`
 are implemented.
 
@@ -117,7 +117,7 @@ are implemented.
 
 ### `malloc`, `malloc_aligned`
 
-Allocate the given number of bytes. `malloc` will panic on out of memory, 
+Allocate the given number of bytes. `malloc` will panic on out of memory,
 whereas `malloc_aligned` returns an optional value.
 `malloc_aligned` adds an alignment, which must be a power of 2. Any pointer
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
@@ -148,7 +148,7 @@ Allocates a single element of $Type, same as `new`, but without initializing the
 ### `new_array($Type, usz elements)`, `new_array_aligned($Type, usz elements)`
 
 Allocates a slice of `elements` number of elements, returning
-a slice of the given length. Elements are zero initialized. `new_array_aligned` is used for 
+a slice of the given length. Elements are zero initialized. `new_array_aligned` is used for
 types that exceed standard alignment.
 
 ```c3
@@ -165,7 +165,7 @@ Identical to the `malloc` variants, except the data is guaranteed to be zeroed o
 
 ### `realloc`, `realloc_checked`, `realloc_aligned`
 
-Resizes memory allocated using `malloc` or `calloc`. Any extra data is 
+Resizes memory allocated using `malloc` or `calloc`. Any extra data is
 guaranteed to be zeroed out. `realloc_aligned` can only be used with
 pointers created using `calloc_aligned` or `alloc_aligned`.
 
@@ -181,13 +181,13 @@ Swaps the current memory allocator for the duration of the call.
 ```c
 DynamicArenaAllocator dynamic_arena;
 dynamic_arena.init(1024);
-mem::@scoped(&dynamic_arena) 
+mem::@scoped(&dynamic_arena)
 {
-    // This allocation uses the dynamic arena 
+    // This allocation uses the dynamic arena
     Foo* f = malloc(Foo);
 };
 // Release any dynamic arena memory.
-dynamic_arena.destroy();    
+dynamic_arena.destroy();
 
 ```
 
@@ -219,9 +219,9 @@ Same as the `new`, `alloc`, `new_array` and `alloc_array` respectively.
 Opens a temporary memory scope.
 
 ```c3
-@pool() 
+@pool()
 {
-    // This allocation uses the dynamic arena 
+    // This allocation uses the dynamic arena
     Foo* f = tmalloc(Foo);
 };
 ```
@@ -268,7 +268,7 @@ and destination alignment may be used.
 
 ```c3
 Foo* f = tmalloc(data_size);
-mem::copy(f, slice.ptr, size); 
+mem::copy(f, slice.ptr, size);
 ```
 
 ### `void set(void* dst, char val, usz len, usz $dst_align = 0, bool $is_volatile = false)`
@@ -286,7 +286,7 @@ Makes a shallow copy of a value using the regular allocator.
 ```c
 Foo f = ...
 
-return @clone(f); 
+return @clone(f);
 ```
 
 ### `@tclone(&value)`
@@ -315,7 +315,7 @@ may be converted into the given type. Returns a `ConversionResult` otherwise.
 
 ```c
 any* v = &&128;
-short y = any_to_int(v, short)!!; // Works 
+short y = any_to_int(v, short)!!; // Works
 ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 ```
 
@@ -323,7 +323,7 @@ ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 
 ### `usz! char32_to_utf8(Char32 c, char* output, usz available)`
 Convert a UTF32 codepoint to an UTF8 buffer. `size` has the number of
-writable bytes left. It returns the number of bytes used, or 
+writable bytes left. It returns the number of bytes used, or
 `UnicodeResult.CONVERSION_FAILED` if the buffer is too small.
 
 ### `void char32_to_utf16_unsafe(Char32 c, Char16** output)`
@@ -341,7 +341,7 @@ import std::io;
 fn void! hello_name()
 {
     String! name = io::readline();
-    if (catch excuse = name) 
+    if (catch excuse = name)
     {
         return excuse?;
     }
@@ -355,7 +355,7 @@ fn void! hello_name()
 :::
 
 ### `String! treadline(stream = io::stdin())`
-Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators. 
+Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators.
 
 ```c
 import std::io;
@@ -383,14 +383,14 @@ The `printn` variant appends a newline.
 ```c3
 import std::io;
 
-enum Heat 
+enum Heat
 {
     WARM,
     WARMER,
     REALLY_WARM,
 }
 
-fn void main() 
+fn void main()
 {
     int[<2>] vec = { 4, 2 };
     Heat weather = WARM;
@@ -402,7 +402,7 @@ fn void main()
     io::print(2.2);       // 2.200000
     io::print(vec);       // [<4, 2>]
     io::print(weather);   // WARM
-    io::print(fib);       // [0, 1, 1, 2, 3] 
+    io::print(fib);       // [0, 1, 1, 2, 3]
     io::print(dialogue);  // secret
 }
 ```
@@ -420,14 +420,14 @@ Will also print enums and vectors. Prints to stdout.
 ```c3
 import std::io;
 
-enum Heat 
+enum Heat
 {
     WARM,
     WARMER,
     REALLY_WARM,
 }
 
-fn void main() 
+fn void main()
 {
     int[<2>] vec = { 4, 2 };
     Heat weather = REALLY_WARM;
@@ -531,17 +531,18 @@ Load the entire file into a buffer allocated using the temporary allocator.
 ### `void! File.flush(&self) @dynamic`
 Flush a file, based on the libc function.
 
-## `std::collections::list(\<Type\>)`
+## `std::collections::list({ Type })`
 
 Generic list module, elements are of `Type`.
 
 ```c
 import std::collections::list;
-def MyIntList = List(<int>);
+def MyIntList = List{ int };
 
 ...
 
 MyIntList list;
+list.init(mem); // heap allocated
 list.push(123);
 list.free();
 ```

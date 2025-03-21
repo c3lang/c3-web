@@ -1218,7 +1218,7 @@ define_attribute
 	;
 
 opt_generic_parameters
-	: '<' generic_parameters '>'
+	: '{' generic_parameters '}'
 	| empty
 	;
 
@@ -1257,7 +1257,7 @@ module_params
 
 module
 	: MODULE path_ident opt_attributes ';'
-	| MODULE path_ident '<' module_params '>' opt_attributes ';'
+	| MODULE path_ident '{' module_params '}' opt_attributes ';'
 	;
 
 import_paths

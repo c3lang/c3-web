@@ -9,48 +9,6 @@ Attributes are compile-time annotations on functions, types, global constants an
 
 ## Built in attributes
 
-### `@adhoc` 
-
-*Used for: type parameterized generic modules*
-
-Normally a parameterized generic module needs to be defined before it is used like:
-```c3
-module my_lib(<Type>);
-
-struct MyType
-{
-	  Type value;
-}
-
-module my_code;
-
-// Definition here
-def MyType(<int>) = MyTypeInt; 
-
-fn void main()
-{
-    MyType(<int>) x;
-}
-```
-
-A type with `@adhoc` can be declared parameterized, without any warning being issued, for example:
-
-```c3
-module my_lib(<Type>);
-
-struct MyType @adhoc
-{
-	  Type value;
-}
-
-module my_code;
-
-fn void main()
-{
-    MyType(<int>) x;
-}
-```
-
 ### `@align(alignment)`
 
 *Used for: struct, bitstructs, union, var, function*
@@ -66,7 +24,7 @@ struct Foo @align(32)
 ```
 
 Note that following C behaviour, `@align` is only able to *increase*
-the alignment. If setting a smaller alignment than default is 
+the alignment. If setting a smaller alignment than default is
 desired, then use `@packed` (which sets the alignment to 1 for all members)
 and then `@align`.
 
@@ -99,7 +57,7 @@ Valid arguments are `veccall`, `cdecl`, `stdcall`.
 
 :::caution
 On Windows, many calls are tagged `stdcall` in the C
-headers. However, this calling convention is only ever used on 32-bit Windows, 
+headers. However, this calling convention is only ever used on 32-bit Windows,
 and is a no-op on 64-bit Windows.
 :::
 
@@ -297,7 +255,7 @@ By implementing `[]` and `len`, `foreach` and `foreach_r` is enabled. In order t
 
 *Used for: interface methods*
 
-Placed on an interface method, this makes the method optional to 
+Placed on an interface method, this makes the method optional to
 implement for types that implements the interface.
 
 See the [`Printable`](/standard-library/stdlib_refcard#:~:text=interface%20Printable) interface for an example.
@@ -325,7 +283,7 @@ Sets the visibility to "private", which means it is visible in the same module, 
 
 *Used for: call*
 
-Used to annotate a non pure function as "pure" when checking for conformance to `@pure` on 
+Used to annotate a non pure function as "pure" when checking for conformance to `@pure` on
 functions.
 
 ### `@reflect`
@@ -399,7 +357,7 @@ Emits a weak symbol rather than a global.
 ## User defined attributes
 
 User defined attributes are intended for conditional application of built-in attributes.
- 
+
 ```c3
 def @MyAttribute = { @noreturn @inline };
 

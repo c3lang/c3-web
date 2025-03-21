@@ -51,7 +51,7 @@ f = f + (Foo)i; // Valid
 
 ## Distinct inline
 
-When interacting with various APIs it is sometimes desirable for distinct types to implicitly convert *to* 
+When interacting with various APIs it is sometimes desirable for distinct types to implicitly convert *to*
 its base type, but not *from* that type.
 
 Behaviour here is analogous how structs may use `inline` to create struct subtypes.
@@ -79,16 +79,16 @@ int foo_var;
 def bar = foo;
 def bar_var = foo_var;
 
-fn void test() 
+fn void test()
 {
   // These are the same:
   foo();
   bar();
-  
+
   // These access the same variable:
   int x = foo_var;
   int y = bar_var;
-}  
+}
 ```
 
 ## Using `def` to create generic types, functions and variables
@@ -99,16 +99,16 @@ It is recommended to favour using def to create aliases for parameterized types,
 import generic_foo;
 
 // Parameterized function aliases
-def int_foo_call = generic_foo::foo_call(<int>);
-def double_foo_call = generic_foo::foo_call(<double>);
+def int_foo_call = generic_foo::foo_call{ int };
+def double_foo_call = generic_foo::foo_call{ double };
 
 // Parameterized type aliases
-def IntFoo = Foo(<int>);
-def DoubleFoo = Foo(<double>);
+def IntFoo = Foo{ int };
+def DoubleFoo = Foo{ double };
 
 // Parameterized global aliases
-def int_max_foo = generic_foo::max_foo(<int>);
-def double_max_foo = generic_foo::max_foo(<double>);
+def int_max_foo = generic_foo::max_foo{ int };
+def double_max_foo = generic_foo::max_foo{ double };
 ```
 
 For more information, see the chapter on [generics](/generic-programming/generics/).
@@ -116,12 +116,12 @@ For more information, see the chapter on [generics](/generic-programming/generic
 ## Function pointer default arguments and named parameters
 
 It is possible to attach default arguments to function pointer aliases. There is no requirement
-that the function has the same default arguments. In fact, the function pointer may have 
+that the function has the same default arguments. In fact, the function pointer may have
 default arguments where the function doesn't have it and vice-versa. Calling the function
 directly will then use the function's default arguments, and calling through the function pointer
 will yield the function pointer alias' default argument.
 
-Similarly, named parameter arguments follow the alias definition when calling through the 
+Similarly, named parameter arguments follow the alias definition when calling through the
 function pointer:
 
 ```c3
@@ -137,7 +137,7 @@ fn void main()
     TestFn test2 = &test;
     test();         // Prints X = 5
     test2();        // Prints X = 123
-    test(x: 3);     // Prints X = 3 
+    test(x: 3);     // Prints X = 3
     test2(y: 4);    // Prints X = 4
 }
 ```

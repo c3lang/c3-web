@@ -13,11 +13,11 @@ The syntax is specified using Extended Backus-Naur Form (EBNF):
 
 ```
 production  ::= PRODUCTION_NAME '::=' expression?
-expression  ::= alternative ("|" alternative)* 
+expression  ::= alternative ("|" alternative)*
 alternative ::= term term*
 term        ::= PRODUCTION_NAME | TOKEN | set | group | option | repetition
 set         ::= '[' (range | CHAR) (rang | CHAR)* ']'
-range       ::= CHAR '-' CHAR 
+range       ::= CHAR '-' CHAR
 group       ::= '(' expression ')'
 option      ::= expression '?'
 repetition  ::= expression '*'
@@ -160,33 +160,33 @@ The following keywords are reserved and may not be used as identifiers:
 ```
 asm         any         anyfault
 assert      attribute   break
-case        catch       const       
-continue    default     defer       
-def         do          else        
+case        catch       const
+continue    default     defer
+def         do          else
 enum        extern      false
-fault       fn          if          
+fault       fn          if
 import      inline      macro
 module      nextcase    null
 public      return      struct
 switch      true        try
-typeid      var         void        
+typeid      var         void
 while
 
-bool        int128      double      
+bool        int128      double
 float       long        ulong
 int         uint        byte
 short       ushort      char
 isz         usz         float16
 float128    uint128     bfloat16
 
-$assert     $case       $default    
-$echo       $else       $error      
-$endfor     $endforeach $endif      
-$endswitch  $for        $foreach    
-$if         $switch     $typef      
-$vaarg      $vaconst    $vacount    
-$vaexpr     $vatype             
-                  
+$assert     $case       $default
+$echo       $else       $error
+$endfor     $endforeach $endif
+$endswitch  $for        $foreach
+$if         $switch     $typef
+$vaarg      $vaconst    $vacount
+$vaexpr     $vatype
+
 ```
 
 ### Operators and punctuation
@@ -201,9 +201,9 @@ The following character sequences represent operators and punctuation.
 >=      <=      +       +=      -=      !
 ?       ?:      &&      ??      &=      |=
 ^=      /=      ..      ==      ({      })
-[<      >]      (<      >)      ++      --      
-%=      !=      ||      ::      <<      >>      
-!!      ...     <<=     >>=
+[<      >]      ++      --      %=      !=
+||      ::      <<      >>      !!      ...
+<<=     >>=
 ```
 
 ### Integer literals
@@ -245,7 +245,7 @@ HEX_DIGITS      ::= HEX_DIGIT ('_'* HEX_DIGIT)*
 170141183460469231731687303715884105727
 170_141183_460469_231731_687303_715884_105727
 
-0600            // Invalid, non zero decimal number may not start with 0 
+0600            // Invalid, non zero decimal number may not start with 0
 _42             // an identifier, not an integer literal
 42_             // invalid: _ must separate successive digits
 0_xBadFace      // invalid: _ must separate successive digits
@@ -273,15 +273,15 @@ such underscores do not change the literal value.
 
 ```
 FLOAT_LIT       ::= DEC_FLOAT_LIT | HEX_FLOAT_LIT
-DEC_FLOAT_LIT   ::= DECIMAL_DIGITS '.' DECIMAL_DIGITS? DEC_EXPONENT? 
+DEC_FLOAT_LIT   ::= DECIMAL_DIGITS '.' DECIMAL_DIGITS? DEC_EXPONENT?
                     | DECIMAL_DIGITS DEC_EXPONENT
                     | '.' DECIMAL_DIGITS DEC_EXPONENT?
 DEC_EXPONENT    ::= [eE] [+-]? DECIMAL_DIGITS
 HEX_FLOAT_LIT   ::= '0' [xX] HEX_MANTISSA HEX_EXPONENT
 HEX_MANTISSA    ::= HEX_DIGITS '.' HEX_DIGITS?
                     | HEX_DIGITS
-                    | '.' HEX_DIGITS 
-HEX_EXPONENT    ::= [pP] [+-] DECIMAL_DIGITS                    
+                    | '.' HEX_DIGITS
+HEX_EXPONENT    ::= [pP] [+-] DECIMAL_DIGITS
 ```
 
 ### Characters
@@ -291,11 +291,11 @@ Characters are the fundamental components of strings and character literals.
 ```
 CHAR_ELEMENT    ::= [\x20-\x26] | [\x28-\x5B] | [\x5D-\x7F]
 CHAR_LIT_BYTE   ::= CHAR_ELEMENT | \x5C CHAR_ESCAPE
-CHAR_ESCAPE     ::= [abefnrtv\'\"\\] 
+CHAR_ESCAPE     ::= [abefnrtv\'\"\\]
                     | 'x' HEX_DIGIT HEX_DIGIT
-UNICODE_CHAR    ::= unicode_char                    
+UNICODE_CHAR    ::= unicode_char
                     | 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-                    | 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT 
+                    | 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
                           HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
 ```
 
@@ -317,7 +317,7 @@ The following backslash escapes are available for characters and string literals
 \'      0x27 single quote '
 \"      0x22 double quote "
 \x      Escapes a single byte hex value
-\u      Escapes a two byte unicode hex value 
+\u      Escapes a two byte unicode hex value
 \U      Escapes a four byte unicode hex value
 ```
 
@@ -672,7 +672,7 @@ The type of "rethrow" is the inner expr type without optional.
 ```
 rel_group_expr     ::= add_group_expr | relational_expr
 relational_expr    ::= rel_group_expr relational_op add_group_expr
-relational_op      ::= "<" | ">" | "<=" | ">=" 
+relational_op      ::= "<" | ">" | "<=" | ">="
 ```
 
 TODO
@@ -783,10 +783,10 @@ Taking the address of a compound literal will yield a pointer to stack allocated
 
 Call slots are in order: regular slots, vaarg slot, name-only slots.
 
-No regular slots may appear after the vaarg slot, however there may be named parameters with default values 
+No regular slots may appear after the vaarg slot, however there may be named parameters with default values
 after the vaarg slot if it's not a raw vaarg.
 
-These "name-only" slots need to have a parameter name and a default value, and may only be called as named 
+These "name-only" slots need to have a parameter name and a default value, and may only be called as named
 arguments.
 
 Named arguments may never be *splat* expressions.
@@ -813,11 +813,11 @@ be cast to c `int` type.
 
 ```
 stmt               ::= compound_stmt | non_compound_stmt
-non_compound_stmt  ::= assert_stmt | if_stmt | while_stmt | do_stmt | foreach_stmt | foreach_r_stmt 
-                       | for_stmt | return_stmt | break_stmt | continue_stmt | var_stmt 
+non_compound_stmt  ::= assert_stmt | if_stmt | while_stmt | do_stmt | foreach_stmt | foreach_r_stmt
+                       | for_stmt | return_stmt | break_stmt | continue_stmt | var_stmt
                        | declaration_stmt | defer_stmt | nextcase_stmt | asm_block_stmt
-                       | ct_echo_stmt | ct_error_stmt | ct_assert_stmt | ct_if_stmt | ct_switch_stmt 
-                       | ct_for_stmt | ct_foreach_stmt | expr_stmt 
+                       | ct_echo_stmt | ct_error_stmt | ct_assert_stmt | ct_if_stmt | ct_switch_stmt
+                       | ct_for_stmt | ct_foreach_stmt | expr_stmt
 ```
 
 ### Asm block statement
@@ -831,7 +831,7 @@ asm_instr           ::= ("int" | IDENTIFIER) ("." IDENTIFIER)
 asm_expr            ::= CT_IDENT | CT_CONST_IDENT | "&"? IDENTIFIER | CONST_IDENT | FLOAT_LITERAL
                         | INTEGER | "(" expr ")" | "[" asm_addr "]"
 asm_addr            ::= asm_expr (additive_op asm_expr asm_addr_trail?)?
-asm_addr_trail      ::= "*" INTEGER (additive_op INTEGER)? | (shift_op | additive_op) INTEGER                         
+asm_addr_trail      ::= "*" INTEGER (additive_op INTEGER)? | (shift_op | additive_op) INTEGER
 ```
 
 TODO
@@ -955,7 +955,7 @@ Statements in the branch not picked will not be semantically checked.
 
 ```
 ct_switch_stmt     ::= "$switch" ("(" ct_expr_or_type ")")? ct_case_stmt+ "$endswitch"
-ct_case_stmt       ::= ("$default" | "$case" ct_expr_or_type) ":" stmt* 
+ct_case_stmt       ::= ("$default" | "$case" ct_expr_or_type) ":" stmt*
 ```
 
 #### No cond expression switch
@@ -1192,7 +1192,7 @@ if (catch a, b)
 else
 {
     int x = a + b; // Valid, a and b are implicitly unwrapped.
-}  
+}
 ```
 
 #### If-catch implicit unwrap
@@ -1208,7 +1208,7 @@ int! a = foo();
 if (catch a)
 {
   return;
-}  
+}
 int x = a; // Valid, a is implicitly unwrapped.
 ```
 
@@ -1217,7 +1217,7 @@ int x = a; // Valid, a is implicitly unwrapped.
 Nextcase will jump to another `switch` case.
 
 ```
-nextcase_stmt      ::= "nextcase" ((label ":")? (expr | "default"))? ";" 
+nextcase_stmt      ::= "nextcase" ((label ":")? (expr | "default"))? ";"
 ```
 
 #### Labels
@@ -1304,7 +1304,7 @@ switch (a)
         Bar f = *a;   // a is Bar*
     default:
         // a is not unwrapped
-}              
+}
 ```
 
 #### Ranged cases
@@ -1356,7 +1356,7 @@ The do statement first evaluates its body (inner statement), then evaluates the 
 If the cond expression evaluates to true, jumps back into the body and repeats the process.
 
 ```
-do_stmt            ::= "do" label? compound_stmt ("while" "(" cond_expr ")")? ";" 
+do_stmt            ::= "do" label? compound_stmt ("while" "(" cond_expr ")")? ";"
 ```
 
 #### Unreachable code
@@ -1386,7 +1386,7 @@ jump back to the cond expression and execution will repeat until the cond expres
 ```
 for_stmt           ::= "for" label? "(" init_expr ";" cond_expr? ";" incr_expr ")" stmt
 init_expr          ::= decl_expr_list?
-incr_expr          ::= expr_list? 
+incr_expr          ::= expr_list?
 ```
 
 #### Init expression
@@ -1543,7 +1543,7 @@ A var statement declares a variable with inferred type, or a compile time type v
 for runtime and compile time variables. The use for runtime variables is limited to macros.
 
 ```
-var_stmt           ::= "var" IDENTIFIER | CT_IDENT | CT_TYPE_IDENT ("=" expr)? ";" 
+var_stmt           ::= "var" IDENTIFIER | CT_IDENT | CT_TYPE_IDENT ("=" expr)? ";"
 ```
 
 #### Inferring type
@@ -1606,7 +1606,7 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 
 #### `@deprecated`
 
-Takes an optional constant string. 
+Takes an optional constant string.
 If the node is in use, print the deprecation and add the optional string if present.
 
 #### `@optional`
@@ -1616,13 +1616,13 @@ a conforming type.
 
 #### `@winmain`
 
-Marks a `main` function as a win32 winmain function, which is the entrypoint for a windowed 
-application on Windows. This allows the main function to take a different set of 
+Marks a `main` function as a win32 winmain function, which is the entrypoint for a windowed
+application on Windows. This allows the main function to take a different set of
 arguments than usual.
 
 #### `@callconv`
 
-`@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv` 
+`@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv`
 is applied to a function or call, the last one takes precedence.
 
 ### User defined attributes
@@ -1630,7 +1630,7 @@ is applied to a function or call, the last one takes precedence.
 User defined attributes group a list of attributes.
 
 ```
-attribute_decl     ::= "def" AT_TYPE_IDENT ("(" parameters ")")? attribute* "=" "{" attribute* "}" ";" 
+attribute_decl     ::= "def" AT_TYPE_IDENT ("(" parameters ")")? attribute* "=" "{" attribute* "}" ";"
 ```
 
 #### Empty list of attributes
@@ -1644,7 +1644,7 @@ Arguments given to user defined attributes will be passed on to the attributes i
 #### Expansion
 
 When a user defined attribute is encountered, its list of attributes is
-copied and appended instead of the user defined attribute. Any argument passed to 
+copied and appended instead of the user defined attribute. Any argument passed to
 the attribute is evaluated and passed as a constant by the name of the parameter
 to the evaluation of the attribute parameters in the list.
 
@@ -1670,7 +1670,7 @@ it should return a pointer to `[]`.
 
 ##### Assigning index operator (`=[]`)
 
-This has a void return type, and index should match that of `[]` and `&[]`. Value should match that 
+This has a void return type, and index should match that of `[]` and `&[]`. Value should match that
 of `[]` and be the pointee of the result of `&[]`.
 
 ##### Len operator (`len`)
@@ -1696,7 +1696,7 @@ are only visible in the current **module section**.
 ```
 module_section     ::= "module" path opt_generic_params? attributes? ";"
 generic_param      ::= TYPE_IDENT | CONST_IDENT
-opt_generic_params ::= "(<" generic_param ("," generic_param)* ">)"
+opt_generic_params ::= "{" generic_param ("," generic_param)* "}"
 ```
 
 Any visibility attribute defined in a **module section** will be the default visibility in all

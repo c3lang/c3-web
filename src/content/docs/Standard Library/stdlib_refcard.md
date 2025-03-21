@@ -1679,10 +1679,10 @@ fn Object* new_string(String s, Allocator allocator)
 ```
 ### `std::collections::priorityqueue(&lt;Type&gt;)`
 ```c3
-distinct PriorityQueue = inline PrivatePriorityQueue(<Type, false>);
+distinct PriorityQueue = inline PrivatePriorityQueue{ Type, false };
 ```
 ```c3
-distinct PriorityQueueMax = inline PrivatePriorityQueue(<Type, true>);
+distinct PriorityQueueMax = inline PrivatePriorityQueue{ Type, true };
 ```
 ### `std::collections::priorityqueue::private(&lt;Type, MAX&gt;)`
 ```c3
@@ -7029,10 +7029,10 @@ macro void exit(int result)
 macro void! sleep(Duration d) @maydiscard
 ```
 ```c3
-macro void! sleep_ms(ulong ms) @maydiscard  
+macro void! sleep_ms(ulong ms) @maydiscard
 ```
 ```c3
-macro void! sleep_ns(NanoDuration ns) @maydiscard  
+macro void! sleep_ns(NanoDuration ns) @maydiscard
 ```
 ```c3
 macro void yield()
