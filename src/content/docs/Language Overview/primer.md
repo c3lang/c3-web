@@ -197,9 +197,9 @@ int a;
 int b @noinit;
 ```
 
-## `typedef` and `#define` becomes `alias`
+## C's `typedef` and `#define` become `alias`
 
-`typedef` is replaced by `alias`:
+C's `typedef` is replaced by `alias`:
 
 ```c
 // C
@@ -230,6 +230,29 @@ println(my_excellent_string);
 ```
 
 Find out more about [`alias`](/language-common/alias/).
+
+
+## `typedef` creates new types
+
+`typedef` in C3 creates a new type with it's own methods, and the original type cannot implictly convert to this new type, unless cast.
+
+```c
+typedef MyId = int;
+
+fn void get_by_id(MyId id)
+{
+    return;
+}
+
+fn test()
+{
+    MyId valid = 7;
+    int invalid = 7;
+    get_by_id(valid); // allowed
+    get_by_id(invalid); // not allowed
+}
+```
+
 
 ## Basic Types
 

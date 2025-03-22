@@ -87,14 +87,15 @@ Changes relating to literals, identifiers etc.
 
 ### Changed
 
-1. `typedef` is replaced by `def` and has somewhat different syntax (e.g. `def MyTypeAlias = int;`).
+1. C's typedef is replaced by `alias` and has somewhat different syntax (e.g. `alias MyTypeAlias = int;`).
 2. Function pointer syntax is prefix `fn` followed by a regular function declaration without the function name.
+3. `typedef` in C3 creates a new type which can have it's own methods, but shares the common internal representation as the original type.
 
 ### Removed
 
 1. Enums, structs and unions no longer have distinct namespaces.
 2. Enum, struct and union declarations should not have a trailing ';'
-3. Inline `typedef` is not allowed. `def` can only be used at the top level.
+3. `alias` can only be used at the top level, not inside a function.
 4. Anonymous structs are not allowed.
 5. Type qualifiers are all removed, including `const`, `restrict`, `volatile`
 6. Function pointers types **cannot** be used "raw", but must always be used through a type alias.
@@ -174,7 +175,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 ## Attributes
 
 C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom
-attribute groups using `def` (e.g. `def MyAttribute(usz align) = { @aligned(align) @weak };`) which
+attribute groups using `attrdef` (e.g. `attrdef MyAttribute(usz align) = { @aligned(align) @weak };`) which
 groups certain attributes. Empty attribute groups are permitted.
 
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
@@ -267,7 +268,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 ### Changed
 
 1. `#define` for constants is replaced by untyped constants, e.g. `#define SOME_CONSTANT 1` becomes `const SOME_CONSTANT = 1;`.
-2. `#define` for variable and function aliases is replaced by `def`, e.g. `#define native_foo win32_foo` becomes `def native_foo = win32_foo;`
+2. `#define` for variable and function aliases is replaced by `alias`, e.g. `#define native_foo win32_foo` becomes `alias native_foo = win32_foo;`
 3. In-function `#if...#else..#endif` is replaced by `$if`, `#if...#elif...#endif` is replaced by `$switch`.
 4. For converting code into a string use `$stringify`.
 5. Macros for date, line etc are replaced by `$$DATE`, `$$FILE`, `$$FILEPATH`, `$$FUNC`, `$$LINE`, `$$MODULE`, `$$TIME`.
@@ -327,7 +328,7 @@ but nonetheless provided unique functionality:
 8. `@local` means only visible to the current module section.
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
-11. Generic modules have a set of parameters after the module name `module arr{ Type, LEN };`
+11. Generic modules have a set of parameters after the module name `module arr {Type, LEN};`
 12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts

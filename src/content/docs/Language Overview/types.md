@@ -365,12 +365,12 @@ struct Foo {
 }
 
 // ✅ alias for each type used with a generic module.
-alias IntMyList = MyList{ Foo };
+alias IntMyList = MyList {Foo};
 MyListFoo working_example;
 
 // ❌ An inline type definition will give an error.
 // Only allowed in a type definition or macro
-MyList{ Foo } failing_example = MyList{ Foo };
+MyList {Foo} failing_example = MyList {Foo};
 ```
 Find out more about [generic types](/generic-programming/generics).
 

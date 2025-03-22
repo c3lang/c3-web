@@ -347,10 +347,13 @@ fn void print_file(String filename)
 
     if (catch err = file)
     {
-        case io::FILE_NOT_FOUND:
-            io::printfn("I could not find the file %s", filename);
-        default:
-            io::printfn("Could not load %s.", filename);
+        switch(err)
+        {
+            case io::FILE_NOT_FOUND:
+                io::printfn("I could not find the file %s", filename);
+            default:
+                io::printfn("Could not load %s.", filename);
+        }
     }
 }
 
@@ -575,7 +578,7 @@ Read more about compile time execution [here](/generic-programming/compiletime/)
 Generic modules implements a generic system.
 
 ```c3
-module stac{ Type };
+module stack {Type};
 struct Stack
 {
     usz capacity;
@@ -609,7 +612,7 @@ fn bool Stack.empty(Stack* this)
 Testing it out:
 
 ```c3
-alias IntStack = Stack{ int };
+alias IntStack = Stack {int};
 
 fn void test()
 {
@@ -621,7 +624,7 @@ fn void test()
     // Prints pop: 1
     io::printfn("pop: %d", stack.pop());
 
-    Stack{ double } dstack;
+    Stack {double} dstack;
     dstack.push(2.3);
     dstack.push(3.141);
     dstack.push(1.1235);

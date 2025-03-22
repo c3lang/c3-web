@@ -44,7 +44,7 @@ The following was extracted:
 
 | Name          |                                              format |
 |---------------|----------------------------------------------------:|
-| `@param     ` |            `@param [<ref>] <param> [<description>]` |
+| `@param     ` |         `@param [<ref>] <param> [ : <description>]` |
 | `@return    ` |                             `@return <description>` |
 | `@return?   ` | `@return? <fault1>, <fault2>, ..., [<description>]` |
 | `@deprecated` |                       `@deprecated [<description>]` |

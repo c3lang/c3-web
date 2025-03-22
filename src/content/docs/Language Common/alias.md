@@ -7,12 +7,12 @@ sidebar:
 
 # The `alias` statement
 
-The `alias` statement in C3 is intended for aliasing identifiers and types.
+The `alias` statement in C3 is intended for making new names for function pointers, identifiers and types.
 
 ## Defining a type alias
 
-`alias <type alias> = <type>` creates a type alias. Type aliases need to follow the name convention of user defined types (i.e. capitalized
-names with at least one lower case letter).
+`alias <type alias> = <type>` creates a type alias. A Type `alias` needs to follow the naming convention of user defined types (i.e. capitalized
+name with at least one lower case letter).
 
 ```c3
 alias CharPtr = char*;
@@ -34,8 +34,8 @@ cb(10, false);
 
 ## typedef types
 
-Similar to `alias` aliases are `typedef` which create distinct new types. Unlike type aliases,
-they do not implicitly convert to or from any other type.
+A `typedef` creates a new type.
+A `typedef` does _not_ implicitly convert to or from any other type, unlike a type `alias`.
 Literals will convert to the `typedef` types if they would convert to the underlying type.
 
 Because a `typedef` type is a new type, it can have its own methods, like any other user-defined type.
@@ -99,16 +99,16 @@ It is recommended to favour using alias to create aliases for parameterized type
 import generic_foo;
 
 // Parameterized function aliases
-alias int_foo_call = generic_foo::foo_call{ int };
-alias double_foo_call = generic_foo::foo_call{ double };
+alias int_foo_call = generic_foo::foo_call {int};
+alias double_foo_call = generic_foo::foo_call {double};
 
 // Parameterized type aliases
-alias IntFoo = Foo{ int };
-alias DoubleFoo = Foo{ double };
+alias IntFoo = Foo {int};
+alias DoubleFoo = Foo {double};
 
 // Parameterized global aliases
-alias int_max_foo = generic_foo::max_foo{ int };
-alias double_max_foo = generic_foo::max_foo{ double };
+alias int_max_foo = generic_foo::max_foo {int};
+alias double_max_foo = generic_foo::max_foo {double};
 ```
 
 For more information, see the chapter on [generics](/generic-programming/generics/).
