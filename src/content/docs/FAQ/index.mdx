@@ -43,7 +43,7 @@ invoking libc functions. `std::os` for working with OS specific code and
 
 (see [Strings](/language-common/strings) for more info.)
 
-**A:** C3 defines a native string type `String`, which is a distinct `char[]`. Because
+**A:** C3 defines a native string type `String`, which is a `typedef char[]`. Because
 `char[]` is essentially a pointer + length, some care has to be taken to
 ensure that the pointer is properly managed.
 
@@ -51,7 +51,7 @@ For dynamic strings, or as a string builder, use `DString`. To get a String from
 a DString you can either get a *view* using `str_view()` or make a copy using `copy_str()`.
 In the former case, the String may become invalid if DString is then mutated.
 
-`ZString` is a distinct zero terminated `char*`. It is used to model zero-terminated
+`ZString` is a zero terminated `typedef char*`. It is used to model zero-terminated
 strings like in C. It is mostly useful interfacing with C.
 
 `WString` is a `Char16*`, useful on those platforms, like Win32, where this
@@ -148,7 +148,7 @@ int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
 Any scalar value will be expanded to the vector size:
 
 ```c3
-// Same as speed = speed * { 2, 2 }    
+// Same as speed = speed * { 2, 2 }
 speed = speed * 2;
 ```
 
@@ -196,11 +196,11 @@ this scope, the temporary objects are all freed:
 {
     void* some_mem = tmalloc(128);
     foo(some_mem);
-}; 
+};
 // Temporary allocations are automatically freed here.
 ```
 
-Similar to the heap allocator, there is also `mem::temp_new`, `mem::temp_alloc`, `mem::temp_new_array` and `mem::temp_alloc_array`,
+Similar to the heap allocator, there is also `mem::tnew`, `mem::temp_alloc`, `mem::temp_array` and `mem::temp_alloc_array`,
 which all work like their heap counterparts.
 
 **Q:** How can I return a temporarily allocated object from inside a temporary allocation scope?
@@ -236,10 +236,10 @@ Allocator temp = allocator::temp();
 Imagine for example that you have the function `double test(int a, void* b)`. To call it from C3 just declare
 `extern fn double test(CInt a, void* b)` in the C3 code.
 
-**Q:** My C function / global has a name that doesn't conform to the C3 name requirements, just `extern fn` doesn't 
+**Q:** My C function / global has a name that doesn't conform to the C3 name requirements, just `extern fn` doesn't
 work.
 
-**A:** In this case you need to give the function a C3-compatible name and then use the `@extern` attribute to 
+**A:** In this case you need to give the function a C3-compatible name and then use the `@extern` attribute to
 indicate its actual external name. For example, the function `int *ABC(void *x)` could be declared in the C3 code as
 `extern fn int* abc(void* x) @extern("ABC")`.
 
@@ -250,14 +250,14 @@ There are many examples of this in the `std::os` modules.
 **Q:** When do I put functionality in method and when is it a free function?
 
 **A:** In the C3 standard library, free functions are preferred unless the function is only acting on the particular
-type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s", name)` over 
+type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s", name)` over
 `file.fprintf("Hello %s", name)`. The former also has the advantage that it's easier to extend to work with many
 types.
 
 **Q:** Are there any naming conventions in the standard library what one should know about?
 
 **A:** Yes. A function or method with `new` in the name will in general do one or more allocations and can take an
-optional allocator. A function or method with `temp` in the name will usually allocate using the temp allocator. 
+optional allocator. A function or method with `temp` in the name will usually allocate using the temp allocator.
 The method `free` will free all memory associated with a type. `destroy` is similar to `free` but also indicates
 that other resources (such as file handles) are released. In some cases `close` is used instead of `destroy`.
 
@@ -285,7 +285,7 @@ macro void Obj.func(&self, ...)
         // If so, dispatch to func2
         return self.func2($vaarg[0]);
     $else
-        // Otherwise, dispatch all varargs to func1 
+        // Otherwise, dispatch all varargs to func1
         return self.func1($vasplat);
     $endif
 }
@@ -313,7 +313,7 @@ otherwise globals might not be set up properly.
 This should yield an `out.wasm` file, but there is no CI running on the WASM code
 and no one is really using it yet, so the quality is low.
 
-We do want WASM to be working really well, so if you're interested in 
+We do want WASM to be working really well, so if you're interested in
 writing something in WASM - please reach out to the developer team and we'll
 help you get things working.
 
@@ -379,7 +379,7 @@ static variables). Consequently more functions becomes part of the module rather
 to let them terminate a statement without a much more complicated grammar. An example:
 
 ```c3
-// How can the parser determine that the 
+// How can the parser determine that the
 // last `}` ends the expression? (And does it?)
 int a = @test() {} + @test() {}
 *b = 123;
@@ -390,22 +390,6 @@ int a = @test() {} + @test() {};
 
 C3 strives for a simple grammar, and so the trade-off having to use `;` was a fairly
 low prices to pay for this feature.
-
-**Q:** Why do only macros have ref arguments?
-
-**A:** Ref arguments break the general contract of a call: what looks like a pass-by-value 
-may suddenly be passed by reference. This makes code reading much harder, but is popular 
-in C++ because: (1) No need for `->` (2) It prevents passing of null pointers. Neither
-of these are required in C3 (`->` is not needed, and `&` in the parameter contract will
-prevent nulls).
-
-This leaves the case where there is a benefit for the user to create an implicit `&` 
-on a call. These cases should be rare, and in C3, it's not a problem creating a wrapper
-macro in those cases.
-
-Note that macros that violate the call contract, such as ones using ref arguments, need
-to have the `@` name prefix to indicate that it is indeed possibly violating 
-"value is passed by value" semantics.
 
 ## Cross-compiling To Windows From Linux
 **Q:** How do I cross-compile my C3 program For Windows On Linux?

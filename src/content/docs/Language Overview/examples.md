@@ -9,13 +9,13 @@ This is meant for a quick reference, to the learn more of the details, check the
 
 ## If Statement
 ```c3
-fn void if_example(int a) 
+fn void if_example(int a)
 {
-    if (a > 0) 
+    if (a > 0)
     {
         // ..
-    } 
-    else 
+    }
+    else
     {
         // ..
     }
@@ -24,16 +24,16 @@ fn void if_example(int a)
 
 ## For Loop
 ```c3
-fn void example_for() 
+fn void example_for()
 {
-    // the for-loop is the same as C99. 
-    for (int i = 0; i < 10; i++) 
+    // the for-loop is the same as C99.
+    for (int i = 0; i < 10; i++)
     {
         io::printfn("%d", i);
     }
 
     // also equal
-    for (;;) 
+    for (;;)
     {
         // ..
     }
@@ -43,9 +43,9 @@ fn void example_for()
 ## Foreach Loop
 ```c3
 // Prints the values in the slice.
-fn void example_foreach(float[] values) 
+fn void example_foreach(float[] values)
 {
-    foreach (index, value : values) 
+    foreach (index, value : values)
     {
         io::printfn("%d: %f", index, value);
     }
@@ -53,9 +53,9 @@ fn void example_foreach(float[] values)
 
 // Updates each value in the slice
 // by multiplying it by 2.
-fn void example_foreach_by_ref(float[] values) 
+fn void example_foreach_by_ref(float[] values)
 {
-    foreach (&value : values) 
+    foreach (&value : values)
     {
         *value *= 2;
     }
@@ -65,17 +65,17 @@ fn void example_foreach_by_ref(float[] values)
 ## While Loop
 
 ```c3
-fn void example_while() 
+fn void example_while()
 {
     // again exactly the same as C
     int a = 10;
-    while (a > 0) 
+    while (a > 0)
     {
         a--;
     }
 
-    // Declaration 
-    while (Point* p = getPoint()) 
+    // Declaration
+    while (Point* p = getPoint())
     {
         // ..
     }
@@ -166,7 +166,7 @@ of enum values, `.inner` returns the storage type. `.names` returns an array wit
 returns an array of the typeids of the associated values for the enum.
 
 ```c3
-enum State : uint 
+enum State : uint
 {
     START,
     STOP,
@@ -174,7 +174,7 @@ enum State : uint
 
 State start = State.values[0];
 usz enums = State.elements;   // 2
-String[] names = State.names; // [ "START", "STOP" ] 
+String[] names = State.names; // [ "START", "STOP" ]
 ```
 
 ## Defer
@@ -206,7 +206,7 @@ Because it's often relevant to run different defers when having an error return 
 Similarly using `defer try` can be used to only run if the scope exits in a regular way.
 
 ```c3
-fn void! test(int x)
+fn void? test(int x)
 {
     defer io::printn("");
     defer io::print("A");
@@ -224,7 +224,7 @@ test(1); // Prints "MISSINGBA" and returns a FooError
 ## Struct Types
 
 ```c3
-def Callback = fn int(char c);
+alias Callback = fn int(char c);
 
 enum Status : int
 {
@@ -241,28 +241,28 @@ struct MyData
     State status;
 
     // named sub-structs (x.other.value)
-    struct other 
+    struct other
     {
         int value;
         int status;   // ok, no name clash with other status
     }
 
     // anonymous sub-structs (x.value)
-    struct 
+    struct
     {
         int value;
         int status;   // error, name clash with other status in MyData
     }
 
     // anonymous union (x.person)
-    union 
+    union
     {
         Person* person;
         Company* company;
     }
 
     // named sub-unions (x.either.this)
-    union either 
+    union either
     {
         int this;
         bool  or;
@@ -277,16 +277,16 @@ struct MyData
 ```c3
 module demo;
 
-def Callback = fn int(char* text, int value);
+alias Callback = fn int(char* text, int value);
 
-fn int my_callback(char* text, int value) 
+fn int my_callback(char* text, int value)
 {
     return 0;
 }
 
 Callback cb = &my_callback;
 
-fn void example_cb() 
+fn void example_cb()
 {
     int result = cb("demo", 123);
     // ..
@@ -295,25 +295,22 @@ fn void example_cb()
 
 ## Error Handling
 
-Errors are handled using optional results, denoted with a '!' suffix. A variable of an optional
+Errors are handled using optional results, denoted with a '?' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
 
 ```c3
-fault MathError
-{
-    DIVISION_BY_ZERO
-}
+fault DIVISION_BY_ZERO;
 
-fn double! divide(int a, int b)
+fn double? divide(int a, int b)
 {
     // We return an optional result of type DIVISION_BY_ZERO
     // when b is zero.
-    if (b == 0) return MathError.DIVISION_BY_ZERO?;
+    if (b == 0) return DIVISION_BY_ZERO?;
     return (double)a / (double)b;
 }
 
-// Re-returning an optional result uses "!" suffix
-fn void! testMayError()
+// Re-returning an optional result uses "?" suffix
+fn void? testMayError()
 {
     divide(foo(), bar())!;
 }
@@ -321,13 +318,13 @@ fn void! testMayError()
 fn void main()
 {
     // ratio is an optional result.
-    double! ratio = divide(foo(), bar());
+    double? ratio = divide(foo(), bar());
 
     // Handle the optional result value if it exists.
     if (catch err = ratio)
     {
-        case MathError.DIVISION_BY_ZERO:
-            io::printn("Division by zero\n");
+        case DIVISION_BY_ZERO:
+            io::printn("Division by zero");
             return;
         default:
             io::printn("Unexpected error!");
@@ -342,35 +339,38 @@ fn void main()
 ```c3
 fn void print_file(String filename)
 {
-    String! file = io::load_file(filename);
+    String? file = io::load_file(filename);
 
     // The following function is not called on error,
     // so we must explicitly discard it with a void cast.
-    (void)io::printfn("Loaded %s and got:\n%s", filename, file);
+    (void)io::printfn("Loaded %s and got:%s", filename, file);
 
     if (catch err = file)
     {
-        case IoError.FILE_NOT_FOUND:
-            io::printfn("I could not find the file %s", filename);
-        default:
-            io::printfn("Could not load %s.", filename);
+        switch(err)
+        {
+            case io::FILE_NOT_FOUND:
+                io::printfn("I could not find the file %s", filename);
+            default:
+                io::printfn("Could not load %s.", filename);
+        }
     }
 }
 
-// Note that the above is only illustrating how Optionals may skip 
+// Note that the above is only illustrating how Optionals may skip
 // call invocation. A more normal implementation would be:
 
 fn void print_file2(String filename)
 {
-    String! file = io::load_file(filename);
+    String? file = io::load_file(filename);
 
     if (catch err = file)
     {
-        // Print the error 
+        // Print the error
         io::printfn("Failed to load %s: %s", filename, err);
         // We return, so that below 'file' will be unwrapped.
         return;
-    }    
+    }
     // No need for a void cast here, 'file' is unwrappeed to 'String'.
     io::printfn("Loaded %s and got:\n%s", filename, file);
 }
@@ -385,7 +385,7 @@ Read more about optionals and error handling [here](/language-common/optionals-e
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
 ```c3
 <*
- @param foo "the number of foos" 
+ @param foo "the number of foos"
  @require foo > 0, foo < 1000
  @return "number of foos x 10"
  @ensure return < 10000, return > 0
@@ -429,7 +429,7 @@ fn void test()
     foo.next();
     foo.next();
     // Prints 4
-    io::printfn("%d", foo.i); 
+    io::printfn("%d", foo.i);
 }
 ```
 
@@ -451,9 +451,9 @@ fn int square(int x)
 fn int test()
 {
     int a = 2;
-    int b = 3;    
+    int b = 3;
     return foo(&square, 2) + a + b; // 9
-    // return foo(square, 2) + a + b; 
+    // return foo(square, 2) + a + b;
     // Error the symbol "square" cannot be used as an argument.
 }
 ```
@@ -479,9 +479,9 @@ fn int square(int x)
 fn int test1()
 {
     int a = 2;
-    int b = 3; 
+    int b = 3;
     @foo(square, a + 1, b);
-    return b; // 27   
+    return b; // 27
 }
 
 fn int test2()
@@ -528,8 +528,8 @@ struct Foo
 
 macro print_fields($Type)
 {
-    $foreach ($field : $Type.membersof)
-        io::printfn("Field %s, offset: %s, size: %s, type: %s", 
+    $foreach $field : $Type.membersof:
+        io::printfn("Field %s, offset: %s, size: %s, type: %s",
                 $field.nameof, $field.offsetof, $field.sizeof, $field.typeid.nameof);
     $endforeach
 }
@@ -563,7 +563,7 @@ macro long fib(long $n)
     $endif
 }
 
-const long FIB19 = fib(19); 
+const long FIB19 = fib(19);
 // Same as const long FIB19 = 4181;
 ```
 :::note
@@ -578,7 +578,7 @@ Read more about compile time execution [here](/generic-programming/compiletime/)
 Generic modules implements a generic system.
 
 ```c3
-module stack(<Type>);
+module stack {Type};
 struct Stack
 {
     usz capacity;
@@ -612,7 +612,7 @@ fn bool Stack.empty(Stack* this)
 Testing it out:
 
 ```c3
-def IntStack = Stack(<int>);
+alias IntStack = Stack {int};
 
 fn void test()
 {
@@ -623,8 +623,8 @@ fn void test()
     io::printfn("pop: %d", stack.pop());
     // Prints pop: 1
     io::printfn("pop: %d", stack.pop());
-    
-    Stack(<double>) dstack;
+
+    Stack {double} dstack;
     dstack.push(2.3);
     dstack.push(3.141);
     dstack.push(1.1235);

@@ -70,7 +70,7 @@ String s = Foo.associated[0].nameof; // "double"
 
 #### `elements`
 
-Returns the element count of an enum or fault.
+Returns the element count of an enum.
 
 ```c3
 enum FooEnum
@@ -129,9 +129,9 @@ ushort max_ushort = ushort.max; // 65535
 *Only available for bitstruct, struct and union types.*
 
 Returns a *compile time* list containing the fields in a bitstruct, struct or union. The
-elements have the *compile time only* type of `member_ref`. 
+elements have the *compile time only* type of `member_ref`.
 
-*Note: As the list is an "untyped" list, you are limited to iterating and accessing it at 
+*Note: As the list is an "untyped" list, you are limited to iterating and accessing it at
 compile time.*
 
 ```c3
@@ -159,7 +159,7 @@ Returns the name of the type.
 
 #### `names`
 
-Returns a slice containing the names of an enum or fault.
+Returns a slice containing the names of an enum.
 
 ```c3
 enum FooEnum
@@ -176,7 +176,7 @@ String[] x = FooEnum.names; // ["BAR", "BAZ"]
 Returns a ReflectParam struct for all function pointer parameters.
 
 ```c3
-def TestFunc = fn int(int x, double f);
+alias TestFunc = fn int(int x, double f);
 String s = TestFunc.paramsof[1].name; // "f"
 typeid t = TestFunc.paramsof[1].type; // double.typeid
 ```
@@ -206,7 +206,7 @@ String x = Bar.parentof.nameof; // "Foo"
 Returns the typeid of the return type.
 
 ```c3
-def TestFunc = fn int(int, double);
+alias TestFunc = fn int(int, double);
 String s = TestFunc.returns.nameof; // "int"
 ```
 
@@ -220,7 +220,7 @@ usz x = Foo.sizeof;
 
 #### `typeid`
 
-Returns the typeid for the given type. `def`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
+Returns the typeid for the given type. `alias`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
 
 ```c3
 typeid x = Foo.typeid;
@@ -228,7 +228,7 @@ typeid x = Foo.typeid;
 
 #### `values`
 
-Returns a slice containing the values of an enum or fault.
+Returns a slice containing the values of an enum.
 
 ```c3
 enum FooEnum

@@ -32,8 +32,8 @@ Optionally cast the value `v` to type `$Type*` on failure returns `CastResult.TY
 ```c
 int b;
 any a = &b;
-float*! c = anycast(a, float); // Will return TYPE_MISMATCH
-int*! d = anycast(a, int);     // Works!
+float*? c = anycast(a, float); // Will return TYPE_MISMATCH
+int*? d = anycast(a, int);     // Works!
 ```
 
 ### `void unreachable($string = "Unreachable statement reached.")`
@@ -49,8 +49,8 @@ switch (x)
         bar();
     default:
         // Should never happen.
-        unreachable("x should have been 0 or 1");    
-}    
+        unreachable("x should have been 0 or 1");
+}
 ```
 
 On safe mode this will throw a runtime panic when reached. For release mode the
@@ -69,9 +69,9 @@ on failure.
 ```c
 enum Foo { ABC, CDE, EFG }
 
-fn void! test()
+fn void? test()
 {
-    Foo f = enum_by_name(Foo, "CDE")!; 
+    Foo f = enum_by_name(Foo, "CDE")!;
     // same as Foo f = Foo.CDE;
 }
 ```
@@ -94,8 +94,8 @@ io::printfn("a = %d", a, b);
 ```
 
 ### `less`, `greater`, `less_eq`, `greater_eq`, `equals`
-All macros take two values and compare them. Any type implementing `Type.less` 
-or `Type.compare_to` may be compared (or if the type implements `<`). Types 
+All macros take two values and compare them. Any type implementing `Type.less`
+or `Type.compare_to` may be compared (or if the type implements `<`). Types
 implementing `Type.equals` may use `equals` even if neither `less` nor `compare_to`
 are implemented.
 
@@ -117,7 +117,7 @@ are implemented.
 
 ### `malloc`, `malloc_aligned`
 
-Allocate the given number of bytes. `malloc` will panic on out of memory, 
+Allocate the given number of bytes. `malloc` will panic on out of memory,
 whereas `malloc_aligned` returns an optional value.
 `malloc_aligned` adds an alignment, which must be a power of 2. Any pointer
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
@@ -125,7 +125,7 @@ the normal `free` or memory corruption may result.
 
 ```c
 char* data = malloc(8);
-int[<16>]*! data2 = malloc_aligned(16 * int.sizeof), 128);
+int[<16>]*? data2 = malloc_aligned(16 * int.sizeof), 128);
 ```
 
 ### `new($Type, #initializer), new_aligned($Type, #initializer)`
@@ -148,7 +148,7 @@ Allocates a single element of $Type, same as `new`, but without initializing the
 ### `new_array($Type, usz elements)`, `new_array_aligned($Type, usz elements)`
 
 Allocates a slice of `elements` number of elements, returning
-a slice of the given length. Elements are zero initialized. `new_array_aligned` is used for 
+a slice of the given length. Elements are zero initialized. `new_array_aligned` is used for
 types that exceed standard alignment.
 
 ```c3
@@ -165,7 +165,7 @@ Identical to the `malloc` variants, except the data is guaranteed to be zeroed o
 
 ### `realloc`, `realloc_checked`, `realloc_aligned`
 
-Resizes memory allocated using `malloc` or `calloc`. Any extra data is 
+Resizes memory allocated using `malloc` or `calloc`. Any extra data is
 guaranteed to be zeroed out. `realloc_aligned` can only be used with
 pointers created using `calloc_aligned` or `alloc_aligned`.
 
@@ -181,13 +181,13 @@ Swaps the current memory allocator for the duration of the call.
 ```c
 DynamicArenaAllocator dynamic_arena;
 dynamic_arena.init(1024);
-mem::@scoped(&dynamic_arena) 
+mem::@scoped(&dynamic_arena)
 {
-    // This allocation uses the dynamic arena 
+    // This allocation uses the dynamic arena
     Foo* f = malloc(Foo);
 };
 // Release any dynamic arena memory.
-dynamic_arena.destroy();    
+dynamic_arena.destroy();
 
 ```
 
@@ -210,7 +210,7 @@ Same as `tmalloc` but clears the memory.
 
 `realloc` but on memory received using `tcalloc` or `tmalloc`.
 
-### `temp_new`, `temp_alloc`, `temp_new_array`, `temp_alloc_array`
+### `tnew`, `temp_alloc`, `temp_array`, `talloc_array`
 
 Same as the `new`, `alloc`, `new_array` and `alloc_array` respectively.
 
@@ -219,9 +219,9 @@ Same as the `new`, `alloc`, `new_array` and `alloc_array` respectively.
 Opens a temporary memory scope.
 
 ```c3
-@pool() 
+@pool()
 {
-    // This allocation uses the dynamic arena 
+    // This allocation uses the dynamic arena
     Foo* f = tmalloc(Foo);
 };
 ```
@@ -268,7 +268,7 @@ and destination alignment may be used.
 
 ```c3
 Foo* f = tmalloc(data_size);
-mem::copy(f, slice.ptr, size); 
+mem::copy(f, slice.ptr, size);
 ```
 
 ### `void set(void* dst, char val, usz len, usz $dst_align = 0, bool $is_volatile = false)`
@@ -286,7 +286,7 @@ Makes a shallow copy of a value using the regular allocator.
 ```c
 Foo f = ...
 
-return @clone(f); 
+return @clone(f);
 ```
 
 ### `@tclone(&value)`
@@ -315,15 +315,15 @@ may be converted into the given type. Returns a `ConversionResult` otherwise.
 
 ```c
 any* v = &&128;
-short y = any_to_int(v, short)!!; // Works 
+short y = any_to_int(v, short)!!; // Works
 ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 ```
 
 ## `std::core::str::conv`
 
-### `usz! char32_to_utf8(Char32 c, char* output, usz available)`
+### `usz? char32_to_utf8(Char32 c, char* output, usz available)`
 Convert a UTF32 codepoint to an UTF8 buffer. `size` has the number of
-writable bytes left. It returns the number of bytes used, or 
+writable bytes left. It returns the number of bytes used, or
 `UnicodeResult.CONVERSION_FAILED` if the buffer is too small.
 
 ### `void char32_to_utf16_unsafe(Char32 c, Char16** output)`
@@ -332,16 +332,17 @@ moving the output pointer 1 or 2 steps.
 
 ## `std::io`
 
-### `String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())`
-Read a `String!` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream. `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
+### `String? readline(stream = io::stdin(), Allocator allocator = allocator::heap())`
+Read a `String?` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream.
+`Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
 ```c3
 import std::io;
 
-fn void! hello_name()
+fn void? hello_name()
 {
-    String! name = io::readline();
-    if (catch excuse = name) 
+    String? name = io::readline();
+    if (catch excuse = name)
     {
         return excuse?;
     }
@@ -354,15 +355,15 @@ fn void! hello_name()
 `\r` will be filtered from the String.
 :::
 
-### `String! treadline(stream = io::stdin())`
-Read a `String!` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators. 
+### `String? treadline(stream = io::stdin())`
+Read a `String?` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators.
 
 ```c
 import std::io;
 
-fn void! hello_name()
+fn void? hello_name()
 {
-    String! name = io::treadline();
+    String? name = io::treadline();
     if (catch excuse = name) {
         return excuse?;
     }
@@ -383,14 +384,14 @@ The `printn` variant appends a newline.
 ```c3
 import std::io;
 
-enum Heat 
+enum Heat
 {
     WARM,
     WARMER,
     REALLY_WARM,
 }
 
-fn void main() 
+fn void main()
 {
     int[<2>] vec = { 4, 2 };
     Heat weather = WARM;
@@ -402,7 +403,7 @@ fn void main()
     io::print(2.2);       // 2.200000
     io::print(vec);       // [<4, 2>]
     io::print(weather);   // WARM
-    io::print(fib);       // [0, 1, 1, 2, 3] 
+    io::print(fib);       // [0, 1, 1, 2, 3]
     io::print(dialogue);  // secret
 }
 ```
@@ -413,21 +414,21 @@ The `eprintn` variant appends a newline.
 
 See `print` for usage.
 
-### `usz! printf(String format, args...) @maydiscard`
+### `usz? printf(String format, args...) @maydiscard`
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stdout.
 
 ```c3
 import std::io;
 
-enum Heat 
+enum Heat
 {
     WARM,
     WARMER,
     REALLY_WARM,
 }
 
-fn void main() 
+fn void main()
 {
     int[<2>] vec = { 4, 2 };
     Heat weather = REALLY_WARM;
@@ -443,7 +444,7 @@ fn void main()
 
 Also available as `printfn` which appends a newline.
 
-### `usz! eprintf(String format, args...) @maydiscard`
+### `usz? eprintf(String format, args...) @maydiscard`
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stderr.
 
@@ -451,16 +452,16 @@ Also available as `eprintfn` which appends a newline.
 
 See `printf` for usage
 
-### `char[]! bprintf(char[] buffer, String format, args...) @maydiscard`
+### `char[]? bprintf(char[] buffer, String format, args...) @maydiscard`
 Prints using a 'printf'-style formatting string, to a string buffer.
 
 Returns a slice of the `buffer` argument with the resulting length.
 
-### `usz! fprint(out, x)`, `usz! fprintn(out, x = "")`
+### `usz? fprint(out, x)`, `usz? fprintn(out, x = "")`
 Print a value to a stream. `out` must implement `OutStream`.
 The `fprintn` variant appends a newline.
 
-### `usz! fprintf(OutStream out, String format, args...)`
+### `usz? fprintf(OutStream out, String format, args...)`
 Prints to the specified OutStream using a 'printf'-style formatting string.
 
 Returns the number of characters printed.
@@ -470,7 +471,7 @@ Returns the number of characters printed.
 ### `void putchar(char c) @inline`
 Libc `putchar`, prints a single character to stdout.
 
-### `usz! DString.appendf(DString* str, String format, args...) @maydiscard`
+### `usz? DString.appendf(DString* str, String format, args...) @maydiscard`
 Same as printf but on dynamic strings.
 
 ### `File* stdout()`, `File* stdin()`, `File* stderr()`
@@ -478,70 +479,71 @@ Return stdout, stdin and stderr respectively.
 
 ## `std::io::file`
 
-### `File! open(String filename, String mode)`
+### `File? open(String filename, String mode)`
 Open a file with the given file name with the given mode (r, w etc)
 
-### `File! open_path(Path path, String mode)`
+### `File? open_path(Path path, String mode)`
 Open a file pointed to by a Path struct, with the given mode.
 
 ### `bool is_file(String path)`
 See whether the given path is a file.
 
-### `usz! get_size(String path)`
+### `usz? get_size(String path)`
 Get the size of a file.
 
-### `void! delete(String filename)`
+### `void? delete(String filename)`
 Delete a file.
 
-### `void! File.reopen(&self, String filename, String mode)`
+### `void? File.reopen(&self, String filename, String mode)`
 Reopen a file with a new filename and mode.
 
-### `usz! File.seek(&self, isz offset, Seek seek_mode = Seek.SET)`
+### `usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET)`
 Seek in a file. Based on the libc function.
 
-### `void! File.write_byte(&self, char c) @dynamic`
+### `void? File.write_byte(&self, char c) @dynamic`
 Write a single byte to a file.
 
-### `void! File.close(&self) @inline @dynamic`
+### `void? File.close(&self) @inline @dynamic`
 Close a file, based on the libc function.
 
 ### `bool File.eof(&self) @inline`
 True if EOF has been reached. Based on the libc function.
 
-### `usz! File.read(&self, char[] buffer)`
+### `usz? File.read(&self, char[] buffer)`
 Read into a buffer, based on the libc function.
 
-### `usz! File.write(&self, char[] buffer)`
+### `usz? File.write(&self, char[] buffer)`
 Write to a buffer, based on the libc function.
 
-### `char! File.read_byte(&self) @dynamic`
+### `char? File.read_byte(&self) @dynamic`
 Read a single byte from a file.
 
-### `char[]! load_buffer(String filename, char[] buffer)`
+### `char[]? load_buffer(String filename, char[] buffer)`
 Load up to buffer.len characters into the buffer.
 
 Returns IoError.OVERFLOW if the file is longer than the buffer.
 
-### `char[]! load_new(String filename, Allocator allocator = allocator::heap())`
+### `char[]? load_new(String filename, Allocator allocator = allocator::heap())`
 Load the entire file into a new buffer.
 
-### `char[]! load_temp(String filename)`
+### `char[]? load_temp(String filename)`
 Load the entire file into a buffer allocated using the temporary allocator.
 
-### `void! File.flush(&self) @dynamic`
+### `void? File.flush(&self) @dynamic`
 Flush a file, based on the libc function.
 
-## `std::collections::list(\<Type\>)`
+## `std::collections::list({ Type })`
 
 Generic list module, elements are of `Type`.
 
 ```c
 import std::collections::list;
-def MyIntList = List(<int>);
+alias MyIntList = List{ int };
 
 ...
 
 MyIntList list;
+list.init(mem); // heap allocated
 list.push(123);
 list.free();
 ```

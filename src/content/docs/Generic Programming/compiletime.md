@@ -10,7 +10,7 @@ it is possible to perform limited compile time execution.
 
 ### Compile time values
 
-During compilation, global constants are considered compile time values, as are any 
+During compilation, global constants are considered compile time values, as are any
 derived constant values, such as type names and sizes, variable alignments etc.
 
 Inside of a macro or a function, it is possible to define mutable compile time variables. Such
@@ -50,8 +50,8 @@ For switching between multiple possibilities, use `$switch`.
 ```c3
 macro @foo($x, #y)
 {
-    $switch ($x)
-        $case 1: 
+    $switch $x:
+        $case 1:
             #y += $x * $x;
         $case 2:
             #y += $x;
@@ -68,8 +68,8 @@ Switching without argument is also allowed, which works like an if-else chain:
 ```c3
 macro @foo($x, #y)
 {
-    $switch 
-        $case $x > 10: 
+    $switch
+        $case $x > 10:
             #y += $x * $x;
         $case $x < 0:
             #y += $x;
@@ -81,7 +81,7 @@ macro @foo($x, #y)
 
 ### Loops using `$foreach` and `$for`
 
-`$for` ... `$endfor` works analogous to `for`, only it is limited to using compile time variables. `$foreach` ... `$endforeach` similarly 
+`$for` ... `$endfor` works analogous to `for`, only it is limited to using compile time variables. `$foreach` ... `$endforeach` similarly
 matches the behaviour of `foreach`.
 
 Compile time looping:
@@ -89,8 +89,8 @@ Compile time looping:
 ```c3
 macro foo($a)
 {
-    $for (var $x = 0; $x < $a; $x++)
-        io::printfn("%d", $x);     
+    $for var $x = 0; $x < $a; $x++:
+        io::printfn("%d", $x);
     $endfor
 }
 
@@ -98,8 +98,8 @@ fn void test()
 {
     foo(2);
     // Expands to ->
-    // io::printfn("%d", 0);     
-    // io::printfn("%d", 1);         
+    // io::printfn("%d", 0);
+    // io::printfn("%d", 1);
 }
 ```
 
@@ -108,8 +108,8 @@ Looping over enums:
 ```c3
 macro foo_enum($SomeEnum)
 {
-    $foreach ($x : $SomeEnum.values)
-        io::printfn("%d", (int)$x);     
+    $foreach $x : $SomeEnum.values:
+        io::printfn("%d", (int)$x);
     $endforeach
 }
 
@@ -124,7 +124,7 @@ fn void test()
     foo_enum(MyEnum);
     // Expands to ->
     // io::printfn("%d", (int)MyEnum.A);
-    // io::printfn("%d", (int)MyEnum.B);    
+    // io::printfn("%d", (int)MyEnum.B);
 }
 ```
 
@@ -135,7 +135,7 @@ It's not possible to compile partial statements.
 
 ### Compile time macro execution
 
-If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate 
+If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate
 any other statements than returns, then the macro will be completely compile time executed.
 
 ```c3
@@ -161,7 +161,7 @@ macro long @fib(long $n)
 }
 ```
 
-It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1` 
+It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1`
 is not be considered to be a constant expression, even if the actual argument to the macro was a constant.
 This limitation is deliberate, to offer control over what is compiled out and what isn't.
 
@@ -194,14 +194,14 @@ int y @if(@foo(0)); // Will not be included
 
 #### Evaluation order of top level conditional compilation
 
-Conditional compilation at the top level can cause unexpected ordering issues, especially when combined with 
+Conditional compilation at the top level can cause unexpected ordering issues, especially when combined with
 `$defined`. At a high level, there are three phases of evaluation:
 
 1. Non-conditional declarations are registered.
 2. Conditional module sections are either discarded or have all of their non-conditional declarations registered.
-3. Each module in turn will evaluate `@if` attributes for each module section. 
+3. Each module in turn will evaluate `@if` attributes for each module section.
 
-The order of module and module section evaluation in (2) and (3) is not deterministic and any use of `$defined` should not 
+The order of module and module section evaluation in (2) and (3) is not deterministic and any use of `$defined` should not
 rely on this ordering.
 
 ## Compile time introspection
@@ -209,10 +209,10 @@ rely on this ordering.
 At compile time, full type information is available. This allows for creation of reusable, code generating macros for things
 like serialization.
 
-```c3    
+```c3
 usz foo_alignment = Foo.alignof;
 usz foo_member_count = Foo.membersof.len;
-String foo_name = Foo.nameof; 
+String foo_name = Foo.nameof;
 ```
 
 To read more about all the fields available at compile time, see the page on [reflection](/generic-programming/reflection).

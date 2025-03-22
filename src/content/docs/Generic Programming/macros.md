@@ -4,8 +4,9 @@ description: Macros
 sidebar:
     order: 83
 ---
-The macro capabilities of C3 reaches across several constructs: 
-macros, [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values) (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
+The macro capabilities of C3 reaches across several constructs:
+macros, [generic functions, generic modules](/generic-programming/generics/), and [compile time variables](/generic-programming/compiletime/#compile-time-values)
+(prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
 ## A quick comparison of C and C3 macros
 
@@ -16,7 +17,7 @@ macros, [generic functions, generic modules](/generic-programming/generics/), an
 #if defined(x) && Y > 3
 int z;
 #endif
-``` 
+```
 
 ```c3
 // C3 Macro
@@ -27,7 +28,7 @@ $endif
 // or
 int z @if($defined(x) && Y > 3);
 ```
-    
+
 
 ### Macros
 ```c
@@ -46,7 +47,7 @@ macro m(x)
 {
     return x + 2;
 }
-def UInt32 = uint;
+alias UInt32 = uint;
 
 // Use:
 int y = m(foo() + 2);
@@ -109,20 +110,20 @@ for (x = (list); x; x = x->next)
 
 // Use:
 Foo *it;
-FOR_EACH(it, list) 
+FOR_EACH(it, list)
 {
     if (!process(it)) return;
 }
 ```
-    
-```c3 
+
+```c3
 // C3 Macro
 macro @for_each(list; @body(it))
 {
     for ($typeof(list) x = list; x; x = x.next)
     {
         @body(x);
-    }    
+    }
 }
 
 // Use:
@@ -137,7 +138,7 @@ macro @for_each(list; @body(it))
 ```c
 // C Macro
 #define offsetof(T, field) (size_t)(&((T*)0)->field)
-```  
+```
 
 ```c3
 // C3 Macro
@@ -158,7 +159,7 @@ int foo(int x) PURE_INLINE { ... }
 
 ```c3
 // C3 Macro
-def @NoDiscardInline = { @nodiscard @inline };
+attrdef @NoDiscardInline = { @nodiscard @inline };
 fn int foo(int) @NoDiscardInline { ... }
 ```
 
@@ -168,7 +169,7 @@ fn int foo(int) @NoDiscardInline { ... }
 #define DECLARE_LIST(name) List name = { .head = NULL };
 // Use:
 DECLARE_LIST(hello)
-```  
+```
 
 ```c3
 // C3 Macro
@@ -179,7 +180,7 @@ DECLARE_LIST(hello)
 ```c
 // C Macro
 #define CHECK(x) do { if (!x) abort(#x); } while(0)
-``` 
+```
 
 ```c3
 // C3 Macro
@@ -191,11 +192,11 @@ macro @check(#expr)
 
 ## Top level evaluation
 
-Script languages, and also upcoming languages like *Jai*, 
-usually have unbounded top level evaluation. 
-The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand. 
+Script languages, and also upcoming languages like *Jai*,
+usually have unbounded top level evaluation.
+The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
 
-In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or 
+In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or
 disable declarations. This makes the code easier to read, but at the cost of expressive power.
 
 ## Macro declarations
@@ -203,7 +204,7 @@ disable declarations. This makes the code easier to read, but at the cost of exp
 A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `$` or `#` parameters.
 
 The parameters have different sigils:
-`$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, 
+`$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated,
 but is bound to where it was defined. `@` is required on macros that use `#` parameters or trailing macro bodies.
 
 A basic swap:
@@ -373,7 +374,7 @@ The maximum recursion depth is limited to the `macro-recursion-depth` build sett
 
 ## Macro vaargs
 
-Macros support the typed vaargs used by C3 functions: `macro void foo(int... args)` and `macro void bar(args...)` 
+Macros support the typed vaargs used by C3 functions: `macro void foo(int... args)` and `macro void bar(args...)`
 but it also supports a unique set of macro vaargs that look like C style vaargs: `macro void baz(...)`
 
 To access the arguments there is a family of $va-* built-in functions to retrieve
@@ -383,7 +384,7 @@ the arguments:
 macro compile_time_sum(...)
 {
     var $x = 0;
-    $for (var $i = 0; $i < $vacount; $i++)
+    $for var $i = 0; $i < $vacount; $i++:
         $x += $vaconst[$i];
     $endfor
     return $x;
@@ -415,14 +416,14 @@ evaluate the expression multiple times, this corresponds to `#` parameters.
 
 ### `$vatype`
 
-Returns the argument as a type. This corresponds to `$Type` style parameters, 
+Returns the argument as a type. This corresponds to `$Type` style parameters,
 e.g. `$vatype(2) a = 2`
 
 ### `$vasplat`
 
 `$vasplat` allows you to paste the varargs in the call into another call. For example,
 if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`.
-You can even extract provide a range as the argument: `$vasplat[2..4]` (in this case, this would paste in 
+You can even extract provide a range as the argument: `$vasplat[2..4]` (in this case, this would paste in
 arguments 2, 3 and 4).
 
 Nor is it limited to function arguments, you can also use it with initializers:
@@ -433,12 +434,12 @@ int[*] a = { 5, $vasplat[2..], 77 };
 
 ## Untyped lists
 
-Compile time variables may hold untyped lists. Such lists may be iterated over or 
+Compile time variables may hold untyped lists. Such lists may be iterated over or
 implicitly converted to initializer lists:
 
 ```c3
 var $a = { 1, 2 };
-$foreach ($x : $a)
+$foreach $x : $a:
     io::printfn("%d", $x);
 $endforeach
 int[2] x = $a;

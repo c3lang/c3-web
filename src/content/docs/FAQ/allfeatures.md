@@ -26,11 +26,11 @@ Changes relating to literals, identifiers etc.
 11. `\e` escape character.
 12. Source code must be UTF-8.
 13. Assumes `\n` for new row `\r` is stripped from source.
-14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/... 
+14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/...
 15. The `null` literal is a pointer value of 0.
 16. The `true` and `false` are boolean constants true and false.
 
-### Removed 
+### Removed
 
 1. Trigraphs / digraphs.
 2. 0123-style octal.
@@ -40,10 +40,10 @@ Changes relating to literals, identifiers etc.
 
 ### Added
 
-1. Type declaration is left to right: `int[4]*[2] a;` instead of `int (*a[2])[4];` 
+1. Type declaration is left to right: `int[4]*[2] a;` instead of `int (*a[2])[4];`
 2. Simd vector types using `[<>]` syntax, e.g. `float[<4>]`, use `[<*>]` for inferred length.
 3. Slice type built in, using `[]` suffix, e.g. `int[]`
-4. Distinct types, similar to a typedef but forms a new type. (Example: the `String` type is a distinct `char[]`)
+4. `typedef` is similar to C's typedef but forms a new type. (Example: the `String` type is a new type with `char[]` internal representation)
 5. Built-in 128-bit integer on all platforms.
 6. `char` is an unsigned 8-bit integer. `ichar` is its signed counterpart.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
@@ -53,7 +53,7 @@ Changes relating to literals, identifiers etc.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
 13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
-14. `anyfault` holds any `fault` value (see below).
+14. `fault` a constant representing an error (see below).
 
 ### Changed
 1. Inferred array type uses `[*]` (e.g. `int[*] x = { 1, 2 };`).
@@ -71,7 +71,7 @@ Changes relating to literals, identifiers etc.
 ### Added
 
 1. `bitstruct` a struct with a container type allowing precise control over bit-layout, replacing bitfields and enum masks.
-2. `fault` an enum type with unique values which are used together with optional.
+2. `fault` a constant with unique values which are used together with optional.
 3. Vector types.
 4. Optional types.
 5. `enum` allows a set of unique constants to be associated with each enum value.
@@ -80,21 +80,22 @@ Changes relating to literals, identifiers etc.
 8. Distinct types, which are similar to aliases, but represent distinctly different types.
 9. Types may have methods. Methods can be added to any type, including built-in types.
 10. Subtyping: using `inline` on a struct member allows a struct to be implicitly converted to this member type and use corresponding methods.
-11. Using `inline` on a distinct type allows it to be implicitly converted *to* its base type (but not vice versa).
+11. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
 12. Types may add operator overloading to support `foreach` and subscript operations.
-13. Generic types through generic modules, using `(< ... >)` for the generic parameter list (e.g. `List(<int>) list;`).
+13. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
 14. Interface types, `any` types which allows dynamic invocation of methods.
 
 ### Changed
 
-1. `typedef` is replaced by `def` and has somewhat different syntax (e.g. `def MyTypeAlias = int;`).
+1. C's typedef is replaced by `alias` and has somewhat different syntax (e.g. `alias MyTypeAlias = int;`).
 2. Function pointer syntax is prefix `fn` followed by a regular function declaration without the function name.
+3. `typedef` in C3 creates a new type which can have it's own methods, but shares the common internal representation as the original type.
 
 ### Removed
 
 1. Enums, structs and unions no longer have distinct namespaces.
 2. Enum, struct and union declarations should not have a trailing ';'
-3. Inline `typedef` is not allowed. `def` can only be used at the top level.
+3. `alias` can only be used at the top level, not inside a function.
 4. Anonymous structs are not allowed.
 5. Type qualifiers are all removed, including `const`, `restrict`, `volatile`
 6. Function pointers types **cannot** be used "raw", but must always be used through a type alias.
@@ -121,8 +122,8 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 8. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
 9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
 10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
-11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers. 
-12. `?` suffix operator turns a fault into an optional value.
+11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers.
+12. `?` suffix operator turns a `fault` into an optional value.
 13. `!!` suffix panics if the value is an optional value.
 14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
 15. Compile time "and" and "or" using `&&&` and `|||`. Both sides of the operator should be compile-time constants. If the left hand side of `&&&` is false, the right hand side is not type-checked. For `|||` the right hand side is not type-checked if the left hand side is true.
@@ -173,8 +174,8 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ## Attributes
 
-C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom 
-attribute groups using `def` (e.g. `def MyAttribute(usz align) = { @aligned(align) @weak };`) which
+C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom
+attribute groups using `attrdef` (e.g. `attrdef MyAttribute(usz align) = { @aligned(align) @weak };`) which
 groups certain attributes. Empty attribute groups are permitted.
 
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
@@ -228,7 +229,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 16. `do` statements may omit `while`, behaving same as `while (0)`
 17. `if` may have a label. Labelled `if` may be exited using labelled break.
 18. if-try statements allows you to run code where an expression is a result.
-19. if-catch statements runs code on fault. It can be used to implicitly unwrap variables.
+19. if-catch statements runs code on `fault`. It can be used to implicitly unwrap variables.
 20. Exhaustive switching on enums.
 
 ### Changed
@@ -267,7 +268,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 ### Changed
 
 1. `#define` for constants is replaced by untyped constants, e.g. `#define SOME_CONSTANT 1` becomes `const SOME_CONSTANT = 1;`.
-2. `#define` for variable and function aliases is replaced by `def`, e.g. `#define native_foo win32_foo` becomes `def native_foo = win32_foo;`
+2. `#define` for variable and function aliases is replaced by `alias`, e.g. `#define native_foo win32_foo` becomes `alias native_foo = win32_foo;`
 3. In-function `#if...#else..#endif` is replaced by `$if`, `#if...#elif...#endif` is replaced by `$switch`.
 4. For converting code into a string use `$stringify`.
 5. Macros for date, line etc are replaced by `$$DATE`, `$$FILE`, `$$FILEPATH`, `$$FUNC`, `$$LINE`, `$$MODULE`, `$$TIME`.
@@ -283,19 +284,18 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 1. `macro` for defining macros.
 2. "Function-like" macros have no prefix and has only regular parameters or type parameters.
-3. "At"-macros are prefixed with `@` and may also have compile time values, expression and ref parameters, and may have a trailing body.
+3. "At"-macros are prefixed with `@` and may also have compile time values, expression parameters, and may have a trailing body.
 4. Type parameters have the prefix `$` and conform to the type naming standard ("$TypeFoo").
-5. "ref" parameters are declared using with a `&` prefix operator. This is similar to C++ ref parameters.
-6. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
-7. Compile time values have a `$` prefix and must contain compile time constant values.
-8. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
-9. Macros may be recursively evaluated.
-10. Macros are inlined at the location where they are invoked.
-11. Unless resulting in a single constant, macros implicitly create a runtime scope.
+5. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
+6. Compile time values have a `$` prefix and must contain compile time constant values.
+7. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
+8. Macros may be recursively evaluated.
+9. Macros are inlined at the location where they are invoked.
+10. Unless resulting in a single constant, macros implicitly create a runtime scope.
 
 ### Removed
 
-1. No `#define` macros.  
+1. No `#define` macros.
 2. Macros cannot be incomplete statements.
 
 ## Features provided by builtins
@@ -328,7 +328,7 @@ but nonetheless provided unique functionality:
 8. `@local` means only visible to the current module section.
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
-11. Generic modules have a set of parameters after the module name `module arr(<Type, LEN>);`
+11. Generic modules have a set of parameters after the module name `module arr {Type, LEN};`
 12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts
@@ -341,7 +341,7 @@ but nonetheless provided unique functionality:
 6. `@require` directives are evaluated given the arguments provided. Failing them may be a compile time or runtime error.
 7. The `@ensure` directive is evaluated at exit - if the return is a result and not an optional.
 8. `return` can be used as a variable identifier inside of `@ensure`, and holds the return value.
-9. `@return!` optionally lists the errors used. This will be checked at compile time.
+9. `@return?` optionally lists the errors used. This will be checked at compile time.
 10. `@pure` says that no writing to globals is allowed inside and only `@pure` functions may be called.
 
 ## Benchmarking

@@ -9,9 +9,9 @@ Contracts are optional pre- and post-conditions checks that the compiler may use
 
 # Pre-conditions
 
-Pre-conditions are usually used to validate incoming arguments. 
-Each condition must be an expression that can be evaluated to a boolean. 
-Pre-conditions use the `@require` annotation, and optionally can have an 
+Pre-conditions are usually used to validate incoming arguments.
+Each condition must be an expression that can be evaluated to a boolean.
+Pre-conditions use the `@require` annotation, and optionally can have an
 error message to display after them.
 
 ```c3
@@ -27,10 +27,10 @@ fn int testFoo(int foo)
 # Post conditions
 
 Post conditions are evaluated to make checks on the resulting state after passing through the function.
-The post condition uses the `@ensure` annotation. Where `return` is used to represent the return value from the function. 
+The post condition uses the `@ensure` annotation. Where `return` is used to represent the return value from the function.
 
 
-    
+
 ```c3
 <*
  @require foo != null
@@ -98,16 +98,16 @@ fn void bad_func(int* i)
 
 ### Pure in detail
 
-The `pure` annotation allows a program to make assumptions in regard to how the function treats global variables. 
+The `pure` annotation allows a program to make assumptions in regard to how the function treats global variables.
 Unlike for `const`, a pure function is not allowed to call a function which is known to be impure.
 
-However, just like for `const` the compiler might not detect whether the annotation 
+However, just like for `const` the compiler might not detect whether the annotation
 is correct or not! This program might compile, but will behave strangely:
 
 ```c3
 int i = 0;
 
-def SecretFn = fn void();
+alias SecretFn = fn void();
 
 fn void bad_func()
 {
@@ -135,7 +135,7 @@ However, compilers will usually detect this:
 ```c3
 int i = 0;
 
-def SecretFn = fn void();
+alias SecretFn = fn void();
 
 fn void bad_func()
 {
@@ -147,7 +147,7 @@ fn void bad_func()
 *>
 fn void lying_func(SecretFn f)
 {
-    f(); // <- ERROR: Only '@pure' functions may be called. 
+    f(); // <- ERROR: Only '@pure' functions may be called.
 }
 
 fn void main()

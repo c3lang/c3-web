@@ -6,7 +6,7 @@ sidebar:
 ---
 ## Overview
 
-As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `def`). All types are defined on a global level.
+As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `alias`). All types are defined on a global level.
 
 ##### Naming
 
@@ -18,7 +18,7 @@ It is possible to use attributes to change the external name of a type:
 struct Stat @extern("stat")
 {
     // ...
-} 
+}
 
 fn CInt stat(char* pathname, Stat* buf);
 ```
@@ -27,17 +27,17 @@ This would affect things like generated C headers.
 
 ##### Differences from C
 
-Unlike C, C3 does not use type qualifiers. `const` exists, 
-but is a storage class modifier, not a type qualifier. 
-Instead of `volatile`, volatile loads and stores are used. 
+Unlike C, C3 does not use type qualifiers. `const` exists,
+but is a storage class modifier, not a type qualifier.
+Instead of `volatile`, volatile loads and stores are used.
 Restrictions on function parameter usage are instead described by parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-`typedef` has a slightly different syntax and renamed `def`.
+`typedef` has a slightly different syntax and renamed `alias`.
 
-C3 also requires all function pointers to be used with a `def` for example:
+C3 also requires all function pointers to be used with a `alias` for example:
 
 ```c3
-def Callback = fn void();
+alias Callback = fn void();
 Callback a = null; // Ok!
 fn Callback getCallback() { /* ... */ } // Ok!
 
@@ -69,7 +69,7 @@ Basic types are divided into floating point types, and integer types. Integer ty
 | `isz`\*\*   | varies   | yes    |
 | `usz`\*\*   | varies   | no     |
 
-\* `bool` will be stored as a byte.  
+\* `bool` will be stored as a byte.
 \*\* size, pointer and pointer sized types depend on platform.
 
 ##### Integer arithmetics
@@ -96,9 +96,9 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 [FourCC](https://en.wikipedia.org/wiki/FourCC) codes are often used to identify binary format types. C3 adds direct support for 4 character codes, but also 2 and 8 characters:
 
 - 2 character strings, e.g. `'C3'`, would convert to an ushort or short.
-- 4 character strings, e.g. `'TEST'`, converts to an uint or int. 
+- 4 character strings, e.g. `'TEST'`, converts to an uint or int.
 - 8 character strings, e.g. `'FOOBAR11'` converts to an ulong or long.
- 
+
 Conversion is always done so that the character string has the correct ordering in memory. This means that the same characters may have different integer values on different architectures due to endianness.
 
 ##### Base64 and hex data literals
@@ -127,7 +127,7 @@ char* bar = `"Say ``hello``"`;
 char* foo = "C:\\foo\\bar.dll";
 char* bar = "\"Say `hello`\"";
 ```
-     
+
 ##### Floating point types
 
 | Name        | bit size |
@@ -144,7 +144,7 @@ char* bar = "\"Say `hello`\"";
 
 Floating point constants will *at least* use 64 bit precision. Just like for integer constants, it is allowed to use underscore, but it may not occur immediately before or after a dot or an exponential.
 
-Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is e (or E, both are acceptable), for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10` 
+Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is e (or E, both are acceptable), for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
 
 It is possible to type a floating point by adding a suffix:
 
@@ -174,7 +174,7 @@ For C compatibility the following types are also defined in std::core::cinterop
 | `CLongDouble` | `long double`        |
 
 `float` and `double` will always match their C counterparts.
-    
+
 Note that signed C char and unsigned char will correspond to `ichar` and `char`. `CChar` is only available to match the default signedness of `char` on the platform.
 
 ## Other built-in types
@@ -185,7 +185,7 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 
 ### The `typeid` type
 
-The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id, 
+The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
 e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
 
 ### The `any` type
@@ -217,7 +217,7 @@ fn void test(any z)
     // Unwrapping switch
     switch (z)
     {
-        case int: 
+        case int:
             // z is unwrapped to int* here
         case double:
             // z is unwrapped to double* here
@@ -249,7 +249,7 @@ fn void test(any z)
 }
 ```
 
-`any.type` returns the underlying pointee typeid of the contained value. `any.ptr` returns 
+`any.type` returns the underlying pointee typeid of the contained value. `any.ptr` returns
 the raw `void*` pointer.
 
 ### Array types
@@ -262,28 +262,28 @@ from the initializer. See the chapter on [arrays](/language-common/arrays/).
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
 of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
 
-## Types created using `def`
+## Types created using `alias`
 
 ### "typedef"
 
-Like in C, C3 has a "typedef" construct, `def <typename> = <type>`
+Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
 
 ```c3
-def Int32 = int;
-def Vector2 = float[<2>];
+alias Int32 = int;
+alias Vector2 = float[<2>];
 
 /* ... */
 
 Int32 a = 1;
-int b = a;    
+int b = a;
 ```
 
 ### Function pointer types
 
-Function pointers are always used through a `def`:
+Function pointers are always used through a `alias`:
 
 ```c3
-def Callback = fn void(int value);
+alias Callback = fn void(int value);
 Callback callback = &test;
 
 fn void test(int a) { /* ... */ }
@@ -292,11 +292,11 @@ fn void test(int a) { /* ... */ }
 To form a function pointer, write a normal function declaration but skipping the function name. `fn int foo(double x)` ->
 `fn int(double x)`.
 
-Function pointers can have default arguments, e.g. `def Callback = fn void(int value = 0)` but default arguments
+Function pointers can have default arguments, e.g. `alias Callback = fn void(int value = 0)` but default arguments
 and parameter names are not taken into account when determining function pointer assignability:
 
 ```c3
-def Callback = fn void(int value = 1);
+alias Callback = fn void(int value = 1);
 fn void test(int a = 0) { /* ... */ }
 
 Callback callback = &test; // Ok
@@ -311,14 +311,14 @@ fn void main()
 }
 ```
 
-### Distinct types
+### Typedef - Type definitions
 
-Distinct types is a kind of type alias which creates a new type that has the same properties as the original type
-but is - as the name suggests - distinct from it. It cannot implicitly convert into the other type using the syntax 
-`distict <name> = <type>`
+`typedef` creates a new type, that has the same properties as the original type
+but is distinct from it. It cannot implicitly convert into the other type using the syntax
+`typedef <name> = <type>`
 
 ```c3
-distinct MyId = int;
+typedef MyId = int;
 fn void* get_by_id(MyId id) { ... }
 
 fn void test(MyId id)
@@ -332,13 +332,14 @@ fn void test(MyId id)
 }
 ```
 
-#### Inline distinct
+#### Inline typedef
 
-Using `inline` in the `distinct` declaration allows a distinct type to implicitly convert to its underlying type:
+Using `inline` in the `typedef` declaration allows a newly created `typedef` type to
+implicitly convert to its underlying type:
 
 ```c3
-distinct Abc = int;
-distinct Bcd = inline int;
+typedef Abc = int;
+typedef Bcd = inline int;
 
 fn void test()
 {
@@ -348,8 +349,8 @@ fn void test()
     // int i = a; Error: Abc cannot be implicitly converted to 'int'
     int i = b; // This is valid
 
-    // However, 'inline' does not allow implicit conversion from 
-    // the inline type to the distinct type:
+    // However, 'inline' does not allow implicit conversion from
+    // the inline type to the typedef type:
     // a = i; Error: Can't implicitly convert 'int' to 'Abc'
     // b = i; Error: Can't implicitly convert 'int' to 'Bcd'
 }
@@ -359,18 +360,17 @@ fn void test()
 ```c3
 import generic_list; // Contains the generic MyList
 
-struct Foo { 
-    int x; 
+struct Foo {
+    int x;
 }
 
-// ✅ def for each type used with a generic module.
-def IntMyList = MyList(<Foo>);
+// ✅ alias for each type used with a generic module.
+alias IntMyList = MyList {Foo};
 MyListFoo working_example;
 
 // ❌ An inline type definition will give an error.
-// Only allowed in a type definition or macro 
-// To avoid this A type may be declared with @adhoc
-MyList<Foo> failing_example = MyList(<Foo>);
+// Only allowed in a type definition or macro
+MyList {Foo} failing_example = MyList {Foo};
 ```
 Find out more about [generic types](/generic-programming/generics).
 
@@ -378,7 +378,7 @@ Find out more about [generic types](/generic-programming/generics).
 
 Enum or enumerated types use the following syntax:
 ```c3
-enum State : int 
+enum State : int
 {
     WAITING,
     RUNNING,
@@ -388,7 +388,7 @@ enum State : int
 // Access enum values via:
 State current_state = State.WAITING;
 ```
-The access requires referencing the `enum`'s name as `State.WAITING` because 
+The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
 
@@ -396,14 +396,14 @@ an enum like `State` is a separate namespace by default, just like C++'s class `
 
 It is possible to associate each enum value with one or more a static values.
 ```c3
-enum State : int (String description) 
+enum State : int (String description)
 {
     WAITING = "waiting",
     RUNNING = "running",
     TERMINATED = "ended",
 }
 
-fn void main() 
+fn void main()
 {
     State process = State.RUNNING;
     io::printfn("%s", process.description);
@@ -459,7 +459,7 @@ module test;
 
 // Global variable
 // ❌ Don't do this!
-const State RUNNING = State.TERMINATED; 
+const State RUNNING = State.TERMINATED;
 
 test(RUNNING);       // Ambiguous
 test(test::RUNNING); // Uses global variable.
@@ -515,26 +515,28 @@ An enum may only declare *one* `inline` parameter.
 
 ## Optional Type
 
-An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `!`. 
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
 result or an Excuse that is of a [fault](#optional-excuses-are-of-type-fault) type.
 
-Once extracted, any specific fault can be converted to an `anyfault`.
+Once extracted, a `fault` can be converted to another `fault`.
 
 ```c3
-int! i;
-i = 5; // Assigning a real value to i.
-i = IOResult.IO_ERROR?; // Assigning an optional result to i.
-anyfault b = SearchError.MISSING;
-b = @catch(i); // Assign the Excuse in i to b (IO_ERROR) 
+faultdef MISSING; // define a fault
+
+int? i;
+i = 5;              // Assigning a real value to i.
+i = io::EOF?;       // Assigning an optional result to i.
+fault b = MISSING;  // Assign a fault to b
+b = @catch(i);      // Assign the Excuse in i to b (EOF)
 ```
 
-Only variables, expressions and function returns may be Optionals. 
+Only variables, expressions and function returns may be Optionals.
 Function and macro parameters in their definitions may not be optionals.
 
 ```c3
-fn Foo*! getFoo() { /* ... */ } // ✅ Ok!
-int! x = 0; // ✅ Ok!
+fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
+int? x = 0; // ✅ Ok!
 fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 ```
 
@@ -544,32 +546,22 @@ Read more about the Optional types on the page about [Optionals and error handli
 ### Optional Excuses are of type Fault
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
-The `anyfault` type may contain any such fault.
 
 ```c3
-fault IOResult
-{
-    IO_ERROR,
-    PARSE_ERROR
-}   
-
-fault MapResult
-{
-    NOT_FOUND
-}
+faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
 ```
 
-Like the [typeid type](#the-typeid-type), the constants are pointer sized 
-and each value is globally unique. For example the underlying value of 
-`MapResult.NOT_FOUND` is guaranteed to be different from `IOResult.IO_ERROR`. 
+Like the [typeid type](#the-typeid-type), the constants are pointer sized
+and each value is globally unique. For example the underlying value of
+`NOT_FOUND` is guaranteed to be different from `IO_ERROR`.
 This is true even if they are separately compiled.
 
 :::note
-The underlying values assigned to a fault may vary each time a program is compiled. 
+The underlying values assigned to a fault may vary each time a program is compiled.
 :::
 
 A fault may be stored as a normal value, but is also unique so that it may be passed
-in an Optional as a function return value using the 
+in an Optional as a function return value using the
 [rethrow `!` operator](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
@@ -578,7 +570,7 @@ in an Optional as a function return value using the
 Structs are always named:
 
 ```c3
-struct Person  
+struct Person
 {
     char age;
     String name;
@@ -611,7 +603,7 @@ To change alignment and packing, [attributes](/language-common/attributes/) such
 C3 allows creating struct subtypes using `inline`:
 
 ```c3
-struct ImportantPerson 
+struct ImportantPerson
 {
     inline Person person;
     String title;
@@ -631,7 +623,7 @@ fn void test()
     important_person.title = "Rockstar";
 
     // Only the first part of the struct is copied.
-    print_person(important_person); 
+    print_person(important_person);
 }
 ```
 
@@ -640,7 +632,7 @@ fn void test()
 Union types are defined just like structs and are fully compatible with C.
 
 ```c3
-union Integral  
+union Integral
 {
     char as_byte;
     short as_short;
@@ -659,10 +651,10 @@ fn void test()
 
     i.as_int = 500; // Changing the active member to as_int
 
-    // Undefined behaviour: as_byte is not the active member, 
+    // Undefined behaviour: as_byte is not the active member,
     // so this will probably print garbage.
     io::printfn("%d\n", i.as_byte);
-} 
+}
 ```
 
 Note that unions only take up as much space as their largest member, so `Integral.sizeof` is equivalent to `long.sizeof`.
@@ -674,16 +666,16 @@ Just like in C99 and later, nested anonymous sub-structs / unions are allowed. N
 the placement of struct / union names is different to match the difference in declaration.
 
 ```c3
-struct Person  
+struct Person
 {
     char age;
     String name;
-    union 
+    union
     {
         int employee_nr;
         uint other_nr;
     }
-    union subname 
+    union subname
     {
         bool b;
         Callback cb;
@@ -709,16 +701,16 @@ bitstruct Foo : char
 }
 
 fn void test()
-{   
+{
     Foo f;
     f.a = 2;
     char x = (char)f;
     io::printfn("%d", (char)f); // prints 2
     f.b = 1;
-    io::printfn("%d", (char)f); // prints 18 
+    io::printfn("%d", (char)f); // prints 18
     f.c = true;
     io::printfn("%d", (char)f); // prints 146
-}    
+}
 ```
 
 The bitstruct will follow the endianness of the underlying type:
@@ -738,15 +730,15 @@ fn void test()
     char* c = (char*)&t;
 
     // Prints 789AABCD
-    io::printfn("%X", (uint)t); 
+    io::printfn("%X", (uint)t);
 
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
     {
         // Prints CDAB9A78
-        io::printf("%X", c[i]); 
+        io::printf("%X", c[i]);
     }
     io::printn();
-}    
+}
 ```
 
 It is however possible to pick a different endianness, in which case the entire representation
@@ -784,18 +776,18 @@ fn void test()
     t1.b = t2.b = 0x789A;
 
     char* c = (char*)&t1;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
     {
         // Prints CDAB9A78 on x86
-        io::printf("%X", c[i]); 
+        io::printf("%X", c[i]);
     }
     io::printn();
 
     c = (char*)&t2;
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
     {
         // Prints ABCD789A
-        io::printf("%X", c[i]); 
+        io::printf("%X", c[i]);
     }
     io::printn();
 }
@@ -809,6 +801,6 @@ bitstruct Foo : char @overlap
 {
     int a : 2..5;
     // "b" is valid due to the @overlap attribute
-    int b : 1..3; 
+    int b : 1..3;
 }
 ```

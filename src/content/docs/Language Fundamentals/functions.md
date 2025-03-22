@@ -58,7 +58,7 @@ fn void test()
     // Unnamed only
     test_named(3, 4.0);
 
-    // Mixing named and unnamed        
+    // Mixing named and unnamed
     test_named(15, data: 3.141592);
 }
 ```
@@ -84,7 +84,7 @@ fn void test()
 
     // Overwriting an unnamed argument with a named argument is an error:
     // test_named_default(2, times: 3); ERROR!
-    
+
     // Unnamed may not follow named arguments.
     // test_named_default(times: 3, 4.0); ERROR!
 }
@@ -92,7 +92,7 @@ fn void test()
 
 #### Varargs
 
-There are four types of varargs: 
+There are four types of varargs:
 
 1. single typed
 2. explicitly typed any: pass non-any arguments as references
@@ -122,13 +122,13 @@ extern fn void va_untyped(...); // only used for extern C functions
 fn void test()
 {
     va_singletyped(1, 2, 3);
-    
+
     int x = 1;
     any* v = &x;
     va_variants_explicit(&&1, &x, v); // pass references for non-any arguments
-    
+
     va_variants_implicit(1, x, "foo"); // arguments are implicitly converted to anys
-    
+
     va_untyped(1, x, "foo"); // extern C-function
 }
 ```
@@ -140,17 +140,17 @@ fn void test_splat()
 {
    int[] x = { 1, 2, 3 };
    va_singletyped(...x);
-}   
+}
 ```
 ### Splat
 
 - Splat `...` unknown size slice ONLY in a typed vaarg slot.
 
 ```c3
-fn void va_singletyped(int... args) { 
-    io::printfn("%s", args); 
+fn void va_singletyped(int... args) {
+    io::printfn("%s", args);
 }
-fn void main() 
+fn void main()
 {
     int[2] arr = {1, 2};
     va_singletyped(...arr); // arr is splatting two arguments
@@ -160,11 +160,11 @@ fn void main()
 - Splat `...` any array anywhere
 
 ```c3
-fn void foo(int a, int b, int c) 
-{ 
-    io::printfn("%s, %s, %s", a, b, c); 
+fn void foo(int a, int b, int c)
+{
+    io::printfn("%s, %s, %s", a, b, c);
 }
-fn void main() 
+fn void main()
 {
     int[2] arr = {1, 2};
     foo(...arr, 7); // arr is splatting two arguments
@@ -175,11 +175,11 @@ fn void main()
 - Splat `...` known size slices anywhere
 
 ```c3
-fn void foo(int a, int b, int c) 
-{ 
-    io::printfn("%s, %s, %s", a, b, c); 
+fn void foo(int a, int b, int c)
+{
+    io::printfn("%s, %s, %s", a, b, c);
 }
-fn void main() 
+fn void main()
 {
     int[5] arr = {1, 2, 3, 4, 5};
     foo(...arr[:3]); // slice is splatting three arguments
@@ -190,7 +190,7 @@ fn void main()
 
 ### Named arguments and varargs
 
-Usually, a parameter after varargs would never be assigned to:  
+Usually, a parameter after varargs would never be assigned to:
 
 ```c3
 fn void testme(int a, double... x, double rate = 1.0) { /* ... */ }
@@ -198,7 +198,7 @@ fn void testme(int a, double... x, double rate = 1.0) { /* ... */ }
 fn void test()
 {
     // x is { 2.0, 5.0, 6.0 } rate would be 1.0
-    testme(3, 2.0, 5.0, 6.0); 
+    testme(3, 2.0, 5.0, 6.0);
 }
 ```
 
@@ -216,7 +216,7 @@ fn void test()
 
 ### Functions and Optional returns
 
-Function return values may be *Optionals* – denoted by `<type>!` indicating that this 
+Function return values may be *Optionals* – denoted by `<type>!` indicating that this
 function might either return an Optional with a result, or an Optional with an Excuse.
 
 For example this function might return an Excuse of type `SomeError` or `OtherResult`.
@@ -231,7 +231,7 @@ fn double! test_error()
 }
 ```
 
-*A function call* which is passed one or more *Optional* arguments will only execute 
+*A function call* which is passed one or more *Optional* arguments will only execute
 if all Optional values contain a *result*, otherwise the first Excuse found is returned.
 
 ```c3
@@ -240,10 +240,10 @@ fn void test()
     // The following line is either prints a value less than 0.2
     // or does not print at all:
     io::printfn("%d", test_error());
-    
+
     // ?? sets a default value if an Excuse is found
-    double x = (test_error() + test_error()) ?? 100;  
-    
+    double x = (test_error() + test_error()) ?? 100;
+
     // This prints either a value less than 0.4 or 100:
     io::printfn("%d", x);
 }
@@ -254,11 +254,11 @@ This allows us to chain functions:
 ```c3
 fn void print_input_with_explicit_checks()
 {
-    String! line = io::readline();
+    String? line = io::readline();
     if (try line)
     {
         // line is a regular "string" here.
-        int! val = line.to_int();
+        int? val = line.to_int();
         if (try val)
         {
             io::printfn("You typed the number %d", val);
@@ -281,7 +281,7 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with the type name and is (usually) 
+Methods look exactly like functions, but are prefixed with the type name and is (usually)
 invoked using dot syntax:
 
 ```c3
@@ -291,18 +291,18 @@ struct Point
     int y;
 }
 
-fn void Point.add(Point* p, int x) 
+fn void Point.add(Point* p, int x)
 {
     p.x += x;
 }
 
-fn void example() 
+fn void example()
 {
     Point p = { 1, 2 };
-    
+
     // with struct-functions
     p.add(10);
-    
+
     // Also callable as:
     Point.add(&p, 10);
 }
@@ -317,7 +317,7 @@ enum State
     RUNNING
 }
 
-fn bool State.may_open(State state) 
+fn bool State.may_open(State state)
 {
     switch (state)
     {
@@ -341,11 +341,11 @@ fn int Bar.test(Bar self) { /* ... */ }
 ```
 
 It is customary to use `self` as the name of the first parameter, but it is not required.
-    
+
 ### Restrictions on methods
 
 - Methods on a struct/union may not have the same name as a member.
-- Methods only works on distinct, struct, union and enum types.
+- Methods only work on `typedef`, `struct`, `union` and `enum` types.
 - When taking a function pointer of a method, use the full name.
 - Using subtypes, overlapping function names will be shadowed.
 
@@ -359,7 +359,7 @@ the principle that functions are used whenever the system is mutating
 global data, whereas methods are used for mutating a particular value, or
 extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`
 are all good uses of methods. On the flip side, methods usage like
-`context.parse_data(data)`, `game.run(settings)` and `url.make_request()` 
+`context.parse_data(data)`, `game.run(settings)` and `url.make_request()`
 are emphatically *not* recommended.
 
 ## Contracts
@@ -436,12 +436,12 @@ fn int square_short(int x) => x * x;
 
 ## Lambdas
 
-It's possible to create anonymous functions using the regular `fn` syntax. Anonymous 
-functions are identical to regular functions and do not capture variables from the 
+It's possible to create anonymous functions using the regular `fn` syntax. Anonymous
+functions are identical to regular functions and do not capture variables from the
 surrounding scope:
 
 ```c3
-def IntTransform = fn int(int);
+alias IntTransform = fn int(int);
 fn void apply(int[] arr, IntTransform t)
 {
     foreach (&i : arr) *i = t(*i);
@@ -451,17 +451,17 @@ fn void main()
     int[] x = { 1, 2, 5 };
     // Short syntax with inference:
     apply(x, fn (i) => i * i);
-    // Regular syntax without inference: 
+    // Regular syntax without inference:
     // apply(x, fn int(int i) { return i * i; });
     // Prints [1, 4, 25]
-    io::printfn("%s", x);        
+    io::printfn("%s", x);
 }
 ```
 
 ## Static initializer and finalizers
 
-It is sometimes useful to run code at startup and shutdown of a program. 
-Static initializers and finalizers are regular functions annotated with 
+It is sometimes useful to run code at startup and shutdown of a program.
+Static initializers and finalizers are regular functions annotated with
 `@init` and `@finalizer` that are run at startup and shutdown respectively.
 (Note: this should not be confused with constructors and destructors
 in object-oriented languages.)
@@ -471,7 +471,7 @@ fn void run_at_startup() @init
 {
     // Run at startup
     some_function.init(512);
-} 
+}
 
 fn void run_at_shutdown() @finalizer
 {

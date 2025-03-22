@@ -5,15 +5,15 @@ sidebar:
   order: 33
 ---
 
-C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointers. On top of this it 
-expands on this set by adding slices and vectors, as well as the `any` and `typeid` types for advanced use. 
+C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointers. On top of this it
+expands on this set by adding slices and vectors, as well as the `any` and `typeid` types for advanced use.
 
 ## Integers
 
 C3 has signed and unsigned integer types. The built-in signed integer types are `ichar`, `short`, `int`, `long`,
 `int128`, `iptr` and `isz`. `ichar` to `int128` have all well-defined power-of-two bit sizes, whereas `iptr`
-has the same number of bits as a `void*` and `isz` has the same number of bits as the maximum difference 
-between two pointers. For each signed integer type there is a corresponding unsigned integer type: `char`, 
+has the same number of bits as a `void*` and `isz` has the same number of bits as the maximum difference
+between two pointers. For each signed integer type there is a corresponding unsigned integer type: `char`,
 `ushort`, `uint`, `ulong`, `uint128`, `uptr` and `usz`.
 
 | type    | signed? | min    | max       | bits   |
@@ -33,13 +33,13 @@ between two pointers. For each signed integer type there is a corresponding unsi
 | uptr    | no      | 0      | varies    | varies |
 | usz     | no      | 0      | varies    | varies |
 
-On 64-bit machines `iptr`/`uptr` and `isz`/`usz` are usually 64-bits, like `long`/`ulong`. 
+On 64-bit machines `iptr`/`uptr` and `isz`/`usz` are usually 64-bits, like `long`/`ulong`.
 On 32-bit machines on the other hand they are generally `int`/`uint`.
 
 ### Integer constants
 
 Numeric constants typically use decimal, e.g. `234`, but may also use hexadecimal (base 16) numbers by prefixing
-the number with `0x` or `0X`, e.g. `int a = 0x42edaa02;`. There is also octal (base 8) using the 
+the number with `0x` or `0X`, e.g. `int a = 0x42edaa02;`. There is also octal (base 8) using the
 `0o` or `0O` prefix, and `0b` for binary (base 2) numbers:
 
 Numbers may also insert underscore `_` between digits to improve readability, e.g. `1_000_000`.
@@ -55,12 +55,12 @@ For decimal numbers, the value is assumed to be a signed `int`, unless the numbe
 
 For hexadecimal, octal and binary, the type is assumed to be unsigned.
 
-A integer literal can *implicitly* convert to a floating point literal, or an integer of 
+A integer literal can *implicitly* convert to a floating point literal, or an integer of
 a different type provided the number fits in the type.
 
 ### Constant suffixes
 
-If you want to ensure that a constant is of a certain type, you can either add an explicit cast 
+If you want to ensure that a constant is of a certain type, you can either add an explicit cast
 like: `(ushort)345`, or use an integer suffix: `345u16`.
 
 The following integer suffixes are available:
@@ -83,7 +83,7 @@ Note how `uint` also has the `u` suffix.
 
 ## Booleans
 
-A `bool` will be either `true` or `false`. Although a bool is only a single bit of data, 
+A `bool` will be either `true` or `false`. Although a bool is only a single bit of data,
 it should be noted that it is stored in a byte.
 
 ```c
@@ -93,8 +93,8 @@ bool f = false;
 
 ### Character literals
 
-A character literal is a value enclosed in `''`. Its value is interpreted as being its 
-ASCII value for a single character. 
+A character literal is a value enclosed in `''`. Its value is interpreted as being its
+ASCII value for a single character.
 
 It is also possible to use 2, 4 or 8 character wide character literals. Such are interpreted
 as `ushort`, `uint` and `ulong` respectively and are laid out in memory from left to right.
@@ -111,19 +111,19 @@ codes. It will also correctly arrange unicode characters in memory. E.g. `Char32
 ## Floating point types
 
 As is common, C3 has two floating point types: `float` and `double`. `float` is the 32 bit floating
-point type and `double` is 64 bits. 
+point type and `double` is 64 bits.
 
 ### Floating point constants
 
-Floating point constants will *at least* use 64 bit precision. 
+Floating point constants will *at least* use 64 bit precision.
 Just like for integer constants, it is possible to use `_` to improve
 readability, but it may not occur immediately before or after a dot or an exponential.
 
-C3 supports floating points values either written in decimal or hexadecimal formats. 
-For decimal, the exponential symbol is e (or E, both are acceptable), 
+C3 supports floating points values either written in decimal or hexadecimal formats.
+For decimal, the exponential symbol is e (or E, both are acceptable),
 for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
 
-While floating point numbers default to `double` it is possible to type a 
+While floating point numbers default to `double` it is possible to type a
 floating point by adding a suffix:
 
 | Suffix           | type       |
@@ -145,10 +145,6 @@ int[3] abc = { 1, 2, 3 }; // Explicit int[3]
 int[*] bcd = { 1, 2, 3 }; // Implicit int[3]
 ```
 
-\* Please note that in later versions of 0.6.x you'll see the syntax `int[?]` instead of `int[*]`
-as an alternative. Either will work in the most recent compiler, and
-it's not yet decided whether `[*]` or `[?]` will be picked for 0.7.
-
 ## Slices
 
 [Slices](/language-common/arrays/#slice) have the format `Type[]`. Unlike the array, a slice does not hold the values themselves
@@ -160,8 +156,8 @@ is the length of the slice - that is, the number of elements it is possible to i
 Usually we can get a slice by taking the address of an array:
 
 ```c3
-int[3] abc = { 1, 2, 3 }; 
-int[] slice = &abc;       // A slice pointing to abc with length 3 
+int[3] abc = { 1, 2, 3 };
+int[] slice = &abc;       // A slice pointing to abc with length 3
 ```
 
 Because indexing into slices is range checked in safe mode, slices are vastly more safe
@@ -179,10 +175,10 @@ This definition can be found in the module `std::core::runtime`.
 
 ## Vectors
 
-[Vectors](/language-common/vectors/) similar to arrays, use the format 
+[Vectors](/language-common/vectors/) similar to arrays, use the format
 `Type[<size>]`, with the restriction that vectors may only form out
-of integers, floats and booleans. Similar to arrays, wildcard can be 
-used to infer the size of a vector: 
+of integers, floats and booleans. Similar to arrays, wildcard can be
+used to infer the size of a vector:
 
 ```c3
 int[<*>] a = { 1, 2 };
@@ -201,20 +197,20 @@ Vector initialization and literals work the same way as arrays, using `{ ... }`
 
 ## String literals
 
-String literals are special and can convert to several different types: 
+String literals are special and can convert to several different types:
 `String`, `char` and `ichar` arrays and slices and finally `ichar*` and `char*`.
 
 String literals are text enclosed in `" "` just like in C. These support
 escape sequences like `\n` for line break and need to use `\"` for any `"` inside of the
 string.
 
-C3 also offers *raw strings* which are enclosed in `` ` ` ``. 
+C3 also offers *raw strings* which are enclosed in `` ` ` ``.
 A raw string may span multiple lines.
 Inside of a raw string, no escapes are available, and to write a `` ` ``, simply double the character:
 
 ```c3
-// Note: String is a distinct inline char[]
-String three_lines = 
+// Note: String is a typedef inline char[]
+String three_lines =
 `multi
 line
 string`;
@@ -226,10 +222,10 @@ String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
 
-`String` is a 
-[distinct inline](/language-common/define/#distinct-inline) `char[]`, which can implicitly convert to `char[]` when required. 
+`String` is a
+[typedef inline](/language-common/alias/#typedef-inline) `char[]`, which can implicitly convert to `char[]` when required.
 
-`ZString` is a [distinct inline](/language-common/define/#distinct-inline) `char*`.`ZString` is a C compatible null terminated string, which can implicitly convert to `char*` when required.
+`ZString` is a [typedef inline](/language-common/alias/#typedef-inline) `char*`.`ZString` is a C compatible null terminated string, which can implicitly convert to `char*` when required.
 
 
 
@@ -266,10 +262,10 @@ but rather a wildcard pointer which matches any other pointer.
 ## Printing values
 
 Printing values can be done using `io::print`, `io::printn`, `io::printf` and `io::printfn`. This requires
-importing the module `std::io`. 
+importing the module `std::io`.
 
 :::note
-The `n` variants of the print functions will add a newline after printing, which is what we'll often 
+The `n` variants of the print functions will add a newline after printing, which is what we'll often
 use in the examples, but `print` and `printf` work the same way.
 
 :::
@@ -309,15 +305,15 @@ fn void main()
     ulong b = 0xFFAABBCCDDEEFF;
     double d = 13.03e-04;
     char[*] hex = x"4865 6c6c 6f20 776f 726c 6421";
-    io::printfn("a was:                        %d", a);
-    io::printfn("b in hex was:                 %x", b);
+    io::printfn("a was: %d", a);
+    io::printfn("b in hex was: %x", b);
     io::printfn("d in scientific notation was: %e", d);
-    io::printfn("Bytes as string:              %s", (String)&hex);
+    io::printfn("Bytes as string: %s", (String)&hex);
 }
 ```
 
-We can apply the [standard printf formatting rules](https://en.cppreference.com/w/c/io/fprintf), but 
-unlike in C/C++ there is no need to indicate the type when using `%d` - it will print unsigned and 
+We can apply the [standard printf formatting rules](https://en.cppreference.com/w/c/io/fprintf), but
+unlike in C/C++ there is no need to indicate the type when using `%d` - it will print unsigned and
 signed up to `int128`, in fact there is no support for `%u`, `%lld` etc in `io::printf`. Furthermore,
 `%s` works not just on strings but on any type:
 

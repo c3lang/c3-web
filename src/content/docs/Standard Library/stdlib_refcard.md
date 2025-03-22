@@ -6,7 +6,7 @@ sidebar:
 ---
 ### `libc`
 ```c3
-distinct Errno = inline CInt;
+typedef Errno = inline CInt;
 ```
 ```c3
 struct DivResult
@@ -957,7 +957,7 @@ fn void AnyList.clear(&self)
 macro AnyList.first(&self, $Type)
 ```
 ```c3
-fn any! AnyList.first_any(&self) @inline
+fn any? AnyList.first_any(&self) @inline
 ```
 ```c3
 fn void AnyList.free(&self)
@@ -978,7 +978,7 @@ fn bool AnyList.is_empty(&self) @inline
 macro AnyList.last(&self, $Type)
 ```
 ```c3
-fn any! AnyList.last_any(&self) @inline
+fn any? AnyList.last_any(&self) @inline
 ```
 ```c3
 fn usz AnyList.len(&self) @operator(len) @inline
@@ -987,10 +987,10 @@ fn usz AnyList.len(&self) @operator(len) @inline
 fn AnyList* AnyList.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn any! AnyList.new_pop(&self, Allocator allocator = allocator::heap())
+fn any? AnyList.new_pop(&self, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn any! AnyList.new_pop_first(&self, Allocator allocator = allocator::heap())
+fn any? AnyList.new_pop_first(&self, Allocator allocator = allocator::heap())
 ```
 ```c3
 macro AnyList.pop(&self, $Type)
@@ -999,10 +999,10 @@ macro AnyList.pop(&self, $Type)
 macro AnyList.pop_first(&self, $Type)
 ```
 ```c3
-fn any! AnyList.pop_first_retained(&self)
+fn any? AnyList.pop_first_retained(&self)
 ```
 ```c3
-fn any! AnyList.pop_retained(&self)
+fn any? AnyList.pop_retained(&self)
 ```
 ```c3
 macro void AnyList.push(&self, element)
@@ -1047,13 +1047,13 @@ fn void AnyList.swap(&self, usz i, usz j)
 fn AnyList* AnyList.temp_init(&self, usz initial_capacity = 16)
 ```
 ```c3
-fn any! AnyList.temp_pop(&self)
+fn any? AnyList.temp_pop(&self)
 ```
 ```c3
-fn any! AnyList.temp_pop_first(&self)
+fn any? AnyList.temp_pop_first(&self)
 ```
 ```c3
-fn usz! AnyList.to_format(&self, Formatter* formatter) @dynamic
+fn usz? AnyList.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String AnyList.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -1103,7 +1103,7 @@ fn usz EnumMap.len(&self) @operator(len) @inline
 fn void EnumMap.set(&self, Enum key, ValueType value) @operator([]=) @inline
 ```
 ```c3
-fn usz! EnumMap.to_format(&self, Formatter* formatter) @dynamic
+fn usz? EnumMap.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String EnumMap.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -1113,7 +1113,7 @@ fn String EnumMap.to_tstring(&self) @dynamic
 ```
 ### `std::collections::enumset(&lt;Enum&gt;)`
 ```c3
-distinct EnumSet (Printable) = EnumSetType;
+typedef EnumSet (Printable) = EnumSetType;
 ```
 ```c3
 fn void EnumSet.add(&self, Enum v)
@@ -1146,7 +1146,7 @@ fn void EnumSet.remove_all(&self, EnumSet s)
 fn void EnumSet.retain_all(&self, EnumSet s)
 ```
 ```c3
-fn usz! EnumSet.to_format(&set, Formatter* formatter) @dynamic
+fn usz? EnumSet.to_format(&set, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String EnumSet.to_new_string(&set, Allocator allocator = allocator::heap()) @dynamic
@@ -1200,7 +1200,7 @@ struct LinkedList
 fn void LinkedList.clear(&self)
 ```
 ```c3
-fn Type! LinkedList.first(&self)
+fn Type? LinkedList.first(&self)
 ```
 ```c3
 fn void LinkedList.free(&self)
@@ -1212,7 +1212,7 @@ fn Type LinkedList.get(&self, usz index)
 fn void LinkedList.insert_at(&self, usz index, Type element)
 ```
 ```c3
-fn Type! LinkedList.last(&self)
+fn Type? LinkedList.last(&self)
 ```
 ```c3
 fn usz LinkedList.len(&self) @inline
@@ -1224,16 +1224,16 @@ fn LinkedList* LinkedList.new_init(&self, Allocator allocator = allocator::heap(
 macro Node* LinkedList.node_at_index(&self, usz index)
 ```
 ```c3
-fn Type! LinkedList.peek(&self)
+fn Type? LinkedList.peek(&self)
 ```
 ```c3
-fn Type! LinkedList.peek_last(&self)
+fn Type? LinkedList.peek_last(&self)
 ```
 ```c3
-fn Type! LinkedList.pop(&self)
+fn Type? LinkedList.pop(&self)
 ```
 ```c3
-fn Type! LinkedList.pop_front(&self)
+fn Type? LinkedList.pop_front(&self)
 ```
 ```c3
 fn void LinkedList.push(&self, Type value)
@@ -1248,13 +1248,13 @@ fn usz LinkedList.remove(&self, Type t) @if(ELEMENT_IS_EQUATABLE)
 fn void LinkedList.remove_at(&self, usz index)
 ```
 ```c3
-fn void! LinkedList.remove_first(&self) @maydiscard
+fn void? LinkedList.remove_first(&self) @maydiscard
 ```
 ```c3
 fn bool LinkedList.remove_first_match(&self, Type t) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
-fn void! LinkedList.remove_last(&self) @maydiscard
+fn void? LinkedList.remove_last(&self) @maydiscard
 ```
 ```c3
 fn bool LinkedList.remove_last_match(&self, Type t)  @if(ELEMENT_IS_EQUATABLE)
@@ -1300,7 +1300,7 @@ fn bool List.contains(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 fn bool List.equals(&self, List other_list) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
-fn Type! List.first(&self)
+fn Type? List.first(&self)
 ```
 ```c3
 fn void List.free(&self)
@@ -1312,7 +1312,7 @@ fn Type List.get(&self, usz index) @inline
 fn Type* List.get_ref(&self, usz index) @operator(&[]) @inline
 ```
 ```c3
-fn usz! List.index_of(&self, Type type) @if(ELEMENT_IS_EQUATABLE)
+fn usz? List.index_of(&self, Type type) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
 fn void List.init_wrapping_array(&self, Type[] types, Allocator allocator = allocator::heap())
@@ -1324,7 +1324,7 @@ fn void List.insert_at(&self, usz index, Type type)
 fn bool List.is_empty(&self) @inline
 ```
 ```c3
-fn Type! List.last(&self)
+fn Type? List.last(&self)
 ```
 ```c3
 fn usz List.len(&self) @operator(len) @inline
@@ -1333,10 +1333,10 @@ fn usz List.len(&self) @operator(len) @inline
 fn List* List.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Type! List.pop(&self)
+fn Type? List.pop(&self)
 ```
 ```c3
-fn Type! List.pop_first(&self)
+fn Type? List.pop_first(&self)
 ```
 ```c3
 fn void List.push(&self, Type element) @inline
@@ -1354,7 +1354,7 @@ fn usz List.remove_all_matches(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 fn void List.remove_at(&self, usz index)
 ```
 ```c3
-fn void! List.remove_first(&self) @maydiscard
+fn void? List.remove_first(&self) @maydiscard
 ```
 ```c3
 fn bool List.remove_first_match(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
@@ -1363,7 +1363,7 @@ fn bool List.remove_first_match(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
 fn usz List.remove_if(&self, ElementPredicate filter)
 ```
 ```c3
-fn void! List.remove_last(&self) @maydiscard
+fn void? List.remove_last(&self) @maydiscard
 ```
 ```c3
 fn bool List.remove_last_match(&self, Type value) @if(ELEMENT_IS_EQUATABLE)
@@ -1384,7 +1384,7 @@ fn usz List.retain_using_test(&self, ElementTest filter, any context)
 fn void List.reverse(&self)
 ```
 ```c3
-fn usz! List.rindex_of(&self, Type type) @if(ELEMENT_IS_EQUATABLE)
+fn usz? List.rindex_of(&self, Type type) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
 fn void List.set(&self, usz index, Type value) @operator([]=)
@@ -1399,7 +1399,7 @@ fn void List.swap(&self, usz i, usz j)
 fn List* List.temp_init(&self, usz initial_capacity = 16)
 ```
 ```c3
-fn usz! List.to_format(&self, Formatter* formatter) @dynamic
+fn usz? List.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn Type[] List.to_new_array(&self, Allocator allocator = allocator::heap())
@@ -1436,13 +1436,13 @@ fn void HashMap.clear(&map)
 fn void HashMap.free(&map)
 ```
 ```c3
-fn Value! HashMap.get(&map, Key key) @operator([])
+fn Value? HashMap.get(&map, Key key) @operator([])
 ```
 ```c3
-fn Entry*! HashMap.get_entry(&map, Key key)
+fn Entry*? HashMap.get_entry(&map, Key key)
 ```
 ```c3
-fn Value*! HashMap.get_ref(&map, Key key)
+fn Value*? HashMap.get_ref(&map, Key key)
 ```
 ```c3
 fn bool HashMap.has_key(&map, Key key)
@@ -1472,7 +1472,7 @@ fn HashMap* HashMap.new_init(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, fl
 fn HashMap* HashMap.new_init_from_map(&self, HashMap* other_map, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn void! HashMap.remove(&map, Key key) @maydiscard
+fn void? HashMap.remove(&map, Key key) @maydiscard
 ```
 ```c3
 fn bool HashMap.set(&map, Key key, Value value) @operator([]=)
@@ -1494,7 +1494,7 @@ fn Value[] HashMap.value_tlist(&map)
 struct Maybe
 ```
 ```c3
-macro Type! Maybe.get(self)
+macro Type? Maybe.get(self)
 ```
 ```c3
 fn Maybe value(Type val)
@@ -1507,100 +1507,100 @@ struct Object (Printable)
 fn void Object.free(&self)
 ```
 ```c3
-fn Object*! Object.get(&self, String key)
+fn Object*? Object.get(&self, String key)
 ```
 ```c3
 fn Object* Object.get_at(&self, usz index)
 ```
 ```c3
-fn bool! Object.get_bool(&self, String key)
+fn bool? Object.get_bool(&self, String key)
 ```
 ```c3
-fn bool! Object.get_bool_at(&self, usz index)
+fn bool? Object.get_bool_at(&self, usz index)
 ```
 ```c3
-fn char! Object.get_char(&self, String key)
+fn char? Object.get_char(&self, String key)
 ```
 ```c3
-fn char! Object.get_char_at(&self, usz index)
+fn char? Object.get_char_at(&self, usz index)
 ```
 ```c3
-macro String! Object.get_enum(&self, $EnumType, String key)
+macro String? Object.get_enum(&self, $EnumType, String key)
 ```
 ```c3
-macro String! Object.get_enum_at(&self, $EnumType, usz index)
+macro String? Object.get_enum_at(&self, $EnumType, usz index)
 ```
 ```c3
-fn double! Object.get_float(&self, String key)
+fn double? Object.get_float(&self, String key)
 ```
 ```c3
-fn double! Object.get_float_at(&self, usz index)
+fn double? Object.get_float_at(&self, usz index)
 ```
 ```c3
-fn ichar! Object.get_ichar(&self, String key)
+fn ichar? Object.get_ichar(&self, String key)
 ```
 ```c3
-fn ichar! Object.get_ichar_at(&self, usz index)
+fn ichar? Object.get_ichar_at(&self, usz index)
 ```
 ```c3
-fn int! Object.get_int(&self, String key)
+fn int? Object.get_int(&self, String key)
 ```
 ```c3
-fn int128! Object.get_int128(&self, String key)
+fn int128? Object.get_int128(&self, String key)
 ```
 ```c3
-fn int128! Object.get_int128_at(&self, usz index)
+fn int128? Object.get_int128_at(&self, usz index)
 ```
 ```c3
-fn int! Object.get_int_at(&self, usz index)
+fn int? Object.get_int_at(&self, usz index)
 ```
 ```c3
 fn usz Object.get_len(&self)
 ```
 ```c3
-fn long! Object.get_long(&self, String key)
+fn long? Object.get_long(&self, String key)
 ```
 ```c3
-fn long! Object.get_long_at(&self, usz index)
+fn long? Object.get_long_at(&self, usz index)
 ```
 ```c3
 fn Object* Object.get_or_create_obj(&self, String key)
 ```
 ```c3
-fn short! Object.get_short(&self, String key)
+fn short? Object.get_short(&self, String key)
 ```
 ```c3
-fn short! Object.get_short_at(&self, usz index)
+fn short? Object.get_short_at(&self, usz index)
 ```
 ```c3
-fn String! Object.get_string(&self, String key)
+fn String? Object.get_string(&self, String key)
 ```
 ```c3
-fn String! Object.get_string_at(&self, usz index)
+fn String? Object.get_string_at(&self, usz index)
 ```
 ```c3
-fn uint! Object.get_uint(&self, String key)
+fn uint? Object.get_uint(&self, String key)
 ```
 ```c3
-fn uint128! Object.get_uint128(&self, String key)
+fn uint128? Object.get_uint128(&self, String key)
 ```
 ```c3
-fn uint128! Object.get_uint128_at(&self, usz index)
+fn uint128? Object.get_uint128_at(&self, usz index)
 ```
 ```c3
-fn uint! Object.get_uint_at(&self, usz index)
+fn uint? Object.get_uint_at(&self, usz index)
 ```
 ```c3
-fn ulong! Object.get_ulong(&self, String key)
+fn ulong? Object.get_ulong(&self, String key)
 ```
 ```c3
-fn ulong! Object.get_ulong_at(&self, usz index)
+fn ulong? Object.get_ulong_at(&self, usz index)
 ```
 ```c3
-fn short! Object.get_ushort(&self, String key)
+fn short? Object.get_ushort(&self, String key)
 ```
 ```c3
-fn ushort! Object.get_ushort_at(&self, usz index)
+fn ushort? Object.get_ushort_at(&self, usz index)
 ```
 ```c3
 fn bool Object.has_key(&self, String key)
@@ -1651,7 +1651,7 @@ macro Object* Object.set_at(&self, usz index, String key, value)
 fn void Object.set_object_at(&self, usz index, Object* to_set)
 ```
 ```c3
-fn usz! Object.to_format(&self, Formatter* formatter) @dynamic
+fn usz? Object.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 macro get_integer_value(Object* value, $Type)
@@ -1679,17 +1679,17 @@ fn Object* new_string(String s, Allocator allocator)
 ```
 ### `std::collections::priorityqueue(&lt;Type&gt;)`
 ```c3
-distinct PriorityQueue = inline PrivatePriorityQueue(<Type, false>);
+typedef PriorityQueue = inline PrivatePriorityQueue{ Type, false };
 ```
 ```c3
-distinct PriorityQueueMax = inline PrivatePriorityQueue(<Type, true>);
+typedef PriorityQueueMax = inline PrivatePriorityQueue{ Type, true };
 ```
 ### `std::collections::priorityqueue::private(&lt;Type, MAX&gt;)`
 ```c3
 struct PrivatePriorityQueue (Printable)
 ```
 ```c3
-fn Type! PrivatePriorityQueue.first(&self)
+fn Type? PrivatePriorityQueue.first(&self)
 ```
 ```c3
 fn void PrivatePriorityQueue.free(&self)
@@ -1707,7 +1707,7 @@ fn usz PrivatePriorityQueue.len(&self) @operator(len)
 fn void PrivatePriorityQueue.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap()) @inline
 ```
 ```c3
-fn Type! PrivatePriorityQueue.pop(&self)
+fn Type? PrivatePriorityQueue.pop(&self)
 ```
 ```c3
 fn void PrivatePriorityQueue.push(&self, Type element)
@@ -1716,7 +1716,7 @@ fn void PrivatePriorityQueue.push(&self, Type element)
 fn void PrivatePriorityQueue.temp_init(&self, usz initial_capacity = 16) @inline
 ```
 ```c3
-fn usz! PrivatePriorityQueue.to_format(&self, Formatter* formatter) @dynamic
+fn usz? PrivatePriorityQueue.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String PrivatePriorityQueue.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -1738,7 +1738,7 @@ fn Type ExclusiveRange.get(&self, usz index) @operator([])
 fn usz ExclusiveRange.len(&self) @operator(len)
 ```
 ```c3
-fn usz! ExclusiveRange.to_format(&self, Formatter* formatter) @dynamic
+fn usz? ExclusiveRange.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String ExclusiveRange.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -1756,7 +1756,7 @@ fn Type Range.get(&self, usz index) @operator([])
 fn usz Range.len(&self) @operator(len)
 ```
 ```c3
-fn usz! Range.to_format(&self, Formatter* formatter) @dynamic
+fn usz? Range.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String Range.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -1775,7 +1775,7 @@ fn Type RingBuffer.get(&self, usz index) @operator([])
 fn void RingBuffer.init(&self) @inline
 ```
 ```c3
-fn Type! RingBuffer.pop(&self)
+fn Type? RingBuffer.pop(&self)
 ```
 ```c3
 fn void RingBuffer.push(&self, Type c)
@@ -1865,7 +1865,7 @@ fault SearchResult
 macro char[] @as_char_view(&value) @builtin
 ```
 ```c3
-macro anyfault @catch(#expr) @builtin
+macro fault @catch(#expr) @builtin
 ```
 ```c3
 macro @expect(#value, expected, $probability = 1.0) @builtin
@@ -2017,7 +2017,7 @@ fn void sig_segmentation_fault(CInt i)
 ```
 ### `std::core::dstring`
 ```c3
-distinct DString (OutStream) = void*;
+typedef DString (OutStream) = void*;
 ```
 ```c3
 macro void DString.append(&self, value)
@@ -2041,10 +2041,10 @@ fn void DString.append_string(&self, DString str)
 fn void DString.append_utf32(&self, Char32[] chars)
 ```
 ```c3
-fn usz! DString.appendf(&self, String format, args...) @maydiscard
+fn usz? DString.appendf(&self, String format, args...) @maydiscard
 ```
 ```c3
-fn usz! DString.appendfn(&self, String format, args...) @maydiscard
+fn usz? DString.appendfn(&self, String format, args...) @maydiscard
 ```
 ```c3
 fn usz DString.capacity(self)
@@ -2095,7 +2095,7 @@ fn DString DString.new_concat(self, DString b, Allocator allocator = allocator::
 fn DString DString.new_init(&self, usz capacity = MIN_CAPACITY, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn usz! DString.read_from_stream(&self, InStream reader)
+fn usz? DString.read_from_stream(&self, InStream reader)
 ```
 ```c3
 fn void DString.reserve(&self, usz addition)
@@ -2119,10 +2119,10 @@ fn DString DString.temp_concat(self, DString b)
 fn DString DString.temp_init(&self, usz capacity = MIN_CAPACITY)
 ```
 ```c3
-fn usz! DString.write(&self, char[] buffer) @dynamic
+fn usz? DString.write(&self, char[] buffer) @dynamic
 ```
 ```c3
-fn void! DString.write_byte(&self, char c) @dynamic
+fn void? DString.write_byte(&self, char c) @dynamic
 ```
 ```c3
 fn ZString DString.zstr_view(&self)
@@ -2137,7 +2137,7 @@ fn DString new_join(String[] s, String joiner, Allocator allocator = allocator::
 fn DString new_with_capacity(usz capacity, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn DString temp_new(String s = "")
+fn DString tnew(String s = "")
 ```
 ```c3
 fn DString temp_with_capacity(usz capacity)
@@ -2319,13 +2319,13 @@ fn void* tcalloc(usz size, usz alignment = 0) @builtin @inline @nodiscard
 macro temp_alloc($Type) @nodiscard
 ```
 ```c3
-macro temp_alloc_array($Type, usz elements) @nodiscard
+macro talloc_array($Type, usz elements) @nodiscard
 ```
 ```c3
-macro temp_new($Type, ...) @nodiscard
+macro tnew($Type, ...) @nodiscard
 ```
 ```c3
-macro temp_new_array($Type, usz elements) @nodiscard
+macro temp_array($Type, usz elements) @nodiscard
 ```
 ```c3
 fn void temp_pop(TempState old_state)
@@ -2344,7 +2344,7 @@ macro type_alloc_must_be_aligned($Type)
 ```
 ### `std::core::mem::allocator`
 ```c3
-distinct LibcAllocator (Allocator) = uptr;
+typedef LibcAllocator (Allocator) = uptr;
 ```
 ```c3
 enum AllocInitType
@@ -2392,16 +2392,16 @@ struct TrackingEnv
 struct WasmMemory
 ```
 ```c3
-macro void*! @aligned_alloc(#alloc_fn, usz bytes, usz alignment)
+macro void*? @aligned_alloc(#alloc_fn, usz bytes, usz alignment)
 ```
 ```c3
-macro void! @aligned_free(#free_fn, void* old_pointer)
+macro void? @aligned_free(#free_fn, void* old_pointer)
 ```
 ```c3
-macro void*! @aligned_realloc(#calloc_fn, #free_fn, void* old_pointer, usz bytes, usz alignment)
+macro void*? @aligned_realloc(#calloc_fn, #free_fn, void* old_pointer, usz bytes, usz alignment)
 ```
 ```c3
-fn void*! ArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? ArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void ArenaAllocator.clear(&self)
@@ -2419,10 +2419,10 @@ fn void ArenaAllocator.release(&self, void* ptr, bool) @dynamic
 fn void ArenaAllocator.reset(&self, usz mark) @dynamic
 ```
 ```c3
-fn void*! ArenaAllocator.resize(&self, void *old_pointer, usz size, usz alignment) @dynamic
+fn void*? ArenaAllocator.resize(&self, void *old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
-fn void*! DynamicArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? DynamicArenaAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void DynamicArenaAllocator.free(&self)
@@ -2437,10 +2437,10 @@ fn void DynamicArenaAllocator.release(&self, void* ptr, bool) @dynamic
 fn void DynamicArenaAllocator.reset(&self, usz mark = 0) @dynamic
 ```
 ```c3
-fn void*! DynamicArenaAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
+fn void*? DynamicArenaAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
-fn void*! OnStackAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? OnStackAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void OnStackAllocator.free(&self)
@@ -2452,10 +2452,10 @@ fn void OnStackAllocator.init(&self, char[] data, Allocator allocator)
 fn void OnStackAllocator.release(&self, void* old_pointer, bool aligned) @dynamic
 ```
 ```c3
-fn void*! OnStackAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
+fn void*? OnStackAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
-fn void*! SimpleHeapAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? SimpleHeapAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void SimpleHeapAllocator.init(&self, MemoryAllocFn allocator)
@@ -2464,16 +2464,16 @@ fn void SimpleHeapAllocator.init(&self, MemoryAllocFn allocator)
 fn void SimpleHeapAllocator.release(&self, void* old_pointer, bool aligned) @dynamic
 ```
 ```c3
-fn void*! SimpleHeapAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
+fn void*? SimpleHeapAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
-fn void*! TempAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? TempAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn usz TempAllocator.mark(&self) @dynamic
 ```
 ```c3
-fn void! TempAllocator.print_pages(&self, File* f)
+fn void? TempAllocator.print_pages(&self, File* f)
 ```
 ```c3
 fn void TempAllocator.release(&self, void* old_pointer, bool) @dynamic
@@ -2482,7 +2482,7 @@ fn void TempAllocator.release(&self, void* old_pointer, bool) @dynamic
 fn void TempAllocator.reset(&self, usz mark) @dynamic
 ```
 ```c3
-fn void*! TempAllocator.resize(&self, void* pointer, usz size, usz alignment) @dynamic
+fn void*? TempAllocator.resize(&self, void* pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
 macro bool TempAllocatorPage.is_aligned(&self)
@@ -2491,7 +2491,7 @@ macro bool TempAllocatorPage.is_aligned(&self)
 macro usz TempAllocatorPage.pagesize(&self)
 ```
 ```c3
-fn void*! TrackingAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
+fn void*? TrackingAllocator.acquire(&self, usz size, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn usz TrackingAllocator.allocated(&self)
@@ -2506,7 +2506,7 @@ fn Allocation[] TrackingAllocator.allocations_tlist(&self, Allocator allocator)
 fn void TrackingAllocator.clear(&self)
 ```
 ```c3
-fn void! TrackingAllocator.fprint_report(&self, OutStream out)
+fn void? TrackingAllocator.fprint_report(&self, OutStream out)
 ```
 ```c3
 fn void TrackingAllocator.free(&self)
@@ -2521,7 +2521,7 @@ fn void TrackingAllocator.print_report(&self)
 fn void TrackingAllocator.release(&self, void* old_pointer, bool is_aligned) @dynamic
 ```
 ```c3
-fn void*! TrackingAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
+fn void*? TrackingAllocator.resize(&self, void* old_pointer, usz size, usz alignment) @dynamic
 ```
 ```c3
 fn usz TrackingAllocator.total_allocated(&self)
@@ -2530,7 +2530,7 @@ fn usz TrackingAllocator.total_allocated(&self)
 fn usz TrackingAllocator.total_allocation_count(&self)
 ```
 ```c3
-fn char[]! WasmMemory.allocate_block(&self, usz bytes)
+fn char[]? WasmMemory.allocate_block(&self, usz bytes)
 ```
 ```c3
 macro alloc(Allocator allocator, $Type) @nodiscard
@@ -2554,10 +2554,10 @@ macro alloc_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 macro void* calloc(Allocator allocator, usz size) @nodiscard
 ```
 ```c3
-macro void*! calloc_aligned(Allocator allocator, usz size, usz alignment) @nodiscard
+macro void*? calloc_aligned(Allocator allocator, usz size, usz alignment) @nodiscard
 ```
 ```c3
-macro void*! calloc_try(Allocator allocator, usz size) @nodiscard
+macro void*? calloc_try(Allocator allocator, usz size) @nodiscard
 ```
 ```c3
 macro clone(Allocator allocator, value) @nodiscard
@@ -2578,10 +2578,10 @@ macro Allocator heap()
 macro void* malloc(Allocator allocator, usz size) @nodiscard
 ```
 ```c3
-macro void*! malloc_aligned(Allocator allocator, usz size, usz alignment) @nodiscard
+macro void*? malloc_aligned(Allocator allocator, usz size, usz alignment) @nodiscard
 ```
 ```c3
-macro void*! malloc_try(Allocator allocator, usz size) @nodiscard
+macro void*? malloc_try(Allocator allocator, usz size) @nodiscard
 ```
 ```c3
 macro new(Allocator allocator, $Type, ...) @nodiscard
@@ -2596,7 +2596,7 @@ macro new_array_aligned(Allocator allocator, $Type, usz elements) @nodiscard
 macro new_array_try(Allocator allocator, $Type, usz elements) @nodiscard
 ```
 ```c3
-fn TempAllocator*! new_temp_allocator(usz size, Allocator allocator)
+fn TempAllocator*? new_temp_allocator(usz size, Allocator allocator)
 ```
 ```c3
 macro new_try(Allocator allocator, $Type, ...) @nodiscard
@@ -2608,43 +2608,43 @@ macro new_with_padding(Allocator allocator, $Type, usz padding) @nodiscard
 macro void* realloc(Allocator allocator, void* ptr, usz new_size) @nodiscard
 ```
 ```c3
-macro void*! realloc_aligned(Allocator allocator, void* ptr, usz new_size, usz alignment) @nodiscard
+macro void*? realloc_aligned(Allocator allocator, void* ptr, usz new_size, usz alignment) @nodiscard
 ```
 ```c3
-macro void*! realloc_try(Allocator allocator, void* ptr, usz new_size) @nodiscard
+macro void*? realloc_try(Allocator allocator, void* ptr, usz new_size) @nodiscard
 ```
 ```c3
 macro TempAllocator* temp()
 ```
 ### `std::core::mem::allocator @if(!env::WIN32 &amp;&amp; !env::POSIX)`
 ```c3
-fn void*! LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
+fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
 ```c3
-fn void*! LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
+fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
 ```
 ### `std::core::mem::allocator @if(env::POSIX)`
 ```c3
-fn void*! LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
+fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
 ```c3
-fn void*! LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
+fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
 ```
 ### `std::core::mem::allocator @if(env::WIN32)`
 ```c3
-fn void*! LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
+fn void*? LibcAllocator.acquire(&self, usz bytes, AllocInitType init_type, usz alignment) @dynamic
 ```
 ```c3
 fn void LibcAllocator.release(&self, void* old_ptr, bool aligned) @dynamic
 ```
 ```c3
-fn void*! LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
+fn void*? LibcAllocator.resize(&self, void* old_ptr, usz new_bytes, usz alignment) @dynamic
 ```
 ### `std::core::runtime`
 ```c3
@@ -2698,10 +2698,10 @@ fn void wasm_initialize() @extern("_initialize") @wasm
 ```
 ### `std::core::string`
 ```c3
-distinct WString = inline Char16*;
+typedef WString = inline Char16*;
 ```
 ```c3
-distinct ZString = inline char*;
+typedef ZString = inline char*;
 ```
 ```c3
 fault NumberConversion
@@ -2713,7 +2713,7 @@ fault UnicodeResult
 struct Splitter
 ```
 ```c3
-fn String! Splitter.next(&self)
+fn String? Splitter.next(&self)
 ```
 ```c3
 fn void Splitter.reset(&self)
@@ -2740,10 +2740,10 @@ fn bool String.ends_with(string, String needle)
 fn void String.free(&s, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn usz! String.index_of(s, String needle)
+fn usz? String.index_of(s, String needle)
 ```
 ```c3
-fn usz! String.index_of_char(s, char needle)
+fn usz? String.index_of_char(s, char needle)
 ```
 ```c3
 fn StringIterator String.iterator(s)
@@ -2755,10 +2755,10 @@ fn String String.new_ascii_to_lower(s, Allocator allocator = allocator::heap())
 fn String String.new_ascii_to_upper(s, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn usz! String.rindex_of(s, String needle)
+fn usz? String.rindex_of(s, String needle)
 ```
 ```c3
-fn usz! String.rindex_of_char(s, char needle)
+fn usz? String.rindex_of_char(s, char needle)
 ```
 ```c3
 fn String[] String.split(s, String needle, usz max = 0, Allocator allocator = allocator::heap())
@@ -2788,61 +2788,61 @@ fn String String.temp_ascii_to_lower(s, Allocator allocator = allocator::heap())
 fn String String.temp_ascii_to_upper(s)
 ```
 ```c3
-fn double! String.to_double(s)
+fn double? String.to_double(s)
 ```
 ```c3
-fn float! String.to_float(s)
+fn float? String.to_float(s)
 ```
 ```c3
-fn ichar! String.to_ichar(s, int base = 10)
+fn ichar? String.to_ichar(s, int base = 10)
 ```
 ```c3
-fn int! String.to_int(s, int base = 10)
+fn int? String.to_int(s, int base = 10)
 ```
 ```c3
-fn int128! String.to_int128(s, int base = 10)
+fn int128? String.to_int128(s, int base = 10)
 ```
 ```c3
 macro String.to_integer(string, $Type, int base = 10)
 ```
 ```c3
-fn long! String.to_long(s, int base = 10)
+fn long? String.to_long(s, int base = 10)
 ```
 ```c3
-fn Char16[]! String.to_new_utf16(s, Allocator allocator = allocator::heap())
+fn Char16[]? String.to_new_utf16(s, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Char32[]! String.to_new_utf32(s, Allocator allocator = allocator::heap())
+fn Char32[]? String.to_new_utf32(s, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn WString! String.to_new_wstring(s, Allocator allocator = allocator::heap())
+fn WString? String.to_new_wstring(s, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn short! String.to_short(s, int base = 10)
+fn short? String.to_short(s, int base = 10)
 ```
 ```c3
-fn Char16[]! String.to_temp_utf16(s)
+fn Char16[]? String.to_temp_utf16(s)
 ```
 ```c3
-fn Char32[]! String.to_temp_utf32(s)
+fn Char32[]? String.to_temp_utf32(s)
 ```
 ```c3
-fn WString! String.to_temp_wstring(s)
+fn WString? String.to_temp_wstring(s)
 ```
 ```c3
-fn char! String.to_uchar(s, int base = 10)
+fn char? String.to_uchar(s, int base = 10)
 ```
 ```c3
-fn uint! String.to_uint(s, int base = 10)
+fn uint? String.to_uint(s, int base = 10)
 ```
 ```c3
-fn uint128! String.to_uint128(s, int base = 10)
+fn uint128? String.to_uint128(s, int base = 10)
 ```
 ```c3
-fn ulong! String.to_ulong(s, int base = 10)
+fn ulong? String.to_ulong(s, int base = 10)
 ```
 ```c3
-fn ushort! String.to_ushort(s, int base = 10)
+fn ushort? String.to_ushort(s, int base = 10)
 ```
 ```c3
 fn String String.trim(string, String to_trim = "\t\n\r ")
@@ -2878,10 +2878,10 @@ fn String ZString.tcopy(z)
 macro bool char_in_set(char c, String set)
 ```
 ```c3
-macro double! decfloat(char[] chars, int $bits, int $emin, int sign)
+macro double? decfloat(char[] chars, int $bits, int $emin, int sign)
 ```
 ```c3
-macro double! hexfloat(char[] chars, int $bits, int $emin, int sign)
+macro double? hexfloat(char[] chars, int $bits, int $emin, int sign)
 ```
 ```c3
 fn String join_new(String[] s, String joiner, Allocator allocator = allocator::heap())
@@ -2890,32 +2890,32 @@ fn String join_new(String[] s, String joiner, Allocator allocator = allocator::h
 macro String new_format(String fmt, ..., Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! new_from_utf16(Char16[] utf16, Allocator allocator = allocator::heap())
+fn String? new_from_utf16(Char16[] utf16, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! new_from_utf32(Char32[] utf32, Allocator allocator = allocator::heap())
+fn String? new_from_utf32(Char32[] utf32, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! new_from_wstring(WString wstring, Allocator allocator = allocator::heap())
+fn String? new_from_wstring(WString wstring, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! temp_from_utf16(Char16[] utf16)
+fn String? temp_from_utf16(Char16[] utf16)
 ```
 ```c3
-fn String! temp_from_wstring(WString wstring)
+fn String? temp_from_wstring(WString wstring)
 ```
 ```c3
 macro String tformat(String fmt, ...)
 ```
 ### `std::core::string::conv`
 ```c3
-fn void! char16_to_utf8_unsafe(Char16 *ptr, usz *available, char** output)
+fn void? char16_to_utf8_unsafe(Char16 *ptr, usz *available, char** output)
 ```
 ```c3
 fn void char32_to_utf16_unsafe(Char32 c, Char16** output)
 ```
 ```c3
-fn usz! char32_to_utf8(Char32 c, char[] output)
+fn usz? char32_to_utf8(Char32 c, char[] output)
 ```
 ```c3
 fn usz char32_to_utf8_unsafe(Char32 c, char** output)
@@ -2927,10 +2927,10 @@ fn usz utf16len_for_utf32(Char32[] utf32)
 fn usz utf16len_for_utf8(String utf8)
 ```
 ```c3
-fn void! utf16to8_unsafe(Char16[] utf16, char* utf8_buffer)
+fn void? utf16to8_unsafe(Char16[] utf16, char* utf8_buffer)
 ```
 ```c3
-fn usz! utf32to8(Char32[] utf32, char[] utf8_buffer)
+fn usz? utf32to8(Char32[] utf32, char[] utf8_buffer)
 ```
 ```c3
 fn void utf32to8_unsafe(Char32[] utf32, char* utf8_buffer)
@@ -2939,7 +2939,7 @@ fn void utf32to8_unsafe(Char32[] utf32, char* utf8_buffer)
 fn usz utf8_codepoints(String utf8)
 ```
 ```c3
-fn Char32! utf8_to_char32(char* ptr, usz* size)
+fn Char32? utf8_to_char32(char* ptr, usz* size)
 ```
 ```c3
 fn usz utf8len_for_utf16(Char16[] utf16)
@@ -2948,20 +2948,20 @@ fn usz utf8len_for_utf16(Char16[] utf16)
 fn usz utf8len_for_utf32(Char32[] utf32)
 ```
 ```c3
-fn void! utf8to16_unsafe(String utf8, Char16* utf16_buffer)
+fn void? utf8to16_unsafe(String utf8, Char16* utf16_buffer)
 ```
 ```c3
-fn usz! utf8to32(String utf8, Char32[] utf32_buffer)
+fn usz? utf8to32(String utf8, Char32[] utf32_buffer)
 ```
 ```c3
-fn void! utf8to32_unsafe(String utf8, Char32* utf32_buffer)
+fn void? utf8to32_unsafe(String utf8, Char32* utf32_buffer)
 ```
 ### `std::core::string::iterator`
 ```c3
 struct StringIterator
 ```
 ```c3
-fn Char32! StringIterator.next(&self)
+fn Char32? StringIterator.next(&self)
 ```
 ```c3
 fn void StringIterator.reset(&self)
@@ -3121,22 +3121,22 @@ struct Base64Decoder
 struct Base64Encoder
 ```
 ```c3
-fn usz! Base64Decoder.decode(&self, char[] src, char[] dst)
+fn usz? Base64Decoder.decode(&self, char[] src, char[] dst)
 ```
 ```c3
-fn usz! Base64Decoder.decode_len(&self, usz n)
+fn usz? Base64Decoder.decode_len(&self, usz n)
 ```
 ```c3
-fn void! Base64Decoder.init(&self, String alphabet, int padding = '=')
+fn void? Base64Decoder.init(&self, String alphabet, int padding = '=')
 ```
 ```c3
-fn usz! Base64Encoder.encode(&self, char[] src, char[] dst)
+fn usz? Base64Encoder.encode(&self, char[] src, char[] dst)
 ```
 ```c3
 fn usz Base64Encoder.encode_len(&self, usz n)
 ```
 ```c3
-fn void! Base64Encoder.init(&self, String alphabet, int padding = '=')
+fn void? Base64Encoder.init(&self, String alphabet, int padding = '=')
 ```
 ### `std::encoding::csv`
 ```c3
@@ -3149,26 +3149,26 @@ macro CsvReader.@each_row(self, int rows = int.max; @body(String[] row))
 fn void CsvReader.init(&self, InStream stream, String separator = ",")
 ```
 ```c3
-fn String[]! CsvReader.read_new_row(self, Allocator allocator = allocator::heap())
+fn String[]? CsvReader.read_new_row(self, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String[]! CsvReader.read_new_row_with_allocator(self, Allocator allocator = allocator::heap())
+fn String[]? CsvReader.read_new_row_with_allocator(self, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String[]! CsvReader.read_temp_row(self)
+fn String[]? CsvReader.read_temp_row(self)
 ```
 ```c3
-fn void! CsvReader.skip_row(self) @maydiscard
+fn void? CsvReader.skip_row(self) @maydiscard
 ```
 ### `std::encoding::json`
 ```c3
 fault JsonParsingError
 ```
 ```c3
-fn JsonTokenType! lex_string(JsonContext* context)
+fn JsonTokenType? lex_string(JsonContext* context)
 ```
 ```c3
-fn Object*! parse(InStream s, Allocator allocator = allocator::heap())
+fn Object*? parse(InStream s, Allocator allocator = allocator::heap())
 ```
 ### `std::hash::adler32`
 ```c3
@@ -3229,7 +3229,7 @@ fn ulong encode(char[] data)
 ```
 ### `std::hash::fnv32a`
 ```c3
-distinct Fnv32a = uint;
+typedef Fnv32a = uint;
 ```
 ```c3
 fn void Fnv32a.init(&self)
@@ -3245,7 +3245,7 @@ fn uint encode(char[] data)
 ```
 ### `std::hash::fnv64a`
 ```c3
-distinct Fnv64a = ulong;
+typedef Fnv64a = ulong;
 ```
 ```c3
 fn void Fnv64a.init(&self)
@@ -3334,19 +3334,19 @@ macro bool @is_instream(#expr)
 macro bool @is_outstream(#expr)
 ```
 ```c3
-macro void! @pushback_using_seek(&s)
+macro void? @pushback_using_seek(&s)
 ```
 ```c3
-macro char! @read_byte_using_read(&s)
+macro char? @read_byte_using_read(&s)
 ```
 ```c3
-macro usz! @read_using_read_byte(&s, char[] buffer)
+macro usz? @read_using_read_byte(&s, char[] buffer)
 ```
 ```c3
-macro void! @write_byte_using_write(&s, char c)
+macro void? @write_byte_using_write(&s, char c)
 ```
 ```c3
-macro usz! @write_using_write_byte(&s, char[] bytes)
+macro usz? @write_using_write_byte(&s, char[] bytes)
 ```
 ```c3
 fn void BitReader.clear(&self) @inline
@@ -3355,58 +3355,58 @@ fn void BitReader.clear(&self) @inline
 fn void BitReader.init(&self, InStream byte_reader)
 ```
 ```c3
-fn char! BitReader.read_bits(&self, uint nbits)
+fn char? BitReader.read_bits(&self, uint nbits)
 ```
 ```c3
-fn void! BitWriter.flush(&self)
+fn void? BitWriter.flush(&self)
 ```
 ```c3
 fn void BitWriter.init(&self, OutStream byte_writer)
 ```
 ```c3
-fn void! BitWriter.write_bits(&self, uint bits, uint nbits)
+fn void? BitWriter.write_bits(&self, uint bits, uint nbits)
 ```
 ```c3
-fn usz! ByteBuffer.available(&self) @inline @dynamic
+fn usz? ByteBuffer.available(&self) @inline @dynamic
 ```
 ```c3
 fn void ByteBuffer.free(&self)
 ```
 ```c3
-fn void! ByteBuffer.grow(&self, usz n)
+fn void? ByteBuffer.grow(&self, usz n)
 ```
 ```c3
-fn ByteBuffer*! ByteBuffer.init_with_buffer(&self, char[] buf)
+fn ByteBuffer*? ByteBuffer.init_with_buffer(&self, char[] buf)
 ```
 ```c3
-fn ByteBuffer*! ByteBuffer.new_init(&self, usz max_read, usz initial_capacity = 16, Allocator allocator = allocator::heap())
+fn ByteBuffer*? ByteBuffer.new_init(&self, usz max_read, usz initial_capacity = 16, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn void! ByteBuffer.pushback_byte(&self) @dynamic
+fn void? ByteBuffer.pushback_byte(&self) @dynamic
 ```
 ```c3
-fn usz! ByteBuffer.read(&self, char[] bytes) @dynamic
+fn usz? ByteBuffer.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! ByteBuffer.read_byte(&self) @dynamic
+fn char? ByteBuffer.read_byte(&self) @dynamic
 ```
 ```c3
-fn usz! ByteBuffer.seek(&self, isz offset, Seek seek) @dynamic
+fn usz? ByteBuffer.seek(&self, isz offset, Seek seek) @dynamic
 ```
 ```c3
 macro ByteBuffer.shrink(&self)
 ```
 ```c3
-fn ByteBuffer*! ByteBuffer.temp_init(&self, usz max_read, usz initial_capacity = 16)
+fn ByteBuffer*? ByteBuffer.temp_init(&self, usz max_read, usz initial_capacity = 16)
 ```
 ```c3
-fn usz! ByteBuffer.write(&self, char[] bytes) @dynamic
+fn usz? ByteBuffer.write(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn void! ByteBuffer.write_byte(&self, char c) @dynamic
+fn void? ByteBuffer.write_byte(&self, char c) @dynamic
 ```
 ```c3
-fn usz! ByteReader.available(&self) @inline @dynamic
+fn usz? ByteReader.available(&self) @inline @dynamic
 ```
 ```c3
 fn ByteReader* ByteReader.init(&self, char[] bytes)
@@ -3415,25 +3415,25 @@ fn ByteReader* ByteReader.init(&self, char[] bytes)
 fn usz ByteReader.len(&self) @dynamic
 ```
 ```c3
-fn void! ByteReader.pushback_byte(&self) @dynamic
+fn void? ByteReader.pushback_byte(&self) @dynamic
 ```
 ```c3
-fn usz! ByteReader.read(&self, char[] bytes) @dynamic
+fn usz? ByteReader.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! ByteReader.read_byte(&self) @dynamic
+fn char? ByteReader.read_byte(&self) @dynamic
 ```
 ```c3
-fn usz! ByteReader.seek(&self, isz offset, Seek seek) @dynamic
+fn usz? ByteReader.seek(&self, isz offset, Seek seek) @dynamic
 ```
 ```c3
-fn usz! ByteReader.write_to(&self, OutStream writer) @dynamic
+fn usz? ByteReader.write_to(&self, OutStream writer) @dynamic
 ```
 ```c3
-fn void! ByteWriter.destroy(&self) @dynamic
+fn void? ByteWriter.destroy(&self) @dynamic
 ```
 ```c3
-fn void! ByteWriter.ensure_capacity(&self, usz len) @inline
+fn void? ByteWriter.ensure_capacity(&self, usz len) @inline
 ```
 ```c3
 fn ByteWriter* ByteWriter.init_with_buffer(&self, char[] data)
@@ -3442,7 +3442,7 @@ fn ByteWriter* ByteWriter.init_with_buffer(&self, char[] data)
 fn ByteWriter* ByteWriter.new_init(&self, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn usz! ByteWriter.read_from(&self, InStream reader) @dynamic
+fn usz? ByteWriter.read_from(&self, InStream reader) @dynamic
 ```
 ```c3
 fn String ByteWriter.str_view(&self) @inline
@@ -3451,58 +3451,58 @@ fn String ByteWriter.str_view(&self) @inline
 fn ByteWriter* ByteWriter.temp_init(&self)
 ```
 ```c3
-fn usz! ByteWriter.write(&self, char[] bytes) @dynamic
+fn usz? ByteWriter.write(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn void! ByteWriter.write_byte(&self, char c) @dynamic
+fn void? ByteWriter.write_byte(&self, char c) @dynamic
 ```
 ```c3
 fn void Formatter.init(&self, OutputFn out_fn, void* data = null)
 ```
 ```c3
-fn usz! Formatter.print(&self, String str)
+fn usz? Formatter.print(&self, String str)
 ```
 ```c3
-fn usz! Formatter.print_with_function(&self, Printable arg)
+fn usz? Formatter.print_with_function(&self, Printable arg)
 ```
 ```c3
-fn usz! Formatter.printf(&self, String format, args...)
+fn usz? Formatter.printf(&self, String format, args...)
 ```
 ```c3
-fn usz! Formatter.vprintf(&self, String format, any[] anys)
+fn usz? Formatter.vprintf(&self, String format, any[] anys)
 ```
 ```c3
-fn usz! LimitReader.available(&self) @inline @dynamic
+fn usz? LimitReader.available(&self) @inline @dynamic
 ```
 ```c3
-fn void! LimitReader.close(&self) @dynamic
+fn void? LimitReader.close(&self) @dynamic
 ```
 ```c3
 fn LimitReader* LimitReader.init(&self, InStream wrapped_stream, usz limit)
 ```
 ```c3
-fn usz! LimitReader.read(&self, char[] bytes) @dynamic
+fn usz? LimitReader.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! LimitReader.read_byte(&self) @dynamic
+fn char? LimitReader.read_byte(&self) @dynamic
 ```
 ```c3
-fn void! ReadBuffer.close(&self) @dynamic
+fn void? ReadBuffer.close(&self) @dynamic
 ```
 ```c3
 fn ReadBuffer* ReadBuffer.init(&self, InStream wrapped_stream, char[] bytes)
 ```
 ```c3
-fn usz! ReadBuffer.read(&self, char[] bytes) @dynamic
+fn usz? ReadBuffer.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! ReadBuffer.read_byte(&self) @dynamic
+fn char? ReadBuffer.read_byte(&self) @dynamic
 ```
 ```c3
 fn String ReadBuffer.str_view(&self) @inline
 ```
 ```c3
-fn void! Scanner.close(&self) @dynamic
+fn void? Scanner.close(&self) @dynamic
 ```
 ```c3
 fn char[] Scanner.flush(&self) @dynamic
@@ -3511,19 +3511,19 @@ fn char[] Scanner.flush(&self) @dynamic
 fn void Scanner.init(&self, InStream stream, char[] buffer)
 ```
 ```c3
-fn usz! Scanner.read(&self, char[] bytes) @dynamic
+fn usz? Scanner.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! Scanner.read_byte(&self) @dynamic
+fn char? Scanner.read_byte(&self) @dynamic
 ```
 ```c3
-fn char[]! Scanner.scan(&self, String pattern = "\n")
+fn char[]? Scanner.scan(&self, String pattern = "\n")
 ```
 ```c3
-fn void! WriteBuffer.close(&self) @dynamic
+fn void? WriteBuffer.close(&self) @dynamic
 ```
 ```c3
-fn void! WriteBuffer.flush(&self) @dynamic
+fn void? WriteBuffer.flush(&self) @dynamic
 ```
 ```c3
 fn WriteBuffer* WriteBuffer.init(&self, OutStream wrapped_stream, char[] bytes)
@@ -3532,79 +3532,79 @@ fn WriteBuffer* WriteBuffer.init(&self, OutStream wrapped_stream, char[] bytes)
 fn String WriteBuffer.str_view(&self) @inline
 ```
 ```c3
-fn usz! WriteBuffer.write(&self, char[] bytes) @dynamic
+fn usz? WriteBuffer.write(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn void! WriteBuffer.write_byte(&self, char c) @dynamic
+fn void? WriteBuffer.write_byte(&self, char c) @dynamic
 ```
 ```c3
-fn usz! available(InStream s)
+fn usz? available(InStream s)
 ```
 ```c3
-fn char[]! bprintf(char[] buffer, String format, args...) @maydiscard
+fn char[]? bprintf(char[] buffer, String format, args...) @maydiscard
 ```
 ```c3
-fn usz! copy_to(InStream in, OutStream dst, char[] buffer = {})
+fn usz? copy_to(InStream in, OutStream dst, char[] buffer = {})
 ```
 ```c3
 macro void eprint(x)
 ```
 ```c3
-fn usz! eprintf(String format, args...) @maydiscard
+fn usz? eprintf(String format, args...) @maydiscard
 ```
 ```c3
-fn usz! eprintfn(String format, args...) @maydiscard
+fn usz? eprintfn(String format, args...) @maydiscard
 ```
 ```c3
 macro void eprintn(x)
 ```
 ```c3
-macro usz! fprint(out, x)
+macro usz? fprint(out, x)
 ```
 ```c3
-fn usz! fprintf(OutStream out, String format, args...)
+fn usz? fprintf(OutStream out, String format, args...)
 ```
 ```c3
-fn usz! fprintfn(OutStream out, String format, args...) @maydiscard
+fn usz? fprintfn(OutStream out, String format, args...) @maydiscard
 ```
 ```c3
-macro usz! fprintn(out, x = "")
+macro usz? fprintn(out, x = "")
 ```
 ```c3
 macro void print(x)
 ```
 ```c3
-fn usz! printf(String format, args...) @maydiscard
+fn usz? printf(String format, args...) @maydiscard
 ```
 ```c3
-fn usz! printfn(String format, args...) @maydiscard
+fn usz? printfn(String format, args...) @maydiscard
 ```
 ```c3
 macro void printn(x = "")
 ```
 ```c3
-macro usz! read_all(stream, char[] buffer)
+macro usz? read_all(stream, char[] buffer)
 ```
 ```c3
-macro usz! read_any(stream, any ref)
+macro usz? read_any(stream, any ref)
 ```
 ```c3
-macro usz! read_varint(stream, x_ptr)
+macro usz? read_varint(stream, x_ptr)
 ```
 ```c3
-macro String! readline(stream = io::stdin(), Allocator allocator = allocator::heap())
+macro String? readline(stream = io::stdin(), Allocator allocator = allocator::heap())
 ```
 ```c3
-macro String! treadline(stream = io::stdin())
+macro String? treadline(stream = io::stdin())
 ```
 ```c3
-macro usz! write_all(stream, char[] buffer)
+macro usz? write_all(stream, char[] buffer)
 ```
 ```c3
-macro usz! write_any(stream, any ref)
+macro usz? write_any(stream, any ref)
 ```
 ```c3
-macro usz! write_varint(stream, x)
+macro usz? write_varint(stream, x)
 ```
 ### `std::io @if (env::LIBC)`
 ```c3
@@ -3634,80 +3634,80 @@ fn File* stdout()
 ```
 ### `std::io::file`
 ```c3
-fn void! File.close(&self) @inline @dynamic
+fn void? File.close(&self) @inline @dynamic
 ```
 ```c3
 fn bool File.eof(&self) @inline
 ```
 ```c3
-fn void! File.flush(&self) @dynamic
+fn void? File.flush(&self) @dynamic
 ```
 ```c3
-fn void! File.memopen(File* file, char[] data, String mode)
+fn void? File.memopen(File* file, char[] data, String mode)
 ```
 ```c3
-fn usz! File.read(&self, char[] buffer) @dynamic
+fn usz? File.read(&self, char[] buffer) @dynamic
 ```
 ```c3
-fn char! File.read_byte(&self) @dynamic
+fn char? File.read_byte(&self) @dynamic
 ```
 ```c3
-fn void! File.reopen(&self, String filename, String mode)
+fn void? File.reopen(&self, String filename, String mode)
 ```
 ```c3
-fn usz! File.seek(&self, isz offset, Seek seek_mode = Seek.SET) @dynamic
+fn usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET) @dynamic
 ```
 ```c3
-fn usz! File.write(&self, char[] buffer) @dynamic
+fn usz? File.write(&self, char[] buffer) @dynamic
 ```
 ```c3
-fn void! File.write_byte(&self, char c) @dynamic
+fn void? File.write_byte(&self, char c) @dynamic
 ```
 ```c3
-fn void! delete(String filename)
+fn void? delete(String filename)
 ```
 ```c3
 fn File from_handle(CFile file)
 ```
 ```c3
-fn usz! get_size(String path)
+fn usz? get_size(String path)
 ```
 ```c3
 fn bool is_file(String path)
 ```
 ```c3
-fn char[]! load_buffer(String filename, char[] buffer)
+fn char[]? load_buffer(String filename, char[] buffer)
 ```
 ```c3
-fn char[]! load_new(String filename, Allocator allocator = allocator::heap())
+fn char[]? load_new(String filename, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn char[]! load_temp(String filename)
+fn char[]? load_temp(String filename)
 ```
 ```c3
-fn File! open(String filename, String mode)
+fn File? open(String filename, String mode)
 ```
 ```c3
-fn File! open_path(Path path, String mode)
+fn File? open_path(Path path, String mode)
 ```
 ### `std::io::os`
 ```c3
-macro String! getcwd(Allocator allocator = allocator::heap())
+macro String? getcwd(Allocator allocator = allocator::heap())
 ```
 ```c3
-macro void! native_chdir(Path path)
+macro void? native_chdir(Path path)
 ```
 ```c3
 fn bool native_file_or_dir_exists(String path)
 ```
 ```c3
-fn usz! native_file_size(String path) @if(!env::WIN32 && !env::DARWIN)
+fn usz? native_file_size(String path) @if(!env::WIN32 && !env::DARWIN)
 ```
 ```c3
-fn usz! native_file_size(String path) @if(env::DARWIN)
+fn usz? native_file_size(String path) @if(env::DARWIN)
 ```
 ```c3
-fn usz! native_file_size(String path) @if(env::WIN32)
+fn usz? native_file_size(String path) @if(env::WIN32)
 ```
 ```c3
 fn bool native_is_dir(String path)
@@ -3716,80 +3716,80 @@ fn bool native_is_dir(String path)
 fn bool native_is_file(String path)
 ```
 ```c3
-macro bool! native_mkdir(Path path, MkdirPermissions permissions)
+macro bool? native_mkdir(Path path, MkdirPermissions permissions)
 ```
 ```c3
-macro bool! native_rmdir(Path path)
+macro bool? native_rmdir(Path path)
 ```
 ```c3
-fn void! native_stat(Stat* stat, String path) @if(env::DARWIN || env::LINUX)
+fn void? native_stat(Stat* stat, String path) @if(env::DARWIN || env::LINUX)
 ```
 ### `std::io::os @if(env::LIBC)`
 ```c3
-fn void*! native_fopen(String filename, String mode) @inline
+fn void*? native_fopen(String filename, String mode) @inline
 ```
 ```c3
-fn usz! native_fread(CFile file, char[] buffer) @inline
+fn usz? native_fread(CFile file, char[] buffer) @inline
 ```
 ```c3
-fn void*! native_freopen(void* file, String filename, String mode) @inline
+fn void*? native_freopen(void* file, String filename, String mode) @inline
 ```
 ```c3
-fn void! native_fseek(void* file, isz offset, Seek seek_mode) @inline
+fn void? native_fseek(void* file, isz offset, Seek seek_mode) @inline
 ```
 ```c3
-fn usz! native_ftell(CFile file) @inline
+fn usz? native_ftell(CFile file) @inline
 ```
 ```c3
-fn usz! native_fwrite(CFile file, char[] buffer) @inline
+fn usz? native_fwrite(CFile file, char[] buffer) @inline
 ```
 ```c3
-fn void! native_remove(String filename)
+fn void? native_remove(String filename)
 ```
 ```c3
-fn Path! native_temp_directory(Allocator allocator = allocator::heap()) @if(!env::WIN32)
+fn Path? native_temp_directory(Allocator allocator = allocator::heap()) @if(!env::WIN32)
 ```
 ```c3
-fn Path! native_temp_directory(Allocator allocator = allocator::heap()) @if(env::WIN32)
+fn Path? native_temp_directory(Allocator allocator = allocator::heap()) @if(env::WIN32)
 ```
 ### `std::io::os @if(env::NO_LIBC)`
 ```c3
-fn void*! native_fopen(String filename, String mode) @inline
+fn void*? native_fopen(String filename, String mode) @inline
 ```
 ```c3
-fn usz! native_fread(CFile file, char[] buffer) @inline
+fn usz? native_fread(CFile file, char[] buffer) @inline
 ```
 ```c3
-fn void*! native_freopen(void* file, String filename, String mode) @inline
+fn void*? native_freopen(void* file, String filename, String mode) @inline
 ```
 ```c3
-fn void! native_fseek(void* file, isz offset, Seek seek_mode) @inline
+fn void? native_fseek(void* file, isz offset, Seek seek_mode) @inline
 ```
 ```c3
-fn usz! native_ftell(CFile file) @inline
+fn usz? native_ftell(CFile file) @inline
 ```
 ```c3
-fn usz! native_fwrite(CFile file, char[] buffer) @inline
+fn usz? native_fwrite(CFile file, char[] buffer) @inline
 ```
 ```c3
-fn void! native_remove(String filename) @inline
+fn void? native_remove(String filename) @inline
 ```
 ```c3
-macro Path! native_temp_directory(Allocator allocator = allocator::heap())
+macro Path? native_temp_directory(Allocator allocator = allocator::heap())
 ```
 ### `std::io::os @if(env::POSIX)`
 ```c3
-fn PathList! native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
+fn PathList? native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
 ```
 ```c3
-fn void! native_rmtree(Path dir)
+fn void? native_rmtree(Path dir)
 ```
 ### `std::io::os @if(env::WIN32)`
 ```c3
-fn PathList! native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
+fn PathList? native_ls(Path dir, bool no_dirs, bool no_symlinks, String mask, Allocator allocator)
 ```
 ```c3
-fn void! native_rmtree(Path path)
+fn void? native_rmtree(Path path)
 ```
 ### `std::io::path`
 ```c3
@@ -3805,10 +3805,10 @@ fault PathResult
 struct Path (Printable)
 ```
 ```c3
-fn Path! Path.absolute(self, Allocator allocator = allocator::heap())
+fn Path? Path.absolute(self, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path! Path.append(self, String filename, Allocator allocator = allocator::heap())
+fn Path? Path.append(self, String filename, Allocator allocator = allocator::heap())
 ```
 ```c3
 fn ZString Path.as_zstr(self)
@@ -3823,7 +3823,7 @@ fn String Path.dirname(self)
 fn bool Path.equals(self, Path p2)
 ```
 ```c3
-fn String! Path.extension(self)
+fn String? Path.extension(self)
 ```
 ```c3
 fn void Path.free(self)
@@ -3832,10 +3832,10 @@ fn void Path.free(self)
 fn bool Path.has_suffix(self, String str)
 ```
 ```c3
-fn bool! Path.is_absolute(self)
+fn bool? Path.is_absolute(self)
 ```
 ```c3
-fn Path! Path.parent(self)
+fn Path? Path.parent(self)
 ```
 ```c3
 fn String Path.root_directory(self)
@@ -3844,10 +3844,10 @@ fn String Path.root_directory(self)
 fn String Path.str_view(self) @inline
 ```
 ```c3
-fn Path! Path.tappend(self, String filename)
+fn Path? Path.tappend(self, String filename)
 ```
 ```c3
-fn usz! Path.to_format(&self, Formatter* formatter) @dynamic
+fn usz? Path.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String Path.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
@@ -3856,22 +3856,22 @@ fn String Path.to_new_string(&self, Allocator allocator = allocator::heap()) @dy
 fn String Path.volume_name(self)
 ```
 ```c3
-fn bool! Path.walk(self, PathWalker w, void* data)
+fn bool? Path.walk(self, PathWalker w, void* data)
 ```
 ```c3
-fn void! chdir(Path path)
+fn void? chdir(Path path)
 ```
 ```c3
-fn void! delete(Path path)
+fn void? delete(Path path)
 ```
 ```c3
 fn bool exists(Path path)
 ```
 ```c3
-fn usz! file_size(Path path)
+fn usz? file_size(Path path)
 ```
 ```c3
-fn Path! getcwd(Allocator allocator = allocator::heap())
+fn Path? getcwd(Allocator allocator = allocator::heap())
 ```
 ```c3
 fn bool is_dir(Path path)
@@ -3895,40 +3895,40 @@ macro bool is_separator(char c, PathEnv path_env = DEFAULT_PATH_ENV)
 macro bool is_win32_separator(char c)
 ```
 ```c3
-fn PathList! ls(Path dir, bool no_dirs = false, bool no_symlinks = false, String mask = "", Allocator allocator = allocator::heap())
+fn PathList? ls(Path dir, bool no_dirs = false, bool no_symlinks = false, String mask = "", Allocator allocator = allocator::heap())
 ```
 ```c3
-fn bool! mkdir(Path path, bool recursive = false, MkdirPermissions permissions = NORMAL)
+fn bool? mkdir(Path path, bool recursive = false, MkdirPermissions permissions = NORMAL)
 ```
 ```c3
-fn Path! new(String path, Allocator allocator = allocator::heap(), PathEnv path_env = DEFAULT_PATH_ENV)
+fn Path? new(String path, Allocator allocator = allocator::heap(), PathEnv path_env = DEFAULT_PATH_ENV)
 ```
 ```c3
-fn Path! new_posix(String path, Allocator allocator = allocator::heap())
+fn Path? new_posix(String path, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path! new_win32_wstring(WString path, Allocator allocator = allocator::heap())
+fn Path? new_win32_wstring(WString path, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path! new_windows(String path, Allocator allocator = allocator::heap())
+fn Path? new_windows(String path, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! normalize(String path_str, PathEnv path_env = DEFAULT_PATH_ENV)
+fn String? normalize(String path_str, PathEnv path_env = DEFAULT_PATH_ENV)
 ```
 ```c3
-fn bool! rmdir(Path path)
+fn bool? rmdir(Path path)
 ```
 ```c3
-fn void! rmtree(Path path)
+fn void? rmtree(Path path)
 ```
 ```c3
-fn Path! temp_directory(Allocator allocator = allocator::heap())
+fn Path? temp_directory(Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path! temp_new(String path, PathEnv path_env = DEFAULT_PATH_ENV)
+fn Path? tnew(String path, PathEnv path_env = DEFAULT_PATH_ENV)
 ```
 ```c3
-fn Path! tgetcwd()
+fn Path? tgetcwd()
 ```
 ### `std::math`
 ```c3
@@ -4073,13 +4073,13 @@ macro bool char.is_even(char x)
 macro bool char.is_odd(char x)
 ```
 ```c3
-macro char! char.overflow_add(char x, char y)
+macro char? char.overflow_add(char x, char y)
 ```
 ```c3
-macro char! char.overflow_mul(char x, char y)
+macro char? char.overflow_mul(char x, char y)
 ```
 ```c3
-macro char! char.overflow_sub(char x, char y)
+macro char? char.overflow_sub(char x, char y)
 ```
 ```c3
 macro char char.sat_add(char x, char y)
@@ -4433,13 +4433,13 @@ macro bool ichar.is_even(ichar x)
 macro bool ichar.is_odd(ichar x)
 ```
 ```c3
-macro ichar! ichar.overflow_add(ichar x, ichar y)
+macro ichar? ichar.overflow_add(ichar x, ichar y)
 ```
 ```c3
-macro ichar! ichar.overflow_mul(ichar x, ichar y)
+macro ichar? ichar.overflow_mul(ichar x, ichar y)
 ```
 ```c3
-macro ichar! ichar.overflow_sub(ichar x, ichar y)
+macro ichar? ichar.overflow_sub(ichar x, ichar y)
 ```
 ```c3
 macro ichar ichar.sat_add(ichar x, ichar y)
@@ -4499,13 +4499,13 @@ macro bool int.is_even(int x)
 macro bool int.is_odd(int x)
 ```
 ```c3
-macro int! int.overflow_add(int x, int y)
+macro int? int.overflow_add(int x, int y)
 ```
 ```c3
-macro int! int.overflow_mul(int x, int y)
+macro int? int.overflow_mul(int x, int y)
 ```
 ```c3
-macro int! int.overflow_sub(int x, int y)
+macro int? int.overflow_sub(int x, int y)
 ```
 ```c3
 macro int int.sat_add(int x, int y)
@@ -4526,13 +4526,13 @@ macro bool int128.is_even(int128 x)
 macro bool int128.is_odd(int128 x)
 ```
 ```c3
-macro int128! int128.overflow_add(int128 x, int128 y)
+macro int128? int128.overflow_add(int128 x, int128 y)
 ```
 ```c3
-macro int128! int128.overflow_mul(int128 x, int128 y)
+macro int128? int128.overflow_mul(int128 x, int128 y)
 ```
 ```c3
-macro int128! int128.overflow_sub(int128 x, int128 y)
+macro int128? int128.overflow_sub(int128 x, int128 y)
 ```
 ```c3
 macro int128 int128.sat_add(int128 x, int128 y)
@@ -4661,13 +4661,13 @@ macro bool long.is_even(long x)
 macro bool long.is_odd(long x)
 ```
 ```c3
-macro long! long.overflow_add(long x, long y)
+macro long? long.overflow_add(long x, long y)
 ```
 ```c3
-macro long! long.overflow_mul(long x, long y)
+macro long? long.overflow_mul(long x, long y)
 ```
 ```c3
-macro long! long.overflow_sub(long x, long y)
+macro long? long.overflow_sub(long x, long y)
 ```
 ```c3
 macro long long.sat_add(long x, long y)
@@ -4769,13 +4769,13 @@ macro bool short.is_even(short x)
 macro bool short.is_odd(short x)
 ```
 ```c3
-macro short! short.overflow_add(short x, short y)
+macro short? short.overflow_add(short x, short y)
 ```
 ```c3
-macro short! short.overflow_mul(short x, short y)
+macro short? short.overflow_mul(short x, short y)
 ```
 ```c3
-macro short! short.overflow_sub(short x, short y)
+macro short? short.overflow_sub(short x, short y)
 ```
 ```c3
 macro short short.sat_add(short x, short y)
@@ -4865,13 +4865,13 @@ macro bool uint.is_even(uint x)
 macro bool uint.is_odd(uint x)
 ```
 ```c3
-macro uint! uint.overflow_add(uint x, uint y)
+macro uint? uint.overflow_add(uint x, uint y)
 ```
 ```c3
-macro uint! uint.overflow_mul(uint x, uint y)
+macro uint? uint.overflow_mul(uint x, uint y)
 ```
 ```c3
-macro uint! uint.overflow_sub(uint x, uint y)
+macro uint? uint.overflow_sub(uint x, uint y)
 ```
 ```c3
 macro uint uint.sat_add(uint x, uint y)
@@ -4892,13 +4892,13 @@ macro bool uint128.is_even(uint128 x)
 macro bool uint128.is_odd(uint128 x)
 ```
 ```c3
-macro uint128! uint128.overflow_add(uint128 x, uint128 y)
+macro uint128? uint128.overflow_add(uint128 x, uint128 y)
 ```
 ```c3
-macro uint128! uint128.overflow_mul(uint128 x, uint128 y)
+macro uint128? uint128.overflow_mul(uint128 x, uint128 y)
 ```
 ```c3
-macro uint128! uint128.overflow_sub(uint128 x, uint128 y)
+macro uint128? uint128.overflow_sub(uint128 x, uint128 y)
 ```
 ```c3
 macro uint128 uint128.sat_add(uint128 x, uint128 y)
@@ -4997,13 +4997,13 @@ macro bool ulong.is_even(ulong x)
 macro bool ulong.is_odd(ulong x)
 ```
 ```c3
-macro ulong! ulong.overflow_add(ulong x, ulong y)
+macro ulong? ulong.overflow_add(ulong x, ulong y)
 ```
 ```c3
-macro ulong! ulong.overflow_mul(ulong x, ulong y)
+macro ulong? ulong.overflow_mul(ulong x, ulong y)
 ```
 ```c3
-macro ulong! ulong.overflow_sub(ulong x, ulong y)
+macro ulong? ulong.overflow_sub(ulong x, ulong y)
 ```
 ```c3
 macro ulong ulong.sat_add(ulong x, ulong y)
@@ -5063,13 +5063,13 @@ macro bool ushort.is_even(ushort x)
 macro bool ushort.is_odd(ushort x)
 ```
 ```c3
-macro ushort! ushort.overflow_add(ushort x, ushort y)
+macro ushort? ushort.overflow_add(ushort x, ushort y)
 ```
 ```c3
-macro ushort! ushort.overflow_mul(ushort x, ushort y)
+macro ushort? ushort.overflow_mul(ushort x, ushort y)
 ```
 ```c3
-macro ushort! ushort.overflow_sub(ushort x, ushort y)
+macro ushort? ushort.overflow_sub(ushort x, ushort y)
 ```
 ```c3
 macro ushort ushort.sat_add(ushort x, ushort y)
@@ -5255,7 +5255,7 @@ fn Matrix2x2 Matrix2x2.component_mul(&self, Real s)
 fn Real Matrix2x2.determinant(&self)
 ```
 ```c3
-fn Matrix2x2! Matrix2x2.inverse(&self)
+fn Matrix2x2? Matrix2x2.inverse(&self)
 ```
 ```c3
 fn Matrix2x2 Matrix2x2.mul(&self, Matrix2x2 b)
@@ -5285,7 +5285,7 @@ fn Matrix3x3 Matrix3x3.component_mul(&self, Real s)
 fn Real Matrix3x3.determinant(&self)
 ```
 ```c3
-fn Matrix3x3! Matrix3x3.inverse(&self)
+fn Matrix3x3? Matrix3x3.inverse(&self)
 ```
 ```c3
 fn Matrix3x3 Matrix3x3.mul(&self, Matrix3x3 b)
@@ -5324,7 +5324,7 @@ fn Matrix4x4 Matrix4x4.component_mul(&self, Real s)
 fn Real Matrix4x4.determinant(&self)
 ```
 ```c3
-fn Matrix4x4! Matrix4x4.inverse(&self)
+fn Matrix4x4? Matrix4x4.inverse(&self)
 ```
 ```c3
 fn Matrix4x4 Matrix4x4.mul(Matrix4x4* a, Matrix4x4 b)
@@ -5529,58 +5529,58 @@ macro Matrix4f Quaternion.to_matrixf(Quaternion* q)
 ```
 ### `std::math::random`
 ```c3
-distinct Lcg128Random (Random) = uint128;
+typedef Lcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Lcg16Random (Random) = ushort;
+typedef Lcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Lcg32Random (Random) = uint;
+typedef Lcg32Random (Random) = uint;
 ```
 ```c3
-distinct Lcg64Random (Random) = ulong;
+typedef Lcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Mcg128Random (Random) = uint128;
+typedef Mcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Mcg16Random (Random) = ushort;
+typedef Mcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Mcg32Random (Random) = uint;
+typedef Mcg32Random (Random) = uint;
 ```
 ```c3
-distinct Mcg64Random (Random) = ulong;
+typedef Mcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Pcg128Random (Random) = uint128;
+typedef Pcg128Random (Random) = uint128;
 ```
 ```c3
-distinct Pcg16Random (Random) = ushort;
+typedef Pcg16Random (Random) = ushort;
 ```
 ```c3
-distinct Pcg32Random (Random) = uint;
+typedef Pcg32Random (Random) = uint;
 ```
 ```c3
-distinct Pcg64Random (Random) = ulong;
+typedef Pcg64Random (Random) = ulong;
 ```
 ```c3
-distinct Sfc128Random (Random) = uint128[4];
+typedef Sfc128Random (Random) = uint128[4];
 ```
 ```c3
-distinct Sfc16Random (Random) = ushort[4];
+typedef Sfc16Random (Random) = ushort[4];
 ```
 ```c3
-distinct Sfc32Random (Random) = uint[4];
+typedef Sfc32Random (Random) = uint[4];
 ```
 ```c3
-distinct Sfc64Random (Random) = ulong[4];
+typedef Sfc64Random (Random) = ulong[4];
 ```
 ```c3
-distinct Sfc8Random (Random) = char[4];
+typedef Sfc8Random (Random) = char[4];
 ```
 ```c3
-distinct SimpleRandom (Random) = ulong;
+typedef SimpleRandom (Random) = ulong;
 ```
 ```c3
 interface Random
@@ -6329,35 +6329,35 @@ fn bool InetAddress.is_multicast_site_local(InetAddress* addr)
 fn bool InetAddress.is_site_local(InetAddress* addr)
 ```
 ```c3
-fn usz! InetAddress.to_format(InetAddress* addr, Formatter* formatter) @dynamic
+fn usz? InetAddress.to_format(InetAddress* addr, Formatter* formatter) @dynamic
 ```
 ```c3
 fn String InetAddress.to_new_string(InetAddress* addr, Allocator allocator = allocator::heap()) @dynamic
 ```
 ```c3
-fn AddrInfo*! addrinfo(String host, uint port, AIFamily ai_family, AISockType ai_socktype) @if(os::SUPPORTS_INET)
+fn AddrInfo*? addrinfo(String host, uint port, AIFamily ai_family, AISockType ai_socktype) @if(os::SUPPORTS_INET)
 ```
 ```c3
-fn String! int_to_new_ipv4(uint val, Allocator allocator = allocator::heap())
+fn String? int_to_new_ipv4(uint val, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! int_to_temp_ipv4(uint val)
+fn String? int_to_temp_ipv4(uint val)
 ```
 ```c3
-fn InetAddress! ipv4_from_str(String s)
+fn InetAddress? ipv4_from_str(String s)
 ```
 ```c3
-fn uint! ipv4toint(String s)
+fn uint? ipv4toint(String s)
 ```
 ```c3
-fn InetAddress! ipv6_from_str(String s)
+fn InetAddress? ipv6_from_str(String s)
 ```
 ### `std::net @if(os::SUPPORTS_INET)`
 ```c3
-distinct PollEvents = ushort;
+typedef PollEvents = ushort;
 ```
 ```c3
-distinct PollSubscribes = ushort;
+typedef PollSubscribes = ushort;
 ```
 ```c3
 enum SocketOption : char (CInt value)
@@ -6372,168 +6372,168 @@ struct Socket (InStream, OutStream)
 macro void @loop_over_ai(AddrInfo* ai; @body(NativeSocket fd, AddrInfo* ai))
 ```
 ```c3
-fn void! Socket.close(&self) @inline @dynamic
+fn void? Socket.close(&self) @inline @dynamic
 ```
 ```c3
-fn void! Socket.destroy(&self) @dynamic
+fn void? Socket.destroy(&self) @dynamic
 ```
 ```c3
-fn bool! Socket.get_broadcast(&self)
+fn bool? Socket.get_broadcast(&self)
 ```
 ```c3
-fn bool! Socket.get_dontroute(&self)
+fn bool? Socket.get_dontroute(&self)
 ```
 ```c3
-fn bool! Socket.get_keepalive(&self)
+fn bool? Socket.get_keepalive(&self)
 ```
 ```c3
-fn bool! Socket.get_oobinline(&self)
+fn bool? Socket.get_oobinline(&self)
 ```
 ```c3
-fn bool! Socket.get_option(&self, SocketOption option)
+fn bool? Socket.get_option(&self, SocketOption option)
 ```
 ```c3
-fn bool! Socket.get_reuseaddr(&self)
+fn bool? Socket.get_reuseaddr(&self)
 ```
 ```c3
-fn usz! Socket.read(&self, char[] bytes) @dynamic
+fn usz? Socket.read(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn char! Socket.read_byte(&self) @dynamic
+fn char? Socket.read_byte(&self) @dynamic
 ```
 ```c3
-fn void! Socket.set_broadcast(&self, bool value)
+fn void? Socket.set_broadcast(&self, bool value)
 ```
 ```c3
-fn void! Socket.set_dontroute(&self, bool value)
+fn void? Socket.set_dontroute(&self, bool value)
 ```
 ```c3
-fn void! Socket.set_keepalive(&self, bool value)
+fn void? Socket.set_keepalive(&self, bool value)
 ```
 ```c3
-fn void! Socket.set_oobinline(&self, bool value)
+fn void? Socket.set_oobinline(&self, bool value)
 ```
 ```c3
-fn void! Socket.set_option(&self, SocketOption option, bool value)
+fn void? Socket.set_option(&self, SocketOption option, bool value)
 ```
 ```c3
-fn void! Socket.set_reuseaddr(&self, bool value)
+fn void? Socket.set_reuseaddr(&self, bool value)
 ```
 ```c3
-fn usz! Socket.write(&self, char[] bytes) @dynamic
+fn usz? Socket.write(&self, char[] bytes) @dynamic
 ```
 ```c3
-fn void! Socket.write_byte(&self, char byte) @dynamic
+fn void? Socket.write_byte(&self, char byte) @dynamic
 ```
 ```c3
 macro Socket new_socket(fd, ai)
 ```
 ```c3
-fn ulong! poll(Poll[] polls, Duration timeout)
+fn ulong? poll(Poll[] polls, Duration timeout)
 ```
 ```c3
-fn ulong! poll_ms(Poll[] polls, long timeout_ms)
+fn ulong? poll_ms(Poll[] polls, long timeout_ms)
 ```
 ### `std::net::os`
 ```c3
-distinct AIFamily = CInt;
+typedef AIFamily = CInt;
 ```
 ```c3
-distinct AIFlags = CInt;
+typedef AIFlags = CInt;
 ```
 ```c3
-distinct AIProtocol = CInt;
+typedef AIProtocol = CInt;
 ```
 ```c3
-distinct AISockType = CInt;
+typedef AISockType = CInt;
 ```
 ```c3
-distinct SockAddrPtr = void*;
+typedef SockAddrPtr = void*;
 ```
 ```c3
 struct AddrInfo
 ```
 ### `std::net::os @if(env::POSIX &amp;&amp; SUPPORTS_INET)`
 ```c3
-distinct NativeSocket = inline Fd;
+typedef NativeSocket = inline Fd;
 ```
 ```c3
 struct Posix_pollfd
 ```
 ```c3
-macro void! NativeSocket.close(self)
+macro void? NativeSocket.close(self)
 ```
 ```c3
 macro bool NativeSocket.is_non_blocking(self)
 ```
 ```c3
-macro void! NativeSocket.set_non_blocking(self, bool non_blocking)
+macro void? NativeSocket.set_non_blocking(self, bool non_blocking)
 ```
 ```c3
-fn anyfault convert_error(Errno error)
+fn fault convert_error(Errno error)
 ```
 ```c3
-fn anyfault socket_error()
+fn fault socket_error()
 ```
 ### `std::net::os @if(env::WIN32)`
 ```c3
-distinct NativeSocket = uptr;
+typedef NativeSocket = uptr;
 ```
 ```c3
-macro void! NativeSocket.close(self)
+macro void? NativeSocket.close(self)
 ```
 ```c3
-fn void! NativeSocket.set_non_blocking(self, bool non_blocking)
+fn void? NativeSocket.set_non_blocking(self, bool non_blocking)
 ```
 ```c3
-fn anyfault convert_error(WSAError error)
+fn fault convert_error(WSAError error)
 ```
 ```c3
-fn anyfault socket_error()
+fn fault socket_error()
 ```
 ### `std::net::tcp @if(os::SUPPORTS_INET)`
 ```c3
-distinct TcpServerSocket = inline Socket;
+typedef TcpServerSocket = inline Socket;
 ```
 ```c3
-distinct TcpSocket = inline Socket;
+typedef TcpSocket = inline Socket;
 ```
 ```c3
-fn TcpSocket! accept(TcpServerSocket* server_socket)
+fn TcpSocket? accept(TcpServerSocket* server_socket)
 ```
 ```c3
-fn TcpSocket! connect(String host, uint port, Duration timeout = 0, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
+fn TcpSocket? connect(String host, uint port, Duration timeout = 0, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
 ```
 ```c3
-fn TcpSocket! connect_async(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
+fn TcpSocket? connect_async(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
 ```
 ```c3
-fn TcpSocket! connect_async_to(AddrInfo* ai, SocketOption... options)
+fn TcpSocket? connect_async_to(AddrInfo* ai, SocketOption... options)
 ```
 ```c3
-fn TcpSocket! connect_to(AddrInfo* ai, SocketOption... options)
+fn TcpSocket? connect_to(AddrInfo* ai, SocketOption... options)
 ```
 ```c3
-fn TcpServerSocket! listen(String host, uint port, uint backlog, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
+fn TcpServerSocket? listen(String host, uint port, uint backlog, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
 ```
 ```c3
-fn TcpServerSocket! listen_to(AddrInfo* ai, uint backlog, SocketOption... options)
+fn TcpServerSocket? listen_to(AddrInfo* ai, uint backlog, SocketOption... options)
 ```
 ### `std::net::udp @if(os::SUPPORTS_INET)`
 ```c3
-distinct UdpSocket = inline Socket;
+typedef UdpSocket = inline Socket;
 ```
 ```c3
-fn UdpSocket! connect(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
+fn UdpSocket? connect(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
 ```
 ```c3
-fn UdpSocket! connect_async(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
+fn UdpSocket? connect_async(String host, uint port, SocketOption... options, IpProtocol ip_protocol = UNSPECIFIED)
 ```
 ```c3
-fn UdpSocket! connect_async_to(AddrInfo* ai, SocketOption... options)
+fn UdpSocket? connect_async_to(AddrInfo* ai, SocketOption... options)
 ```
 ```c3
-fn UdpSocket! connect_to(AddrInfo* ai, SocketOption... options)
+fn UdpSocket? connect_to(AddrInfo* ai, SocketOption... options)
 ```
 ### `std::os @if(env::DARWIN)`
 ```c3
@@ -6567,13 +6567,13 @@ fn Backtrace* Backtrace.init(&self, uptr offset, String function, String object_
 fn bool Backtrace.is_unknown(&self)
 ```
 ```c3
-fn usz! Backtrace.to_format(&self, Formatter* formatter) @dynamic
+fn usz? Backtrace.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn void*[] capture_current(void*[] buffer)
 ```
 ```c3
-fn BacktraceList! symbolize_backtrace(void*[] backtrace, Allocator allocator) @if(!env::NATIVE_STACKTRACE)
+fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator) @if(!env::NATIVE_STACKTRACE)
 ```
 ### `std::os::darwin @if(env::DARWIN)`
 ```c3
@@ -6583,29 +6583,29 @@ struct Darwin_Dl_info
 struct Darwin_segment_command_64
 ```
 ```c3
-fn String! executable_path(Allocator allocator)
+fn String? executable_path(Allocator allocator)
 ```
 ```c3
-fn BacktraceList! symbolize_backtrace(void*[] backtrace, Allocator allocator)
+fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator)
 ```
 ### `std::os::env`
 ```c3
 fn bool clear_var(String name)
 ```
 ```c3
-fn String! executable_path(Allocator allocator = allocator::heap())
+fn String? executable_path(Allocator allocator = allocator::heap())
 ```
 ```c3
-fn Path! get_config_dir(Allocator allocator = allocator::heap())
+fn Path? get_config_dir(Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! get_home_dir(Allocator using = allocator::heap())
+fn String? get_home_dir(Allocator using = allocator::heap())
 ```
 ```c3
-fn String! get_var(String name, Allocator allocator = allocator::heap())
+fn String? get_var(String name, Allocator allocator = allocator::heap())
 ```
 ```c3
-fn String! get_var_temp(String name)
+fn String? get_var_temp(String name)
 ```
 ```c3
 fn bool set_var(String name, String value, bool overwrite = true)
@@ -6627,26 +6627,26 @@ struct Elf64_Phdr
 struct Linux_Dl_info
 ```
 ```c3
-fn BacktraceList! symbolize_backtrace(void*[] backtrace, Allocator allocator)
+fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator)
 ```
 ### `std::os::macos::cf @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
-distinct CFAllocatorContextRef = void*;
+typedef CFAllocatorContextRef = void*;
 ```
 ```c3
-distinct CFAllocatorRef = void*;
+typedef CFAllocatorRef = void*;
 ```
 ```c3
-distinct CFArrayCallBacksRef = void*;
+typedef CFArrayCallBacksRef = void*;
 ```
 ```c3
-distinct CFArrayRef = void*;
+typedef CFArrayRef = void*;
 ```
 ```c3
-distinct CFMutableArrayRef = void*;
+typedef CFMutableArrayRef = void*;
 ```
 ```c3
-distinct CFTypeRef = void*;
+typedef CFTypeRef = void*;
 ```
 ```c3
 struct CFRange
@@ -6668,16 +6668,16 @@ macro CFAllocatorRef default_allocator()
 ```
 ### `std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
-distinct Class = void*;
+typedef Class = void*;
 ```
 ```c3
-distinct Ivar = void*;
+typedef Ivar = void*;
 ```
 ```c3
-distinct Method = void*;
+typedef Method = void*;
 ```
 ```c3
-distinct Selector = void*;
+typedef Selector = void*;
 ```
 ```c3
 fault ObjcFailure
@@ -6701,17 +6701,17 @@ macro Class Class.superclass(Class cls)
 macro bool Selector.equals(Selector a, Selector b)
 ```
 ```c3
-macro Class! class_by_name(ZString c)
+macro Class? class_by_name(ZString c)
 ```
 ```c3
 macro Class[] class_get_list(Allocator allocator = allocator::heap())
 ```
 ### `std::os::posix @if(env::POSIX)`
 ```c3
-distinct DIRPtr = void*;
+typedef DIRPtr = void*;
 ```
 ```c3
-distinct Pthread_t = void*;
+typedef Pthread_t = void*;
 ```
 ```c3
 struct Posix_dirent
@@ -6766,38 +6766,38 @@ struct SubProcess
 fn bool SubProcess.destroy(&self)
 ```
 ```c3
-fn bool! SubProcess.is_running(&self)
+fn bool? SubProcess.is_running(&self)
 ```
 ```c3
-fn CInt! SubProcess.join(&self) @if(env::POSIX)
+fn CInt? SubProcess.join(&self) @if(env::POSIX)
 ```
 ```c3
-fn CInt! SubProcess.join(&self) @if(env::WIN32)
+fn CInt? SubProcess.join(&self) @if(env::WIN32)
 ```
 ```c3
-fn usz! SubProcess.read_stderr(&self, char* buffer, usz size)
+fn usz? SubProcess.read_stderr(&self, char* buffer, usz size)
 ```
 ```c3
-fn usz! SubProcess.read_stdout(&self, char* buffer, usz size)
+fn usz? SubProcess.read_stdout(&self, char* buffer, usz size)
 ```
 ```c3
 fn File SubProcess.stdout(&self)
 ```
 ```c3
-fn void! SubProcess.terminate(&self)
+fn void? SubProcess.terminate(&self)
 ```
 ```c3
-fn SubProcess! create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::POSIX)
+fn SubProcess? create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::POSIX)
 ```
 ```c3
-fn SubProcess! create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::WIN32)
+fn SubProcess? create(String[] command_line, SubProcessOptions options = {}, String[] environment = {}) @if(env::WIN32)
 ```
 ```c3
-fn String! execute_stdout_to_buffer(char[] buffer, String[] command_line, SubProcessOptions options = {}, String[] environment = {})
+fn String? execute_stdout_to_buffer(char[] buffer, String[] command_line, SubProcessOptions options = {}, String[] environment = {})
 ```
 ### `std::os::win32`
 ```c3
-distinct Win32_CRITICAL_SECTION = ulong[5];
+typedef Win32_CRITICAL_SECTION = ulong[5];
 ```
 ```c3
 enum Win32_ADDRESS_MODE
@@ -6885,7 +6885,7 @@ struct Win32_XMM_SAVE_AREA32
 ```
 ### `std::os::win32 @if(env::WIN32)`
 ```c3
-distinct WSAError = int;
+typedef WSAError = int;
 ```
 ```c3
 enum Win32_GET_FILEEX_INFO_LEVELS
@@ -6903,13 +6903,13 @@ struct Win32_WIN32_FIND_DATAW
 struct Win32_pollfd
 ```
 ```c3
-fn Win32_DWORD! load_modules()
+fn Win32_DWORD? load_modules()
 ```
 ```c3
-fn Backtrace! resolve_backtrace(void* addr, Win32_HANDLE process, Allocator allocator)
+fn Backtrace? resolve_backtrace(void* addr, Win32_HANDLE process, Allocator allocator)
 ```
 ```c3
-fn BacktraceList! symbolize_backtrace(void*[] backtrace, Allocator allocator)
+fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator)
 ```
 ### `std::sort`
 ```c3
@@ -6930,94 +6930,94 @@ fn void qsort(Type list, isz low, isz high, Comparer cmp)
 ```
 ### `std::thread`
 ```c3
-distinct ConditionVariable = NativeConditionVariable;
+typedef ConditionVariable = NativeConditionVariable;
 ```
 ```c3
-distinct Mutex = NativeMutex;
+typedef Mutex = NativeMutex;
 ```
 ```c3
-distinct MutexType = int;
+typedef MutexType = int;
 ```
 ```c3
-distinct OnceFlag = NativeOnceFlag;
+typedef OnceFlag = NativeOnceFlag;
 ```
 ```c3
-distinct RecursiveMutex = inline Mutex;
+typedef RecursiveMutex = inline Mutex;
 ```
 ```c3
-distinct Thread = NativeThread;
+typedef Thread = NativeThread;
 ```
 ```c3
-distinct TimedMutex = inline Mutex;
+typedef TimedMutex = inline Mutex;
 ```
 ```c3
-distinct TimedRecursiveMutex = inline Mutex;
+typedef TimedRecursiveMutex = inline Mutex;
 ```
 ```c3
 fault ThreadFault
 ```
 ```c3
-macro void! ConditionVariable.broadcast(&cond)
+macro void? ConditionVariable.broadcast(&cond)
 ```
 ```c3
-macro void! ConditionVariable.destroy(&cond)
+macro void? ConditionVariable.destroy(&cond)
 ```
 ```c3
-macro void! ConditionVariable.init(&cond)
+macro void? ConditionVariable.init(&cond)
 ```
 ```c3
-macro void! ConditionVariable.signal(&cond)
+macro void? ConditionVariable.signal(&cond)
 ```
 ```c3
-macro void! ConditionVariable.wait(&cond, Mutex* mutex)
+macro void? ConditionVariable.wait(&cond, Mutex* mutex)
 ```
 ```c3
-macro void! ConditionVariable.wait_timeout(&cond, Mutex* mutex, ulong timeout)
+macro void? ConditionVariable.wait_timeout(&cond, Mutex* mutex, ulong timeout)
 ```
 ```c3
-macro void! Mutex.destroy(&mutex)
+macro void? Mutex.destroy(&mutex)
 ```
 ```c3
-macro void! Mutex.init(&mutex)
+macro void? Mutex.init(&mutex)
 ```
 ```c3
-macro void! Mutex.lock(&mutex)
+macro void? Mutex.lock(&mutex)
 ```
 ```c3
 macro bool Mutex.try_lock(&mutex)
 ```
 ```c3
-macro void! Mutex.unlock(&mutex)
+macro void? Mutex.unlock(&mutex)
 ```
 ```c3
 macro void OnceFlag.call(&flag, OnceFn func)
 ```
 ```c3
-macro void! RecursiveMutex.init(&mutex)
+macro void? RecursiveMutex.init(&mutex)
 ```
 ```c3
-macro void! Thread.create(&thread, ThreadFn thread_fn, void* arg)
+macro void? Thread.create(&thread, ThreadFn thread_fn, void* arg)
 ```
 ```c3
-macro void! Thread.detach(thread)
+macro void? Thread.detach(thread)
 ```
 ```c3
 macro bool Thread.equals(thread, Thread other)
 ```
 ```c3
-macro int! Thread.join(thread)
+macro int? Thread.join(thread)
 ```
 ```c3
-macro void! TimedMutex.init(&mutex)
+macro void? TimedMutex.init(&mutex)
 ```
 ```c3
-macro void! TimedMutex.lock_timeout(&mutex, ulong ms)
+macro void? TimedMutex.lock_timeout(&mutex, ulong ms)
 ```
 ```c3
-macro void! TimedRecursiveMutex.init(&mutex)
+macro void? TimedRecursiveMutex.init(&mutex)
 ```
 ```c3
-macro void! TimedRecursiveMutex.lock_timeout(&mutex, ulong ms)
+macro void? TimedRecursiveMutex.lock_timeout(&mutex, ulong ms)
 ```
 ```c3
 macro Thread current()
@@ -7026,13 +7026,13 @@ macro Thread current()
 macro void exit(int result)
 ```
 ```c3
-macro void! sleep(Duration d) @maydiscard
+macro void? sleep(Duration d) @maydiscard
 ```
 ```c3
-macro void! sleep_ms(ulong ms) @maydiscard  
+macro void? sleep_ms(ulong ms) @maydiscard
 ```
 ```c3
-macro void! sleep_ns(NanoDuration ns) @maydiscard  
+macro void? sleep_ns(NanoDuration ns) @maydiscard
 ```
 ```c3
 macro void yield()
@@ -7051,139 +7051,139 @@ fn uint native_cpu()
 ```
 ### `std::thread::os @if (!env::POSIX &amp;&amp; !env::WIN32)`
 ```c3
-distinct NativeConditionVariable = int;
+typedef NativeConditionVariable = int;
 ```
 ```c3
-distinct NativeMutex = int;
+typedef NativeMutex = int;
 ```
 ```c3
-distinct NativeOnceFlag = int;
+typedef NativeOnceFlag = int;
 ```
 ```c3
-distinct NativeThread = int;
+typedef NativeThread = int;
 ```
 ### `std::thread::os @if(env::LINUX)`
 ```c3
-distinct Pthread_attr_t = ulong[7]; // 24 on 32bit
+typedef Pthread_attr_t = ulong[7]; // 24 on 32bit
 ```
 ```c3
-distinct Pthread_cond_t = ulong[6];
+typedef Pthread_cond_t = ulong[6];
 ```
 ```c3
-distinct Pthread_condattr_t = uint;
+typedef Pthread_condattr_t = uint;
 ```
 ```c3
-distinct Pthread_key_t = uint;
+typedef Pthread_key_t = uint;
 ```
 ```c3
-distinct Pthread_mutex_t = ulong[5]; // 24 on 32 bit
+typedef Pthread_mutex_t = ulong[5]; // 24 on 32 bit
 ```
 ```c3
-distinct Pthread_mutexattr_t = uint;
+typedef Pthread_mutexattr_t = uint;
 ```
 ```c3
-distinct Pthread_once_t = int;
+typedef Pthread_once_t = int;
 ```
 ```c3
-distinct Pthread_rwlock_t = ulong[7]; // 32 on 3bit
+typedef Pthread_rwlock_t = ulong[7]; // 32 on 3bit
 ```
 ```c3
-distinct Pthread_rwlockattr_t = uint;
+typedef Pthread_rwlockattr_t = uint;
 ```
 ```c3
-distinct Pthread_sched_param = uint;
+typedef Pthread_sched_param = uint;
 ```
 ### `std::thread::os @if(env::POSIX &amp;&amp; !env::LINUX)`
 ```c3
-distinct Pthread_attr_t = ulong[8];
+typedef Pthread_attr_t = ulong[8];
 ```
 ```c3
-distinct Pthread_cond_t = ulong[6];
+typedef Pthread_cond_t = ulong[6];
 ```
 ```c3
-distinct Pthread_condattr_t = ulong[8];
+typedef Pthread_condattr_t = ulong[8];
 ```
 ```c3
-distinct Pthread_key_t = ulong;
+typedef Pthread_key_t = ulong;
 ```
 ```c3
-distinct Pthread_mutex_t = ulong[8];
+typedef Pthread_mutex_t = ulong[8];
 ```
 ```c3
-distinct Pthread_mutexattr_t = ulong[2];
+typedef Pthread_mutexattr_t = ulong[2];
 ```
 ```c3
-distinct Pthread_once_t = ulong[2];
+typedef Pthread_once_t = ulong[2];
 ```
 ```c3
-distinct Pthread_rwlock_t = ulong[25];
+typedef Pthread_rwlock_t = ulong[25];
 ```
 ```c3
-distinct Pthread_rwlockattr_t = ulong[3];
+typedef Pthread_rwlockattr_t = ulong[3];
 ```
 ```c3
-distinct Pthread_sched_param = ulong;
+typedef Pthread_sched_param = ulong;
 ```
 ### `std::thread::os @if(env::POSIX)`
 ```c3
 struct NativeMutex
 ```
 ```c3
-fn void! NativeConditionVariable.broadcast(&cond)
+fn void? NativeConditionVariable.broadcast(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.destroy(&cond)
+fn void? NativeConditionVariable.destroy(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.init(&cond)
+fn void? NativeConditionVariable.init(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.signal(&cond)
+fn void? NativeConditionVariable.signal(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.wait(&cond, NativeMutex* mtx)
+fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx)
 ```
 ```c3
-fn void! NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms)
+fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, ulong ms)
 ```
 ```c3
-fn void! NativeMutex.destroy(&self)
+fn void? NativeMutex.destroy(&self)
 ```
 ```c3
-fn void! NativeMutex.init(&self, MutexType type)
+fn void? NativeMutex.init(&self, MutexType type)
 ```
 ```c3
 fn bool NativeMutex.is_initialized(&self)
 ```
 ```c3
-fn void! NativeMutex.lock(&self)
+fn void? NativeMutex.lock(&self)
 ```
 ```c3
-fn void! NativeMutex.lock_timeout(&self, ulong ms)
+fn void? NativeMutex.lock_timeout(&self, ulong ms)
 ```
 ```c3
 fn bool NativeMutex.try_lock(&self)
 ```
 ```c3
-fn void! NativeMutex.unlock(&self)
+fn void? NativeMutex.unlock(&self)
 ```
 ```c3
 fn void NativeOnceFlag.call_once(&flag, OnceFn func)
 ```
 ```c3
-fn void! NativeThread.create(&thread, ThreadFn thread_fn, void* arg)
+fn void? NativeThread.create(&thread, ThreadFn thread_fn, void* arg)
 ```
 ```c3
-fn void! NativeThread.detach(thread)
+fn void? NativeThread.detach(thread)
 ```
 ```c3
 fn bool NativeThread.equals(thread, NativeThread other)
 ```
 ```c3
-fn int! NativeThread.join(thread)
+fn int? NativeThread.join(thread)
 ```
 ```c3
-fn void! native_sleep_nano(NanoDuration nano)
+fn void? native_sleep_nano(NanoDuration nano)
 ```
 ```c3
 fn NativeThread native_thread_current()
@@ -7196,7 +7196,7 @@ fn void native_thread_yield()
 ```
 ### `std::thread::os @if(env::WIN32)`
 ```c3
-distinct NativeThread = inline Win32_HANDLE;
+typedef NativeThread = inline Win32_HANDLE;
 ```
 ```c3
 struct NativeConditionVariable
@@ -7208,58 +7208,58 @@ struct NativeMutex
 struct NativeOnceFlag
 ```
 ```c3
-fn void! NativeConditionVariable.broadcast(&cond)
+fn void? NativeConditionVariable.broadcast(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.destroy(&cond) @maydiscard
+fn void? NativeConditionVariable.destroy(&cond) @maydiscard
 ```
 ```c3
-fn void! NativeConditionVariable.init(&cond)
+fn void? NativeConditionVariable.init(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.signal(&cond)
+fn void? NativeConditionVariable.signal(&cond)
 ```
 ```c3
-fn void! NativeConditionVariable.wait(&cond, NativeMutex* mtx) @inline
+fn void? NativeConditionVariable.wait(&cond, NativeMutex* mtx) @inline
 ```
 ```c3
-fn void! NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, uint time) @inline
+fn void? NativeConditionVariable.wait_timeout(&cond, NativeMutex* mtx, uint time) @inline
 ```
 ```c3
-fn void! NativeMutex.destroy(&mtx)
+fn void? NativeMutex.destroy(&mtx)
 ```
 ```c3
-fn void! NativeMutex.init(&mtx, MutexType type)
+fn void? NativeMutex.init(&mtx, MutexType type)
 ```
 ```c3
-fn void! NativeMutex.lock(&mtx)
+fn void? NativeMutex.lock(&mtx)
 ```
 ```c3
-fn void! NativeMutex.lock_timeout(&mtx, usz ms)
+fn void? NativeMutex.lock_timeout(&mtx, usz ms)
 ```
 ```c3
 fn bool NativeMutex.try_lock(&mtx)
 ```
 ```c3
-fn void! NativeMutex.unlock(&mtx)
+fn void? NativeMutex.unlock(&mtx)
 ```
 ```c3
 fn void NativeOnceFlag.call_once(&flag, OnceFn func)
 ```
 ```c3
-fn void! NativeThread.create(&thread, ThreadFn func, void* args)
+fn void? NativeThread.create(&thread, ThreadFn func, void* args)
 ```
 ```c3
-fn void! NativeThread.detach(thread) @inline
+fn void? NativeThread.detach(thread) @inline
 ```
 ```c3
 fn bool NativeThread.equals(thread, NativeThread other)
 ```
 ```c3
-fn int! NativeThread.join(thread)
+fn int? NativeThread.join(thread)
 ```
 ```c3
-fn void! native_sleep_nano(NanoDuration ns)
+fn void? native_sleep_nano(NanoDuration ns)
 ```
 ```c3
 fn NativeThread native_thread_current()
@@ -7278,29 +7278,29 @@ struct QueueItem
 struct ThreadPool
 ```
 ```c3
-fn void! ThreadPool.destroy(&self)
+fn void? ThreadPool.destroy(&self)
 ```
 ```c3
-fn void! ThreadPool.init(&self)
+fn void? ThreadPool.init(&self)
 ```
 ```c3
-fn void! ThreadPool.push(&self, ThreadFn func, void* arg)
+fn void? ThreadPool.push(&self, ThreadFn func, void* arg)
 ```
 ```c3
-fn void! ThreadPool.stop_and_destroy(&self)
+fn void? ThreadPool.stop_and_destroy(&self)
 ```
 ### `std::time`
 ```c3
-distinct Clock = ulong;
+typedef Clock = ulong;
 ```
 ```c3
-distinct Duration = long;
+typedef Duration = long;
 ```
 ```c3
-distinct NanoDuration (Printable) = long;
+typedef NanoDuration (Printable) = long;
 ```
 ```c3
-distinct Time = long;
+typedef Time = long;
 ```
 ```c3
 enum Month : char
@@ -7324,7 +7324,7 @@ fn NanoDuration Duration.to_nano(td)
 fn Duration NanoDuration.to_duration(nd)
 ```
 ```c3
-fn usz! NanoDuration.to_format(&self, Formatter* formatter) @dynamic
+fn usz? NanoDuration.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
 fn long NanoDuration.to_ms(nd)

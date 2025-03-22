@@ -18,8 +18,8 @@ test(&&1);
 // test(&x);
 ```
 
-A pointer created with `&&` is only valid until the end of the 
-current function. In other words, you should never return the 
+A pointer created with `&&` is only valid until the end of the
+current function. In other words, you should never return the
 pointer created by `&&` from a function as it will never be safe
 to use.
 
@@ -44,7 +44,7 @@ struct Foo
 
 fn void test1(Foo x) { ... }
 
-... 
+...
 
 test1((Foo){ 1, 2.0 });
 ```
@@ -122,7 +122,7 @@ constant array of bytes:
 char[*] my_image = $embed("my_image.png");
 ```
 
-The result of an embed work similar to a string literal and can implicitly convert to a `char*`, 
+The result of an embed work similar to a string literal and can implicitly convert to a `char*`,
 `void*`, `char[]`, `char[*]` and `String`.
 
 ##### Limiting length
@@ -135,14 +135,14 @@ char[4] my_data = $embed("foo.txt", 4);
 
 ##### Failure to load at compile time and defaults
 
-Usually it's a compile time error if the file can't be included, but sometimes it's useful to only optionally include it. 
+Usually it's a compile time error if the file can't be included, but sometimes it's useful to only optionally include it.
 If this is desired, declare the left hand side an [Optional](/language-common/optionals-essential/#what-is-an-optional):
 
 ```c3
-char[]! my_image = $embed("my_image.png");
+char[]? my_image = $embed("my_image.png");
 ```
 
-`my_image` with be an optional `IoError.FILE_NOT_FOUND?` if the image is missing.
+`my_image` with be an optional `io::FILE_NOT_FOUND?` if the image is missing.
 
 This also allows us to pass a [default value using `??`](/language-common/optionals-advanced/#return-a-default-value-if-optional-is-empty):
 ```c3
