@@ -206,15 +206,14 @@ which all work like their heap counterparts.
 **Q:** How can I return a temporarily allocated object from inside a temporary allocation scope?
 
 **A:** You need to pass in a copy of the temp allocator *outside* of `@pool` and allocate explicitly
-using that allocator. In addition, you need to pass this temp allocator to `@pool` to make the
-new temp allocator aware of the external temp allocator:
+using that allocator.
 
 ```c3
 // Store the temp allocator
-Allocator temp = allocator::temp();
-@pool(temp)
+Allocator temp = tmem;
+@pool()
 {
-    // Note, 'allocator::temp() != temp' here!
+    // Note, 'temp != tmem' here!
     void* some_mem = tmalloc(128);
     // Allocate this on the external temp allocator
     Foo* foo = allocator::new(temp, Foo);
