@@ -41,7 +41,7 @@ Here `file_a.c3` and `file_b.c3` belong to the same module, **foo** while `file_
 Some details about the C3 module system:
 
 - Modules can be arbitrarily nested, e.g. `module foo::bar::baz;` to create the sub module baz in the sub module `bar` of the module `foo`.
-- Module names must be alphanumeric lower case letters plus the underscore character: `_`.
+- Module names must be alphanumeric lower case letters, and may contain an underscore `_`.
 - Module names are limited to 31 characters.
 - Modules may be spread across multiple files.
 - A single file may have multiple module declarations.
