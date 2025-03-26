@@ -467,7 +467,7 @@ macro flag_clear(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```c3
 macro flag_set(ptr, AtomicOrdering $ordering = SEQ_CONSISTENT)
 ```
-### `std::atomic::types<Type>`
+### `std::atomic::types(<Type>)`
 ```c3
 struct Atomic
 ```
@@ -1061,7 +1061,7 @@ fn String AnyList.to_new_string(&self, Allocator allocator = allocator::heap()) 
 ```c3
 fn String AnyList.to_tstring(&self)
 ```
-### `std::collections::bitset<SIZE>`
+### `std::collections::bitset(<SIZE>)`
 ```c3
 struct BitSet
 ```
@@ -1083,7 +1083,7 @@ fn void BitSet.set_bool(&self, usz i, bool value) @operator([]=) @inline
 ```c3
 fn void BitSet.unset(&self, usz i)
 ```
-### `std::collections::enummap<Enum, ValueType>`
+### `std::collections::enummap(<Enum, ValueType>)`
 ```c3
 struct EnumMap (Printable)
 ```
@@ -1111,7 +1111,7 @@ fn String EnumMap.to_new_string(&self, Allocator allocator = allocator::heap()) 
 ```c3
 fn String EnumMap.to_tstring(&self) @dynamic
 ```
-### `std::collections::enumset<Enum>`
+### `std::collections::enumset(<Enum>)`
 ```c3
 distinct EnumSet (Printable) = EnumSetType;
 ```
@@ -1161,7 +1161,7 @@ fn EnumSet EnumSet.xor_of(&self, EnumSet s)
 ```c3
 macro typeid type_for_enum_elements(usz $elements)
 ```
-### `std::collections::growablebitset<Type>`
+### `std::collections::growablebitset(<Type>)`
 ```c3
 struct GrowableBitSet
 ```
@@ -1192,7 +1192,7 @@ fn GrowableBitSet* GrowableBitSet.temp_init(&self, usz initial_capacity = 1)
 ```c3
 fn void GrowableBitSet.unset(&self, usz i)
 ```
-### `std::collections::linkedlist<Type>`
+### `std::collections::linkedlist(<Type>)`
 ```c3
 struct LinkedList
 ```
@@ -1265,7 +1265,7 @@ fn void LinkedList.set(&self, usz index, Type element)
 ```c3
 fn LinkedList* LinkedList.temp_init(&self)
 ```
-### `std::collections::list<Type>`
+### `std::collections::list(<Type>)`
 ```c3
 struct List (Printable)
 ```
@@ -1413,7 +1413,7 @@ fn Type[] List.to_tarray(&self)
 ```c3
 fn String List.to_tstring(&self)
 ```
-### `std::collections::map<Key, Value>`
+### `std::collections::map(<Key, Value>)`
 ```c3
 struct Entry
 ```
@@ -1489,7 +1489,7 @@ fn Value[] HashMap.value_new_list(&map, Allocator allocator = allocator::heap())
 ```c3
 fn Value[] HashMap.value_tlist(&map)
 ```
-### `std::collections::maybe<Type>`
+### `std::collections::maybe(<Type>)`
 ```c3
 struct Maybe
 ```
@@ -1677,14 +1677,14 @@ fn Object* new_obj(Allocator allocator)
 ```c3
 fn Object* new_string(String s, Allocator allocator)
 ```
-### `std::collections::priorityqueue<Type>`
+### `std::collections::priorityqueue(<Type>)`
 ```c3
 distinct PriorityQueue = inline PrivatePriorityQueue(<Type, false>);
 ```
 ```c3
 distinct PriorityQueueMax = inline PrivatePriorityQueue(<Type, true>);
 ```
-### `std::collections::priorityqueue::private<Type, MAX>`
+### `std::collections::priorityqueue::private(<Type, MAX>)`
 ```c3
 struct PrivatePriorityQueue (Printable)
 ```
@@ -1721,7 +1721,7 @@ fn usz! PrivatePriorityQueue.to_format(&self, Formatter* formatter) @dynamic
 ```c3
 fn String PrivatePriorityQueue.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
 ```
-### `std::collections::range<Type>`
+### `std::collections::range(<Type>)`
 ```c3
 struct ExclusiveRange (Printable)
 ```
@@ -1764,7 +1764,7 @@ fn String Range.to_new_string(&self, Allocator allocator = allocator::heap()) @d
 ```c3
 fn String Range.to_tstring(&self)
 ```
-### `std::collections::ringbuffer<Type, SIZE>`
+### `std::collections::ringbuffer(<Type, SIZE>)`
 ```c3
 struct RingBuffer
 ```
@@ -1786,11 +1786,11 @@ fn usz RingBuffer.read(&self, usz index, Type[] buffer)
 ```c3
 fn void RingBuffer.write(&self, Type[] buffer)
 ```
-### `std::collections::triple<Type1, Type2, Type3>`
+### `std::collections::triple(<Type1, Type2, Type3>)`
 ```c3
 struct Triple
 ```
-### `std::collections::tuple<Type1, Type2>`
+### `std::collections::tuple(<Type1, Type2>)`
 ```c3
 struct Tuple
 ```
@@ -1810,7 +1810,7 @@ macro slice2d(array, x = 0, xlen = 0, y = 0, ylen = 0)
 ```c3
 macro tconcat(arr1, arr2)
 ```
-### `std::core::array::slice<Type>`
+### `std::core::array::slice(<Type>)`
 ```c3
 struct Slice2d
 ```
@@ -5122,7 +5122,7 @@ macro ushort ushort[<*>].sum(ushort[<*>] x)
 ```c3
 macro ushort ushort[<*>].xor(ushort[<*>] x)
 ```
-### `std::math::complex<Real>`
+### `std::math::complex(<Real>)`
 ```c3
 macro Complex Complex.add(self, Complex b)
 ```
@@ -5229,7 +5229,7 @@ fn float sine_inout(float t, float b, float c, float d) @inline
 ```c3
 fn float sine_out(float t, float b, float c, float d) @inline
 ```
-### `std::math::matrix<Real>`
+### `std::math::matrix(<Real>)`
 ```c3
 struct Matrix2x2
 ```
@@ -5484,7 +5484,7 @@ fn double tan(double x) @extern("tan") @weak @nostrip
 ```c3
 fn float tanf(float x) @extern("tanf") @weak @nostrip
 ```
-### `std::math::quaternion<Real>`
+### `std::math::quaternion(<Real>)`
 ```c3
 macro Quaternion Quaternion.add(Quaternion a, Quaternion b)
 ```
@@ -6924,7 +6924,7 @@ macro usz binarysearch(list, x, cmp = null) @builtin
 ```c3
 macro quicksort(list, cmp = null) @builtin
 ```
-### `std::sort::qs<Type, Comparer>`
+### `std::sort::qs(<Type, Comparer>)`
 ```c3
 fn void qsort(Type list, isz low, isz high, Comparer cmp)
 ```
@@ -7270,7 +7270,7 @@ fn void native_thread_exit(int result) @inline
 ```c3
 fn void native_thread_yield()
 ```
-### `std::thread::pool<SIZE>`
+### `std::thread::pool(<SIZE>)`
 ```c3
 struct QueueItem
 ```
