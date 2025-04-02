@@ -34,9 +34,6 @@ The Optional Excuse is set with `?` after the value.
 int? b = io::FILE_NOT_FOUND?;
 ```
 
-faults are declared without namespacing, so for example `io::FILE_NOT_FOUND` is `io::FILE_NOT_FOUND`.
-Other than that semantics is unchanged.
-
 ## 🎁 Unwrapping an Optional
 :::note
 
