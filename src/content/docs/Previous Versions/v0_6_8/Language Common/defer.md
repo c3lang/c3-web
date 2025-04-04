@@ -112,7 +112,7 @@ this means the `defer try` does *not* run on [scope exit](#end-of-a-scope).
 
 ## `defer catch`
 
-A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting exiting with an 
+A `defer catch` is called at [end of a scope](#end-of-a-scope) when exiting with an 
 [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional), and is helpful for logging, cleanup and freeing resources.
  
 
