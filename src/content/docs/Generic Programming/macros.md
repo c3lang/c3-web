@@ -103,7 +103,7 @@ macro size($Type)
 
 ### Trailing blocks for macros
 
-```
+```c
 // C Macro
 #define FOR_EACH(x, list) \
 for (x = (list); x; x = x->next)
