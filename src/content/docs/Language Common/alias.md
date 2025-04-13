@@ -28,7 +28,7 @@ alias Callback = fn void(int a, bool b);
 This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample usage:
 
 ```c3
-Callback cb = my_callback;
+Callback cb = &my_callback;
 cb(10, false);
 ```
 
