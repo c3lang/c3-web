@@ -53,8 +53,8 @@ c3c compile ./hello.c3
 4. Run `./c3c`.
 
 ## Installing on Ubuntu
-1. [Download tar file](https://github.com/c3lang/c3c/releases/download/latest-prerelease/c3-ubuntu-20.tar.gz)
-   (debug version [here](https://github.com/c3lang/c3c/releases/download/latest-prerelease/c3-ubuntu-20-debug.tar.gz))
+1. [Download tar file](https://github.com/c3lang/c3c/releases/download/latest-prerelease/c3-ubuntu-22.tar.gz)
+   (debug version [here](https://github.com/c3lang/c3c/releases/download/latest-prerelease/c3-ubuntu-22-debug.tar.gz))
 2. Unpack executable and standard lib.
 3. Run `./c3c`.
 
