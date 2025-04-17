@@ -47,7 +47,7 @@ and lastly add a little bit of a header on top of whatever markdown content you 
 title: the C3 Handbook
 description: A guide to the C3 Programming Language
 ---
-aand after the `---` everything else is just plain old markdown!
+and after the `---` everything else is just plain old markdown!
 ```
 
 Please visit the [Starlight Docs](https://starlight.astro.build/) for more info.
