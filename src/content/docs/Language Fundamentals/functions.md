@@ -216,17 +216,19 @@ fn void test()
 
 ### Functions and Optional returns
 
-Function return values may be *Optionals* – denoted by `<type>!` indicating that this
+Function return values may be *Optionals* – denoted by `<type>?` indicating that this
 function might either return an Optional with a result, or an Optional with an Excuse.
 
 For example this function might return an Excuse of type `SomeError` or `OtherResult`.
 
 ```c3
-fn double! test_error()
+faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
+
+fn double? test_error()
 {
     double val = random_value();
-    if (val >= 0.2) return SomeError.BAD_JOSS_ERROR?;
-    if (val > 0.5) return OtherError.BAD_LUCK_ERROR?;
+    if (val >= 0.2) return BAD_JOSS_ERROR?;
+    if (val > 0.5) return BAD_LUCK_ERROR?;
     return val;
 }
 ```
@@ -238,9 +240,11 @@ if all Optional values contain a *result*, otherwise the first Excuse found is r
 fn void test()
 {
     // The following line is either prints a value less than 0.2
-    // or does not print at all:
-    io::printfn("%d", test_error());
-
+    // or does not print at all. The (void) is needed
+    // to let the compiler know we're deliberately
+    // ignoring the Optional result.
+    (void)io::printfn("%d", test_error());
+    
     // ?? sets a default value if an Excuse is found
     double x = (test_error() + test_error()) ?? 100;
 
