@@ -213,12 +213,12 @@ fn void? test(int x)
     defer try io::print("X");
     defer catch io::print("B");
     defer (catch err) io::printf("%s", err);
-    if (x == 1) return SearchResult.MISSING?;
+    if (x == 1) return NOT_FOUND?;
     io::print("!");
 }
 
 test(0); // Prints "!XA"
-test(1); // Prints "MISSINGBA" and returns a FooError
+test(1); // Prints "MISSINGBA" and returns a NOT_FOUND
 ```
 
 ## Struct Types
@@ -299,7 +299,7 @@ Errors are handled using optional results, denoted with a '?' suffix. A variable
 result type may either contain the regular value or a `fault` enum value.
 
 ```c3
-fault DIVISION_BY_ZERO;
+faultdef DIVISION_BY_ZERO;
 
 fn double? divide(int a, int b)
 {
@@ -323,12 +323,15 @@ fn void main()
     // Handle the optional result value if it exists.
     if (catch err = ratio)
     {
-        case DIVISION_BY_ZERO:
-            io::printn("Division by zero");
-            return;
-        default:
-            io::printn("Unexpected error!");
-            return;
+        switch (err)
+        {
+            case DIVISION_BY_ZERO:
+                io::printn("Division by zero");
+                return;
+            default:
+                io::printn("Unexpected error!");
+                return;
+        }
     }
     // Flow typing makes "ratio"
     // have the plain type 'double' here.
@@ -339,7 +342,7 @@ fn void main()
 ```c3
 fn void print_file(String filename)
 {
-    String? file = io::load_file(filename);
+    String? file = (String)file::load_temp(filename);
 
     // The following function is not called on error,
     // so we must explicitly discard it with a void cast.
@@ -362,7 +365,7 @@ fn void print_file(String filename)
 
 fn void print_file2(String filename)
 {
-    String? file = io::load_file(filename);
+    String? file = (String)file::load_temp(filename);
 
     if (catch err = file)
     {
@@ -458,17 +461,17 @@ fn int test()
 }
 ```
 
-Macro arguments may have deferred evaluation, which is basically text expansion using `#var` syntax.
+Macro arguments may have deferred evaluation, which is basically duplication of the expression using `#var` syntax.
 
 ```c3
 macro @foo(#a, b, #c)
 {
-    c = a(b) * b;
+    #c = #a(b) * b;
 }
 
 macro @foo2(#a)
 {
-    return a * a;
+    return #a * #a;
 }
 
 fn int square(int x)
@@ -484,9 +487,15 @@ fn int test1()
     return b; // 27
 }
 
+fn int printme(int a)
+{
+    io::printn(a);
+    return a;
+}
+
 fn int test2()
 {
-    return @foo2(1 + 1); // 1 + 1 * 1 + 1 = 3
+    return @foo2(printme(2)); // Returns 2 and prints "2" twice.
 }
 ```
 
