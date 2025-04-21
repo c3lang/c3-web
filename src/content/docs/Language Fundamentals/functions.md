@@ -222,11 +222,7 @@ function might either return an Optional with a result, or an Optional with an E
 For example this function might return an Excuse of type `SomeError` or `OtherResult`.
 
 ```c3
-faultdef BAD_LUCK_ERROR;
-faultdef BAD_JOSS_ERROR;
-fn double random_value() {
-   return 0.3;
-}
+faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
 
 fn double? test_error()
 {
@@ -243,17 +239,12 @@ if all Optional values contain a *result*, otherwise the first Excuse found is r
 ```c3
 fn void test()
 {
-    double? reply = test_error();
-    if (catch excuse = reply)
-    {
-        io::printfn("%s", excuse);
-    }
-    else
-    {
-        // from now on, the reply variable will be a double
-        io::printfn("%.3f", reply);
-    }
-
+    // The following line is either prints a value less than 0.2
+    // or does not print at all. The (void) is needed
+    // to let the compiler know we're deliberately
+    // ignoring the Optional result.
+    (void)io::printfn("%d", test_error());
+    
     // ?? sets a default value if an Excuse is found
     double x = (test_error() + test_error()) ?? 100;
 
