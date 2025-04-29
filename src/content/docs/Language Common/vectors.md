@@ -73,10 +73,6 @@ b.xy = b.zw;
 color.rg += { 1, 2 };
 ```
 
-:::note
-Assignment, like `color.rg += { 1, 2 }` is only available in 0.7.0 and later.
-:::
-
 ## Array-like operations
 
 Like arrays, it's possible to make slices and iterate over vectors. 

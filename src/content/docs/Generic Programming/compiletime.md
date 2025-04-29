@@ -19,6 +19,45 @@ that are also prefixed using `$` (e.g. `$MyType` `$ParamType`).
 
 Mutable compile time variables are *not* allowed in the global scope.
 
+### Concatenation
+
+The compile time concatenation operator `+++` can be used at compile
+time to concatenate arrays and strings:
+
+```c3
+macro int[3] @foo(int $y)
+{
+    int[2] $z = { 1, 2 };
+    return $z +++ $y; 
+}
+
+fn void main()
+{
+	io::printn(@foo(4)); // prints "{ 1, 2, 4 }"
+}
+```
+
+### Compile time && and ||
+
+The operators `&&&` and `|||` perform compile time versions of `&&` and
+`||`. The difference between the runtime operators is that the right hand side is not type
+checked if the left hand side is `false` in the case of `&&&` and true in the case of `|||`.
+
+This allows us to safely write this macro code:
+```c3
+// Compiles even if @foo doesn't exist
+$if $defined(@foo()) &&& @foo():
+  ...
+$endif
+```
+
+If `@foo()` doesn't exist, then this still compiles. However, if we had used `&&` instead this would have been an error:
+```c3
+$if $defined(@foo()) && @foo(): // ERROR: '@foo' could not be found.
+  ...
+$endif
+```
+
 ### `$if` and `$switch`
 
 `$if <const expr>:` takes a compile time constant value and evaluates it to true or false.
@@ -225,10 +264,6 @@ A set of compile time functions are available at compile time:
 
 Get the alignment of something. See [reflection](/generic-programming/reflection).
 
-### `$append`
-
-Append a compile time constant to a compile time array or untyped list.
-
 ### `$assert`
 
 Check a condition at compile time.
@@ -277,6 +312,10 @@ Check if a given feature is enabled.
 
 Check if the expression is constant at compile time.
 
+### `$include`
+
+Includes a file into the current file at the top level.
+
 ### `$nameof`
 
 Get the local name of a symbol. See [reflection](/generic-programming/reflection).
@@ -315,7 +354,7 @@ Return the size of an expression.
 
 ### `$stringify`
 
-Turn an expression into a string.
+Turn an expression into a string. Typically used with `#foo` parameters.
 
 ### `$typeof`
 

@@ -1,50 +1,7 @@
-import { defineConfig } from "astro/config"
+import {defineConfig} from "astro/config"
 import tailwind from "@astrojs/tailwind"
 import starlight from "@astrojs/starlight"
 import fs from "node:fs"
-
-
-const top_level_docs_config = function() {
-
-    // manually created directory list, to force a well defined sidebar items ordering
-    let directory_list = [
-        "Getting Started",
-        "Get Involved",
-        "Language Fundamentals",
-        "Language Overview",
-        "Language Common",
-        "Generic Programming",
-        "Standard Library",
-        "Language Rules",
-        "Misc Advanced",
-        "Build Your Project",
-        "FAQ",
-        "Implementation Details",
-        "Thank You",
-    ]
-
-    let returnedConfig = []
-
-    for(let index=0; index<directory_list.length; index++)
-    {
-        returnedConfig.push(
-            {
-                label: directory_list[index],
-                // Not not collapse the group by default.
-                collapsed: false,
-
-                // Autogenerate a group of links for the directory.
-                autogenerate: {
-                    directory: directory_list[index],
-                    collapsed: false
-                }
-            }
-        )
-    }
-
-    return returnedConfig
-}()
-
 
 // https://astro.build/config
 export default defineConfig(
@@ -78,7 +35,7 @@ export default defineConfig(
 
 
             '/references/getting-started/allfeatures': '/faq/allfeatures',
-            '/introduction/roadmap' :'/getting-started/roadmap',
+            '/introduction/roadmap': '/getting-started/roadmap',
             '/compare': '/faq/compare-languages',
             '/references/docs/compare': '/faq/compare-languages'
 
@@ -99,28 +56,6 @@ export default defineConfig(
                             langs: [JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))],
                         },
                     },
-                    // sidebar docs: https://starlight.astro.build/guides/sidebar/
-                    sidebar: [
-                        ...top_level_docs_config,
-                        {
-                            label: 'C3 0.6.8',
-                            badge: {
-                                text: "Deprecated",
-                                variant: "note"
-                            },
-                            // Collapse the group by default.
-                            collapsed: true,
-
-                            // Autogenerate a group of links for the directory.
-                            // Do not collapse _within_ the group by default
-                            autogenerate: {
-                                directory: 'Previous Versions/v0_6_8',
-                                collapsed: false
-                            },
-                        },
-                    ],
-                }
-            ),
+                }),
         ],
-    }
-)
+    })
