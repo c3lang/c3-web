@@ -268,9 +268,24 @@ Get the alignment of something. See [reflection](/generic-programming/reflection
 
 Check a condition at compile time.
 
+```c3
+$assert($arg > 3);
+```
+
 ### `$assignable`
 
 Check if an expression is assignable to the given type, e.g. `Type x = expr;` would be valid.
+
+```c3
+fn void main()
+{
+    int x;
+    $assert($assignable(x, long));
+    $assert($assignable(3, char));      // Allowed even though the type of 3 is int
+    $assert(!$assignable(x, void*));    // int -> void* not implicitly available
+    $assert(!$assignable(x + x, long)); // Ambiguous widening
+}
+```
 
 ### `$defined`
 
@@ -291,6 +306,16 @@ When this is compiled, issue a compile time error.
 ### `$eval`
 
 Converts a compile time string to the corresponding variable or function. See [reflection](/generic-programming/reflection).
+
+```c3
+fn void main()
+{
+    int x;
+    var $s = "x";
+    $eval($s) = 3;
+    io::printn(x);  // Prints 3
+}
+```
 
 ### `$evaltype`
 
