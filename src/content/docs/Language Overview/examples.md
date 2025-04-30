@@ -520,6 +520,33 @@ fn void test()
 
 Read more about macros [here](/generic-programming/macros/).
 
+### Operator Overloading
+
+```c3
+struct Vec2
+{
+    int x, y;
+}
+
+fn Vec2 Vec2.add(self, Vec2 other) @operator(+)
+{
+    return { self.x + other.y, self.x + other.y };
+}
+
+fn Vec2 Vec2.sub(self, Vec2 other) @operator(-)
+{
+    return { self.x - other.y, self.x - other.y };
+}
+
+fn void main()
+{
+    Vec2 v1 = { 1, 2 };
+    Vec2 v2 = { 100, 4 };
+    Vec2 v3 = v1 + v2;    // v3 = { 101, 6 }
+}
+```
+
+Read more about operator overloading [here](generic-programming/operator-overloading/).
 
 ### Compile Time Reflection & Execution
 
@@ -581,6 +608,7 @@ C3 macros are designed to provide a replacement for C preprocessor macros. They 
 However, if you are doing more complex compile time code generation it is recommended to use `$exec` and related techniques to generate code in external scripts instead.
 :::
 Read more about compile time execution [here](/generic-programming/compiletime/).
+
 
 ## Generic Modules
 

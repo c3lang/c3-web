@@ -29,6 +29,7 @@ state.*
 
 - [Full C ABI compatibility](/language-common/cinterop/)
 - [Module system](/language-fundamentals/modules/) 
+- [Operator overloading](generic-programming/operator-overloading/)
 - [Generic modules](/generic-programming/generics/)
 - [Design by contract](/language-common/contracts/)
 - [Zero overhead errors](/language-common/optionals-essential/#what-is-an-optional)

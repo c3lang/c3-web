@@ -74,16 +74,17 @@ Changes relating to literals, identifiers etc.
 2. `fault` a constant with unique values which are used together with optional.
 3. Vector types.
 4. Optional types.
-5. `enum` allows a set of unique constants to be associated with each enum value.
-6. Compile time reflection and limited runtime reflection on types (see "Reflection")
-7. All types have a `typeid` property uniquely referring to that particular type.
-8. Distinct types, which are similar to aliases, but represent distinctly different types.
-9. Types may have methods. Methods can be added to any type, including built-in types.
-10. Subtyping: using `inline` on a struct member allows a struct to be implicitly converted to this member type and use corresponding methods.
-11. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
-12. Types may add operator overloading to support `foreach` and subscript operations.
-13. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
-14. Interface types, `any` types which allows dynamic invocation of methods.
+5. Operator overloading for arithmetics, bit operators and equality.
+6. `enum` allows a set of unique constants to be associated with each enum value.
+7. Compile time reflection and limited runtime reflection on types (see "Reflection")
+8. All types have a `typeid` property uniquely referring to that particular type.
+9. Distinct types, which are similar to aliases, but represent distinctly different types.
+10. Types may have methods. Methods can be added to any type, including built-in types.
+11. Subtyping: using `inline` on a struct member allows a struct to be implicitly converted to this member type and use corresponding methods.
+12. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
+13. Types may add operator overloading to support `foreach` and subscript operations.
+14. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
+15. Interface types, `any` types which allows dynamic invocation of methods.
 
 ### Changed
 

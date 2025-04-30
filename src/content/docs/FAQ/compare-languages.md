@@ -15,15 +15,16 @@ C3 adds features, but also removes a few.
 ##### In C3 but not in C
 
 - Module system
-- Integrated build system
+- Operator overloading
 - Generics
-- Semantic Macros
+- Compile time execution and semantic macros
+- Integrated build system
 - Error handling
 - Defer
 - Value methods
 - Associated enum data
 - Distinct types and subtypes
-- Optional contracts
+- Gradual contracts
 - Built-in slices
 - Foreach for iteration over arrays and types
 - Dynamic calls and types
@@ -35,7 +36,7 @@ C3 adds features, but also removes a few.
 
 ## C++
 
-C++ is a complex object oriented "almost superset" of C. It tries to be everything to everyone,
+C++ is a complex object-oriented "almost superset" of C. It tries to be everything to everyone,
 while squeezing this into a C syntax. The language is well known for its
 many pitfalls and quirky corners – as well as its long compile times.
 
@@ -86,7 +87,7 @@ but they are not built in.
 ##### In C3 but not in Rust
 
 - Same ease of programming as C
-- Optional contracts
+- Gradual contracts
 - Familiar C syntax and behaviour
 - Dynamic calls
 
@@ -106,23 +107,27 @@ possible.
 
 ##### In Zig but not in C3
 
-- Pervasive compile time execution.
-- Memory allocation failure is an error.
-- Toolchain uses build files written in native Zig.
-- Different syntax and behaviour compared to C.
-- Structs define namespace.
-- Async primitives built in.
-- Arbitrary integer sizes.
+- Pervasive compile time execution with type generation
+- Memory allocation failure is an error
+- Build toolchain is scripted using build files written in Zig
+- Different syntax and behaviour compared to C
+- Structs define namespace
+- Async primitives built in\*
+- Arbitrary integer sizes
+
+(\* Note that as of this writing, async is temporarily
+missing from Zig)
 
 ##### In C3 but not in Zig
 
 - Module system.
-- Integrated build system.
-- C ABI compatibility by default.
-- Optional contracts.
-- Familiar C syntax and behaviour.
-- Dynamic interfaces.
-- Built in benchmarks.
+- Operator overloading
+- C ABI compatibility by default
+- Gradual contracts
+- Dynamic interfaces
+- Familiar C syntax and behaviour
+- Declarative integrated build system
+- Built-in benchmarks
 
 ## Jai
 
@@ -134,20 +139,20 @@ an implicit context system to switch allocation schemes.
 
 ##### In Jai but not in C3
 
-- Pervasive compile time execution.
+- Pervasive compile time execution
 - Jai's compile time execution is the build system.
-- Different syntax and behaviour compared to C.
-- More powerful macro system than C3.
-- Implicit constructors.
+- Different syntax and behaviour compared to C
+- More powerful macro system than C3
+- Implicit constructors
 
 ##### In C3 but not in Jai
 
-- Module system.
-- Integrated build system.
-- Optional contracts.
-- Familiar C syntax and behaviour.
-- Fairly small language.
-- Dynamic interfaces.
+- Module system
+- Declarative integrated build system
+- Gradual contracts
+- Familiar C syntax and behaviour
+- Fairly small language
+- Dynamic interfaces
 
 ## Odin
 
@@ -161,20 +166,21 @@ the language. For error handling it relies on Go style tuple returns.
 
 ##### In Odin but not in C3
 
-- Different syntax and behaviour compared to C.
-- Ad hoc parametric polymorphism.
-- Multiple return values.
-- Error handling through multiple returns.
-- A rich built in set of types.
+- Different syntax and behaviour compared to C
+- Ad hoc parametric polymorphism
+- Multiple return values
+- Error handling through multiple returns
+- A rich built in set of types for maths
 
 ##### In C3 but not in Odin
 
-- Familiar C syntax and behaviour.
-- Semantic macros.
-- Value methods.
-- Optional contracts.
-- Built in error handling.
-- Dynamic interfaces.
+- Familiar C syntax and behaviour
+- Semantic macros
+- Value methods
+- Gradual contracts
+- Built in error handling
+- Dynamic interfaces
+- Operator overloading
 
 ## D
 
@@ -184,13 +190,13 @@ feature-rich language.
 
 ##### In D but not in C3
 
-- Objects and classes.
-- RAII.
-- Exceptions.
-- Optional GC.
+- Objects and classes
+- RAII
+- Exceptions
+- Optional GC
 
 *+ Many, many more features.* 
 
 ##### In C3 but not in D
 
-- Fairly small language.
+- Fairly small language

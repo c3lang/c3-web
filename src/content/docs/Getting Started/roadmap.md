@@ -14,7 +14,7 @@ sidebar:
 
 ### C3 Is Feature Stable
 
-The C3 `0.6.x` series can be run in production with the same general caveats for using any pre-`1.0` software.
+The C3 `0.7.x` series can be run in production with the same general caveats for using any pre-`1.0` software.
 
 While we strive to have zero bug count, there are still bugs being 
 found. This means that anyone using it in production would need to stay
