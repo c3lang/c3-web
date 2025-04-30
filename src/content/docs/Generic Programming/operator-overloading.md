@@ -214,6 +214,6 @@ or print things to stdout.
 Violating the expected behaviour of operators is why operator overloading
 is often frowned upon despite its usefulness. Operator overloading that
 follows expectation can make the code clearer and easier to read. Violating
-expectations on the other hand, this obfuscates the code and makes it harder to
-share. It is poor style and poor taste.
+expectations on the other hand obfuscates the code and makes it harder to
+share. It is bad style and poor taste.
 :::
