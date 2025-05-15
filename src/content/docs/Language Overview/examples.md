@@ -592,12 +592,12 @@ struct Vec2
 
 fn Vec2 Vec2.add(self, Vec2 other) @operator(+)
 {
-    return { self.x + other.y, self.x + other.y };
+    return { self.x + other.x, self.y + other.y };
 }
 
 fn Vec2 Vec2.sub(self, Vec2 other) @operator(-)
 {
-    return { self.x - other.y, self.x - other.y };
+    return { self.x - other.x, self.y - other.y };
 }
 
 fn void main()

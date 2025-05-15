@@ -5,7 +5,15 @@ sidebar:
     order: 67
 ---
 
-Contracts are optional pre- and post-conditions checks that the compiler may use for optimization and runtime checks. Note that _compilers are not obliged to process pre- and post-conditions at all_. However, violating either pre- or post-conditions is considered undefined behaviour, so a compiler may optimize as if they always hold – even if a potential bug may cause them to be violated.
+Contracts are optional pre- and post-condition checks that the compiler may 
+use for static analysis, runtime checks and optimization. Note that 
+_conforming C3 compilers are not obliged to use pre- and post-conditions at all_. 
+
+However, violating either pre- or post-conditions is unspecified behaviour, 
+and a compiler may optimize code as if they are always true – even if 
+a potential bug may cause them to be violated.
+
+In safe mode, pre- and post-conditions are checked using runtime asserts.
 
 # Pre-conditions
 
@@ -18,28 +26,39 @@ error message to display after them.
 <*
  @require foo > 0, foo < 1000 : "optional error msg"
 *>
-fn int testFoo(int foo)
+fn int test_foo(int foo)
 {
     return foo * 10;
 }
 ```
+
+If we now write the following code:
+
+```c3
+fn void main()
+{
+    test_foo(0);
+}
+```
+
+With *c3c* (the standard C3 compiler) we will get a compile time error, saying
+that the contract is violated. However, expressions requiring more static analysis
+are often only caught at runtime.
 
 # Post conditions
 
 Post conditions are evaluated to make checks on the resulting state after passing through the function.
 The post condition uses the `@ensure` annotation. Where `return` is used to represent the return value from the function.
 
-
-
 ```c3
 <*
  @require foo != null
  @ensure return > foo.x
 *>
-fn uint checkFoo(Foo* foo)
+fn uint check_foo(Foo* foo)
 {
     uint y = abs(foo.x) + 1;
-    // If we had row: foo.x = 0, then this would be a compile time error.
+    // If we had row: foo.x = 0, then this would be a runtime contract error.
     return y * abs(foo.x);
 }
 ```
@@ -80,7 +99,7 @@ fn void test()
 {
     int a = 1;
     lying_func(&a);
-    io::printf("%d", a); // Might print 1!
+    io::printfn("%d", a); // Might print 2!
 }
 ```
 
@@ -107,8 +126,6 @@ is correct or not! This program might compile, but will behave strangely:
 ```c3
 int i = 0;
 
-alias SecretFn = fn void();
-
 fn void bad_func()
 {
     i = 2;
@@ -117,48 +134,21 @@ fn void bad_func()
 <*
  @pure
 *>
-fn void lying_func(SecretFn f)
+fn void lying_func()
 {
-    f(); // The compiler cannot reason about this!
+    bad_func() @pure; // Call bad_func by assuring it is pure!
 }
 
 fn void main()
 {
     i = 1;
-    lying_func(&bad_func);
-    io::printf("%d", i); // Might print 1!
+    lying_func();
+    io::printfn("%d", i); // Might print 2!
 }
 ```
 
-However, compilers will usually detect this:
-
-```c3
-int i = 0;
-
-alias SecretFn = fn void();
-
-fn void bad_func()
-{
-    i = 2;
-}
-
-<*
- @pure
-*>
-fn void lying_func(SecretFn f)
-{
-    f(); // <- ERROR: Only '@pure' functions may be called.
-}
-
-fn void main()
-{
-    i = 1;
-    lying_func(&bad_func);
-    io::printf("%d", i); // Might print 1!
-}
-```
-
-Consequently, circumventing "pure" annotations is undefined behaviour.
+Circumventing "pure" annotations will cause the compiler optimize under the assumption
+that globals are not affected, even if this isn't true.
 
 
 # Pre-conditions for macros
@@ -169,7 +159,7 @@ function which returns true if the code inside would pass semantic checking.
 
 ```c3
 <*
- @require $defined(resource.open, resource.open()), `Expected resource to have an "open" function`
+ @require $defined(resource.open, resource.open()) : `Expected resource to have an "open" function`
  @require resource != nil
  @require $assignable(resource.open(), void*)
 *>
@@ -178,3 +168,17 @@ macro open_resource(resource)
     return resource.open();
 }
 ```
+
+# Contract support
+
+A C3 compiler may have different levels of contract use:
+
+| Level | Behaviour                                                                                                                                    |
+|-------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| 0     | Contracts are only semantically checked                                                                                                      |
+| 1     | `@require` may be compiled into asserts inside of the function. Compile time violations detected through constant folding should not compile |
+| 2     | As Level 1, but `@ensures` are also checked                                                                                                  |
+| 3     | `@require` is added at caller side as well                                                                                                   |
+| 4     | Static analysis is extended beyond compile time folding |
+
+The c3c compiler is currently does level 3 checking.
