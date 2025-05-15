@@ -238,7 +238,7 @@ struct MyData
     char* name;
     Callback open;
     Callback close;
-    State status;
+    Status status;
 
     // named sub-structs (x.other.value)
     struct other
