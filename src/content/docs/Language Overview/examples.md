@@ -309,8 +309,8 @@ fn double? divide(int a, int b)
     return (double)a / (double)b;
 }
 
-// Re-returning an optional result uses "?" suffix
-fn void? testMayError()
+// Re-returning an optional result uses "!" suffix
+fn void? test_may_fail()
 {
     divide(foo(), bar())!;
 }
@@ -388,22 +388,22 @@ Read more about optionals and error handling [here](/language-common/optionals-e
 Pre- and postconditions are optionally compiled into asserts helping to optimize the code.
 ```c3
 <*
- @param foo "the number of foos"
+ @param foo : "the number of foos"
  @require foo > 0, foo < 1000
  @return "number of foos x 10"
  @ensure return < 10000, return > 0
 *>
-fn int testFoo(int foo)
+fn int test_foo(int foo)
 {
     return foo * 10;
 }
 
 <*
- @param array "the array to test"
- @param length "length of the array"
+ @param array : "the array to test"
+ @param length : "length of the array"
  @require length > 0
 *>
-fn int getLastElement(int* array, int length)
+fn int get_last_element(int* array, int length)
 {
     return array[length - 1];
 }
@@ -457,7 +457,7 @@ fn int test()
     int b = 3;
     return foo(&square, 2) + a + b; // 9
     // return foo(square, 2) + a + b;
-    // Error the symbol "square" cannot be used as an argument.
+    // Error: function should be followed by (...) or prefixed by &.
 }
 ```
 
@@ -502,8 +502,8 @@ fn int test2()
 Improve macro errors with preconditions:
 ```c3
 <*
- @param x "value to square"
- @require types::is_numeric($typeof(x)) "cannot multiply"
+ @param x : "value to square"
+ @require types::is_numerical($typeof(x)) : "cannot multiply"
 *>
 macro square(x)
 {
