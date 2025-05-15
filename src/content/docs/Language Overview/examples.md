@@ -218,7 +218,7 @@ fn void? test(int x)
 }
 
 test(0); // Prints "!XA"
-test(1); // Prints "MISSINGBA" and returns a NOT_FOUND
+test(1); // Prints "builtin::NOT_FOUNDBA" and returns a NOT_FOUND
 ```
 
 ## Struct Types
