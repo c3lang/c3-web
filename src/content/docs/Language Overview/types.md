@@ -4,11 +4,11 @@ description: Types
 sidebar:
     order: 38
 ---
-## Overview
+# Overview
 
-As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `alias`). All types are defined on a global level.
+As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `typedef`, `bitstruct`). All types are defined on a global level.
 
-### Naming
+## Naming
 
 All user defined types in C3 starts with upper case. So `MyStruct` or `Mystruct` would be fine, `mystruct_t` or `mystruct` would not.
 This naming requirement ensures that the language is easy to parse for tools.
@@ -25,7 +25,7 @@ fn CInt stat(char* pathname, Stat* buf);
 
 This would affect things like generated C headers.
 
-### Differences from C
+## Differences from C
 
 Unlike C, C3 does not use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
@@ -45,7 +45,7 @@ fn Callback getCallback() { /* ... */ } // Ok!
 // fn void() a = null; - ERROR!
 ```
 
-### Compile time properties
+## Compile time properties
 
 Types have built in type properties. The following are common to all types:
 
@@ -63,11 +63,11 @@ Types have built in type properties. The following are common to all types:
 12. `is_ordered` - True if the type implements comparisons.
 13. `is_substruct` - True if the type has an inline member.
 
-## Basic types
+# Basic types
 
 Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
 
-### Integer types
+## Integer types
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
@@ -101,7 +101,7 @@ Integer types, except for `bool` also has the following type properties:
 
 All signed integer arithmetics uses 2's complement.
 
-### Integer constants
+## Integer constants
 
 Integer constants are 1293832 or -918212. Without a suffix, suffix type is assumed to the signed integer of *arithmetic promotion width*. Adding the `u` suffix gives a unsigned integer of the same width. Use `ixx` and `uxx` – where `xx` is the bit width for typed integers, e.g. `1234u16`
 
@@ -116,7 +116,7 @@ In the case of binary, octal and hexadecimal, the type is assumed to be *unsigne
 Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
 
 
-#### TwoCC, FourCC and EightCC
+### TwoCC, FourCC and EightCC
 
 [FourCC](https://en.wikipedia.org/wiki/FourCC) codes are often used to identify binary format types. C3 adds direct support for 4 character codes, but also 2 and 8 characters:
 
@@ -126,7 +126,7 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 Conversion is always done so that the character string has the correct ordering in memory. This means that the same characters may have different integer values on different architectures due to endianness.
 
-#### Base64 and hex data literals
+## Base64 and hex data literals
 
 Base64 encoded values work like TwoCC/FourCC/EightCC, in that is it laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `'00 00 11'x` encodes to the same value as `x'000011'`.
 
@@ -139,7 +139,7 @@ char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
 char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ```
 
-#### String literals, and raw strings
+## String literals, and raw strings
 
 Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
 
@@ -153,7 +153,7 @@ String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
 
-### Floating point types
+## Floating point types
 
 | Name        | bit size |
 |-------------| --------:|
@@ -174,7 +174,7 @@ On top of the regular properties, floating point types also have the following p
 3. `inf` Infinity.
 4. `nan` Float NaN.
 
-### Floating point constants
+## Floating point constants
 
 Floating point constants will *at least* use 64 bit precision. Just like for integer constants, it is allowed to use underscore, but it may not occur immediately before or after a dot or an exponential.
 
@@ -190,7 +190,7 @@ It is possible to type a floating point by adding a suffix:
 | `f64`          |   `double` |
 | `f128`         | `float128` |
 
-## C compatibility
+# C compatibility
 
 For C compatibility the following types are also defined in std::core::cinterop
 
@@ -211,9 +211,9 @@ For C compatibility the following types are also defined in std::core::cinterop
 
 Note that signed C char and unsigned char will correspond to `ichar` and `char`. `CChar` is only available to match the default signedness of `char` on the platform.
 
-## Other built-in types
+# Other built-in types
 
-### Pointer types
+## Pointer types
 
 Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to a pointer of Foo.
 
@@ -222,12 +222,12 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 In addition to the standard properties, pointers also have the `inner` 
 property. It returns the type of the object pointed to.
 
-### The `typeid` type
+## The `typeid` type
 
 The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
 e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
 
-#### Typeid fields
+### Typeid fields
 
 On any typeid you may at runtime query runtime properties.
 These mirror the compile time properties, but fewer are supported:
@@ -239,7 +239,7 @@ These mirror the compile time properties, but fewer are supported:
 5. `names` - supported on enum types.
 6. `len` - supported on arrays, vectors and enums.
 
-### The `any` type
+## The `any` type
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type,
@@ -303,12 +303,12 @@ fn void test(any z)
 `any.type` returns the underlying pointee typeid of the contained value. `any.ptr` returns
 the raw `void*` pointer.
 
-### Array types
+## Array types
 
 Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
 from the initializer. See the chapter on [arrays](/language-common/arrays/).
 
-### Vector types
+## Vector types
 
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
 of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
@@ -320,9 +320,9 @@ Array and vector types also support:
 1. `inner` Returning the type of each element.
 2. `len` Gives the length of the type.
 
-## User defined types
+# User defined types
 
-### alias
+## Type aliases (C's typedef)
 
 Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
 
@@ -339,7 +339,7 @@ int b = a;
 These are not proper types, just aliases, and querying
 their properties will query the properties of its aliased type.
 
-### Function pointer types
+## Function pointer types
 
 Function pointers are always used through a `alias`:
 
@@ -379,7 +379,7 @@ Function pointer types also support:
 1. `paramsof` - Returns a list of `ReflectedParam` for each parameter.
 2. `returns` - This returns the return type.
 
-### Typedef - Type definitions
+## Typedef - Distinct type definitions
 
 `typedef` creates a new type, that has the same properties as the original type
 but is distinct from it. It cannot implicitly convert into the other type using the syntax
@@ -400,7 +400,7 @@ fn void test(MyId id)
 }
 ```
 
-#### Inline typedef
+### Inline typedef
 
 Using `inline` in the `typedef` declaration allows a newly created `typedef` type to
 implicitly convert to its underlying type:
@@ -431,7 +431,7 @@ In addition to the normal properties, typedef also supports:
 1. `inner` - Returns the type this is based on.
 2. `parentof` - If this is an inline typedef, return the same as `inner`.
 
-### Generic types
+## Generic types
 ```c3
 import generic_list; // Contains the generic MyList
 
@@ -449,7 +449,7 @@ MyList {Foo} failing_example = MyList {Foo};
 ```
 Find out more about [generic types](/generic-programming/generics).
 
-### Enum
+## Enum
 
 Enum or enumerated types use the following syntax:
 ```c3
@@ -467,7 +467,7 @@ The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
 
-#### Enum associated values
+### Enum associated values
 
 It is possible to associate each enum value with one or more a static values.
 ```c3
@@ -510,7 +510,7 @@ fn void main()
 }
 ```
 
-#### Enum type inference
+### Enum type inference
 
 When an `enum` is used where the type can be inferred, like in switch case-clauses or in variable assignment, the enum name is not required:
 ```c3
@@ -541,7 +541,7 @@ test(test::RUNNING); // Uses global variable.
 test(State.RUNNING); // Uses enum constant.
 ```
 
-#### Enum to and from ordinal
+### Enum to and from ordinal
 
 You can convert an enum to its ordinal with `.ordinal`, and convert it
 back with `EnumName.from_ordinal(...)`:
@@ -558,7 +558,7 @@ fn State read_enum()
 }
 ```
 
-#### Enum conversions using "inline"
+### Enum conversions using "inline"
 
 It is possible to make an enum implicitly convert to its ordinal
 value or one of its associated values using `inline`:
@@ -601,7 +601,7 @@ user defined types:
 6. `from_ordinal(value)` convert an integer to an enum.
 7. `values` return a list containing all the enum values of an enum.
 
-### Optional Type
+## Optional Type
 
 An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
@@ -631,7 +631,7 @@ fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals-essential/).
 
 
-#### Optional Excuses are of type Fault
+### Optional Excuses are of type Fault
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
 
@@ -653,7 +653,7 @@ in an Optional as a function return value using the
 [rethrow `!` operator](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
-### Struct types
+## Struct types
 
 Structs are always named:
 
@@ -715,7 +715,7 @@ fn void test()
 }
 ```
 
-### Union types
+## Union types
 
 Union types are defined just like structs and are fully compatible with C.
 
@@ -776,7 +776,7 @@ struct Person
 Structs and unions also support the `membersof` property,
 which returns a list of struct members.
 
-### Bitstructs
+## Bitstructs
 
 Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
 integer types and booleans, in most other respects it works like a struct.
