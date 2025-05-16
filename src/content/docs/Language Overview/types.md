@@ -128,14 +128,14 @@ Integer literals follow C rules:
 6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
 
 ```c3
-$typeof(1);                 // int
-$typeof(1u);                // uint
-$typeof(1L);                // long
-$typeof(0x11);              // uint, hex is unsigned by default
-$typeof(0x1ULL);            // uint128
-$typeof(4000000000);        // long, since the number exceeds int.max
-$typeof(0x000000000000);    // ulong: 12 hex characters indicate a 48 bit value
-$typeof(0b000000000000);    // uint: 12 binary characters indicate a 12 bit value
+$typeof(1);              // int
+$typeof(1u);             // uint
+$typeof(1L);             // long
+$typeof(0x11);           // uint, hex is unsigned by default
+$typeof(0x1ULL);         // uint128
+$typeof(4000000000);     // long, since the number exceeds int.max
+$typeof(0x000000000000); // ulong: 12 hex chars indicate a 48 bit value
+$typeof(0b000000000000); // uint: 12 binary chars indicate a 12 bit value
 ```
 
 ## TwoCC, FourCC and EightCC literals
@@ -237,7 +237,7 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 In addition to the standard properties, pointers also have the `inner` 
 property. It returns the type of the object pointed to.
 
-## Optional Type
+## Optional
 
 An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
@@ -246,7 +246,7 @@ Result or an Empty, which also carries a [fault](#the-fault-type) type.
 Once extracted, a `fault` can be converted to another `fault`.
 
 ```c3
-faultdef MISSING; // define a fault
+faultdef MISSING;   // define a fault
 
 int? i;
 i = 5;              // Assigning a real value to i.
@@ -280,7 +280,8 @@ normal value. A fault have the special property that together with the `?` suffi
 
 ```c3
 int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
-fault y = IO_ERROR; // Here IO_ERROR is just a regular value, since it doesn't have '?'
+fault y = IO_ERROR; // Here IO_ERROR is just a regular
+                    // value, since it isn't followed by '?'
 ```
 
 A new `fault` value can only be defined using the `faultdef` statement:
@@ -302,13 +303,19 @@ The fault type only has one field: `nameof`, which returns the name of the fault
 
 ## The `typeid` type
 
-The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
-e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
+The `typeid` holds the runtime representation of a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
+e.g. `typeid a = Foo.typeid;`. The value itself is pointer-sized.
 
 ### Typeid fields
 
-On any typeid you may at runtime query runtime properties.
-These mirror the compile time properties, but fewer are supported:
+At compile time, a typeid value has all the properties of its underlying type:
+
+```c3
+String a = int.nameof;        // "int"
+String b = int.typeid.nameof; // "int"
+```
+
+However, at runtime only a few are available:
 
 1. `sizeof` - always supported.
 2. `kindof` - always supported.
@@ -384,6 +391,35 @@ At runtime, `any` gives you access to two fields:
 
 1. `some_any.type` - returns the underlying pointee typeid of the contained value.
 2. `some_any.ptr` - returns the raw `void*` pointer to the contained value.
+
+### Advanced use of `any`
+
+The standard library has several helper macros to manipulate `any` types:
+
+1. `anycast(some_any, Type)` returns a pointer to `Type*` or `TYPE_MISMATCH` if types don't match.
+2. `anymake(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
+3. `some_any.retype_to(some_typeid)` changes the type of an `any` to the given typeid.
+4. `some_any.as_inner()` retypes the type of the `any` to the "inner" (see the `inner` type property) of the current type.
+
+```c3
+void* some_ptr = foo();
+// Essentially (any)(int*)(some_ptr)
+any some_int = anymake(some_ptr, int.typeid); 
+
+// Same as anymake(some_int.ptr, uint.type)
+any some_uint = some_int.retype_to(uint.typeid);   
+
+struct SomeStruct
+{
+    inline int a;
+}
+
+SomeStruct s = { 3 };
+any any_struct = &s;
+
+// Result is same as (any)&s.a
+any some_inner_int = any_struct.as_inner();
+```
 
 ## Array types
 
