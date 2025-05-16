@@ -320,9 +320,9 @@ Array and vector types also support:
 1. `inner` Returning the type of each element.
 2. `len` Gives the length of the type.
 
-## Types created using `alias`
+## User defined types
 
-### "typedef"
+### alias
 
 Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
 
@@ -449,7 +449,7 @@ MyList {Foo} failing_example = MyList {Foo};
 ```
 Find out more about [generic types](/generic-programming/generics).
 
-## Enum
+### Enum
 
 Enum or enumerated types use the following syntax:
 ```c3
@@ -467,7 +467,7 @@ The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
 
-### Enum associated values
+#### Enum associated values
 
 It is possible to associate each enum value with one or more a static values.
 ```c3
@@ -510,7 +510,7 @@ fn void main()
 }
 ```
 
-### Enum type inference
+#### Enum type inference
 
 When an `enum` is used where the type can be inferred, like in switch case-clauses or in variable assignment, the enum name is not required:
 ```c3
@@ -541,7 +541,7 @@ test(test::RUNNING); // Uses global variable.
 test(State.RUNNING); // Uses enum constant.
 ```
 
-### Enum to and from ordinal
+#### Enum to and from ordinal
 
 You can convert an enum to its ordinal with `.ordinal`, and convert it
 back with `EnumName.from_ordinal(...)`:
@@ -558,7 +558,7 @@ fn State read_enum()
 }
 ```
 
-### Enum conversions using "inline"
+#### Enum conversions using "inline"
 
 It is possible to make an enum implicitly convert to its ordinal
 value or one of its associated values using `inline`:
@@ -601,7 +601,7 @@ user defined types:
 6. `from_ordinal(value)` convert an integer to an enum.
 7. `values` return a list containing all the enum values of an enum.
 
-## Optional Type
+### Optional Type
 
 An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
@@ -631,7 +631,7 @@ fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
 Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals-essential/).
 
 
-### Optional Excuses are of type Fault
+#### Optional Excuses are of type Fault
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
 
@@ -653,7 +653,7 @@ in an Optional as a function return value using the
 [rethrow `!` operator](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
 
 
-## Struct types
+### Struct types
 
 Structs are always named:
 
@@ -686,7 +686,7 @@ fn void test()
 
 To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
 
-## Struct subtyping
+### Struct subtyping
 
 C3 allows creating struct subtypes using `inline`:
 
@@ -715,7 +715,7 @@ fn void test()
 }
 ```
 
-## Union types
+### Union types
 
 Union types are defined just like structs and are fully compatible with C.
 
@@ -748,7 +748,7 @@ fn void test()
 Note that unions only take up as much space as their largest member, so `Integral.sizeof` is equivalent to `long.sizeof`.
 
 
-## Nested sub-structs / unions
+### Nested sub-structs / unions
 
 Just like in C99 and later, nested anonymous sub-structs / unions are allowed. Note that
 the placement of struct / union names is different to match the difference in declaration.
@@ -776,7 +776,7 @@ struct Person
 Structs and unions also support the `membersof` property,
 which returns a list of struct members.
 
-## Bitstructs
+### Bitstructs
 
 Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
 integer types and booleans, in most other respects it works like a struct.
