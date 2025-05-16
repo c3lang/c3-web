@@ -125,6 +125,18 @@ Integer literals follow C rules:
 3. Binary, octal and hexadecimal will implicitly be unsigned.
 4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
 5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
+6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
+
+```c3
+$typeof(1);                 // int
+$typeof(1u);                // uint
+$typeof(1L);                // long
+$typeof(0x11);              // uint, hex is unsigned by default
+$typeof(0x1ULL);            // uint128
+$typeof(4000000000);        // long, since the number exceeds int.max
+$typeof(0x000000000000);    // ulong: 12 hex characters indicate a 48 bit value
+$typeof(0b000000000000);    // uint: 12 binary characters indicate a 12 bit value
+```
 
 ## TwoCC, FourCC and EightCC literals
 
@@ -225,6 +237,69 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 In addition to the standard properties, pointers also have the `inner` 
 property. It returns the type of the object pointed to.
 
+## Optional Type
+
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
+An Optional type behaves like a tagged union, containing either the
+Result or an Empty, which also carries a [fault](#the-fault-type) type.
+
+Once extracted, a `fault` can be converted to another `fault`.
+
+```c3
+faultdef MISSING; // define a fault
+
+int? i;
+i = 5;              // Assigning a real value to i.
+i = io::EOF?;       // Assigning an optional result to i.
+fault b = MISSING;  // Assign a fault to b
+b = @catch(i);      // Assign the Excuse in i to b (EOF)
+```
+
+Only variables, expressions and function returns may be Optionals.
+Function and macro parameters in their definitions may not be optionals.
+
+```c3
+fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
+int? x = 0; // ✅ Ok!
+fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn paramater
+```
+
+An Optional value can use the special `if-try` and `if-catch` to unwrap its result or its Empty,
+it is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
+
+To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](/language-common/optionals-essential/).
+
+:::note
+If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::colletions.
+:::
+
+## The `fault` type 
+
+When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
+normal value. A fault have the special property that together with the `?` suffix it creates an Empty value:
+
+```c3
+int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
+fault y = IO_ERROR; // Here IO_ERROR is just a regular value, since it doesn't have '?'
+```
+
+A new `fault` value can only be defined using the `faultdef` statement:
+
+```c3
+faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
+```
+
+Like the [typeid type](#the-typeid-type), a `fault` is pointer sized
+and each value defined by `faultdef` is globally unique. This is true even when faults are separately compiled.
+
+:::note
+The underlying unique value assigned to a fault may vary each time a program is run.
+:::
+
+### Fault nameof
+
+The fault type only has one field: `nameof`, which returns the name of the fault, namespaced with the last module path, e.g. `"io::EOF"`.
+
 ## The `typeid` type
 
 The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
@@ -303,8 +378,12 @@ fn void test(any z)
 }
 ```
 
-`any.type` returns the underlying pointee typeid of the contained value. `any.ptr` returns
-the raw `void*` pointer.
+### `any` fields
+
+At runtime, `any` gives you access to two fields:
+
+1. `some_any.type` - returns the underlying pointee typeid of the contained value.
+2. `some_any.ptr` - returns the raw `void*` pointer to the contained value.
 
 ## Array types
 
@@ -464,7 +543,7 @@ enum State : int
 }
 
 // Access enum values via:
-State current_state = State.WAITING;
+State current_state = WAITING; // or '= State.WAITING' 
 ```
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
@@ -504,7 +583,7 @@ enum State : int (String desc, bool active, Position pos)
 
 fn void main()
 {
-    State process = State.RUNNING;
+    State process = RUNNING;
     if (process.active)
     {
         io::printfn("Process is: %s", process.desc);
@@ -603,58 +682,6 @@ user defined types:
 5. `names` returns a list containing the names of all enums.
 6. `from_ordinal(value)` convert an integer to an enum.
 7. `values` return a list containing all the enum values of an enum.
-
-## Optional Type
-
-An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
-An Optional type behaves like a tagged union, containing either the
-result or an Excuse that is of a [fault](#optional-excuses-are-of-type-fault) type.
-
-Once extracted, a `fault` can be converted to another `fault`.
-
-```c3
-faultdef MISSING; // define a fault
-
-int? i;
-i = 5;              // Assigning a real value to i.
-i = io::EOF?;       // Assigning an optional result to i.
-fault b = MISSING;  // Assign a fault to b
-b = @catch(i);      // Assign the Excuse in i to b (EOF)
-```
-
-Only variables, expressions and function returns may be Optionals.
-Function and macro parameters in their definitions may not be optionals.
-
-```c3
-fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
-int? x = 0; // ✅ Ok!
-fn void processFoo(Foo*! f) { /* ... */ } // ❌ fn paramater
-```
-
-Read more about the Optional types on the page about [Optionals and error handling](/language-common/optionals-essential/).
-
-
-### Optional Excuses are of type Fault
-
-When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is empty, and has an Excuse, which is a`fault`.
-
-```c3
-faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
-```
-
-Like the [typeid type](#the-typeid-type), the constants are pointer sized
-and each value is globally unique. For example the underlying value of
-`NOT_FOUND` is guaranteed to be different from `IO_ERROR`.
-This is true even if they are separately compiled.
-
-:::note
-The underlying values assigned to a fault may vary each time a program is compiled.
-:::
-
-A fault may be stored as a normal value, but is also unique so that it may be passed
-in an Optional as a function return value using the
-[rethrow `!` operator](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value).
-
 
 ## Struct types
 
