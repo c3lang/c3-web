@@ -8,7 +8,7 @@ sidebar:
 
 As usual, types are divided into basic types and user defined types (`enum`, `union`, `struct`, `fault`, `alias`). All types are defined on a global level.
 
-##### Naming
+### Naming
 
 All user defined types in C3 starts with upper case. So `MyStruct` or `Mystruct` would be fine, `mystruct_t` or `mystruct` would not.
 This naming requirement ensures that the language is easy to parse for tools.
@@ -25,7 +25,7 @@ fn CInt stat(char* pathname, Stat* buf);
 
 This would affect things like generated C headers.
 
-##### Differences from C
+### Differences from C
 
 Unlike C, C3 does not use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
@@ -45,11 +45,29 @@ fn Callback getCallback() { /* ... */ } // Ok!
 // fn void() a = null; - ERROR!
 ```
 
+### Compile time properties
+
+Types have built in type properties. The following are common to all types:
+
+1. `alignof` - The standard alignment of the type in bytes. For example `int.alignof` will typically be 4.
+2. `kindof` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
+3. `extnameof` - Returns a string with the extern name of the type, rarely used.
+4. `nameof` - Returns a string with the unqualified name of the type.
+5. `qnameof` - Returns a string with the qualified (using the full path) name of the type.
+6. `sizeof` - Returns the storage size of the type in bytes.
+7. `typeid` - Returns a runtime typeid for the type.
+8. `methodsof` - Retuns the methods implemented for a type.
+9. `has_tagof(tagname)` - Returns true if the type has a particular tag.
+10. `tagof(tagname)` - Retrieves the tag defined on the type.
+11. `is_eq` - True if the type implements `==`
+12. `is_ordered` - True if the type implements comparisons.
+13. `is_substruct` - True if the type has an inline member.
+
 ## Basic types
 
 Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
 
-##### Integer types
+### Integer types
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
@@ -72,11 +90,18 @@ Basic types are divided into floating point types, and integer types. Integer ty
 \* `bool` will be stored as a byte.
 \*\* size, pointer and pointer sized types depend on platform.
 
-##### Integer arithmetics
+### Integer type properties
+
+Integer types, except for `bool` also has the following type properties:
+
+1. `max` The maximum value for the type.
+2. `min` The minimum value for the type.
+
+### Integer arithmetics
 
 All signed integer arithmetics uses 2's complement.
 
-##### Integer constants
+### Integer constants
 
 Integer constants are 1293832 or -918212. Without a suffix, suffix type is assumed to the signed integer of *arithmetic promotion width*. Adding the `u` suffix gives a unsigned integer of the same width. Use `ixx` and `uxx` – where `xx` is the bit width for typed integers, e.g. `1234u16`
 
@@ -91,7 +116,7 @@ In the case of binary, octal and hexadecimal, the type is assumed to be *unsigne
 Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
 
 
-##### TwoCC, FourCC and EightCC
+#### TwoCC, FourCC and EightCC
 
 [FourCC](https://en.wikipedia.org/wiki/FourCC) codes are often used to identify binary format types. C3 adds direct support for 4 character codes, but also 2 and 8 characters:
 
@@ -101,7 +126,7 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 Conversion is always done so that the character string has the correct ordering in memory. This means that the same characters may have different integer values on different architectures due to endianness.
 
-##### Base64 and hex data literals
+#### Base64 and hex data literals
 
 Base64 encoded values work like TwoCC/FourCC/EightCC, in that is it laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `'00 00 11'x` encodes to the same value as `x'000011'`.
 
@@ -114,21 +139,21 @@ char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
 char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ```
 
-##### String literals, and raw strings
+#### String literals, and raw strings
 
 Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
 
 Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
 
 ```c3
-char* foo = `C:\foo\bar.dll`;
-char* bar = `"Say ``hello``"`;
+String foo = `C:\foo\bar.dll`;
+ZString bar = `"Say ``hello``"`;
 // Same as
-char* foo = "C:\\foo\\bar.dll";
-char* bar = "\"Say `hello`\"";
+String foo = "C:\\foo\\bar.dll";
+String bar = "\"Say `hello`\"";
 ```
 
-##### Floating point types
+### Floating point types
 
 | Name        | bit size |
 |-------------| --------:|
@@ -140,7 +165,16 @@ char* bar = "\"Say `hello`\"";
 
 *support is still incomplete.
 
-##### Floating point constants
+### Floating point type properties
+
+On top of the regular properties, floating point types also have the following properties:
+
+1. `max` The maximum value for the type.
+2. `min` The minimum value for the type.
+3. `inf` Infinity.
+4. `nan` Float NaN.
+
+### Floating point constants
 
 Floating point constants will *at least* use 64 bit precision. Just like for integer constants, it is allowed to use underscore, but it may not occur immediately before or after a dot or an exponential.
 
@@ -156,7 +190,7 @@ It is possible to type a floating point by adding a suffix:
 | `f64`          |   `double` |
 | `f128`         | `float128` |
 
-### C compatibility
+## C compatibility
 
 For C compatibility the following types are also defined in std::core::cinterop
 
@@ -183,10 +217,27 @@ Note that signed C char and unsigned char will correspond to `ichar` and `char`.
 
 Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to a pointer of Foo.
 
+### Pointer type properties
+
+In addition to the standard properties, pointers also have the `inner` 
+property. It returns the type of the object pointed to.
+
 ### The `typeid` type
 
 The `typeid` can hold a runtime identifier for a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
 e.g. `typeid a = Foo.typeid;`. This value is pointer-sized.
+
+#### Typeid fields
+
+On any typeid you may at runtime query runtime properties.
+These mirror the compile time properties, but fewer are supported:
+
+1. `sizeof` - always supported.
+2. `kindof` - always supported.
+3. `parentof` - supported on distinct and struct types, returning the inline member type.
+4. `inner` - supported on types implementing it.
+5. `names` - supported on enum types.
+6. `len` - supported on arrays, vectors and enums.
 
 ### The `any` type
 
@@ -262,6 +313,13 @@ from the initializer. See the chapter on [arrays](/language-common/arrays/).
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
 of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
 
+### Array and vector type properties
+
+Array and vector types also support:
+
+1. `inner` Returning the type of each element.
+2. `len` Gives the length of the type.
+
 ## Types created using `alias`
 
 ### "typedef"
@@ -277,6 +335,9 @@ alias Vector2 = float[<2>];
 Int32 a = 1;
 int b = a;
 ```
+
+These are not proper types, just aliases, and querying
+their properties will query the properties of its aliased type.
 
 ### Function pointer types
 
@@ -310,6 +371,13 @@ fn void main()
     // callback(a: 3); // ERROR!
 }
 ```
+
+### Function pointer type properties
+
+Function pointer types also support:
+
+1. `paramsof` - Returns a list of `ReflectedParam` for each parameter.
+2. `returns` - This returns the return type.
 
 ### Typedef - Type definitions
 
@@ -355,6 +423,13 @@ fn void test()
     // b = i; Error: Can't implicitly convert 'int' to 'Bcd'
 }
 ```
+
+### Typedef type properties
+
+In addition to the normal properties, typedef also supports:
+
+1. `inner` - Returns the type this is based on.
+2. `parentof` - If this is an inline typedef, return the same as `inner`.
 
 ### Generic types
 ```c3
@@ -696,6 +771,11 @@ struct Person
 }
 ```
 
+### Union and structs type properties
+
+Structs and unions also support the `membersof` property,
+which returns a list of struct members.
+
 ## Bitstructs
 
 Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
@@ -817,3 +897,10 @@ bitstruct Foo : char @overlap
     int b : 1..3;
 }
 ```
+
+### Bitstruct type properties
+
+Bitstructs also support:
+
+1. `membersof` - Return a list of all bitstruct members.
+2. `inner` - Return the type of the bitstruct "container" type.
