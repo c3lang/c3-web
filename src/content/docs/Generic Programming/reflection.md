@@ -33,7 +33,7 @@ It is possible to access properties on the type itself:
 - `nan`
 - `nameof`
 - `names`
-- `params`
+- `paramsof`
 - `parentof`
 - `qnameof`
 - `returns`
