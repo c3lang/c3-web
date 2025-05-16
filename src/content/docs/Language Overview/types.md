@@ -591,7 +591,7 @@ fn void main()
 
 An enum may only declare *one* `inline` parameter.
 
-### Enum compile time properties
+### Enum type properties
 
 Enum types have the following additional properties in addition to the usual properties for 
 user defined types:
