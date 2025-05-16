@@ -513,6 +513,19 @@ fn void main()
 
 An enum may only declare *one* `inline` parameter.
 
+### Enum compile time properties
+
+Enum types have the following additional properties in addition to the usual properties for 
+user defined types:
+
+1. `associated` returns an untyped list of types for the associated values.
+2. `inner` returns the type of the ordinal.
+3. `lookup(value)` lookup an enum by inlined value.
+4. `lookup_field(field_name, value)` lookup an enum by associated value.
+5. `names` returns a list containing the names of all enums.
+6. `from_ordinal(value)` convert an integer to an enum.
+7. `values` return a list containing all the enum values of an enum.
+
 ## Optional Type
 
 An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.

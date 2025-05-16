@@ -68,19 +68,6 @@ enum Foo : int (double d, String s)
 String s = Foo.associated[0].nameof; // "double"
 ```
 
-#### `elements`
-
-Returns the element count of an enum.
-
-```c3
-enum FooEnum
-{
-    BAR,
-    BAZ
-}
-int x = FooEnum.elements; // 2
-```
-
 #### `inf`
 
 *Only available for floating point types*
