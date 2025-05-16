@@ -11,8 +11,8 @@ As usual, types are divided into basic types and user defined types (`enum`, `un
 ## Naming
 
 All user defined types in C3 starts with upper case. So `MyStruct` or `Mystruct` would be fine, `mystruct_t` or `mystruct` would not.
-This naming requirement ensures that the language is easy to parse for tools.
-It is possible to use attributes to change the external name of a type:
+This naming requirement ensures that the language *is easy to parse for tools*.
+It is possible to use attributes to change the *external* name of a type:
 
 ```c3
 struct Stat @extern("stat")
@@ -23,18 +23,18 @@ struct Stat @extern("stat")
 fn CInt stat(char* pathname, Stat* buf);
 ```
 
-This would affect things like generated C headers.
+This affects generated C headers, but little else.
 
 ## Differences from C
 
-Unlike C, C3 does not use type qualifiers. `const` exists,
+Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
-Instead of `volatile`, volatile loads and stores are used.
-Restrictions on function parameter usage are instead described by parameter [preconditions](/language-common/contracts/#pre-conditions).
+Instead of `volatile`, volatile loads and stores are used using `@volatile_load` and `@volatile_store`.
+Restrictions on function parameter usage are implemented though parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-`typedef` has a slightly different syntax and renamed `alias`.
+C's `typedef` has a slightly different syntax and renamed `alias`.
 
-C3 also requires all function pointers to be used with a `alias` for example:
+C3 also requires all function pointers to be used with a `alias`, for example:
 
 ```c3
 alias Callback = fn void();
@@ -47,7 +47,8 @@ fn Callback getCallback() { /* ... */ } // Ok!
 
 ## Compile time properties
 
-Types have built in type properties. The following are common to all types:
+Types have built in type properties available through `.method` syntax. The following properties 
+are common to all C3 runtime types:
 
 1. `alignof` - The standard alignment of the type in bytes. For example `int.alignof` will typically be 4.
 2. `kindof` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
@@ -103,7 +104,7 @@ All signed integer arithmetics uses 2's complement.
 
 ## Integer constants
 
-Integer constants are 1293832 or -918212. Without a suffix, suffix type is assumed to the signed integer of *arithmetic promotion width*. Adding the `u` suffix gives a unsigned integer of the same width. Use `ixx` and `uxx` – where `xx` is the bit width for typed integers, e.g. `1234u16`
+Integer constants are 1293832 or -918212.
 
 Integers may be written in decimal, but also
 
@@ -115,8 +116,17 @@ In the case of binary, octal and hexadecimal, the type is assumed to be *unsigne
 
 Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
 
+### Integer literal suffix and type
 
-### TwoCC, FourCC and EightCC
+Integer literals follow C rules:
+
+1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
+2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
+3. Binary, octal and hexadecimal will implicitly be unsigned.
+4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
+5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
+
+## TwoCC, FourCC and EightCC literals
 
 [FourCC](https://en.wikipedia.org/wiki/FourCC) codes are often used to identify binary format types. C3 adds direct support for 4 character codes, but also 2 and 8 characters:
 
@@ -180,15 +190,8 @@ Floating point constants will *at least* use 64 bit precision. Just like for int
 
 Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is e (or E, both are acceptable), for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
 
-It is possible to type a floating point by adding a suffix:
-
-| Suffix         |       type |
-|----------------|-----------:|
-| `bf16`         | `bfloat16` |
-| `f16`          |  `float16` |
-| `f32` *or* `f` |    `float` |
-| `f64`          |   `double` |
-| `f128`         | `float128` |
+By default a floating point literal is of type double, but if the suffix `f` is used (eg `1.0f`), it is instead of 
+`float` type.
 
 # C compatibility
 
