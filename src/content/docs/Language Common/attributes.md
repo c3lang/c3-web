@@ -247,9 +247,11 @@ on faults and enums to remove the stored names.
 
 *Used for: method, macro method*
 
-This attribute has arguments `[]` `[]=` `&[]` and `len` allowing [operator overloading](/generic-programming/operator-overloading/) for `[]` and `foreach`.
+This attribute has arguments `[]` `[]=` `&[]` and `len` allowing subscript [operator overloading](/generic-programming/operator-overloading/) for `[]` and `foreach`.
 By implementing `[]` and `len`, `foreach` and `foreach_r` is enabled. In order to do `foreach` by reference,
 `&[]` must be implemented as well.
+
+Furthermore `==`, `!=`, bit operations and arithmetics can all be overloaded.
 
 ### `@optional`
 
@@ -359,7 +361,7 @@ Emits a weak symbol rather than a global.
 User defined attributes are intended for conditional application of built-in attributes.
 
 ```c3
-attrdef @MyAttribute = { @noreturn @inline };
+attrdef @MyAttribute = @noreturn, @inline;
 
 // The following two are equivalent:
 fn void foo() @MyAttribute { /* */ }
@@ -369,5 +371,5 @@ fn void foo() @noreturn @inline { /* */ }
 A user defined attribute may also be completely empty:
 
 ```c3
-attrdef @MyAttributeEmpty = {};
+attrdef @MyAttributeEmpty;
 ```
