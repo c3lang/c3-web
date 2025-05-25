@@ -1,6 +1,11 @@
 ---
-const downloadUrl = (os: string, ext = "zip") =>
-  `https://github.com/c3lang/c3c/releases/latest/download/c3-${os}.${ext}`;
+export function downloadUrl(os: string, extension: string){
+	return `https://github.com/c3lang/c3c/releases/latest/download/c3-${os}.${extension}`;
+}
+
+export function downloadUrlDebug(os: string, extension: string){
+	return `https://github.com/c3lang/c3c/releases/latest/download/c3-${os}-debug.${extension}`;
+}
 ---
 
 <div class="mt-3 flex">
