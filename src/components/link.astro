@@ -1,0 +1,19 @@
+---
+import { downloadUrl, downloadUrlDebug } from "./download.astro"
+
+interface Props {
+	os: string;
+	extension: string;
+}
+
+const { os, extension } = Astro.props;
+---
+
+<a href={downloadUrl(os, extension )}>
+	Download the C3 compiler.
+</a>
+Or the 
+<a href={downloadUrlDebug(os, extension)}>
+debug build
+</a>
+.
