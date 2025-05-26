@@ -177,6 +177,28 @@ usz enums = State.elements;   // 2
 String[] names = State.names; // [ "START", "STOP" ]
 ```
 
+### Duff's Device
+
+Using `nextcase` we can implement a version of Duff's Device:
+
+```c3
+fn void duff(int* to, int* from, int count)
+{
+    int n = (count + 7) / 8;
+    switch (count % 8)
+    {
+        case 0: *to++ = *from++; nextcase;
+        case 7: *to++ = *from++; nextcase;
+        case 6: *to++ = *from++; nextcase;
+        case 5: *to++ = *from++; nextcase;
+        case 4: *to++ = *from++; nextcase;
+        case 3: *to++ = *from++; nextcase;
+        case 2: *to++ = *from++; nextcase;
+        case 1: *to++ = *from++; if (--n > 0) nextcase 0;
+    }
+}
+```
+
 ## Defer
 
 Defer will be invoked on scope exit.
