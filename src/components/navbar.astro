@@ -1,7 +1,7 @@
 <script is:inline>
 
 	// get theme preference from local storage
-	let theme = localStorage.getItem("starlight-theme")
+	let theme = localStorage.getItem("starlight-theme");
 	
 	// Set existing preference of light, from previous page load
 	if (theme === "light") 
@@ -48,16 +48,17 @@
 
 	function moreDropdownOnMouseDown() {
 		const dropdown = document.getElementById("more-dropdown")
+		dropdown.focus();
 		
 		// when dropdown is open, "close" by adding "hidden"
 		if (!dropdown.classList.contains("hidden"))
 		{
-			dropdown.classList.add("hidden")
+			dropdown.classList.add("hidden");
 		}
 		// when dropdown is closed, "open" it by removing "hidden"
 		else 
 		{
-			document.getElementById("more-dropdown").classList.remove("hidden")
+			document.getElementById("more-dropdown").classList.remove("hidden");
 		}
 	}
 	
@@ -65,10 +66,10 @@
 		
 		setTimeout(
 			function() {
-				document.getElementById("more-dropdown").classList.add("hidden")
+				document.getElementById("more-dropdown").classList.add("hidden");
 			}, 
 			100,
-		)
+		);
 	}
 	
 </script>
