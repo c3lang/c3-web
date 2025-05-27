@@ -2,236 +2,123 @@
 
 ---
 
-<div
-  id="hs-basic-modal"
-  class="hs-overlay hs-overlay-open:opacity-100 hs-overlay-open:duration-500 hidden w-full h-full fixed top-0 start-0 z-[80] opacity-0 overflow-x-hidden transition-all overflow-y-auto pointer-events-none"
->
-  <div
-    class="hs-overlay-open:opacity-100 hs-overlay-open:duration-500 opacity-0 transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto"
-  >
-    <div
-      class="flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto dark:bg-stone-950 dark:border-gray-700 dark:shadow-slate-700/[.7]"
-    >
-      <div
-        class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700"
-      >
-        <h3 class="font-bold text-gray-800 dark:text-white">The Community</h3>
-        <button
-          type="button"
-          class="flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-          data-hs-overlay="#hs-basic-modal"
-        >
-          <span class="sr-only">Close</span>
-          <svg
-            class="flex-shrink-0 w-4 h-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            ><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg
-          >
-        </button>
-      </div>
-      <div class="p-4 overflow-y-auto">
-        <p class="mt-1 text-gray-800 dark:text-gray-400">
-          C3 has a wonderful and welcoming community full of passionate people,
-          join us on:
-        </p>
-        <!-- icon + link -->
-        <div class="flex items-center gap-x-2 mt-4">
-          <box-icon
-            class="w-6 h-6 text-black dark:text-white"
-            type="logo"
-            name="discord"
-            color="currentColor"
-            fill="currentColor"></box-icon>
-          <a
-            class="text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
-            href="https://discord.gg/qN76R87"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discord
-          </a>
-        </div>
-        <!-- icon + link -->
-        <div class="flex items-center gap-x-2 mt-4">
-          <box-icon
-            class="w-6 h-6 text-black dark:text-white"
-            type="logo"
-            name="discourse"
-            color="currentColor"
-            fill="currentColor"></box-icon>
-          <a
-            class="text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
-            href="https://c3lang.discourse.group/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discourse
-          </a>
-        </div>
-        <!-- icon + link -->
-        <div class="flex items-center gap-x-2 mt-4">
-          <box-icon
-            class="w-6 h-6 text-black dark:text-white"
-            type="logo"
-            name="github"
-            color="currentColor"
-            fill="currentColor"></box-icon>
-          <a
-            class="text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
-            href="https://github.com/c3lang/c3c/discussions"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub Discussions
-          </a>
-        </div>
 
-        <p class="mt-4 text-gray-800 dark:text-gray-400">
-          You can also follow us on:
-        </p>
-        <!-- icon + link -->
-        <div class="flex items-center gap-x-2 mt-4">
-          <box-icon
-            class="w-6 h-6 text-black dark:text-white"
-            type="logo"
-            name="twitter"
-            color="currentColor"
-            fill="currentColor"></box-icon>
-          <a
-            class="text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
-            href="https://twitter.com/C3Lang"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Twitter
-          </a>
-        </div>
-      </div>
-      <div
-        class="flex
-            justify-end
-            items-center
-            gap-x-2
-            py-3
-            px-4
-            border-t
-            dark:border-gray-700"
-      >
-        <button
-          type="button"
-          class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-          data-hs-overlay="#hs-basic-modal"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="flex flex-col center content-center items-center justify-center">
-  <h1
-    style="font-size: 64px"
-    class="font-bold
-    text-gray-800
-    dark:text-white"
-  >
-    Get Started
-  </h1>
-
-  <div
-    class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 items-center gap-4 lg:gap-8"
-  >
-    <a
-      class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
-      href="/getting-started/prebuilt-binaries"
+    <h1
+        style="font-size: 64px"
+        class="font-bold
+        text-gray-800
+        dark:text-white"
     >
-      <box-icon
-        class="w-24 h-24 mx-auto text-black dark:text-white"
-        type="solid"
-        name="download"
-        color="currentColor"
-        fill="currentColor"></box-icon>
+        Get Started
+    </h1>
 
-      <div class="grow">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Download
-        </h3>
-        <p class="mt-1 text-gray-500">
-          Install the C3 compiler for Windows, Mac and Linux.
-        </p>
-      </div>
-    </a>
-    <a
-      class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
-      href="/getting-started"
+    <div class="
+		mt-12 
+		grid 
+		sm:grid-cols-2 
+		lg:grid-cols-3 
+		items-center 
+		gap-4 
+		lg:gap-8"
     >
-      <box-icon
-        class="w-24 h-24 mx-auto text-black dark:text-white"
-        type="solid"
-        name="graduation"
-        color="currentColor"
-        fill="currentColor"></box-icon>
+        <a
+            class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
+            href="/getting-started/prebuilt-binaries"
+        >
+            <box-icon
+                class="w-24 h-24 mx-auto text-black dark:text-white"
+                type="solid"
+                name="download"
+                color="currentColor"
+                fill="currentColor"></box-icon>
 
-      <div class="grow">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Learn
-        </h3>
-        <p class="mt-1 text-gray-500">
-          Check out the C3 manual to start programming with C3.
-        </p>
-      </div>
-    </a>
-    <button
-      class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
-      type="button"
-      data-hs-overlay="#hs-basic-modal"
-    >
-      <box-icon
-        class="w-24 h-24 mx-auto text-black dark:text-white"
-        type="solid"
-        name="chat"
-        color="currentColor"
-        fill="currentColor"></box-icon>
-      <div class="grow">
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          Engage
-        </h3>
-        <p class="mt-1 text-gray-500">
-          Help us improve C3 by being a part of the community.
-        </p>
-      </div>
-    </button>
-  </div>
+            <div class="grow">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Download
+                </h3>
+                <p class="mt-1 text-gray-500">
+                    Install the C3 compiler for Windows, Mac and Linux.
+                </p>
+            </div>
+        </a>
+		
+        <a
+            class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
+            href="/getting-started"
+        >
+            <box-icon
+                class="w-24 h-24 mx-auto text-black dark:text-white"
+                type="solid"
+                name="graduation"
+                color="currentColor"
+                fill="currentColor"></box-icon>
+
+            <div class="grow">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Learn
+                </h3>
+                <p class="mt-1 text-gray-500">
+                    Check out the C3 manual to start programming with C3.
+                </p>
+            </div>
+        </a>
+		
+        <a
+            class="flex flex-col h-full text-center rounded-md hover:bg-gray-100 p-4 sm:p-6 dark:hover:bg-white/[.05]"
+            type="button"
+	    	href="/get-involved/"
+        >
+            <box-icon
+                class="w-24 h-24 mx-auto text-black dark:text-white"
+                type="solid"
+                name="chat"
+                color="currentColor"
+                fill="currentColor"></box-icon>
+            <div class="grow">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    Engage
+                </h3>
+                <p class="mt-1 text-gray-500">
+                    Help us improve C3 by being a part of the community.
+                </p>
+            </div>
+        </a>
+		
+    </div>
 </div>
-<footer class="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-  <!-- Grid -->
-  <div class="text-center">
-    <div>
-      <h3 class="text-lg text-gray-800 dark:text-gray-200">
-        Sponsors
-      </h3>
-      <div>
-        <a href="https://huly.io"><img style="margin:auto" src="/huly-safe-black.svg" alt="Huly logo" width="30%"/></a>
-      </div>
-    </div>
-    <!-- End Col -->
 
-    <div class="mt-3">
-      <p class="text-gray-500">
-        This website is <a
-          class="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
-          href="https://github.com/c3lang/c3-web">Open Source</a
-        >.
-      </p>
-    </div>
-  </div>
-  <!-- End Grid -->
+<footer class="
+	mt-auto 
+	w-full 
+	max-w-[85rem] 
+	py-10 
+	px-4 
+	sm:px-6 
+	lg:px-8 
+	mx-auto
+	"
+>
+	<!-- Grid -->
+	<div class="text-center">
+		<div>
+			<h3 class="text-lg text-gray-800 dark:text-gray-200">
+			Sponsors
+			</h3>
+			<div>
+				<a href="https://huly.io"><img style="margin:auto" src="/huly-safe-black.svg" alt="Huly logo" width="30%"/></a>
+			</div>
+		</div>
+		<!-- End Col -->
+
+		<div class="mt-3">
+			<p class="text-gray-500">
+			This website is <a
+				class="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400"
+				href="https://github.com/c3lang/c3-web">Open Source</a
+			>.
+			</p>
+		</div>
+	</div>
+	<!-- End Grid -->
 </footer>
