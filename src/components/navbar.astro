@@ -1,116 +1,76 @@
-<script lang="js">
-  if (
-    localStorage["starlight-theme"] === "dark" ||
-    (!(["starlight-theme"] in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  ) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
+<script is:inline>
 
-  const HSThemeAppearance = {
-    init() {
-      const defaultTheme = "default";
-      let theme = localStorage.getItem("starlight-theme") || defaultTheme;
+	// get theme preference from local storage
+	let theme = localStorage.getItem("starlight-theme")
+	
+	// Set existing preference of light, from previous page load
+	if (theme === "light") 
+	{
+		document.documentElement.classList.remove("dark");
+	}
+	// Set existing preference of dark, from previous page load
+	else if (theme === "dark") 
+	{
+		document.documentElement.classList.add("dark");
+	}
+	
 
-      if (document.querySelector("html").classList.contains("dark")) return;
-      this.setAppearance(theme);
-    },
-    _resetStylesOnLoad() {
-      const $resetStyles = document.createElement("style");
-      $resetStyles.innerText = `*{transition: unset !important;}`;
-      $resetStyles.setAttribute("data-hs-appearance-onload-styles", "");
-      document.head.appendChild($resetStyles);
-      return $resetStyles;
-    },
-    setAppearance(theme, saveInStore = true, dispatchEvent = true) {
-      const $resetStylesEl = this._resetStylesOnLoad();
+	function toggleDarkMode() {
+		// get theme preference from local storage
+		let theme = localStorage.getItem("starlight-theme")
 
-      if (saveInStore) {
-        localStorage.setItem("starlight-theme", theme);
-      }
+		// Switch existing preference from light to dark
+		if (theme === "light") 
+		{
+			localStorage.setItem("starlight-theme", "dark");
+			document.documentElement.classList.add("dark");
+		}
+		// Switch existing preference from dark to light
+		else if (theme === "dark") 
+		{
+			localStorage.setItem("starlight-theme", "light");
+			document.documentElement.classList.remove("dark");
+		}
+		// no local storage preference, but browser prefer dark, add dark class to root html element
+		else if (window.matchMedia("(prefers-color-scheme: dark)").matches) 
+		{
+			localStorage.setItem("starlight-theme", "dark");
+			document.documentElement.classList.add("dark");
+		}
+		// No local storage or browser preference, add dark class to root html element
+		else 
+		{
+			localStorage.setItem("starlight-theme", "dark");
+			document.documentElement.classList.add("dark");
+		}	
+	}
+	
 
-      if (theme === "auto") {
-        theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "default";
-      }
-
-      document.querySelector("html").classList.remove("dark");
-      document.querySelector("html").classList.remove("default");
-      document.querySelector("html").classList.remove("auto");
-
-      document
-        .querySelector("html")
-        .classList.add(this.getOriginalAppearance());
-
-      setTimeout(() => {
-        $resetStylesEl.remove();
-      });
-
-      if (dispatchEvent) {
-        window.dispatchEvent(
-          new CustomEvent("on-hs-appearance-change", { detail: theme }),
-        );
-      }
-    },
-    getAppearance() {
-      let theme = this.getOriginalAppearance();
-      if (theme === "auto") {
-        theme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "default";
-      }
-      return theme;
-    },
-    getOriginalAppearance() {
-      const defaultTheme = "default";
-      return localStorage.getItem("starlight-theme") || defaultTheme;
-    },
-  };
-  HSThemeAppearance.init();
-
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => {
-      if (HSThemeAppearance.getOriginalAppearance() === "auto") {
-        HSThemeAppearance.setAppearance("auto", false);
-      }
-    });
-
-  window.addEventListener("load", () => {
-    const $clickableThemes = document.querySelectorAll(
-      "[data-hs-theme-click-value]",
-    );
-    const $switchableThemes = document.querySelectorAll(
-      "[data-hs-theme-switch]",
-    );
-
-    $clickableThemes.forEach(($item) => {
-      $item.addEventListener("click", () =>
-        HSThemeAppearance.setAppearance(
-          $item.getAttribute("data-hs-theme-click-value"),
-          true,
-          $item,
-        ),
-      );
-    });
-
-    $switchableThemes.forEach(($item) => {
-      $item.addEventListener("change", (e) => {
-        HSThemeAppearance.setAppearance(e.target.checked ? "dark" : "default");
-      });
-
-      $item.checked = HSThemeAppearance.getAppearance() === "dark";
-    });
-
-    window.addEventListener("on-hs-appearance-change", (e) => {
-      $switchableThemes.forEach(($item) => {
-        $item.checked = e.detail === "dark";
-      });
-    });
-  });
+	function moreDropdownOnMouseDown() {
+		const dropdown = document.getElementById("more-dropdown")
+		
+		// when dropdown is open, "close" by adding "hidden"
+		if (!dropdown.classList.contains("hidden"))
+		{
+			dropdown.classList.add("hidden")
+		}
+		// when dropdown is closed, "open" it by removing "hidden"
+		else 
+		{
+			document.getElementById("more-dropdown").classList.remove("hidden")
+		}
+	}
+	
+	function moreDropdownOnBlur() {
+		
+		setTimeout(
+			function() {
+				document.getElementById("more-dropdown").classList.add("hidden")
+			}, 
+			100,
+		)
+	}
+	
 </script>
 
 <header
@@ -191,6 +151,8 @@
           <button
             type="button"
             class="flex items-center w-full text-stone-600 hover:text-blue-500 font-medium dark:text-gray-400 dark:hover:text-blue-500"
+			onmousedown="moreDropdownOnMouseDown()"
+			onblur="moreDropdownOnBlur()"
           >
             More
             <svg
@@ -208,9 +170,29 @@
                 stroke-linecap="round"></path>
             </svg>
           </button>
-
+		  
+		  <!-- More dropdown menu -->
           <div
-            class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 hidden z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-stone-950 sm:dark:border dark:border-stone-700 dark:divide-stone-700 before:absolute top-full sm:border before:-top-5 before:left-0 before:w-full before:h-5"
+		  	id="more-dropdown"
+            class="
+			hidden
+			absolute
+			top-full 
+			sm:right-[4rem]
+			z-10
+			sm:w-52 
+			bg-white
+			rounded-lg
+			sm:border 
+			sm:dark:border
+			border-gray-200
+			shadow-md
+			dark:bg-stone-950 
+			dark:border-stone-700 
+			sm:mt-1
+			mt-[-1.5rem]
+			p-2			
+			"
           >
             <a
               class="flex items-center gap-x-3.5 py-2 px-3 rounded-md font-medium text-stone-600 hover:text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-blue-700 dark:hover:text-gray-100"
@@ -227,28 +209,50 @@
           </div>
         </div>
 
-        <a
-          class="hs-dark-mode-active:hidden block hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
+		<!-- Enable dark mode, from light mode -->
+		<a class="
+			group
+			flex 
+			items-center 
+			text-gray-600 
+			hover:text-blue-600 
+			font-medium 
+			dark:hidden
+			dark:text-gray-400 
+			dark:hover:text-gray-500
+			"
+			href="#!"
+			onclick="toggleDarkMode()"
+		>
+			<svg
+			class="w-4 h-4"
+			xmlns="http://www.w3.org/2000/svg"
+			width="16"
+			height="16"
+			fill="currentColor"
+			viewBox="0 0 16 16"
+			>
+			<path
+				d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"
+			>
+			</path>
+			</svg>
+		</a>
+		
+		<!-- Enable light mode from dark mode -->
+		<a class="
+			hidden 
+			dark:flex
+			group 
+			items-center 
+			text-gray-600 
+			hover:text-blue-600 
+			font-medium 
+			dark:text-gray-400 
+			dark:hover:text-gray-500
+		"
           href="#!"
-          data-hs-theme-click-value="dark"
-        >
-          <svg
-            class="w-4 h-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"
-            ></path>
-          </svg>
-        </a>
-        <a
-          class="hs-dark-mode-active:block hs-dark-mode hidden group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
-          href="#!"
-          data-hs-theme-click-value="light"
+		  onclick="toggleDarkMode()"
         >
           <svg
             class="w-4 h-4"
@@ -263,6 +267,7 @@
             ></path>
           </svg>
         </a>
+		
       </div>
     </div>
   </nav>

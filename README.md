@@ -2,7 +2,7 @@
 
 <h1 style="font-size: 36px">C3-Web</h1>
 
-The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/), [Preline](https://preline.co/) and [Starlight](https://starlight.astro.build/).
+The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/) and [Starlight](https://starlight.astro.build/).
 
 <h1 style="font-size: 24px;">Get Started</h1>
 
