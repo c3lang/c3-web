@@ -46,31 +46,62 @@
 	}
 	
 
-	function moreDropdownOnMouseDown() {
-		const dropdown = document.getElementById("more-dropdown")
-		dropdown.focus();
-		
-		// when dropdown is open, "close" by adding "hidden"
-		if (!dropdown.classList.contains("hidden"))
-		{
-			dropdown.classList.add("hidden");
-		}
-		// when dropdown is closed, "open" it by removing "hidden"
-		else 
-		{
-			document.getElementById("more-dropdown").classList.remove("hidden");
-		}
-	}
 	
-	function moreDropdownOnBlur() {
+	// is the moreDropdown menu open
+	let isMoreDropdownOpen = false;
+	
+	document.addEventListener("mousedown", (event) => {
+		handleClickInner(event);
+	})
+	
+	
+	function handleClickInner(event) {
 		
-		setTimeout(
-			function() {
-				document.getElementById("more-dropdown").classList.add("hidden");
-			}, 
-			100,
-		);
-	}
+		const dropdownParent = document.getElementById("more-dropdown-parent")
+		const dropdown = document.getElementById("more-dropdown")
+		
+		// We clicked on the menu
+		if (dropdownParent.contains(event.target)) {
+			
+			// if menu is open and we clicked to close it
+			if (isMoreDropdownOpen) {
+				isMoreDropdownOpen = false
+				
+				setTimeout(
+					function() {
+						dropdown.classList.add("hidden");
+					}, 
+					200,
+				);
+				return;
+			}
+			
+			// Opening the menu
+			isMoreDropdownOpen = true;
+			
+			setTimeout(
+				function() {
+					dropdown.classList.remove("hidden");
+				}, 
+				200,
+			);
+		
+		}
+		// We clicked off the menu, close the menu
+		else
+		{
+			// Closing the menu
+			isMoreDropdownOpen = false;
+			
+			setTimeout(
+				function() {
+					dropdown.classList.add("hidden");
+				}, 
+				200,
+			);
+	
+		}	
+	}	
 	
 </script>
 
@@ -150,11 +181,11 @@
           class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] sm:[--trigger:hover] sm:py-4"
         >
           <button
+		  	id="more-dropdown-parent"
             type="button"
             class="flex items-center w-full text-stone-600 hover:text-blue-500 font-medium dark:text-gray-400 dark:hover:text-blue-500"
-			onmousedown="moreDropdownOnMouseDown()"
-			onblur="moreDropdownOnBlur()"
           >
+		
             More
             <svg
               class="ml-2 w-2.5 h-2.5 text-stone-600"
