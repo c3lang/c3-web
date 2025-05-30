@@ -742,3 +742,124 @@ fn void main()
 ```
 
 Read more about dynamic calls [here](/generic-programming/anyinterfaces/).
+
+## Classic text games
+
+Here are two classic simple text based games showcasing C3 feature and the C3 standard library.
+
+### Guess a number
+
+```c3
+import std::io, std::math::random;
+
+fn int main()
+{
+    int secret = rand(20) + 1;
+    int tries = 6;
+    
+    // game loop
+    while OUTER: (true)
+    {
+        io::printfn("Enter a guess between 1 and 20, "
+                    "%d tries remaining", tries);
+    
+        int? guess = io::treadline().to_int();
+        if (catch err = guess)
+        {
+            if (err == io::EOF) return 1; // Prevent infinite loop
+            io::printn("That wasn't a valid number, try again.");
+            continue;
+        }
+    
+        switch
+        {
+            case guess < secret: io::printn("Too Small");
+            case guess > secret: io::printn("Too Large");
+            default: io::printn("You Win!"); break OUTER;
+        }
+        if (--tries == 0)
+        {
+            io::printfn("Game Over - the number was %s", secret);
+            break;
+        }
+    }
+    io::printn("Thank you for playing!");
+    return 0;
+}
+```
+
+### Rock, paper, scissors
+
+```c3
+import std::io, std::math::random;
+
+enum Action : (String abbrev, String full)
+{
+    ROCK = { "r", "Rock" },
+    PAPER = { "p", "Paper" },
+    SCISSORS = { "s", "Scissors" },
+}
+
+const ROUNDS = 3;
+
+fn int main()
+{
+    int p_score;
+    int c_score;
+    int rounds = ROUNDS;
+    
+    io::printfn("Let's play Rock-Paper-Scissors!");
+    while (rounds > 0)
+    {
+        io::printfn("Best out of %d, %d rounds remaining. ", ROUNDS, rounds);
+        io::printn("What is your guess? [r]ock, [p]aper, or [s]cissors?");
+        
+        Action guess;
+        while (true)
+        {
+            String? s = io::treadline();
+            if (catch s) return 1;
+        
+            if (try current_guess = Action.lookup_field(abbrev, s))
+            {
+                guess = current_guess;
+                break;
+            }
+            io::printn("input invalid.");
+        }
+        
+        io::printfn("Player: %s", guess.full);
+        
+        Action comp = Action.from_ordinal(rand(3));
+        io::printfn("Computer: %s", comp.full);
+        
+        switch
+        {
+            case comp == ROCK && guess == SCISSORS:
+            case comp == SCISSORS && guess == PAPER:
+            case comp == PAPER && guess == ROCK:
+                 io::printn("Computer Score!");
+                 c_score++;
+                 rounds--;
+            case guess == ROCK && comp == SCISSORS:
+            case guess == SCISSORS && comp == PAPER:
+            case guess == PAPER && comp == ROCK:
+                io::printn("Player Score!");
+                p_score++;
+                rounds--;
+            default:
+                io::printn("Tie!");
+        }
+        io::printfn("Score: Player: %d, Computer: %d", p_score, c_score);
+    }
+    
+    switch
+    {
+        case p_score < c_score: io::printn("COMPUTER WINS GAME!");
+        case p_score > c_score: io::printn("PLAYER WINS GAME!");
+        default:                io::printn("GAME TIED!");
+    }
+    io::printn("Thank you for playing.");
+    return 0;
+}
+```
