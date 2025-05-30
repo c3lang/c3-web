@@ -15,6 +15,7 @@
     "astro": "^5.8.0",
     "astro-expressive-code": "^0.41.2",
     "boxicons": "^2.1.4",
+    "starlight-blog": "^0.23.2",
     "tailwindcss": "^4.1.7"
   }
 }

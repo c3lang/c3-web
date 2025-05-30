@@ -1,7 +1,7 @@
-import {defineConfig} from "astro/config"
-import starlight from "@astrojs/starlight"
-import fs from "node:fs"
-
+import {defineConfig} from "astro/config";
+import starlight from "@astrojs/starlight";
+import fs from "node:fs";
+import starlightBlog from 'starlight-blog';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -55,6 +55,8 @@ export default defineConfig(
                           langs: [JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))],
                       },
                   },
+				  plugins: [starlightBlog({
+				  })]
               }),
       ],
 
