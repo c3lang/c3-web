@@ -760,7 +760,8 @@ fn int main()
     // game loop
     while OUTER: (true)
     {
-        io::printfn("Enter a guess between 1 and 20, %d tries remaining", tries);
+        io::printfn("Enter a guess between 1 and 20, "
+                    "%d tries remaining", tries);
     
         int? guess = io::treadline().to_int();
         if (catch err = guess)
