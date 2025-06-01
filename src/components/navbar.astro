@@ -7,11 +7,13 @@
 	if (theme === "light") 
 	{
 		document.documentElement.classList.remove("dark");
+		document.documentElement.setAttribute("data-theme", "light");
 	}
 	// Set existing preference of dark, from previous page load
 	else if (theme === "dark") 
 	{
 		document.documentElement.classList.add("dark");
+		document.documentElement.setAttribute("data-theme", "dark");
 	}
 	
 
@@ -24,24 +26,28 @@
 		{
 			localStorage.setItem("starlight-theme", "dark");
 			document.documentElement.classList.add("dark");
+			document.documentElement.setAttribute("data-theme", "dark");
 		}
 		// Switch existing preference from dark to light
 		else if (theme === "dark") 
 		{
 			localStorage.setItem("starlight-theme", "light");
 			document.documentElement.classList.remove("dark");
+			document.documentElement.setAttribute("data-theme", "light");
 		}
 		// no local storage preference, but browser prefer dark, add dark class to root html element
 		else if (window.matchMedia("(prefers-color-scheme: dark)").matches) 
 		{
 			localStorage.setItem("starlight-theme", "dark");
 			document.documentElement.classList.add("dark");
+			document.documentElement.setAttribute("data-theme", "dark");
 		}
 		// No local storage or browser preference, add dark class to root html element
 		else 
 		{
 			localStorage.setItem("starlight-theme", "dark");
 			document.documentElement.classList.add("dark");
+			document.documentElement.setAttribute("data-theme", "dark");
 		}	
 	}
 	

@@ -1,0 +1,159 @@
+---
+interface Props {
+	title: string;
+	date: string;
+	author?: string;
+}
+
+const { 
+	title, 
+	date, 
+	author="Christoffer Lernö", 
+} = Astro.props;
+
+
+/**
+ * Lowercase the string, replace spaces with '-' Replace non-ascii characters with empty char
+ * @param input 
+ */
+ export function titleToLowerCaseKebab(input: string): string {
+	
+	return input.toLowerCase().
+		replaceAll(" ", "-").
+		replaceAll(/[^\x00-\x7F]/g, "");
+}
+
+import "../content/docs.css";
+---
+
+<!-- Using CSS variables from global styles, since those change with dark mode -->
+<style>
+	#child_slots :global(h1) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h1);
+		font-family: var(--sl-font-system);
+	}
+	
+	
+	#child_slots :global(h2) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h2);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(h3) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h3);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(p) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(ul) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		margin-left: calc(var(--spacing) * 12);
+		margin-top: calc(var(--spacing) * 6);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(li) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		margin-top: calc(var(--spacing) * 2);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(a) {
+		color: var(--sl-color-text-accent);
+		text-align: justify;
+		font-weight: 500;
+		text-decoration: underline;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(.expressive-code) {
+		margin-top: calc(var(--spacing) * 6);
+		margin-bottom: calc(var(--spacing) * 6);
+		font-family: var(--sl-font-system-mono);
+	}
+	
+	
+	
+	
+</style>
+	
+<div class="
+my-20
+"
+>
+	<h2 class="
+		group
+		text-3xl 
+		lg:text-4xl 
+		text-gray-800
+		hover:text-blue-500 
+		font-bold 
+		dark:text-white
+		mb-4
+		text-center
+	">
+		<a 
+			id={titleToLowerCaseKebab(title)} 
+			href={"#"+titleToLowerCaseKebab(title)}
+		>
+			{title}
+		</a>
+	</h2>
+
+
+	<p class="
+		text-md
+		lg:text-l 
+		text-gray-800 
+		dark:text-white
+		mb-8
+		text-center
+	">
+	{author} — {date}
+	</p>
+
+	<div class="
+		text-justify
+		"
+		id="child_slots"
+	>
+		<slot />  <!-- Markdown will be inserted here -->
+	</div>
+
+</div>

@@ -1,0 +1,174 @@
+---
+import Navbar from "../components/navbar.astro";
+import Blog from "../components/blog.astro";
+import {titleToLowerCaseKebab} from "../components/blog.astro";
+
+
+
+import {Content as Blog1Content} from '../content/blogs/1.md';
+
+
+// import * from './src/content/blogs/*.md';
+const blogPosts = Object.values(import.meta.glob('../content/blogs/*.md', { eager: true }));
+
+// import { getEntry, render } from 'astro:content';
+
+// const Blog1Content = await getEntry("blogs", "test")
+// if (!Blog1Content) {
+//   // Handle Error, for example:
+//   throw new Error('Could not find blog post 1');
+// }
+// const Blog1ContentRendered = await render(Blog1Content);
+---
+
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta
+		name="description"
+		content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+  	<meta name="og:title" content="C3" />
+  	<meta
+  		name="og:description"
+    	content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+	<meta content="/logo.svg" property="og:image" />
+	<meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+	<meta name="og:image" content="/logo.svg" />
+
+  	<link rel="icon" href="/ico.svg" type="image/x-icon" />
+
+	<title>C3 | Blog | An evolution, not a revolution</title>
+	<!-- Styles needed for styling the markdown added n -->
+	<script>
+    	import "../styles/global.css";
+  	</script>
+</head>
+
+
+
+
+<body class="dark:bg-stone-950 bg-white">
+	<div style="height: auto">
+	
+		<Navbar />
+		
+		<div class="
+			relative
+			overflow-hidden
+			"
+		>
+			<div class="
+				max-w-[60rem] 
+				mx-auto 
+				px-4 
+				sm:px-6 
+				lg:px-8 
+				pt-24 
+				pb-10
+				"
+			>
+				<div class="mt-5 mx-auto">
+				
+					<h1 class="
+						block 
+						text-3xl 
+						font-bold 
+						text-gray-800 
+						sm:text-4xl 
+						lg:text-6xl 
+						lg:leading-tight 
+						dark:text-white
+						text-center"
+					>
+						The
+						<span class="
+							bg-clip-text 
+							bg-gradient-to-l 
+							from-violet-600 
+							to-blue-600 
+							text-transparent"
+						>
+						C3
+						</span>
+						Blog
+					</h1>		
+					
+					<!-- TODO: the URL fetches the required blog based on it's title -->
+					<!-- see: https://docs.astro.build/en/guides/routing/#dynamic-routes -->
+					
+					
+					<!-- MVP - show all blogposts -->
+					<!-- {blogPosts.map(BlogPost => 
+						<Blog 
+							title={BlogPost.frontmatter.title} 
+							date={BlogPost.frontmatter.date}
+							author={BlogPost.frontmatter.author}
+						>
+							<BlogPost.Content/>
+						</Blog>
+					)} -->
+					
+					
+					<!-- Show only current blogpost and links to others -->
+					<Blog 
+						title="C3 0.7.2 Release" 
+						date="2025-05-30"
+					>
+						<Blog1Content/>
+					</Blog>
+					
+					<h3 class="
+						text-[var(--sl-color-gray-1)]
+						my-8
+						text-justify
+						font-bold
+						text-3xl
+					">
+						Other BlogPosts
+					</h3>
+					
+					<ul class="
+						text-[var(--sl-color-gray-1)]
+						list-disc
+						ml-12
+						mt-6
+						font-medium
+						"
+					>
+						{blogPosts
+							.reduce(function(filtered, BlogPost) {
+								if(BlogPost?.frontmatter?.title !== Blog1Content?.frontmatter?.title) {
+									
+									const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+									
+									return <li>
+										<a class="
+											underline
+											text-[var(--sl-color-text-accent)]
+											my-4
+											group
+											text-justify
+											font-medium
+											"
+											href={"/blog2/"+blogPostUrl}
+										>
+											{BlogPost?.frontmatter?.title} — {BlogPost?.frontmatter?.date.slice(0,10)}
+										</a>
+									</li>
+									
+								}
+						}
+						
+					)}
+					</ul>
+					
+				
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
