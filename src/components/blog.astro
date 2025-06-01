@@ -1,4 +1,7 @@
 ---
+import "../styles/global.css";
+import "../content/docs.css";
+
 interface Props {
 	title: string;
 	date: string;
@@ -18,13 +21,19 @@ const {
  */
  export function titleToLowerCaseKebab(input: string): string {
 	
+	if(typeof(input) !== "string") {
+		console.log("this should not happen, typeof: ", typeof(input))
+		return ""
+	}
+	
 	return input.toLowerCase().
 		replaceAll(" ", "-").
+		replaceAll(".", "-").
 		replaceAll(/[^\x00-\x7F]/g, "");
 }
 
-import "../content/docs.css";
 ---
+
 
 <!-- Using CSS variables from global styles, since those change with dark mode -->
 <style>
@@ -114,26 +123,19 @@ import "../content/docs.css";
 </style>
 	
 <div class="
-my-20
+my-12
+md:my-20
 "
 >
 	<h2 class="
-		group
 		text-3xl 
 		lg:text-4xl 
-		text-gray-800
-		hover:text-blue-500 
 		font-bold 
 		dark:text-white
 		mb-4
 		text-center
 	">
-		<a 
-			id={titleToLowerCaseKebab(title)} 
-			href={"#"+titleToLowerCaseKebab(title)}
-		>
-			{title}
-		</a>
+		{title}
 	</h2>
 
 

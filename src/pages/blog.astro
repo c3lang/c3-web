@@ -1,0 +1,158 @@
+---
+
+
+import "../styles/global.css";
+import "../content/docs.css";
+
+import Navbar from "../components/navbar.astro";
+import { titleToLowerCaseKebab } from "../components/blog.astro";
+
+const blogPosts = Object.values(import.meta.glob('../content/blogs/*.md', { eager: true })) ;
+
+const sortedBlogPosts = blogPosts
+	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
+	.reverse()
+	.slice(0,10)
+	
+---
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta
+		name="description"
+		content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+  	<meta name="og:title" content="C3" />
+  	<meta
+  		name="og:description"
+    	content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+	<meta content="/logo.svg" property="og:image" />
+	<meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+	<meta name="og:image" content="/logo.svg" />
+
+  	<link rel="icon" href="/ico.svg" type="image/x-icon" />
+
+	<title>C3 | Blog | An evolution, not a revolution</title>
+</head>
+
+
+
+
+<body class="dark:bg-stone-950 bg-white">
+	<div style="height: auto">
+	
+		<Navbar />
+		
+		<div class="
+			relative
+			overflow-hidden
+			"
+		>
+			<div class="
+				max-w-[40rem] 
+				mx-auto 
+				px-4 
+				sm:px-6 
+				lg:px-8 
+				pt-8
+				md:pt-24 
+				pb-12
+				"
+			>
+				<div class="mt-5 mx-auto">
+				
+					<h1 class="
+						block 
+						text-3xl 
+						font-bold 
+						text-gray-800 
+						sm:text-4xl 
+						lg:text-6xl 
+						lg:leading-tight 
+						dark:text-white
+						text-center
+						mb-8
+						md:mb-18
+						"
+					>
+						The
+						<span class="
+							bg-clip-text 
+							bg-gradient-to-l 
+							from-violet-600 
+							to-blue-600 
+							text-transparent"
+						>
+						C3
+						</span>
+						Blog
+					</h1>		
+					
+					
+					{sortedBlogPosts.map((BlogPost) => {
+						
+						const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+						
+						return <div class="
+							
+							hover:bg-slate-100
+							hover:dark:bg-slate-800
+							rounded-3xl
+							sm:ml-24							
+						">
+							<a class="
+								text-[var(--sl-color-text-accent)]
+								my-4
+								text-justify
+								font-medium
+								flex
+								flex-row
+								p-4
+								"
+								href={"/blog/"+blogPostUrl}
+							>
+								{/* TODO: add lookup for different authors, once we have different authors */}
+								<img class="
+									hidden
+									sm:block
+									rounded-full
+									w-12
+									h-12
+									"
+									src={"/lerno.png"}
+								/>
+								
+								<div class="
+									flex
+									flex-col
+									sm:ml-4
+									
+									text-[var(--sl-color-gray-1)]
+								">
+									<h3 class="
+										text-xl 
+										font-bold
+										"
+									>
+										{BlogPost?.frontmatter?.title}
+									</h3>
+									<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+								</div>
+							</a>
+						
+						</div>
+					} 
+					)}
+						
+						
+					</ul>
+					
+				
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>

@@ -1,0 +1,239 @@
+---
+import "../../styles/global.css";
+import "../../content/docs.css";
+
+import Navbar from "../../components/navbar.astro";
+import Blog from "../../components/blog.astro";
+import { titleToLowerCaseKebab } from "../../components/blog.astro";
+
+import { getCollection, getEntry, render } from 'astro:content';
+
+
+/**
+ * Return static data on every blog entry, matches URLs
+ */
+export async function getStaticPaths() {
+	
+	const allBlogs = await getCollection('blogs')
+	
+	
+	const sortedAllBlogs = allBlogs
+		.sort((item1, item2) => item1?.data?.date <= item2?.data?.date)
+		.reverse()
+
+	const pages = sortedAllBlogs.map(
+		function(blogPost) {
+			return {
+				params: { blog_title: titleToLowerCaseKebab(blogPost?.data?.title) } 
+			}
+		}
+	)
+
+	return pages
+}
+
+const { blog_title } = Astro.params;
+
+
+const blogPosts = Object.values(import.meta.glob('../../content/blogs/*.md', { eager: true })) ;
+
+const BlogData = blogPosts.filter((item) => titleToLowerCaseKebab(item?.frontmatter?.title) === blog_title )?.[0]
+
+if (!BlogData) {
+  // Handle Error, for example:
+  throw new Error(`Could not find blog post: ${blog_title}`);
+}
+
+const sortedOtherBlogs = blogPosts
+	.filter((item) => item?.frontmatter?.title !== BlogData?.frontmatter?.title )
+	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
+	.reverse()
+	.slice(0,5)
+
+---
+
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta
+		name="description"
+		content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+  	<meta name="og:title" content="C3" />
+  	<meta
+  		name="og:description"
+    	content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+	<meta content="/logo.svg" property="og:image" />
+	<meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+	<meta name="og:image" content="/logo.svg" />
+
+  	<link rel="icon" href="/ico.svg" type="image/x-icon" />
+
+	<title>C3 | Blog | An evolution, not a revolution</title>
+	<!-- Styles needed for styling the markdown added n -->
+	<script>
+    	import "../../styles/global.css";
+		import "../../content/docs.css";
+  	</script>
+</head>
+
+
+
+<body class="dark:bg-stone-950 bg-white">
+	<div style="height: auto">
+	
+		<Navbar />
+		
+		<div class="
+			relative
+			overflow-hidden
+			"
+		>
+			<div class="
+				max-w-[60rem] 
+				mx-auto 
+				px-4 
+				sm:px-6 
+				lg:px-8 
+				pt-8
+				md:pt-24 
+				pb-16
+				"
+			>
+				<div class="mt-5 mx-auto">
+				
+					<h1 class="
+						group
+						block 
+						text-3xl 
+						font-bold 
+						text-gray-800 
+						sm:text-4xl 
+						lg:text-6xl 
+						lg:leading-tight 
+						dark:text-white
+						text-center
+						"
+					>
+						<a href="/blog">
+							The
+							<span class="
+								bg-clip-text 
+								bg-gradient-to-l 
+								from-violet-600 
+								to-blue-600 
+								text-transparent"
+							>
+							C3
+							</span>
+							Blog
+						</a>
+					</h1>		
+					
+					
+					<!-- Show only current blogpost and links to others -->
+					<Blog 
+						title={BlogData?.frontmatter?.title} 
+						date={BlogData?.frontmatter?.date?.slice(0,10)}
+					>
+						 <BlogData.Content/>
+					</Blog>
+					
+					
+					<div class="
+						flex
+						flex-col
+						items-center
+						justify-center
+					">
+						
+						<h3 class="
+							text-[var(--sl-color-gray-1)]
+							mt-8
+							mb-4
+							font-bold
+							text-3xl
+						">
+							Recent Blog Posts
+						</h3>
+						
+						
+						<!-- <ul class="
+							text-[var(--sl-color-gray-1)]
+							ml-4
+							font-medium
+							"
+						>
+			
+							{sortedOtherBlogs.map(
+								function(BlogPost){
+
+									return <li class="mt-3 text-center">
+										<a class="
+											underline
+											text-[var(--sl-color-text-accent)]
+											
+											font-medium
+											"
+											href={"/blog/"+titleToLowerCaseKebab(BlogPost?.frontmatter?.title)}
+										>
+											{BlogPost?.frontmatter?.title} — {BlogPost?.frontmatter?.date?.slice(0,10)}
+										</a>
+									</li>
+									
+								}
+							)}
+						</ul> -->
+						
+						{sortedOtherBlogs.map((BlogPost) => {
+						
+							const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+							
+							return <div class="
+								hover:bg-slate-100
+								hover:dark:bg-slate-800
+								rounded-3xl				
+							">
+								<a class="
+									text-[var(--sl-color-text-accent)]
+									text-justify
+									flex
+									flex-row
+									my-1
+									py-1
+									px-10
+									"
+									href={"/blog/"+blogPostUrl}
+								>
+									
+									<div class="
+										flex
+										flex-col
+										text-[var(--sl-color-gray-1)]
+									">
+										<h3 class="
+											text-l 
+											font-bold
+											"
+										>
+											{BlogPost?.frontmatter?.title}
+										</h3>
+										<p>{BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+									</div>
+								</a>
+							
+							</div>
+						} 
+						)}
+						
+					</div>
+					
+				
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>

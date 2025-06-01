@@ -1,36 +1,32 @@
 import { defineCollection } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
-import { blogSchema } from 'starlight-blog/schema'
+import { titleToLowerCaseKebab } from './components/blog.astro'
+
 
 import { glob, type Loader, type LoaderContext } from 'astro/loaders';
 
 const docs = defineCollection(
 	{ 
 		loader: docsLoader(),
-		schema: docsSchema(
-			{
-				extend: (context) => blogSchema(context)
-			}
-		) 
+		schema: docsSchema() 
 	}
 )
+
+interface GenerateIdOptions {
+	entry: string; 
+	base: string; 
+	data: Record<string, unknown>;
+}
+
 const blogs = defineCollection(
 	{ 
-		schema: docsSchema(
-			{
-				extend: (context) => blogSchema(context)
-			}
-		),
+		schema: docsSchema(),
 		loader: glob({
-			// generateId: await async function(options) {
-			// 	console.log("options.base ", options.base)
-			// 	console.log("options.data ", options.data)
-			// 	return options.base + options.data?.title
-			// },
+			generateId: function(options: GenerateIdOptions): string {
+				return titleToLowerCaseKebab(options.data?.title)
+			},
 			base: "./src/content/blogs/",
-			// pattern: '*.md'
-			// pattern: '**/*.md'
 			pattern: '**/[^_]*.(md|mdx)'
 		})
 		

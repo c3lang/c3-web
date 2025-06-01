@@ -1,7 +1,6 @@
 import {defineConfig} from "astro/config";
 import starlight from "@astrojs/starlight";
 import fs from "node:fs";
-import starlightBlog from 'starlight-blog';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -47,7 +46,7 @@ export default defineConfig(
       integrations: [
           starlight(
               {
-                  favicon: "ico.svg",
+                  favicon: "./public/ico.svg",
                   title: "C3",
                   customCss: ["./src/content/docs.css"],
                   expressiveCode: {
@@ -59,7 +58,6 @@ export default defineConfig(
 						  },
                       },
                   },
-				  plugins: [starlightBlog()]
               }),
       ],
 
