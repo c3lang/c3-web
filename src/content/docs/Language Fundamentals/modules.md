@@ -175,11 +175,11 @@ import b @public;
 fn void test()
 {
     // Error! a_function() is private
-    a::a_function(); 
+    a::a_function();
 
     // Allowed since `import b @public` allowed `b`
     // to "public" in this context.
-    b::b_function(); 
+    b::b_function();
 }
 ```
 
@@ -356,18 +356,18 @@ fn void test()
 }
 ```
 
-In this example the code would run `do_something` if available 
+In this example the code would run `do_something` if available
 (that is, when the dynamic library is 4.0 or higher), or
 fallback to `do_something_else` otherwise.
 
-If we tried to conditionally add something not available in the 
+If we tried to conditionally add something not available in the
 compilation itself, that is a compile time error:
 
 ```c3
 if (@available(dynlib::do_another_thing))
 {
     // Error: This function is not available with 3.0
-    dynlib::do_another_thing(); 
+    dynlib::do_another_thing();
 }
 ```
 
@@ -393,7 +393,7 @@ fn void testme2()
 }
 ```
 
-This allows things like optionally loading dynamic libraries on the 
+This allows things like optionally loading dynamic libraries on the
 platforms where this is available.
 
 ## Textual Includes
@@ -463,6 +463,11 @@ fn void main()
 }
 ```
 
+`$exec` can take in 1 to 3 arguments:
+- `command`/`scriptname` (`String`)
+- `args` (`String[]`): arguments passed on commandline to the command/script
+- `stdin` (`String`): text that the command/script can read from stdin
+
 Using `$exec` requires **full trust level**, which is enabled with `--trust=full` from the command line.
 
 `$exec` will by default run from the `/scripts` directory for projects, for non-project builds,
@@ -495,10 +500,10 @@ would occur, but should not be used in the general case.
 The syntax for non-recursive imports is `import <module_name> @norecurse;` for example:
 ```c3
 // Non-recursive import
-import mylib @norecurse; 
+import mylib @norecurse;
 
 // Normal import
-import mylib; 
+import mylib;
 ```
 
 For example only importing "mylib" into "my_code" and not wishing to import "submod".
@@ -526,7 +531,7 @@ fn void undesired_fn()
 
 module my_code;
 // Using Non-recursive import undesired_fn not found
-import mylib @norecurse; 
+import mylib @norecurse;
 
 // Using Recursive import undesired_fn is found
 // import mylib;
@@ -538,7 +543,7 @@ fn void main()
 }
 ```
 
-:::note 
+:::note
 You can import multiple modules in one line:
 ```c3
 import lib1, lib2;
