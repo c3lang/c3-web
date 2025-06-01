@@ -46,7 +46,7 @@ export default defineConfig(
       integrations: [
           starlight(
               {
-                  favicon: "./public/ico.svg",
+                  favicon: "/ico.svg",
                   title: "C3",
                   customCss: ["./src/content/docs.css"],
                   expressiveCode: {

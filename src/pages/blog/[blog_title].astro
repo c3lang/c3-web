@@ -3,10 +3,10 @@ import "../../styles/global.css";
 import "../../content/docs.css";
 
 import Navbar from "../../components/navbar.astro";
-import Blog from "../../components/blog.astro";
-import { titleToLowerCaseKebab } from "../../components/blog.astro";
+import Blogitem from "../../components/blogitem.astro";
+import { titleToLowerCaseKebab } from "../../components/blogitem.astro";
 
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 
 /**
@@ -48,7 +48,7 @@ const sortedOtherBlogs = blogPosts
 	.filter((item) => item?.frontmatter?.title !== BlogData?.frontmatter?.title )
 	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
 	.reverse()
-	.slice(0,5)
+	.slice(0,10)
 
 ---
 
@@ -91,65 +91,74 @@ const sortedOtherBlogs = blogPosts
 			overflow-hidden
 			"
 		>
-			<div class="
-				max-w-[60rem] 
-				mx-auto 
-				px-4 
-				sm:px-6 
-				lg:px-8 
-				pt-8
-				md:pt-24 
-				pb-16
-				"
-			>
-				<div class="mt-5 mx-auto">
-				
-					<h1 class="
-						group
-						block 
-						text-3xl 
-						font-bold 
-						text-gray-800 
-						sm:text-4xl 
-						lg:text-6xl 
-						lg:leading-tight 
-						dark:text-white
-						text-center
-						"
-					>
-						<a href="/blog">
-							The
-							<span class="
-								bg-clip-text 
-								bg-gradient-to-l 
-								from-violet-600 
-								to-blue-600 
-								text-transparent"
-							>
-							C3
-							</span>
-							Blog
-						</a>
-					</h1>		
+		<div class="
+		relative
+		overflow-hidden
+		"
+	>
+		<div class="
+			max-w-[48rem] 
+			mx-auto 
+			px-4 
+			sm:px-6 
+			lg:px-8 
+			pt-8
+			md:pt-24 
+			pb-12
+			"
+		>
+			<div class="mt-5 mx-auto">
+			
+				<h1 class="
+					block 
+					text-3xl 
+					font-bold 
+					text-gray-800 
+					sm:text-4xl 
+					lg:text-6xl 
+					lg:leading-tight 
+					dark:text-white
+					text-center
+					mb-8
+					md:mb-18
+					"
+				>
+					<a href="/blog">
+						The
+						<span class="
+							bg-clip-text 
+							bg-gradient-to-l 
+							from-violet-600 
+							to-blue-600 
+							text-transparent"
+						>
+						C3
+						</span>
+						Blog
+					</a>	
+
+				</h1>			
 					
 					
-					<!-- Show only current blogpost and links to others -->
-					<Blog 
+					<!-- Show only current blogpost -->
+					<Blogitem 
 						title={BlogData?.frontmatter?.title} 
 						date={BlogData?.frontmatter?.date?.slice(0,10)}
 					>
 						 <BlogData.Content/>
-					</Blog>
+					</Blogitem>
 					
 					
 					<div class="
-						flex
-						flex-col
-						items-center
-						justify-center
+						grid
+						grid-cols-1
+						md:grid-cols-2
+						items-start
 					">
 						
 						<h3 class="
+							md:col-span-2
+							md:text-center
 							text-[var(--sl-color-gray-1)]
 							mt-8
 							mb-4
@@ -160,67 +169,53 @@ const sortedOtherBlogs = blogPosts
 						</h3>
 						
 						
-						<!-- <ul class="
-							text-[var(--sl-color-gray-1)]
-							ml-4
-							font-medium
-							"
-						>
-			
-							{sortedOtherBlogs.map(
-								function(BlogPost){
-
-									return <li class="mt-3 text-center">
-										<a class="
-											underline
-											text-[var(--sl-color-text-accent)]
-											
-											font-medium
-											"
-											href={"/blog/"+titleToLowerCaseKebab(BlogPost?.frontmatter?.title)}
-										>
-											{BlogPost?.frontmatter?.title} — {BlogPost?.frontmatter?.date?.slice(0,10)}
-										</a>
-									</li>
-									
-								}
-							)}
-						</ul> -->
-						
 						{sortedOtherBlogs.map((BlogPost) => {
-						
+							
 							const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
 							
 							return <div class="
+								
 								hover:bg-slate-100
 								hover:dark:bg-slate-800
-								rounded-3xl				
+								rounded-3xl					
 							">
 								<a class="
 									text-[var(--sl-color-text-accent)]
+									my-4
 									text-justify
+									font-medium
 									flex
 									flex-row
-									my-1
-									py-1
-									px-10
+									p-4
 									"
 									href={"/blog/"+blogPostUrl}
 								>
+									{/* TODO: add lookup for different authors, once we have different authors */}
+									<img class="
+										hidden
+										sm:block
+										rounded-full
+										w-12
+										h-12
+										"
+										src={"/lerno.png"}
+									/>
 									
 									<div class="
 										flex
 										flex-col
+										sm:ml-4
+										
 										text-[var(--sl-color-gray-1)]
 									">
 										<h3 class="
-											text-l 
+											text-xl 
 											font-bold
 											"
 										>
 											{BlogPost?.frontmatter?.title}
 										</h3>
-										<p>{BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+										<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
 									</div>
 								</a>
 							

@@ -5,15 +5,22 @@ import "../styles/global.css";
 import "../content/docs.css";
 
 import Navbar from "../components/navbar.astro";
-import { titleToLowerCaseKebab } from "../components/blog.astro";
+import Blogitem from "../components/blogitem.astro";
+import { titleToLowerCaseKebab } from "../components/blogitem.astro";
 
 const blogPosts = Object.values(import.meta.glob('../content/blogs/*.md', { eager: true })) ;
+
+const BlogData = blogPosts
+	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
+	.reverse()
+	?.[0]
 
 const sortedBlogPosts = blogPosts
 	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
 	.reverse()
-	.slice(0,10)
-	
+	.slice(1,10)
+
+
 ---
 
 <head>
@@ -51,7 +58,7 @@ const sortedBlogPosts = blogPosts
 			"
 		>
 			<div class="
-				max-w-[40rem] 
+				max-w-[48rem] 
 				mx-auto 
 				px-4 
 				sm:px-6 
@@ -91,63 +98,90 @@ const sortedBlogPosts = blogPosts
 					</h1>		
 					
 					
-					{sortedBlogPosts.map((BlogPost) => {
+					<!-- Show only current blogpost -->
+					<Blogitem 
+						title={BlogData?.frontmatter?.title} 
+						date={BlogData?.frontmatter?.date?.slice(0,10)}
+					>
+						 <BlogData.Content/>
+					</Blogitem>
+					
+					
+					<div class="
+						grid
+						grid-cols-1
+						md:grid-cols-2
+						items-start
+					">
 						
-						const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
-						
-						return <div class="
-							
-							hover:bg-slate-100
-							hover:dark:bg-slate-800
-							rounded-3xl
-							sm:ml-24							
+						<h3 class="
+							md:col-span-2
+							md:text-center
+							text-[var(--sl-color-gray-1)]
+							mt-8
+							mb-4
+							font-bold
+							text-3xl
 						">
-							<a class="
-								text-[var(--sl-color-text-accent)]
-								my-4
-								text-justify
-								font-medium
-								flex
-								flex-row
-								p-4
-								"
-								href={"/blog/"+blogPostUrl}
-							>
-								{/* TODO: add lookup for different authors, once we have different authors */}
-								<img class="
-									hidden
-									sm:block
-									rounded-full
-									w-12
-									h-12
-									"
-									src={"/lerno.png"}
-								/>
+							Recent Blog Posts
+						</h3>
+						
+						{sortedBlogPosts.map((BlogPost) => {
+							
+							const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+							
+							return <div class="
 								
-								<div class="
+								hover:bg-slate-100
+								hover:dark:bg-slate-800
+								rounded-3xl					
+							">
+								<a class="
+									text-[var(--sl-color-text-accent)]
+									my-4
+									text-justify
+									font-medium
 									flex
-									flex-col
-									sm:ml-4
-									
-									text-[var(--sl-color-gray-1)]
-								">
-									<h3 class="
-										text-xl 
-										font-bold
+									flex-row
+									p-4
+									"
+									href={"/blog/"+blogPostUrl}
+								>
+									{/* TODO: add lookup for different authors, once we have different authors */}
+									<img class="
+										hidden
+										sm:block
+										rounded-full
+										w-12
+										h-12
 										"
-									>
-										{BlogPost?.frontmatter?.title}
-									</h3>
-									<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
-								</div>
-							</a>
+										src={"/lerno.png"}
+									/>
+									
+									<div class="
+										flex
+										flex-col
+										sm:ml-4
+										
+										text-[var(--sl-color-gray-1)]
+									">
+										<h3 class="
+											text-xl 
+											font-bold
+											"
+										>
+											{BlogPost?.frontmatter?.title}
+										</h3>
+										<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+									</div>
+								</a>
+							
+							</div>
+						} 
+						)}
 						
-						</div>
-					} 
-					)}
 						
-						
-					</ul>
+					</div>
 					
 				
 				</div>

@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
-import { titleToLowerCaseKebab } from './components/blog.astro'
+import { titleToLowerCaseKebab } from './components/blogitem.astro'
 
 
 import { glob, type Loader, type LoaderContext } from 'astro/loaders';
