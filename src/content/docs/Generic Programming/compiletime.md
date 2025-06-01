@@ -28,7 +28,7 @@ time to concatenate arrays and strings:
 macro int[3] @foo(int $y)
 {
     int[2] $z = { 1, 2 };
-    return $z +++ $y; 
+    return $z +++ $y;
 }
 
 fn void main()
@@ -324,6 +324,7 @@ Converts a compile time string to the corresponding type. See [reflection](/gene
 ### `$exec`
 
 Execute a script at compile time and include the result in the source code.
+[See more](/language-fundamentals/modules/#exec).
 
 ### `$extnameof`, `$qnameof` and `$nameof`
 
