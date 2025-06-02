@@ -10,16 +10,30 @@ import { titleToLowerCaseKebab } from "../components/blogitem.astro";
 
 const blogPosts = Object.values(import.meta.glob('../content/blogs/*.md', { eager: true })) ;
 
-const BlogData = blogPosts
-	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
-	.reverse()
-	?.[0]
+// Find most recent blog post
+let BlogData
+for(let i=0; i<blogPosts.length; i++) {
+	
+	if(!BlogData || 
+		new Date(BlogData.frontmatter.date) <= new Date(blogPosts[i].frontmatter.date))
+	{
+		BlogData = blogPosts[i]
+	}
+}
 
-const sortedBlogPosts = blogPosts
-	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
-	.reverse()
-	.slice(1,10)
+// Store the frontmatter in an array so we can sort
+let sortedBlogPosts = []
+for(let i=0; i<blogPosts.length; i++) 
+{
+	if(blogPosts[i]?.frontmatter?.title !== BlogData?.frontmatter?.title) 
+	{
+		sortedBlogPosts.push(blogPosts[i].frontmatter)
+	}
+}
 
+sortedBlogPosts.sort((a, b) => {
+	return new Date(b.date) - new Date(a.date); // ascending
+})
 
 ---
 
@@ -107,16 +121,9 @@ const sortedBlogPosts = blogPosts
 					</Blogitem>
 					
 					
-					<div class="
-						grid
-						grid-cols-1
-						md:grid-cols-2
-						items-start
-					">
-						
-						<h3 class="
-							md:col-span-2
-							md:text-center
+					<div>
+						<h2 class="
+							md:col-start-2
 							text-[var(--sl-color-gray-1)]
 							mt-8
 							mb-4
@@ -124,63 +131,50 @@ const sortedBlogPosts = blogPosts
 							text-3xl
 						">
 							Recent Blog Posts
-						</h3>
+						</h2>
 						
 						{sortedBlogPosts.map((BlogPost) => {
 							
-							const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+							const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
 							
 							return <div class="
-								
 								hover:bg-slate-100
 								hover:dark:bg-slate-800
-								rounded-3xl					
+								rounded-3xl
+								px-4
+								py-1
+								my-1		
 							">
 								<a class="
 									text-[var(--sl-color-text-accent)]
-									my-4
 									text-justify
-									font-medium
-									flex
-									flex-row
-									p-4
 									"
 									href={"/blog/"+blogPostUrl}
 								>
-									{/* TODO: add lookup for different authors, once we have different authors */}
-									<img class="
-										hidden
-										sm:block
-										rounded-full
-										w-12
-										h-12
-										"
-										src={"/lerno.png"}
-									/>
 									
 									<div class="
 										flex
 										flex-col
 										sm:ml-4
-										
 										text-[var(--sl-color-gray-1)]
 									">
 										<h3 class="
-											text-xl 
+											text-l 
 											font-bold
 											"
 										>
-											{BlogPost?.frontmatter?.title}
+											{BlogPost.title}
 										</h3>
-										<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+										<p class="font-medium">
+											{BlogPost.date.slice(0,10)}
+										</p>
 									</div>
 								</a>
 							
 							</div>
 						} 
 						)}
-						
-						
+
 					</div>
 					
 				

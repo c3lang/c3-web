@@ -29,7 +29,9 @@ const {
 	return input.toLowerCase().
 		replaceAll(" ", "-").
 		replaceAll(".", "-").
-		replaceAll(/[^\x00-\x7F]/g, "");
+		replaceAll(/[^\x00-\x7F]/g, "").
+		replaceAll("---", "-").
+		replaceAll("--", "-");
 }
 
 ---
@@ -83,7 +85,7 @@ const {
 		font-weight: 500;
 		font-size: var(--sl-text-body);
 		list-style-type: disc;
-		margin-left: calc(var(--spacing) * 12);
+		margin-left: calc(var(--spacing) * 6);
 		margin-top: calc(var(--spacing) * 6);
 		line-height: var(--sl-line-height);
 		font-family: var(--sl-font-system);
@@ -111,6 +113,16 @@ const {
 		font-family: var(--sl-font-system);
 	}
 	
+
+	
+	#child_slots :global(code) {
+		padding-left: calc(var(--spacing) * 1.5);
+		padding-right: calc(var(--spacing) * 1.5);
+		font-family: var(--sl-font-system-mono);
+		background-color: var(--sl-color-bg-inline-code);
+	}
+	
+
 	#child_slots :global(.expressive-code) {
 		margin-top: calc(var(--spacing) * 6);
 		margin-bottom: calc(var(--spacing) * 6);

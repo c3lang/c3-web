@@ -1,0 +1,192 @@
+---
+title: Stability - time for 0.7.2
+date: 2025-06-01
+author: "Christoffer Lernö"
+description: Info regarding the development of C3
+---
+
+It's another months and consequently it's time for a new incremental 0.7 release.
+
+## Additions
+
+Unlike 0.7.1, 0.7.2 doesn't really add anything major, but just add a few quality of life enhancements:
+
+### ||| and &&& with variable right hand side
+
+Rather than writing:
+```c3
+$if FOO:
+    bool x = true;
+$else
+    bool x = foo();
+$endif
+```
+
+It's now possible to use `|||` to write this compactly as:
+```c3
+bool x = FOO ||| foo();
+```    
+`&&&` also supports this.
+
+### Compile time random: @rnd
+
+Sometimes it can be useful to create unique ids at compile time. This is now possible with the `@rnd` macro.
+
+### Compile time ceil: math::@ceil
+
+It is somewhat hard to write a good compile time `ceil` function, so 0.7.2 adds a builtin which is accessible using the `math::@ceil` macro.
+
+### Set the run directory
+
+As a convenience for using `c3c run` and `c3c compile-run`, it's not possible to use `--run-dir` (or the project setting `run-dir`) to set from what directory the compiler should run the resulting binary.
+
+### Suffix deprecations
+
+The bitsize suffixes are deprecated, so rather than writing `23u64` use the C style `23UL` instead. `u128` and `i128` suffixes are replaces by `ULL` and `LL` suffixes.
+
+Finally, the `d` suffix for doubles have been added as a complement to `f`.
+
+### Compile time reflection deprecations
+
+`MyEnum.elements` have been deprecated. Use `MyEnum.len` instead.
+
+`SomeFn.params` have been deprecated. Use `SomeFn.paramsof` instead.
+
+### Limits to SIMD sizes
+
+Limitations of vectors are sometimes misunderstood, they will cause code bloat if used for large vectors. For this reason a max vector size has been introduced. By default this is 4096 bits, so basically the size of `double[<64>]`. It is possible to increase this using `--max-vector-size` as needed. (As a comparison, the biggest SIMD vectors on x64 is 512 bits, so such a 4096 bit vector would be represented by 8 registers).
+
+### `has_tagof` works on builtin types
+
+While `has_tagof` will always return false on builtin types, this change nonetheless simplifies writing compile time code involving tags.
+
+### Allow recursive generic modules
+
+To simplify generic module resolution it was not possible to recursively generate generic module. This restriction has been lifted in 0.7.1.
+
+### Deprecation for old `@param` docs
+
+By 0.7.1 the declaration style `@param foo "abc"` would be allowed rather than `@param foo : "abc"`. This was by accident. It's now properly deprecated.
+
+### Generic faults are not allowed
+
+Creating faults that are parameterized is usually a mistake and should not have been allowed. It's been completely removed in 0.7.2 as it was classified as a bug.
+
+So no more
+```c3
+module Foo {Type};
+typedef BAZ, HELLO;
+```
+Faults should be places in a parent or sub-module instead.
+
+## Fixes
+
+This release contains about 30 different fixes, most of them newly discovered and not regressions.
+
+## Stdlib updates
+
+Currently a new version of the matrix library is incubating, and while it didn't make it for the 0.7.2 release, I hope it can be included by 0.7.4.
+
+### Optimized String -> ZString conversions
+
+Sometimes a String is already pointing to a valid ZString, so no copy is needed. To check this, String gets two new methods `.is_zstr` to check if the String is also zero terminated, and `.quick_zstr` which will create a temp ZString if needed, but otherwise use the String.
+
+### std::ascii moves into core
+
+`std::ascii` moved into `std::core::ascii`. Old _m variants are deprecated, as is uint methods.
+
+### Better tokenization
+
+It's now possible to further customize tokenization, to ignore empty elements in the middle (or not), ignore any last empty elements at the end (or not). This introduces `.tokenize_all` which replaces the now deprecated `.splitter` method.
+
+### Count and replace
+
+String further gets some conveniences: `.count` to count the number of instances of a string within the string and `replace` / `treplace` to return a new String with a substring replaced. This functionality was already in DString, but was now added to String as well.
+
+### Operator overloads for std::time and Maybe
+
+`Duration * Int`, `Clock - Clock` and `DateTime + Duration` overloads were added for manipulating time.
+
+For `Maybe`, the `==` operator is available when the inner type is equatable.
+
+### Subprocess improvements
+
+Subprocess added an `inherit_stdio` option to inherit the parent's stdin, stdout, and stderr instead of creating pipes.
+
+
+## Changelist
+
+The full changelist is here:
+
+### Changes / improvements
+- Better default assert messages when no message is specified #2122
+- Add `--run-dir`, to specify directory for running executable using `compile-run` and `run` #2121.
+- Add `run-dir` to project.json.
+- Add `quiet` to project.json.
+- Deprecate uXX and iXX bit suffixes.
+- Add experimental LL / ULL suffixes for int128 and uint128 literals.
+- Allow the right hand side of `|||` and `&&&` be runtime values.
+- Added `@rnd()` compile time random function (using the `$$rnd()` builtin). #2078
+- Add `math::@ceil()` compile time ceil function. #2134
+- Improve error message when using keywords as functions/macros/variables #2133.
+- Deprecate `MyEnum.elements`.
+- Deprecate `SomeFn.params`.
+- Improve error message when encountering recursively defined structs. #2146
+- Limit vector max size, default is 4096 bits, but may be increased using --max-vector-size.
+- Allow the use of `has_tagof` on builtin types.
+- `@jump` now included in `--list-attributes` #2155.
+- Add `$$matrix_mul` and `$$matrix_transpose` builtins.
+- Add `d` as floating point suffix for `double` types.
+- Deprecate `f32`, `f64` and `f128` suffixes.
+- Allow recursive generic modules.
+- Add deprecation for `@param foo "abc"`.
+- Add `--header-output` and `header-output` options for controlling header output folder.
+- Generic faults is disallowed.
+
+### Fixes
+- Assert triggered when casting from `int[2]` to `uint[2]` #2115
+- Assert when a macro with compile time value is discarded, e.g. `foo();` where `foo()` returns an untyped list. #2117
+- Fix stringify for compound initializers #2120.
+- Fix No index OOB check for `[:^n]` #2123.
+- Fix regression in Time diff due to operator overloading #2124.
+- attrdef with any invalid name causes compiler assert #2128.
+- Correctly error on `@attrdef Foo = ;`.
+- Contract on trying to use Object without initializing it.
+- Variable aliases of aliases would not resolve correctly. #2131
+- Variable aliases could not be assigned to.
+- Some folding was missing in binary op compile time resolution #2135.
+- Defining an enum like `ABC = { 1 2 }` was accidentally allowed.
+- Using a non-const as the end range for a bitstruct would trigger an assert.
+- Incorrect parsing of ad hoc generic types, like `Foo{int}****` #2140.
+- $define did not correctly handle generic types #2140.
+- Incorrect parsing of call attributes #2144.
+- Error when using named argument on trailing macro body expansion #2139.
+- Designated const initializers with `{}` would overwrite the parent field.
+- Empty default case in @jump switch does not fallthrough #2147.
+- `&&&` was accidentally available as a valid prefix operator.
+- Missing error on default values for body with default arguments #2148.
+- `--path` does not interact correctly with relative path arguments #2149.
+- Add missing `@noreturn` to `os::exit`.
+- Implicit casting from struct to interface failure for inheriting interfaces #2151.
+- Distinct types could not be used with tagof #2152.
+- `$$sat_mul` was missing.
+- `for` with incorrect `var` declaration caused crash #2154.
+- Check pointer/slice/etc on `[out]` and `&` params. #2156.
+- Compiler didn't check foreach over flexible array member, and folding a flexible array member was allowed #2164.
+- Too strict project view #2163.
+- Bug using `#foo` arguments with `$defined` #2173
+- Incorrect ensure on String.split.
+- Removed the naive check for compile time modification, which fixes #1997 but regresses in detection.
+
+### Stdlib changes
+- Added `String.quick_ztr` and `String.is_zstr`
+- std::ascii moved into std::core::ascii. Old _m variants are deprecated, as is uint methods.
+- Add `String.tokenize_all` to replace the now deprecated `String.splitter`
+- Add `String.count` to count the number of instances of a string.
+- Add `String.replace` and `String.treplace` to replace substrings within a string.
+- Add `Duration * Int` and `Clock - Clock` overload.
+- Add `DateTime + Duration` overloads.
+- Add `Maybe.equals` and respective `==` operator when the inner type is equatable.
+- Add `inherit_stdio` option to `SubProcessOptions` to inherit parent's stdin, stdout, and stderr instead of creating pipes. #2012
+- Remove superfluous `cleanup` parameter in `os::exit` and `os::fastexit`.
+- Add `extern fn ioctl(CInt fd, ulong request, ...)` binding to libc;

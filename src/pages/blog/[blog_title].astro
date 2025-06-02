@@ -6,52 +6,57 @@ import Navbar from "../../components/navbar.astro";
 import Blogitem from "../../components/blogitem.astro";
 import { titleToLowerCaseKebab } from "../../components/blogitem.astro";
 
-import { getCollection } from 'astro:content';
-
 
 /**
  * Return static data on every blog entry, matches URLs
  */
-export async function getStaticPaths() {
-	
-	const allBlogs = await getCollection('blogs')
+export function getStaticPaths() {
 	
 	
-	const sortedAllBlogs = allBlogs
-		.sort((item1, item2) => item1?.data?.date <= item2?.data?.date)
-		.reverse()
+	const allBlogs = Object.values(import.meta.glob('../../content/blogs/*.md', { eager: true }));
 
-	const pages = sortedAllBlogs.map(
+	const pages = allBlogs.map(
 		function(blogPost) {
 			return {
-				params: { blog_title: titleToLowerCaseKebab(blogPost?.data?.title) } 
+				params: { blog_title: titleToLowerCaseKebab(blogPost?.frontmatter?.title) } 
 			}
 		}
 	)
-
+	
 	return pages
 }
 
 const { blog_title } = Astro.params;
 
-
 const blogPosts = Object.values(import.meta.glob('../../content/blogs/*.md', { eager: true })) ;
 
-const BlogData = blogPosts.filter((item) => titleToLowerCaseKebab(item?.frontmatter?.title) === blog_title )?.[0]
 
-if (!BlogData) {
-  // Handle Error, for example:
-  throw new Error(`Could not find blog post: ${blog_title}`);
+// Find matching blog post
+let BlogData
+for(let i=0; i<blogPosts.length; i++) 
+{
+	if(titleToLowerCaseKebab(blogPosts[i].frontmatter.title) === blog_title)
+	{
+		BlogData = blogPosts[i]
+		break
+	}
 }
 
-const sortedOtherBlogs = blogPosts
-	.filter((item) => item?.frontmatter?.title !== BlogData?.frontmatter?.title )
-	.sort((item1, item2) => item1?.frontmatter?.date <= item2?.frontmatter?.date)
-	.reverse()
-	.slice(0,10)
+// Store the frontmatter in an array so we can sort
+let sortedOtherBlogs = []
+for(let i=0; i<blogPosts.length; i++) 
+{
+	if(blogPosts[i].frontmatter.title !== BlogData.frontmatter.title) 
+	{
+		sortedOtherBlogs.push(blogPosts[i].frontmatter)
+	}
+}
+
+sortedOtherBlogs.sort((a, b) => {
+	return new Date(b.date) - new Date(a.date); // ascending
+})
 
 ---
-
 
 <head>
 	<meta charset="utf-8" />
@@ -149,16 +154,8 @@ const sortedOtherBlogs = blogPosts
 					</Blogitem>
 					
 					
-					<div class="
-						grid
-						grid-cols-1
-						md:grid-cols-2
-						items-start
-					">
-						
-						<h3 class="
-							md:col-span-2
-							md:text-center
+					<div>
+						<h2 class="
 							text-[var(--sl-color-gray-1)]
 							mt-8
 							mb-4
@@ -166,40 +163,26 @@ const sortedOtherBlogs = blogPosts
 							text-3xl
 						">
 							Recent Blog Posts
-						</h3>
-						
+						</h2>
 						
 						{sortedOtherBlogs.map((BlogPost) => {
 							
-							const blogPostUrl = titleToLowerCaseKebab(BlogPost?.frontmatter?.title)
+							const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
 							
 							return <div class="
-								
 								hover:bg-slate-100
 								hover:dark:bg-slate-800
-								rounded-3xl					
+								rounded-3xl
+								px-4
+								py-1
+								my-1		
 							">
 								<a class="
 									text-[var(--sl-color-text-accent)]
-									my-4
 									text-justify
-									font-medium
-									flex
-									flex-row
-									p-4
 									"
 									href={"/blog/"+blogPostUrl}
 								>
-									{/* TODO: add lookup for different authors, once we have different authors */}
-									<img class="
-										hidden
-										sm:block
-										rounded-full
-										w-12
-										h-12
-										"
-										src={"/lerno.png"}
-									/>
 									
 									<div class="
 										flex
@@ -209,20 +192,22 @@ const sortedOtherBlogs = blogPosts
 										text-[var(--sl-color-gray-1)]
 									">
 										<h3 class="
-											text-xl 
+											text-l 
 											font-bold
 											"
 										>
-											{BlogPost?.frontmatter?.title}
+											{BlogPost.title}
 										</h3>
-										<p>{BlogPost?.frontmatter?.author} — {BlogPost?.frontmatter?.date?.slice(0,10)}</p>
+										<p class="font-medium">
+											{BlogPost.date.slice(0,10)}
+										</p>
 									</div>
 								</a>
 							
 							</div>
 						} 
 						)}
-						
+
 					</div>
 					
 				
