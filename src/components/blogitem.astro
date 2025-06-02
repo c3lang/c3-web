@@ -5,13 +5,11 @@ import "../content/docs.css";
 interface Props {
 	title: string;
 	date: string;
-	author?: string;
 }
 
 const { 
 	title, 
 	date, 
-	author="Christoffer Lernö", 
 } = Astro.props;
 
 
@@ -135,32 +133,33 @@ const {
 </style>
 	
 <div class="
-my-12
-md:my-20
-"
+	my-12
+	md:my-20
+	"
 >
 	<h2 class="
 		text-3xl 
 		lg:text-4xl 
 		font-bold 
 		dark:text-white
-		mb-4
-		text-center
+		mb-2
+		text-justify
 	">
 		{title}
 	</h2>
-
-
 	<p class="
 		text-md
 		lg:text-l 
 		text-gray-800 
 		dark:text-white
-		mb-8
-		text-center
+		mb-12
+		sm:mb-16
+		text-justify
 	">
-	{author} — {date}
+		{date}
 	</p>
+
+
 
 	<div class="
 		text-justify
