@@ -1,8 +1,7 @@
 ---
 title: "Gradual improvements: C3 0.7.2"
-date: 2025-06-01
+date: 2025-06-02
 author: "Christoffer Lernö"
-description: Info regarding the development of C3
 ---
 
 Unlike 0.7.1, 0.7.2 not a big feature release, instead we focused on adding quality of life improvements which are [backwards compatible](/getting-started/roadmap/#c3-is-feature-stable) with other 0.7 releases. 
@@ -69,7 +68,7 @@ To simplify generic module resolution it was not possible to recursively generat
 
 ## Deprecations
 
-#### Bitsize suffix
+#### Bitsize suffix deprecations
 
 The bitsize suffixes are deprecated, so rather than writing `23u64` use the C style `23UL` instead. `u128` and `i128` suffixes are replaced by `ULL` and `LL` suffixes.
 
@@ -84,7 +83,7 @@ Finally, the `d` suffix for doubles have been added as a complement to `f`.
 
 By 0.7.1 the declaration style `@param foo "abc"` would be allowed rather than `@param foo : "abc"`. This was by accident. It's now properly deprecated.
 
-### Generic faults are not allowed
+#### Generic faults are not allowed
 
 Creating faults that are parameterized is usually a mistake and should not have been allowed. It's been completely removed in 0.7.2 as it was classified as a bug.
 
