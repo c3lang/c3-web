@@ -77,11 +77,6 @@ sortedOtherBlogs.sort((a, b) => {
   	<link rel="icon" href="/ico.svg" type="image/x-icon" />
 
 	<title>C3 | Blog | An evolution, not a revolution</title>
-	<!-- Styles needed for styling the markdown added n -->
-	<script>
-    	import "../../styles/global.css";
-		import "../../content/docs.css";
-  	</script>
 </head>
 
 
@@ -96,123 +91,195 @@ sortedOtherBlogs.sort((a, b) => {
 			overflow-hidden
 			"
 		>
-		<div class="
-		relative
-		overflow-hidden
-		"
-	>
-		<div class="
-			max-w-[40rem] 
-			mx-auto 
-			px-4 
-			sm:px-6 
-			lg:px-8 
-			pt-8
-			md:pt-24 
-			pb-12
-			"
-		>
-			<div class="mt-5 mx-auto">
-			
-				<h1 class="
-					block 
-					text-3xl 
-					font-bold 
-					text-gray-800 
-					sm:text-4xl 
-					lg:text-6xl 
-					lg:leading-tight 
-					dark:text-white
-					text-center
-					mb-8
-					md:mb-18
+			<div class="
+				grid
+				lg:grid-cols-[2fr_4fr_2fr]
+				lg:max-w-[calc(20rem+40rem+20rem)]
+				mx-auto
+			">
+				<!-- Empty content for symmetry and centering of main content -->
+				<div class="hidden lg:block"></div>
+				
+				<!-- Main content -->
+				<!-- max-w-[40rem] 
+				mx-auto  -->
+				<!-- max-w-[40rem] -->
+				<div class="
+					px-4 
+					sm:px-6 
+					lg:px-8 
+					pt-8
+					md:pt-24 
+					pb-12
 					"
 				>
-					<a href="/blog">
-						The
-						<span class="
-							bg-clip-text 
-							bg-gradient-to-l 
-							from-violet-600 
-							to-blue-600 
-							text-transparent"
+					<div class="mt-5 mx-auto">
+					
+						<h1 class="
+							block 
+							text-3xl 
+							font-bold 
+							text-gray-800 
+							sm:text-4xl 
+							lg:text-6xl 
+							lg:leading-tight 
+							dark:text-white
+							text-center
+							sm:text-justify
+							mb-8
+							md:mb-18
+							"
 						>
-						C3
-						</span>
-						Blog
-					</a>	
-
-				</h1>			
-					
-					
-					<!-- Show only current blogpost -->
-					<Blogitem 
-						title={BlogData?.frontmatter?.title} 
-						date={BlogData?.frontmatter?.date?.slice(0,10)}
-					>
-						 <BlogData.Content/>
-					</Blogitem>
-					
-					
-					<div>
-						<h2 class="
-							text-[var(--sl-color-gray-1)]
-							mt-8
-							mb-4
-							font-bold
-							text-3xl
-						">
-							Recent Blog Posts
-						</h2>
-						
-						{sortedOtherBlogs.map((BlogPost) => {
-							
-							const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
-							
-							return <div class="
-								hover:bg-slate-100
-								hover:dark:bg-slate-800
-								rounded-3xl
-								px-4
-								py-1
-								my-1		
-							">
-								<a class="
-									text-[var(--sl-color-text-accent)]
-									text-justify
-									"
-									href={"/blog/"+blogPostUrl}
+							<a href="/blog">
+								The
+								<span class="
+									bg-clip-text 
+									bg-gradient-to-l 
+									from-violet-600 
+									to-blue-600 
+									text-transparent"
 								>
-									
-									<div class="
-										flex
-										flex-col
-										sm:ml-4
-										
-										text-[var(--sl-color-gray-1)]
-									">
-										<h3 class="
-											text-l 
-											font-bold
-											"
-										>
-											{BlogPost.title}
-										</h3>
-										<p class="font-medium">
-											{BlogPost.date.slice(0,10)}
-										</p>
-									</div>
-								</a>
-							
-							</div>
-						} 
-						)}
+								C3
+								</span>
+								Blog
+							</a>	
 
+						</h1>			
+							
+							
+							<!-- Show only current blogpost -->
+							<Blogitem 
+								title={BlogData?.frontmatter?.title} 
+								date={BlogData?.frontmatter?.date?.slice(0,10)}
+							>
+								<BlogData.Content/>
+							</Blogitem>
+							
+							
+							<!-- Related blog posts (mobile only) -->
+							<!-- <div class="sm:hidden">
+								<h2 class="
+									text-[var(--sl-color-gray-1)]
+									mt-8
+									mb-4
+									font-bold
+									text-3xl
+								">
+									Recent Blog Posts
+								</h2>
+								
+								{sortedOtherBlogs.map((BlogPost) => {
+									
+									const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
+									
+									return <div class="
+										hover:bg-slate-100
+										hover:dark:bg-slate-800
+										rounded-3xl
+										px-4
+										py-1
+										my-1		
+									">
+										<a class="
+											text-[var(--sl-color-text-accent)]
+											text-justify
+											"
+											href={"/blog/"+blogPostUrl}
+										>
+											
+											<div class="
+												flex
+												flex-col
+												sm:ml-4
+												
+												text-[var(--sl-color-gray-1)]
+											">
+												<h3 class="
+													text-l 
+													font-bold
+													"
+												>
+													{BlogPost.title}
+												</h3>
+												<p class="font-medium">
+													{BlogPost.date.slice(0,10)}
+												</p>
+											</div>
+										</a>
+									
+									</div>
+								} 
+								)}
+
+							</div> -->
+							
+						
 					</div>
-					
-				
 				</div>
+				<!-- End of main content -->
+				 
+				<!-- Sidebar on desktop -->
+				<!-- Bottom on small/mobile -->
+				<div class="
+					block 
+					lg:mt-68
+					px-6
+					"
+				>
+					<h2 class="
+						text-[var(--sl-color-gray-1)]
+						mb-4
+						font-bold
+						text-3xl
+					">
+						Blog Posts
+					</h2>
+					
+					{sortedOtherBlogs.map((BlogPost) => {
+						
+						const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
+						
+						return <div class="
+							hover:bg-slate-100
+							hover:dark:bg-slate-800
+							py-1
+							px-2
+							my-1		
+						">
+							<a class="
+								text-[var(--sl-color-text-accent)]
+								text-justify
+								"
+								href={"/blog/"+blogPostUrl}
+							>
+								
+								<div class="
+									flex
+									flex-col
+									text-[var(--sl-color-gray-1)]
+								">
+									<h3 class="
+										text-l 
+										font-bold
+										"
+									>
+										{BlogPost.title}
+									</h3>
+									<p class="font-medium">
+										{BlogPost.date.slice(0,10)}
+									</p>
+								</div>
+							</a>
+						
+						</div>
+					} 
+					)}
+
+				</div>
+				<!-- End of Sidebar -->
+				
 			</div>
+			<!-- End of page grid layout for sidebar and main -->
 
 		</div>
 	</div>
