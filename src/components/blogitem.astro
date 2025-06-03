@@ -1,0 +1,203 @@
+---
+import "../styles/global.css";
+import "../content/docs.css";
+
+interface Props {
+	title: string;
+	date: string;
+}
+
+const { 
+	title, 
+	date, 
+} = Astro.props;
+
+
+/**
+ * Lowercase the string, replace spaces with '-' Replace non-ascii characters with empty char
+ * @param input 
+ */
+ export function titleToLowerCaseKebab(input: string): string {
+	
+	return input.toLowerCase().
+		replaceAll(" ", "-").
+		replaceAll(":", "").
+		replaceAll(".", "-").
+		replaceAll(/[^\x00-\x7F]/g, "").
+		replaceAll("---", "-").
+		replaceAll("--", "-");
+}
+
+---
+
+
+<!-- Using CSS variables from global styles, since those change with dark mode -->
+<style>
+	#child_slots :global(h1) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h1);
+		font-family: var(--sl-font-system);
+	}
+	
+	
+	#child_slots :global(h2) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h2);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(h3) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h3);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(h4) {
+		color: var(--sl-color-gray-1);
+		margin-top: calc(var(--spacing) * 8);
+		margin-bottom: calc(var(--spacing) * 8);
+		text-align: justify;
+		font-weight: 600;
+		font-size: var(--sl-text-h4);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(p) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+		margin-bottom: calc(var(--spacing) * 4);
+	}
+	
+	#child_slots :global(ul) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		margin-top: calc(var(--spacing) * 6);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(li) {
+		color: var(--sl-color-gray-2);
+		text-align: justify;
+		font-weight: 500;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		margin-top: calc(var(--spacing) * 2);
+		margin-left: calc(var(--spacing) * 4);
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	#child_slots :global(a) {
+		color: var(--sl-color-text-accent);
+		text-align: justify;
+		font-weight: 500;
+		text-decoration: underline;
+		font-size: var(--sl-text-body);
+		list-style-type: disc;
+		line-height: var(--sl-line-height);
+		font-family: var(--sl-font-system);
+	}
+	
+	/* This includes inline code and code blocks */
+	#child_slots :global(code) {
+		font-family: var(--sl-font-system-mono);
+		color: var(--sl-color-blog-code);
+	}
+	
+	/* code block container */
+	#child_slots :global(.expressive-code) {
+		margin-top: calc(var(--spacing) * 6);
+		margin-bottom: calc(var(--spacing) * 6);
+		font-family: var(--sl-font-system-mono);
+	}
+	
+	/* each line inside the code block */
+	#child_slots :global(.ec-line) {
+		font-size: smaller;
+	}
+	
+	#child_slots :global(.starlight-aside) {
+		padding: 1rem;
+		margin-top: calc(var(--spacing) * 6);
+		margin-bottom: calc(var(--spacing) * 6);
+		border-inline-start: .25rem solid var(--sl-color-asides-border);
+		color: var(--sl-color-white);
+	}
+	
+	#child_slots :global(.starlight-aside--note) {
+		--sl-color-asides-text-accent: var(--sl-color-blue-high);
+   		--sl-color-asides-border: var(--sl-color-blue);
+    	background-color: var(--sl-color-blue-low);
+	}
+	
+	#child_slots :global(.starlight-aside__title) {
+		display: flex;
+		gap: .5rem;
+		align-items: center;
+		font-size: var(--sl-text-h5);
+		font-weight: 600;
+		line-height: var(--sl-line-height-headings);
+		color: var(--sl-color-asides-text-accent);
+	}
+	
+	
+	
+</style>
+	
+<div class="
+	lg:my-20
+	"
+>
+	<h2 class="
+		text-3xl 
+		lg:text-4xl 
+		font-bold 
+		dark:text-white
+		mb-2
+		text-justify
+	">
+		{title}
+	</h2>
+	<p class="
+		text-md
+		lg:text-l 
+		text-gray-800 
+		dark:text-white
+		mb-12
+		sm:mb-16
+		text-justify
+	">
+		{date}
+	</p>
+
+
+
+	<div class="
+		text-justify
+		"
+		id="child_slots"
+	>
+		<slot />  <!-- Markdown will be inserted here -->
+	</div>
+
+</div>

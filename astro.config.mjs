@@ -1,7 +1,6 @@
-import {defineConfig} from "astro/config"
-import starlight from "@astrojs/starlight"
-import fs from "node:fs"
-
+import {defineConfig} from "astro/config";
+import starlight from "@astrojs/starlight";
+import fs from "node:fs";
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
@@ -47,12 +46,16 @@ export default defineConfig(
       integrations: [
           starlight(
               {
-                  favicon: "ico.svg",
+                  favicon: "/ico.svg",
                   title: "C3",
                   customCss: ["./src/content/docs.css"],
                   expressiveCode: {
                       shiki: {
                           langs: [JSON.parse(fs.readFileSync("./c3-grammar.json", "utf-8"))],
+						  themes: {
+							  light: 'github-light',
+							  dark: 'github-dark',
+						  },
                       },
                   },
               }),
