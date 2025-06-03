@@ -123,18 +123,22 @@ const {
 		font-family: var(--sl-font-system);
 	}
 	
-
-	
+	/* This includes inline code and code blocks */
 	#child_slots :global(code) {
 		font-family: var(--sl-font-system-mono);
 		color: var(--sl-color-blog-code);
 	}
 	
-
+	/* code block container */
 	#child_slots :global(.expressive-code) {
 		margin-top: calc(var(--spacing) * 6);
 		margin-bottom: calc(var(--spacing) * 6);
 		font-family: var(--sl-font-system-mono);
+	}
+	
+	/* each line inside the code block */
+	#child_slots :global(.ec-line) {
+		font-size: smaller;
 	}
 	
 	#child_slots :global(.starlight-aside) {
