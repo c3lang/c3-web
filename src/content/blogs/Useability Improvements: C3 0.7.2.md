@@ -1,5 +1,5 @@
 ---
-title: "Gradual improvements: C3 0.7.2"
+title: "Useability Improvements: C3 0.7.2"
 date: 2025-06-02
 author: "Christoffer Lernö"
 ---
