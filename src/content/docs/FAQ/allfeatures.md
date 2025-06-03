@@ -156,9 +156,9 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 ### Added
 
 1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(name: a, len: 2)`.
-2. Typed varargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
+2. Typed vaargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
 3. It is possible to "splat" an array or slice into the location of a typed vararg using `...`: `foo(a, b, ...list)`
-4. `any` varargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
+4. `any` vaargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
 5. The function declaration may have `@inline` or `@noinline` as a default.
 6. Using `@inline` or `@noinline` on a function call expression will override the function default.
 7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`, they can be invoked using dot syntax.
@@ -171,7 +171,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Removed
 
-1. Functions with C-style varargs may be called, and declared as external functions, but not used for C3 functions.
+1. Functions with C-style vaargs may be called, and declared as external functions, but not used for C3 functions.
 
 ## Attributes
 

@@ -327,7 +327,7 @@ fn void test()
     ListStr list_str;
 
     // Initialize the list on the heap.
-    list_str.new_init();
+    list_str.init(mem);
 
     list_str.push("Hello");  // Add the string "Hello"
     list_str.push("World");
