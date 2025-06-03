@@ -9,7 +9,7 @@ Unlike 0.7.1, 0.7.2 not a big feature release, instead we focused on adding qual
 
 ## Compile time additions
 
-:::note
+:::note[Note on compile time]
 C3 has visual differentiation between *compile time* and *runtime code*, to make it explicit *when* the code will be run. 
 
 Compile time code uses `$if condition:` ... `$endif` for conditional logic.
@@ -106,11 +106,18 @@ They range from fixes to advanced generic types to stdlib bugs.
 
 Currently a new version of the matrix library is incubating, and while it didn't make it for the 0.7.2 release, I hope it can be included by 0.7.4.
 
-#### Optimized String -> ZString conversions
+#### Optimized `String` -> `ZString` conversions
 
-Sometimes a String is already pointing to a valid ZString, so no copy is needed. To check this, String gets two new methods `.is_zstr` to check if the String is also zero terminated, and `.quick_zstr` which will create a temp ZString if needed, but otherwise use the String.
+:::note[Note On Strings]
+Default C3 string: `typedef String = inline char[];`  
+C compatible, null terminated: `typedef ZString = inline char*;`
 
-#### std::ascii moves into core
+See documentation for [more information on strings](/language-common/strings/).
+:::
+
+Sometimes a `String` is already pointing to a valid `ZString`, so no copy is needed. To check this, `String` gets two new methods `.is_zstr` to check if the `String` is also zero terminated, and `.quick_zstr` which will create a temp `ZString` if needed, but otherwise use the `String`.
+
+#### `std::ascii` moves into `std::core`
 
 `std::ascii` moved into `std::core::ascii`. Old _m variants are deprecated, as is uint methods.
 
