@@ -19,11 +19,6 @@ const {
  */
  export function titleToLowerCaseKebab(input: string): string {
 	
-	if(typeof(input) !== "string") {
-		console.log("this should not happen, typeof: ", typeof(input))
-		return ""
-	}
-	
 	return input.toLowerCase().
 		replaceAll(" ", "-").
 		replaceAll(":", "").
