@@ -407,7 +407,7 @@ guaranteed to be evaluated once, even if the argument is used multiple times.
 
 Returns the argument as a compile time constant, this is suitable for
 placing in a compile time variable or use for compile time evaluation,
-e.g. `$foo = $vaconst(1)`. This corresponds to `$` parameters.
+e.g. `$foo = $vaconst[1]`. This corresponds to `$` parameters.
 
 ### `$vaexpr`
 
