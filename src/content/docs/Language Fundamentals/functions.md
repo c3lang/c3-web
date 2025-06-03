@@ -90,9 +90,9 @@ fn void test()
 }
 ```
 
-#### Varargs
+#### Vaargs
 
-There are four types of varargs:
+There are four types of vaargs:
 
 1. single typed
 2. explicitly typed any: pass non-any arguments as references
@@ -133,7 +133,7 @@ fn void test()
 }
 ```
 
-For typed varargs, we can pass a slice instead of the individual arguments, by using the splat `...` operator for example:
+For typed vaargs, we can pass a slice instead of the individual arguments, by using the splat `...` operator for example:
 
 ```c3
 fn void test_splat()
@@ -188,9 +188,9 @@ fn void main()
 
 
 
-### Named arguments and varargs
+### Named arguments and vaargs
 
-Usually, a parameter after varargs would never be assigned to:
+Usually, a parameter after vaargs would never be assigned to:
 
 ```c3
 fn void testme(int a, double... x, double rate = 1.0) { /* ... */ }

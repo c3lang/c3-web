@@ -64,6 +64,7 @@ It's also possible to use `nextcase` with an expression, to jump to an arbitrary
 
 ```c3
 switch MAIN: (enum_var)
+{
     case FOO:
         switch (i)
         {
