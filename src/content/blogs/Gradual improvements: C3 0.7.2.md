@@ -1,19 +1,29 @@
 ---
-title: Stability - time for 0.7.2
+title: "Gradual improvements: C3 0.7.2"
 date: 2025-06-01
 author: "Christoffer Lernö"
 description: Info regarding the development of C3
 ---
 
-It's another months and consequently it's time for a new incremental 0.7 release.
+Unlike 0.7.1, 0.7.2 not a big feature release, instead we focused on adding quality of life improvements which are [backwards compatible](/getting-started/roadmap/#c3-is-feature-stable) with other 0.7 releases. 
 
-## Additions
 
-Unlike 0.7.1, 0.7.2 doesn't really add anything major, but just add a few quality of life enhancements:
+## Compile time additions
 
-### ||| and &&& with variable right hand side
+:::note
+C3 has visual differentiation between *compile time* and *runtime code*, to make it explicit *when* the code will be run. 
 
-Rather than writing:
+Compile time code uses `$if condition:` ... `$endif` for conditional logic.
+Learn more about [macros](/generic-programming/macros/) and [compile time evaluation](/generic-programming/compiletime/).
+:::
+
+
+#### Simplifying compile time evaluated code
+
+Setting a variable at compile time can now be simplified using `|||` and `&&&` with a variable right hand expression.
+
+The original code to set a variable at compile time:
+
 ```c3
 $if FOO:
     bool x = true;
@@ -21,50 +31,56 @@ $else
     bool x = foo();
 $endif
 ```
+    
+Now this compile time variable can be set with `|||` compactly as:
 
-It's now possible to use `|||` to write this compactly as:
 ```c3
 bool x = FOO ||| foo();
-```    
-`&&&` also supports this.
+```
+    
+You can also use `&&&` for logical in compile time code.
 
-### Compile time random: @rnd
+#### Compile time random: `@rnd`
 
 Sometimes it can be useful to create unique ids at compile time. This is now possible with the `@rnd` macro.
 
-### Compile time ceil: math::@ceil
+#### Compile time ceil: `math::@ceil`
 
 It is somewhat hard to write a good compile time `ceil` function, so 0.7.2 adds a builtin which is accessible using the `math::@ceil` macro.
 
-### Set the run directory
+## General additions
 
-As a convenience for using `c3c run` and `c3c compile-run`, it's not possible to use `--run-dir` (or the project setting `run-dir`) to set from what directory the compiler should run the resulting binary.
+#### Set the run directory
 
-### Suffix deprecations
+To make `c3c run` and `c3c compile-run` more convenient, it's now possible to use `--run-dir` (or the project setting `run-dir`) to set the director from which the compiler runs the resulting binary.
 
-The bitsize suffixes are deprecated, so rather than writing `23u64` use the C style `23UL` instead. `u128` and `i128` suffixes are replaces by `ULL` and `LL` suffixes.
-
-Finally, the `d` suffix for doubles have been added as a complement to `f`.
-
-### Compile time reflection deprecations
-
-`MyEnum.elements` have been deprecated. Use `MyEnum.len` instead.
-
-`SomeFn.params` have been deprecated. Use `SomeFn.paramsof` instead.
-
-### Limits to SIMD sizes
+#### Limits to SIMD sizes
 
 Limitations of vectors are sometimes misunderstood, they will cause code bloat if used for large vectors. For this reason a max vector size has been introduced. By default this is 4096 bits, so basically the size of `double[<64>]`. It is possible to increase this using `--max-vector-size` as needed. (As a comparison, the biggest SIMD vectors on x64 is 512 bits, so such a 4096 bit vector would be represented by 8 registers).
 
-### `has_tagof` works on builtin types
+#### `has_tagof` works on builtin types
 
 While `has_tagof` will always return false on builtin types, this change nonetheless simplifies writing compile time code involving tags.
 
-### Allow recursive generic modules
+#### Allow recursive generic modules
 
 To simplify generic module resolution it was not possible to recursively generate generic module. This restriction has been lifted in 0.7.1.
 
-### Deprecation for old `@param` docs
+
+## Deprecations
+
+#### Bitsize suffix
+
+The bitsize suffixes are deprecated, so rather than writing `23u64` use the C style `23UL` instead. `u128` and `i128` suffixes are replaced by `ULL` and `LL` suffixes.
+
+Finally, the `d` suffix for doubles have been added as a complement to `f`.
+
+#### Compile time reflection deprecations
+
+`MyEnum.elements` have been deprecated. Use `MyEnum.len` instead.
+`SomeFn.params` have been deprecated. Use `SomeFn.paramsof` instead.
+
+#### Deprecation for old `@param` docs
 
 By 0.7.1 the declaration style `@param foo "abc"` would be allowed rather than `@param foo : "abc"`. This was by accident. It's now properly deprecated.
 
@@ -72,53 +88,64 @@ By 0.7.1 the declaration style `@param foo "abc"` would be allowed rather than `
 
 Creating faults that are parameterized is usually a mistake and should not have been allowed. It's been completely removed in 0.7.2 as it was classified as a bug.
 
-So no more
+This is no longer allowed:
+
 ```c3
 module Foo {Type};
 typedef BAZ, HELLO;
 ```
-Faults should be places in a parent or sub-module instead.
+
+Faults should be defined in a non-generic module, such as a parent module or sub-module instead.
 
 ## Fixes
 
 This release contains about 30 different fixes, most of them newly discovered and not regressions.
 
+They range from fixes to advanced generic types to stdlib bugs.
+
 ## Stdlib updates
 
 Currently a new version of the matrix library is incubating, and while it didn't make it for the 0.7.2 release, I hope it can be included by 0.7.4.
 
-### Optimized String -> ZString conversions
+#### Optimized String -> ZString conversions
 
 Sometimes a String is already pointing to a valid ZString, so no copy is needed. To check this, String gets two new methods `.is_zstr` to check if the String is also zero terminated, and `.quick_zstr` which will create a temp ZString if needed, but otherwise use the String.
 
-### std::ascii moves into core
+#### std::ascii moves into core
 
 `std::ascii` moved into `std::core::ascii`. Old _m variants are deprecated, as is uint methods.
 
-### Better tokenization
+#### Better String tokenization
 
 It's now possible to further customize tokenization, to ignore empty elements in the middle (or not), ignore any last empty elements at the end (or not). This introduces `.tokenize_all` which replaces the now deprecated `.splitter` method.
 
-### Count and replace
+#### Count and replace
 
 String further gets some conveniences: `.count` to count the number of instances of a string within the string and `replace` / `treplace` to return a new String with a substring replaced. This functionality was already in DString, but was now added to String as well.
 
-### Operator overloads for std::time and Maybe
+#### Operator overloads for std::time and Maybe
 
 `Duration * Int`, `Clock - Clock` and `DateTime + Duration` overloads were added for manipulating time.
 
 For `Maybe`, the `==` operator is available when the inner type is equatable.
 
-### Subprocess improvements
+#### Subprocess improvements
 
 Subprocess added an `inherit_stdio` option to inherit the parent's stdin, stdout, and stderr instead of creating pipes.
 
-
-## Changelist
-
-The full changelist is here:
-
-### Changes / improvements
+### Change Log
+<details>
+	<summary class="
+		text-black 
+		dark:text-white
+		font-medium
+		text-lg
+		"
+	>
+		Click for full change log
+	</summary>
+	
+#### Changes / improvements
 - Better default assert messages when no message is specified #2122
 - Add `--run-dir`, to specify directory for running executable using `compile-run` and `run` #2121.
 - Add `run-dir` to project.json.
@@ -143,7 +170,7 @@ The full changelist is here:
 - Add `--header-output` and `header-output` options for controlling header output folder.
 - Generic faults is disallowed.
 
-### Fixes
+#### Fixes
 - Assert triggered when casting from `int[2]` to `uint[2]` #2115
 - Assert when a macro with compile time value is discarded, e.g. `foo();` where `foo()` returns an untyped list. #2117
 - Fix stringify for compound initializers #2120.
@@ -178,7 +205,7 @@ The full changelist is here:
 - Incorrect ensure on String.split.
 - Removed the naive check for compile time modification, which fixes #1997 but regresses in detection.
 
-### Stdlib changes
+#### Stdlib changes
 - Added `String.quick_ztr` and `String.is_zstr`
 - std::ascii moved into std::core::ascii. Old _m variants are deprecated, as is uint methods.
 - Add `String.tokenize_all` to replace the now deprecated `String.splitter`
@@ -190,3 +217,10 @@ The full changelist is here:
 - Add `inherit_stdio` option to `SubProcessOptions` to inherit parent's stdin, stdout, and stderr instead of creating pipes. #2012
 - Remove superfluous `cleanup` parameter in `os::exit` and `os::fastexit`.
 - Add `extern fn ioctl(CInt fd, ulong request, ...)` binding to libc;
+
+
+</details>
+
+### Want To Dive Into C3?
+Check out the [documentation](/getting-started) 
+or [download it and try it out](/getting-started/prebuilt-binaries), if you have any questions chat to us on [discord](https://discord.gg/qN76R87).
