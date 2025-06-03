@@ -4,7 +4,7 @@ date: 2025-06-02
 author: "Christoffer Lernö"
 ---
 
-Unlike 0.7.1, 0.7.2 not a big feature release, instead we focused on adding quality of life improvements which are [backwards compatible](/getting-started/roadmap/#c3-is-feature-stable) with other 0.7 releases. 
+Unlike 0.7.1, 0.7.2 is not about big new features, instead it is laser focused on adding quality of life improvements, which are [backwards compatible](/getting-started/roadmap/#c3-is-feature-stable) with other 0.7 releases. 
 
 
 ## Compile time additions
@@ -112,7 +112,7 @@ Currently a new version of the matrix library is incubating, and while it didn't
 Default C3 string: `typedef String = inline char[];`  
 C compatible, null terminated: `typedef ZString = inline char*;`
 
-See documentation for [more information on strings](/language-common/strings/).
+Learn more about [strings](/language-common/strings/).
 :::
 
 Sometimes a `String` is already pointing to a valid `ZString`, so no copy is needed. To check this, `String` gets two new methods `.is_zstr` to check if the `String` is also zero terminated, and `.quick_zstr` which will create a temp `ZString` if needed, but otherwise use the `String`.
@@ -229,4 +229,4 @@ Subprocess added an `inherit_stdio` option to inherit the parent's stdin, stdout
 
 ### Want To Dive Into C3?
 Check out the [documentation](/getting-started) 
-or [download it and try it out](/getting-started/prebuilt-binaries), if you have any questions chat to us on [discord](https://discord.gg/qN76R87).
+or [download it and try it out](/getting-started/prebuilt-binaries), if you have any questions chat to us on [Discord](https://discord.gg/qN76R87).
