@@ -26,6 +26,7 @@ const {
 	
 	return input.toLowerCase().
 		replaceAll(" ", "-").
+		replaceAll(":", "").
 		replaceAll(".", "-").
 		replaceAll(/[^\x00-\x7F]/g, "").
 		replaceAll("---", "-").
