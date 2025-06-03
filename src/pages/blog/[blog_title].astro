@@ -93,9 +93,9 @@ sortedOtherBlogs.sort((a, b) => {
 		>
 			<div class="
 				grid
-				xl:grid-cols-[2fr_4fr_2fr]
+				xl:grid-cols-[1.5fr_4fr_1.5fr]
 				xl:max-w-[calc(20rem+40rem+20rem)]
-				lg:grid-cols-[4fr_2fr]
+				lg:grid-cols-[4fr_1.5fr]
 				lg:max-w-[calc(40rem+20rem)]
 				mx-auto
 			">
@@ -224,7 +224,8 @@ sortedOtherBlogs.sort((a, b) => {
 					block 
 					lg:mt-68
 					px-6
-					lg:pl-12
+					lg:pl-16
+					
 					"
 				>
 					<h2 class="
@@ -247,7 +248,7 @@ sortedOtherBlogs.sort((a, b) => {
 							hover:dark:bg-slate-800
 							py-2
 							px-4
-							my-2		
+							my-2
 						">
 							<a class="
 								text-[var(--sl-color-text-accent)]
@@ -260,13 +261,14 @@ sortedOtherBlogs.sort((a, b) => {
 									flex
 									flex-col
 									text-[var(--sl-color-gray-1)]
-									text-sm
+									lg:text-xs
+									
 								">
-									<h3 class="
+									<h4 class="
 										"
 									>
 										{BlogPost.title}
-									</h3>
+									</h4>
 									<p class="">
 										{BlogPost.date.slice(0,10)}
 									</p>
