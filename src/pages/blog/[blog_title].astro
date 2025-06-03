@@ -230,7 +230,9 @@ sortedOtherBlogs.sort((a, b) => {
 						text-[var(--sl-color-gray-1)]
 						mb-4
 						font-bold
+						lg:font-medium
 						text-3xl
+						lg:text-xl
 					">
 						Blog Posts
 					</h2>
@@ -257,14 +259,14 @@ sortedOtherBlogs.sort((a, b) => {
 									flex
 									flex-col
 									text-[var(--sl-color-gray-1)]
+									text-sm
 								">
 									<h3 class="
-										font-semibold
 										"
 									>
 										{BlogPost.title}
 									</h3>
-									<p class="font-medium">
+									<p class="">
 										{BlogPost.date.slice(0,10)}
 									</p>
 								</div>

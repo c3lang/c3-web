@@ -51,7 +51,7 @@
 	--sl-color-hairline: var(--sl-color-gray-6);
 	--sl-color-hairline-shade: var(--sl-color-black);
 	
-	--sl-color-blog-code: hsl(358.75 100% 70);
+	--sl-color-blog-code: hsl(276, 68%, 75%);
 
 	--sl-color-backdrop-overlay: hsla(223, 13%, 10%, 0.66);
 
@@ -170,7 +170,7 @@
 	--sl-color-hairline-light: var(--sl-color-gray-6);
 	--sl-color-hairline-shade: var(--sl-color-gray-6);
 	
-	--sl-color-blog-code: hsl(356.95 96% 58%);
+	--sl-color-blog-code: hsl(278, 44%, 47%);
 
 	--sl-color-backdrop-overlay: hsla(225, 9%, 36%, 0.66);
 
