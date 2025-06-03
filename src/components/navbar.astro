@@ -15,6 +15,11 @@
 		document.documentElement.classList.add("dark");
 		document.documentElement.setAttribute("data-theme", "dark");
 	}
+	// default to light mode if no value in local storage
+	else
+	{
+		document.documentElement.setAttribute("data-theme", "light");
+	}
 	
 
 	function toggleDarkMode() {

@@ -93,12 +93,14 @@ sortedOtherBlogs.sort((a, b) => {
 		>
 			<div class="
 				grid
-				lg:grid-cols-[2fr_4fr_2fr]
-				lg:max-w-[calc(20rem+40rem+20rem)]
+				xl:grid-cols-[2fr_4fr_2fr]
+				xl:max-w-[calc(20rem+40rem+20rem)]
+				lg:grid-cols-[4fr_2fr]
+				lg:max-w-[calc(40rem+20rem)]
 				mx-auto
 			">
 				<!-- Empty content for symmetry and centering of main content -->
-				<div class="hidden lg:block"></div>
+				<div class="hidden xl:block"></div>
 				
 				<!-- Main content -->
 				<!-- max-w-[40rem] 
@@ -108,8 +110,8 @@ sortedOtherBlogs.sort((a, b) => {
 					px-4 
 					sm:px-6 
 					lg:px-8 
+					lg:pt-24 
 					pt-8
-					md:pt-24 
 					pb-12
 					"
 				>
@@ -117,17 +119,15 @@ sortedOtherBlogs.sort((a, b) => {
 					
 						<h1 class="
 							block 
-							text-3xl 
 							font-bold 
 							text-gray-800 
-							sm:text-4xl 
+							text-5xl 
 							lg:text-6xl 
 							lg:leading-tight 
 							dark:text-white
-							text-center
-							sm:text-justify
+							text-justify
 							mb-8
-							md:mb-18
+							sm:mb-18
 							"
 						>
 							<a href="/blog">
