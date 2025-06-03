@@ -803,9 +803,9 @@ Named arguments may never be *splat* expressions.
 11. A named argument may never appear more than once.
 12. The vaarg slot may never be accessed using named arguments.
 
-#### Varargs
+#### Vaargs
 
-For varargs, a `bool` or *any integer* smaller than what the C ABI specifies for the c `int` type is cast to `int`. Any
+For vaargs, a `bool` or *any integer* smaller than what the C ABI specifies for the c `int` type is cast to `int`. Any
 float smaller than a double is cast to `double`. Compile time floats will be cast to double. Compile time integers will
 be cast to c `int` type.
 
