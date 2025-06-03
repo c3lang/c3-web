@@ -37,6 +37,7 @@ sortedBlogPosts.sort((a, b) => {
 
 ---
 
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
@@ -59,8 +60,6 @@ sortedBlogPosts.sort((a, b) => {
 </head>
 
 
-
-
 <body class="dark:bg-stone-950 bg-white">
 	<div style="height: auto">
 	
@@ -72,114 +71,138 @@ sortedBlogPosts.sort((a, b) => {
 			"
 		>
 			<div class="
-				max-w-[40rem] 
-				mx-auto 
-				px-4 
-				sm:px-6 
-				lg:px-8 
-				pt-8
-				md:pt-24 
-				pb-12
-				"
-			>
-				<div class="mt-5 mx-auto">
+				grid
+				max-w-[40rem]
+				xl:grid-cols-[1.5fr_40rem_1.5fr]
+				xl:max-w-[calc(20rem+40rem+20rem)]
+				lg:grid-cols-[40rem_1.5fr]
+				lg:max-w-[calc(40rem+20rem)]
+				mx-auto
+			">
+				<!-- Empty content for symmetry and centering of main content -->
+				<div class="hidden xl:block"></div>
 				
-					<h1 class="
-						block 
-						text-3xl 
-						font-bold 
-						text-gray-800 
-						sm:text-4xl 
-						lg:text-6xl 
-						lg:leading-tight 
-						dark:text-white
-						text-center
-						mb-8
-						md:mb-18
-						"
-					>
-						The
-						<span class="
-							bg-clip-text 
-							bg-gradient-to-l 
-							from-violet-600 
-							to-blue-600 
-							text-transparent"
+				<!-- Main content -->
+				<div class="
+					px-4 
+					sm:px-6 
+					lg:px-8 
+					lg:pt-24 
+					pt-8
+					pb-12
+					"
+				>
+					<div class="mt-5 mx-auto">
+					
+						<h1 class="
+							block 
+							font-bold 
+							text-gray-800 
+							text-5xl 
+							lg:text-6xl 
+							lg:leading-tight 
+							dark:text-white
+							text-justify
+							mb-8
+							sm:mb-18
+							"
 						>
-						C3
-						</span>
-						Blog
-					</h1>		
-					
-					
-					<!-- Show only current blogpost -->
-					<Blogitem 
-						title={BlogData?.frontmatter?.title} 
-						date={BlogData?.frontmatter?.date?.slice(0,10)}
-					>
-						 <BlogData.Content/>
-					</Blogitem>
-					
-					
-					<div>
-						<h2 class="
-							md:col-start-2
-							text-[var(--sl-color-gray-1)]
-							mt-8
-							mb-4
-							font-bold
-							text-3xl
-						">
-							Recent Blog Posts
-						</h2>
-						
-						{sortedBlogPosts.map((BlogPost) => {
-							
-							const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
-							
-							return <div class="
-								hover:bg-slate-100
-								hover:dark:bg-slate-800
-								rounded-3xl
-								px-4
-								py-1
-								my-1		
-							">
-								<a class="
-									text-[var(--sl-color-text-accent)]
-									text-justify
-									"
-									href={"/blog/"+blogPostUrl}
+							<a href="/blog">
+								The
+								<span class="
+									bg-clip-text 
+									bg-gradient-to-l 
+									from-violet-600 
+									to-blue-600 
+									text-transparent"
 								>
-									
-									<div class="
-										flex
-										flex-col
-										sm:ml-4
-										text-[var(--sl-color-gray-1)]
-									">
-										<h3 class="
-											text-l 
-											font-bold
-											"
-										>
-											{BlogPost.title}
-										</h3>
-										<p class="font-medium">
-											{BlogPost.date.slice(0,10)}
-										</p>
-									</div>
-								</a>
-							
-							</div>
-						} 
-						)}
+								C3
+								</span>
+								Blog
+							</a>	
 
+						</h1>			
+							
+							
+						<!-- Show only current blogpost -->
+						<Blogitem 
+							title={BlogData?.frontmatter?.title} 
+							date={BlogData?.frontmatter?.date?.slice(0,10)}
+						>
+							<BlogData.Content/>
+						</Blogitem>
+						
 					</div>
-					
-				
 				</div>
+				<!-- End of main content -->
+				 
+				<!-- Sidebar on desktop -->
+				<!-- Bottom on small/mobile -->
+				<div class="
+					block 
+					lg:mt-68
+					px-6
+					lg:pl-16
+					
+					"
+				>
+					<h2 class="
+						text-[var(--sl-color-gray-1)]
+						mb-4
+						font-semibold
+						lg:font-medium
+						text-3xl
+						lg:text-xl
+						lg:pl-4
+					">
+						Blog Archive
+					</h2>
+					
+					{sortedBlogPosts.map((BlogPost) => {
+						
+						const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
+						
+						return <div class="
+							hover:bg-slate-100
+							hover:dark:bg-slate-800
+							py-2
+							px-4
+							my-2
+						">
+							<a class="
+								text-[var(--sl-color-text-accent)]
+								text-justify
+								"
+								href={"/blog/"+blogPostUrl}
+							>
+								
+								<div class="
+									flex
+									flex-col
+									text-[var(--sl-color-gray-1)]
+									lg:text-xs
+									
+								">
+									<h4 class="
+										"
+									>
+										{BlogPost.title}
+									</h4>
+									<p class="">
+										{BlogPost.date.slice(0,10)}
+									</p>
+								</div>
+							</a>
+						
+						</div>
+					} 
+					)}
+
+				</div>
+				<!-- End of Sidebar -->
+				
 			</div>
+			<!-- End of page grid layout for sidebar and main -->
 
 		</div>
 	</div>

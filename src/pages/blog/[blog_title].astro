@@ -80,7 +80,6 @@ sortedOtherBlogs.sort((a, b) => {
 </head>
 
 
-
 <body class="dark:bg-stone-950 bg-white">
 	<div style="height: auto">
 	
@@ -145,72 +144,13 @@ sortedOtherBlogs.sort((a, b) => {
 						</h1>			
 							
 							
-							<!-- Show only current blogpost -->
-							<Blogitem 
-								title={BlogData?.frontmatter?.title} 
-								date={BlogData?.frontmatter?.date?.slice(0,10)}
-							>
-								<BlogData.Content/>
-							</Blogitem>
-							
-							
-							<!-- Related blog posts (mobile only) -->
-							<!-- <div class="sm:hidden">
-								<h2 class="
-									text-[var(--sl-color-gray-1)]
-									mt-8
-									mb-4
-									font-bold
-									text-3xl
-								">
-									Recent Blog Posts
-								</h2>
-								
-								{sortedOtherBlogs.map((BlogPost) => {
-									
-									const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
-									
-									return <div class="
-										hover:bg-slate-100
-										hover:dark:bg-slate-800
-										rounded-3xl
-										px-4
-										py-1
-										my-1		
-									">
-										<a class="
-											text-[var(--sl-color-text-accent)]
-											text-justify
-											"
-											href={"/blog/"+blogPostUrl}
-										>
-											
-											<div class="
-												flex
-												flex-col
-												sm:ml-4
-												
-												text-[var(--sl-color-gray-1)]
-											">
-												<h3 class="
-													text-l 
-													font-bold
-													"
-												>
-													{BlogPost.title}
-												</h3>
-												<p class="font-medium">
-													{BlogPost.date.slice(0,10)}
-												</p>
-											</div>
-										</a>
-									
-									</div>
-								} 
-								)}
-
-							</div> -->
-							
+						<!-- Show only current blogpost -->
+						<Blogitem 
+							title={BlogData?.frontmatter?.title} 
+							date={BlogData?.frontmatter?.date?.slice(0,10)}
+						>
+							<BlogData.Content/>
+						</Blogitem>
 						
 					</div>
 				</div>
@@ -233,6 +173,7 @@ sortedOtherBlogs.sort((a, b) => {
 						lg:font-medium
 						text-3xl
 						lg:text-xl
+						lg:pl-4
 					">
 						Blog Archive
 					</h2>
