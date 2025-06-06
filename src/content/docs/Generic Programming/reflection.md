@@ -325,10 +325,6 @@ The full list of what `$defined` can check:
 If for example `<expr>` is not defined when trying `(<Type>)<expr>` this will
 result in a compile-time error.
 
-:::caution
-Currently `<expr>[<index>] = <value>` and `<expr1> bin_op <expr2>` are not
-correctly handled by the compiler but should be. Stay tuned!
-:::
 
 #### `$eval`
 
