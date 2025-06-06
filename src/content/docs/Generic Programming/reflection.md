@@ -264,17 +264,70 @@ $alignof(g);     // => returns 4
 
 #### `$defined`
 
-Returns true if the expression inside is defined and all sub expressions are valid.
-
+Returns `true` when the expression(s) inside are defined and all sub expressions
+are valid.
 ```c3
-$defined(Foo.x);     // => returns true
-$defined(Foo.z);     // => returns false
-int[2] abc;
-$defined(abc.len);   // => returns true
-$defined(abc.len()); // => returns false
-$defined((int)abc);  // => returns false
-// $defined(abc.len() + 1)  would be an error
+$defined(Foo);       // => true
+$defined(Foo.x);     // => true
+$defined(Foo.baz);   // => false
+
+Foo foo = {};
+// Check if a method exists:
+$if $defined(foo.call):
+    // Check what the method accepts:
+    $switch :
+       $case $defined(foo.call(1)) :
+           foo.call(1);
+       $default :
+           // do nothing
+    $endswitch
+$endif
+
+// Other way to write that:
+$if $defined(foo.call, foo.call(1)):
+    foo.call(1);
+$endif
 ```
+
+The full list of what `$defined` can check:
+- `*<expr>` - checks if `<expr>` can be dereferenced, `<expr>` must already be valid
+- `<expr>[<index>]` - checks if indexing is valid, `<expr>` and `<index>` must
+    already be valid, and when possible to check at compile-time if `<index>`
+    is out of bounds this will return `false`
+- `<expr>[<index>] = <value>` - same as above, but also checks if `<value>` can
+    be assigned, `<expr>`, `<index>` and `<value>` must already be valid
+- `<expr>.<ident1>.<ident2>` - check if `.<ident2>` is valid, `<expr>.<ident1>`
+    must already be valid ("ident" is short for "identifier")
+- `ident`, `#ident`, `@ident`, `IDENT`, `$$IDENT`, `$ident` - check if identifier
+    exists
+- `Type` - check if the type exists
+- `&<expr>` - check if you can take the address of `<expr>`, `<expr>` must
+    already be valid
+- `&&<expr>` - check if you can take the
+    [temp address](https://c3-lang.org/language-fundamentals/expressions/#_top)
+    of `<expr>`, `<expr>` must already be valid
+- `$eval(<expr>)` - check if the [`$eval`](#eval) evaluates to something valid,
+    `<expr>` must already be valid
+- `<expr>(<arg0>, ...)` - check that the arguments are valid for the `<expr>`
+    macro/function, `<expr>` and all args must already be valid
+- `<expr>!!` and `<expr>!` - check that `<expr>` is an
+    [optional](/language-common/optionals-essential/#what-is-an-optional),
+    `<expr>` must already be valid
+- `<expr>?` - check that `<expr>` is a
+    [fault](/language-overview/types/#the-fault-type),
+    `<expr>` must already be valid
+- `<expr1> binary_operator <expr2>` - check if the `binary_operator` (`+`, `-`,
+    ...) is defined between the two expressions, both expressions must already
+    be valid
+- `(<Type>)<expr>` - check if `<expr>` can be casted to `<Type>`, both `<Type>`
+    and `<expr>` must already be valid
+
+If for example `<expr>` is not defined when trying `(<Type>)<expr>` this will
+result in a compile-time error.
+
+> [!WARNING]
+> Currently `<expr>[<index>] = <value>` and `<expr1> bin_op <expr2>` are not
+> correctly handled by the compiler but should be. Stay tuned!
 
 #### `$eval`
 
