@@ -407,7 +407,7 @@ guaranteed to be evaluated once, even if the argument is used multiple times.
 
 Returns the argument as a compile time constant, this is suitable for
 placing in a compile time variable or use for compile time evaluation,
-e.g. `$foo = $vaconst(1)`. This corresponds to `$` parameters.
+e.g. `$foo = $vaconst[1]`. This corresponds to `$` parameters.
 
 ### `$vaexpr`
 
@@ -421,7 +421,7 @@ e.g. `$vatype(2) a = 2`
 
 ### `$vasplat`
 
-`$vasplat` allows you to paste the varargs in the call into another call. For example,
+`$vasplat` allows you to paste the vaargs in the call into another call. For example,
 if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`.
 You can even extract provide a range as the argument: `$vasplat[2..4]` (in this case, this would paste in
 arguments 2, 3 and 4).

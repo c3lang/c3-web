@@ -42,7 +42,7 @@ any any_copy = any_make(data, a.type);
 
 ## Variable argument functions with implicit `any`
 
-Regular typed varargs are of a single type, e.g. `fn void abc(int x, double... args)`.
+Regular typed vaargs are of a single type, e.g. `fn void abc(int x, double... args)`.
 In order to take variable functions that are of multiple types, `any` may be used.
 There are two variants:
 

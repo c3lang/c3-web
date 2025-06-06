@@ -109,7 +109,7 @@ fn int[] buggy_code()
 }
 ```
 
-**Q:** How do I pass varargs to another function that takes varargs?
+**Q:** How do I pass vaargs to another function that takes varargs?
 
 **A:** Use the splat operator, `...`
 
@@ -269,7 +269,7 @@ Function and variable names use `snake_case` (all lower case with `_` separating
 Imagine you have two methods:
 
 ```c3
-fn void Obj.func1(&self, String... args) @private {} // varargs variant
+fn void Obj.func1(&self, String... args) @private {} // vaargs variant
 fn void Obj.func2(&self, Foo* pf) @private {} // Foo pointer variant
 ```
 
@@ -284,7 +284,7 @@ macro void Obj.func(&self, ...)
         // If so, dispatch to func2
         return self.func2($vaarg[0]);
     $else
-        // Otherwise, dispatch all varargs to func1
+        // Otherwise, dispatch all vaargs to func1
         return self.func1($vasplat);
     $endif
 }

@@ -1,0 +1,205 @@
+---
+
+
+import "../styles/global.css";
+import "../content/docs.css";
+
+import Navbar from "../components/navbar.astro";
+import Blogitem from "../components/blogitem.astro";
+import { titleToLowerCaseKebab } from "../components/blogitem.astro";
+
+const blogPosts = Object.values(import.meta.glob('../content/blogs/*.md', { eager: true })) ;
+
+// Find most recent blog post
+let BlogData
+for(let i=0; i<blogPosts.length; i++) {
+	
+	if(!BlogData || 
+		new Date(BlogData.frontmatter.date) <= new Date(blogPosts[i].frontmatter.date))
+	{
+		BlogData = blogPosts[i]
+	}
+}
+
+// Store the frontmatter in an array so we can sort
+let sortedBlogPosts = []
+for(let i=0; i<blogPosts.length; i++) 
+{
+	if(blogPosts[i]?.frontmatter?.title !== BlogData?.frontmatter?.title) 
+	{
+		sortedBlogPosts.push(blogPosts[i].frontmatter)
+	}
+}
+
+sortedBlogPosts.sort((a, b) => {
+	return new Date(b.date) - new Date(a.date); // ascending
+})
+
+---
+
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<meta
+		name="description"
+		content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+  	<meta name="og:title" content="C3" />
+  	<meta
+  		name="og:description"
+    	content="C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers."
+  	/>
+	<meta content="/logo.svg" property="og:image" />
+	<meta content="#4355ec" data-react-helmet="true" name="theme-color" />
+	<meta name="og:image" content="/logo.svg" />
+
+  	<link rel="icon" href="/ico.svg" type="image/x-icon" />
+
+	<title>C3 | Blog | An evolution, not a revolution</title>
+</head>
+
+
+<body class="dark:bg-stone-950 bg-white">
+	<div style="height: auto">
+	
+		<Navbar />
+		
+		<div>
+			<div class="
+				max-w-[38rem]
+				
+				lg:grid
+				xl:grid-cols-[1.5fr_40rem_1.5fr]
+				xl:max-w-[calc(20rem+40rem+20rem)]
+				lg:grid-cols-[40rem_1.5fr]
+				lg:max-w-[calc(40rem+20rem)]
+				mx-auto
+			">
+				<!-- Empty content for symmetry and centering of main content -->
+				<div class="hidden xl:block"></div>
+				
+				<!-- Main content -->
+				<div class="
+					px-4 
+					sm:px-6 
+					lg:px-8 
+					lg:pt-24 
+					pt-8
+					"
+				>
+					<div class="mt-5 mx-auto">
+					
+						<h1 class="
+							block 
+							font-bold 
+							text-gray-800 
+							text-5xl 
+							lg:text-6xl 
+							lg:leading-tight 
+							dark:text-white
+							text-justify
+							mb-8
+							sm:mb-18
+							"
+						>
+							<a href="/blog">
+								The
+								<span class="
+									bg-clip-text 
+									bg-gradient-to-l 
+									from-violet-600 
+									to-blue-600 
+									text-transparent"
+								>
+								C3
+								</span>
+								Blog
+							</a>	
+
+						</h1>			
+							
+							
+						<!-- Show only current blogpost -->
+						<Blogitem 
+							title={BlogData?.frontmatter?.title} 
+							date={BlogData?.frontmatter?.date?.slice(0,10)}
+						>
+							<BlogData.Content/>
+						</Blogitem>
+						
+					</div>
+				</div>
+				<!-- End of main content -->
+				 
+				<!-- Sidebar on desktop -->
+				<!-- Bottom on small/mobile -->
+				<div class="
+					block 
+					lg:mt-68
+					px-6
+					lg:pl-16
+					
+					"
+				>
+					<h2 class="
+						text-[var(--sl-color-gray-1)]
+						mb-4
+						font-semibold
+						lg:font-medium
+						text-3xl
+						lg:text-xl
+						lg:pl-4
+					">
+						Blog Archive
+					</h2>
+					
+					{sortedBlogPosts.map((BlogPost) => {
+						
+						const blogPostUrl = titleToLowerCaseKebab(BlogPost.title)
+						
+						return <div class="
+							hover:bg-slate-100
+							hover:dark:bg-slate-800
+							py-2
+							px-4
+							my-2
+						">
+							<a class="
+								text-[var(--sl-color-text-accent)]
+								text-justify
+								"
+								href={"/blog/"+blogPostUrl}
+							>
+								
+								<div class="
+									flex
+									flex-col
+									text-[var(--sl-color-gray-1)]
+									lg:text-xs
+									
+								">
+									<h4 class="
+										"
+									>
+										{BlogPost.title}
+									</h4>
+									<p class="">
+										{BlogPost.date.slice(0,10)}
+									</p>
+								</div>
+							</a>
+						
+						</div>
+					} 
+					)}
+
+				</div>
+				<!-- End of Sidebar -->
+				
+			</div>
+			<!-- End of page grid layout for sidebar and main -->
+
+		</div>
+	</div>
+</body>
