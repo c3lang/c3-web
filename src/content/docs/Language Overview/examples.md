@@ -225,7 +225,7 @@ fn void main()
 ```
 
 Because it's often relevant to run different defers when having an error return there is also a way to create an error defer, by using the `catch` keyword directly after the defer.
-Similarly using `defer try` can be used to only run if the scope exits in a regular way.
+Similarly, using `defer try` can be used to only run if the scope exits in a regular way.
 
 ```c3
 fn void? test(int x)
@@ -239,8 +239,12 @@ fn void? test(int x)
     io::print("!");
 }
 
-test(0); // Prints "!XA"
-test(1); // Prints "builtin::NOT_FOUNDBA" and returns a NOT_FOUND
+fn void main()
+{
+    (void)test(0); // Prints "!XA"
+    (void)test(1); // Prints "builtin::NOT_FOUNDBA" and returns a NOT_FOUND
+    // Note that we need to use (void) to explicitly discard the Optional result.
+}
 ```
 
 ## Struct Types
