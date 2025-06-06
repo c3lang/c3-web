@@ -317,7 +317,7 @@ the one used by the linker.
 ```c3
 fn void testfn(int x) { }
 String a = $extnameof(g); // => "test.bar.g";
-string b = $extnameof(testfn); // => "test.bar.testfn"
+String b = $extnameof(testfn); // => "test.bar.testfn"
 ```
 
 #### `$nameof`
