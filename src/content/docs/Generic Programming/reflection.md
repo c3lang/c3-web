@@ -9,8 +9,6 @@ C3 allows both compile time and runtime reflection.
 
 During compile time the type information may be directly used as compile time constants, the same data is then available dynamically at runtime.
 
-*Note that not all reflection is implemented in the compiler at this point in time.*
-
 ## Compile time reflection
 
 During compile time there are a number of compile time fields that may be accessed directly.
@@ -29,6 +27,7 @@ It is possible to access properties on the type itself:
 - `len`
 - `max`
 - `membersof`
+- `methodsof`
 - `min`
 - `nan`
 - `nameof`
@@ -131,6 +130,14 @@ String x = Baz.membersof[1].nameof; // "z"
 ```
 
 A `member_ref` has properties `alignof`, `kindof`, `membersof`, `nameof`, `offsetof`, `sizeof` and `typeid`.
+
+#### `methodsof`
+
+This property returns the methods associated with a type as a constant array of strings.
+
+Methods are generally registered *after* types are registered, which means that the use of 
+"methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
+It is always safe to use inside a function.
 
 #### `min`
 
