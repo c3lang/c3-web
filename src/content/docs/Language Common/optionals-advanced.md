@@ -267,7 +267,7 @@ fn void main(String[] args)
 {
     int? optional_value = io::FILE_NOT_FOUND?;
 
-    faultdef excuse = @catch(optional_value);
+    fault excuse = @catch(optional_value);
     if (excuse)
     {
         io::printfn("Excuse found: %s", excuse);
