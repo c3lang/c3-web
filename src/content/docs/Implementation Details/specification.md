@@ -5,7 +5,9 @@ sidebar:
     order: 999
 ---
 
-*THIS SPECIFICATION IS UNDER DEVELOPMENT*
+*THIS SPECIFICATION IS OUT OF DATE*
+
+Please refer to the new repository at https://github.com/c3lang/c3-spec
 
 ## Notation
 

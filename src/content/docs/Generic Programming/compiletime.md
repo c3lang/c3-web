@@ -262,7 +262,8 @@ A set of compile time functions are available at compile time:
 
 ### `$alignof`
 
-Get the alignment of something. See [reflection](/generic-programming/reflection).
+Get the alignment of something.
+See [reflection](/generic-programming/reflection/#alignof).
 
 ### `$assert`
 
@@ -289,7 +290,8 @@ fn void main()
 
 ### `$defined`
 
-Returns true if a type or identifier is defined. See [reflection](/generic-programming/reflection).
+Returns true if a type or identifier is defined.
+See [reflection](/generic-programming/reflection/#defined).
 
 ### `$echo`
 
@@ -297,7 +299,8 @@ Print a message to stdout when compiling the code.
 
 ### `$embed`
 
-Embed binary data from a file. See [expressions](/language-fundamentals/expressions/).
+Embed binary data from a file.
+See [expressions](/language-fundamentals/expressions/#including-binary-data).
 
 ### `$error`
 
@@ -305,7 +308,8 @@ When this is compiled, issue a compile time error.
 
 ### `$eval`
 
-Converts a compile time string to the corresponding variable or function. See [reflection](/generic-programming/reflection).
+Converts a compile time string to the corresponding variable or function.
+See [reflection](/generic-programming/reflection/#eval).
 
 ```c3
 fn void main()
@@ -319,7 +323,8 @@ fn void main()
 
 ### `$evaltype`
 
-Converts a compile time string to the corresponding type. See [reflection](/generic-programming/reflection).
+Converts a compile time string to the corresponding type.
+See [reflection](/generic-programming/reflection/#evaltype).
 
 ### `$exec`
 
@@ -328,7 +333,8 @@ Execute a script at compile time and include the result in the source code.
 
 ### `$extnameof`, `$qnameof` and `$nameof`
 
-Get the external name of a symbol. See [reflection](/generic-programming/reflection).
+Get the external name of a symbol.
+See [reflection](/generic-programming/reflection/#extnameof).
 
 ### `$feature`
 
@@ -344,19 +350,24 @@ Includes a file into the current file at the top level.
 
 ### `$nameof`
 
-Get the local name of a symbol. See [reflection](/generic-programming/reflection).
+Get the local name of a symbol.
+See [reflection](/generic-programming/reflection/#nameof-1).
 
 ### `$offsetof`
 
-Get the offset of a member. See [reflection](/generic-programming/reflection).
+Get the offset of a member.
+See [reflection](/generic-programming/reflection/#offsetof).
 
 ### `$qnameof`
 
-Get the qualified name of a symbol. See [reflection](/generic-programming/reflection).
+Get the qualified name of a symbol.
+See [reflection](/generic-programming/reflection/#qnameof).
 
 ### `$vacount`
 
-Return the number of macro vaarg arguments
+Return the number of macro vaarg arguments.
+For this and other vaarg compile-time functions
+[see here](/generic-programming/macros/#macro-vaargs).
 
 ### `$vaconst`
 
