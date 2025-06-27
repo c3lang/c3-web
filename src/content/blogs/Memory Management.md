@@ -10,11 +10,11 @@ Broadly there are two types of memory allocation in your programs, the stack and
 
 ### The Stack
 
-Allocation on the [stack](https://en.wikipedia.org/wiki/Stack_register) uses super fast [CPU registers](https://en.wikipedia.org/wiki/CPU_cache) and this memory is automatically managed, but very limited in size typically around 64KB.
+Allocation on the [stack](https://en.wikipedia.org/wiki/Stack_register) is automatically managed, but very limited in size typically around 64KB.
 
 ### The Heap
 
-Allocation on the heap uses system main memory, which is 100 times slower than the stack and between 4KB to typically several GB in size. The heap has to be managed by the program and is often called [dynamic memory allocation](https://en.wikipedia.org/wiki/Memory_management), because it's managed at runtime. 
+Allocation on the heap is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and can support larger allocations between 4KB to several GB in size depending on the platform specs.
 
 ### Memory Leaks
 
