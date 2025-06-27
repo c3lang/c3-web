@@ -96,20 +96,20 @@ C3 has [trailing body macros](/generic-programming/macros/#trailing-blocks-for-m
 
 The temp allocator uses an arena allocator internally and when that's full it manages heap allocations via a linked list.
  
-![pool allocator as it fills up](/blogs/memory-management/pool_allocator.jpg)
+![pool allocator as it fills up](./memory-management/pool_allocator.jpg)
 
 With a single memory allocation region we have to wait till the end of the scope to reset the memory, which might mean we need a bigger than strictly necessary memory allocation. 
 
-![pool allocator as it fills up](/blogs/memory-management/arena_capacity_single.jpg)
+![pool allocator as it fills up](./memory-management/arena_capacity_single.jpg)
 
 ### Nested Allocators For More Control
 
-![pool allocator as it fills up](/blogs/memory-management/nested_allocators.jpg)
+![pool allocator as it fills up](./memory-management/nested_allocators.jpg)
 
 
 Using nested allocators we can reset the arena memory that we have finished using, before reaching the end of the temp allocator's scope. Nested allocators are also automatically managed but give us greater control, if used for appropriately sized regions this can reduce peak memory usage and allow smaller buffer sizes.
 
-![pool allocator as it fills up](/blogs/memory-management/arena_capcity_multiple.jpg)
+![pool allocator as it fills up](./memory-management/arena_capcity_multiple.jpg)
 
 ### Configuring The Temp Allocator
 
