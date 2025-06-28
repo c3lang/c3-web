@@ -46,7 +46,7 @@ fn int example(int input)
     @pool()
     {
         // Allocate temp_variable on the heap with Temp allocator
-        int temp_variable = mem::tnew(int);
+        int* temp_variable = mem::tnew(int);
         temp_variable = 56;
         input = input + temp_variable;
         return input;
@@ -153,7 +153,7 @@ fn int example(int input)
 
 ### A Handy Shorthand
 
-When configuring the temp allocator with `@pool_init()` we can reduce the code's nesting using lambda function syntax `=>` making it even simpler as:
+When configuring the temp allocator with `@pool_init()` we can reduce the code's nesting using short function syntax `=>` making it even simpler as:
 
 ```c
 fn int example(int input) => @pool_init(allocator: mem, pool_size: 1024)
