@@ -92,7 +92,16 @@ fn int example(int input)
 ## How The Temp Allocator Works
 
 
-C3 has [trailing body macros](/generic-programming/macros/#trailing-blocks-for-macros) which automate the setting up and freeing of the arena allocator used inside the temp allocator.
+C3 has [trailing body macros](/generic-programming/macros/#trailing-blocks-for-macros) which automate the setting up and freeing of the arena allocator used inside the temp allocator, the `@body()` is the user's custom code.
+
+```c
+macro void @pool(usz reserve = 0; @body) @builtin
+{
+	PoolState state = allocator::push_pool(reserve) @inline;
+	defer allocator::pop_pool(state) @inline;
+	@body();
+}
+```
 
 The temp allocator uses an arena allocator internally and when that's full it manages heap allocations via a linked list.
  
