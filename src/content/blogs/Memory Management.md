@@ -10,11 +10,11 @@ Broadly there are two types of memory allocation in your programs, the stack and
 
 ### The Stack
 
-Allocation on the [stack](https://en.wikipedia.org/wiki/Stack_register) is automatically managed, but limited in size typically 512KB-8MB depending on the platform.
+Allocation on the [stack](https://en.wikipedia.org/wiki/Stack_register) is automatically managed, but limited in size typically 512KB–8MB depending on the platform.
 
 ### The Heap
 
-Allocation on the heap is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and can support larger allocations between 4KB to several GB in size depending on your hardware specs.
+Allocation on the heap is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and can support larger allocations up to several GB in size depending on your hardware specs.
 
 ### Memory Leaks
 
