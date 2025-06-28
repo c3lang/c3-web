@@ -153,7 +153,7 @@ fn int example(int input)
 
 ### A Handy Shorthand
 
-When configuring the temp allocator with `@pool_init()` we can reduce the code's nesting using short function syntax `=>` making it even simpler as:
+When configuring the temp allocator with `@pool_init()` we can reduce the code's nesting using short function declaration syntax `=>` making it even simpler as:
 
 ```c
 fn int example(int input) => @pool_init(allocator: mem, pool_size: 1024)
