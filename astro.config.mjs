@@ -14,6 +14,7 @@ export default defineConfig(
       site: "https://c3-lang.org",
 
       redirects: {
+		  '/docs': '/getting-started',
           '/guide': '/getting-started',
           '/introduction': '/getting-started',
 
