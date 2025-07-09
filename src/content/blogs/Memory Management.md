@@ -1,5 +1,5 @@
 ---
-title: "Memory Regions A New Old Idea"
+title: "Memory Regions: A New Old Idea"
 date: 2025-07-09
 author: "Josh Ring"
 ---
