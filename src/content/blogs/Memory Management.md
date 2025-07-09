@@ -4,9 +4,9 @@ date: 2025-07-09
 author: "Josh Ring"
 ---
 
-Memory is one of the most important resources we have to manage as programmers, in this blog we'll be talking about methods of managing dynamic memory allocations on the heap.
+Memory is one of the most important resources we have to manage as programmers. In this blog we'll be talking about methods of managing dynamic memory allocations on the heap.
 
-Let's break that down; Broadly there are two types of memory allocation in your programs, on the stack and on the heap. Allocations on the [stack](https://en.wikipedia.org/wiki/Stack_register) are compact and are managed automatically, but they are limited in size. The heap by contrast is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and is used for dynamic allocations, which can be much larger and it's organisation is customisable.
+Let's break that down; Broadly there are two types of memory allocation in your programs, on the stack and on the heap. Allocations on the [stack](https://en.wikipedia.org/wiki/Stack_register) are compact and are managed automatically, but they are limited in size. The heap by contrast is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and is used for dynamic allocations, which can be much larger and its organisation is customisable.	
 
 ### Memory Leaks
 
