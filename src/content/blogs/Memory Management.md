@@ -1,6 +1,6 @@
 ---
-title: "A New Old Idea; Memory Regions"
-date: 2025-06-12
+title: "Memory Regions A New Old Idea"
+date: 2025-07-09
 author: "Josh Ring"
 ---
 
@@ -34,9 +34,9 @@ Each method has different tradeoffs.
 
 ## Memory Allocation Regions
 
-Memory allocation regions, go by various names: arenas, pools, contexts; The idea dates back to the 1960's with the IBM OS/360 mainframes having a similar system. Memory regions are efficient for managing many memory allocations and can be freed in a single operation, and are particularly effective when we know the memory will not be needed later. That is, we know the memory's lifetime. This idea is powerful and used in many applications like web servers request handlers or in database transactions, as used by the [Apache webserver](https://httpd.apache.org/) and the [Postgres database](https://www.postgresql.org/). 
+Memory allocation regions, go by various names: arenas, pools, contexts; The idea dates back to the 1960's with the IBM OS/360 mainframes having a similar system. Memory regions are efficient for managing many memory allocations and can be freed in a single operation, and are particularly effective when we know the memory will not be needed later. That is, we know the memory's lifetime. This idea is powerful and used in many applications like web server request handlers or database transactions, as used by the [Apache webserver](https://httpd.apache.org/) and the [Postgres database](https://www.postgresql.org/). 
 
-Memory allocation regions are often allocated into a co-located buffer where all the allocation are closely associated together, making it more efficient for CPU access, compared to traditional `malloc` which can be allocated anywhere in the heap.
+Memory allocation regions use a single buffer so have good locality because all the allocation are closely associated together, making it more efficient for CPU access, compared to traditional `malloc` where allocations are spread throughout the heap.
 
 Memory allocation regions may make it easier to manage memory, however you still need to *remember* to free them, and if you forget to do call free, then that memory will still leak.
 
@@ -78,7 +78,7 @@ We have relatively performant memory allocations managed automatically without n
 
 ## Controlling Variable Cleanup
 
-Normally temp allocated variables are cleaned up at the end of the closest `@pool` scope, but what if you have nested `@pool` and want explicit control over when it's cleaned up? Assign the temp allocator with the scope you need to a variable, and use it explicitly. The temp allocator in a scope is a global variabled called `tmem`.
+Normally temp allocated variables are cleaned up at the end of the closest `@pool` scope, but what if you have nested `@pool` and want explicit control over when it's cleaned up? Assign the temp allocator with the scope you need to a variable, and use it explicitly. The temp allocator in a scope is a global variable called `tmem`.
  
 ```c
 fn String* example(int input)
@@ -98,12 +98,12 @@ fn String* example(int input)
 fn void main()
 {
     // global temp allocator, tmem created here
-	@pool()
-	{
+    @pool()
+    {
         String* returned = example(42);
         // "modified 42" string returned
         io::printn(*returned);
-	};
+    };
 }
 ```
 
