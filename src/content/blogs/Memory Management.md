@@ -135,8 +135,8 @@ fn int example(int input)
 We showed off the temp allocator, a new memory management technique in C3, with configurable memory tradeoffs and good usability. 
 
 ## Want To Dive Into C3?
-Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries)
+Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
 
-Have questions? Come and chat to us on [Discord](https://discord.gg/qN76R87).
+Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
 
 
