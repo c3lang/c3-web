@@ -4,23 +4,13 @@ date: 2025-07-09
 author: "Josh Ring"
 ---
 
-For us to talk about managing memory in a language we need to establish some context.
+Memory is one of the most important resources we have to manage as programmers, in this blog we'll be talking about managing dynamic memory allocations on the heap.
 
-## Computer Memory
-
-Broadly there are two types of memory allocation in your programs, the stack and the heap. 
-
-### The Stack
-
-Allocation on the [stack](https://en.wikipedia.org/wiki/Stack_register) is automatically managed, but limited in size typically 512KB – 8MB depending on the platform.
-
-### The Heap
-
-Allocation on the heap is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and can support larger allocations up to several GB in size depending on your hardware specs.
+Let's break that down; Broadly there are two types of memory allocation in your programs, on the stack and on the heap. Allocations on the [stack](https://en.wikipedia.org/wiki/Stack_register) are compact and are managed automatically, but they are limited in size. The heap by contrast is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and is used for dynamic allocations which can be much larger.
 
 ### Memory Leaks
 
-When we allocate memory, with say `malloc()` typically we need to `free()` it afterwards, otherwise we can't use that memory until the OS process exits. This is called a [memory leak](https://en.wikipedia.org/wiki/Memory_leak) and can lead to restricting or running out of available system memory when they happen in longer running processes like games, operating systems and web browsers.
+When we dynamically allocate memory, with say `malloc()` typically we need to `free()` it afterwards, otherwise we can't use that memory until the OS process exits. If that memory isn't being used and it has not been freed this is called a [memory leak](https://en.wikipedia.org/wiki/Memory_leak) and can lead to restricting or running out of available system memory.
 
 ### Avoiding Memory Leaks
 
@@ -29,7 +19,8 @@ Common solutions are [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_i
 Each method has different tradeoffs. 
 - [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization) needs classes or structs to manage their own memory cleanup with a lot of extra code.
 - [Reference counting](https://en.wikipedia.org/wiki/Reference_counting) counts how many users each memory allocation has, when this hits zero the memory is freed. Reference counting is expensive with multiple CPU cores as we need to synchronise these counts and share information between cores.
-- [Garbage collection](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) competes with the program for both memory and CPU time reducing program performance and increaing memory usage.
+- [Garbage collection](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) competes with the program for both memory and CPU time, reducing program performance and increasing memory usage.
+
 
 
 ## Memory Allocation Regions
@@ -51,7 +42,7 @@ fn int example(int input)
     {
         // Allocate temp_variable on the heap with Temp allocator
         int* temp_variable = mem::tnew(int);
-        temp_variable = 56;
+        *temp_variable = 56;
         input = input + temp_variable;
         return input;
     }; // Automatically cleanup temp_variable
@@ -83,7 +74,7 @@ Normally temp allocated variables are cleaned up at the end of the closest `@poo
 ```c
 fn String* example(int input)
 {
-    // global temp allocator from main() scope
+    // previous global temp allocator from main() scope
     Allocator temp_allocator = tmem;
 
     @pool()
@@ -97,7 +88,7 @@ fn String* example(int input)
 
 fn void main()
 {
-    // global temp allocator, tmem created here
+    // top-most temp allocator, tmem created here
     @pool()
     {
         String* returned = example(42);
