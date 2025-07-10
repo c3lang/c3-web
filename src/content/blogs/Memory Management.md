@@ -1,12 +1,15 @@
 ---
-title: "Memory Regions: A New Old Idea"
-date: 2025-07-09
+title: "Known Lifetime, Ease Of Use, Performance: Pick Any Three"
+date: 2025-07-11
 author: "Josh Ring"
 ---
 
-Memory is one of the most important resources we have to manage as programmers. In this blog we'll be talking about methods of managing dynamic memory allocations on the heap.
 
-Let's break that down; Broadly there are two types of memory allocation in your programs, on the stack and on the heap. Allocations on the [stack](https://en.wikipedia.org/wiki/Stack_register) are compact and are managed automatically, but they are limited in size. The heap by contrast is [manually managed](https://en.wikipedia.org/wiki/Memory_management) and is used for dynamic allocations, which can be much larger and its organisation is customisable.	
+Modern languages offer a variety of techniques to help with dynamic memory management, each one a different tradeoff in terms of performance, control and complexity. In this post we'll look at an old idea, memory allocation regions or arenas, implemented via the C3 Temp allocator, which is the new default for C3. 
+
+The Temp allocator combines the ease of use of garbage collection with C3's unique features to give a simple and (semi)-automated solution within a manual memory management language. The Temp allocator helps you avoid memory leaks, improve performance, and simplify code compared to traditional approaches.
+
+Memory allocations come in two broad types [stack](https://en.wikipedia.org/wiki/Stack_register) allocations which are compact, efficient and automatic and heap allocations which are much larger and have [customisable organisation](https://en.wikipedia.org/wiki/Memory_management). Custom organisation allows both innovation and footguns in equal measure, let's explore those.
 
 ### Memory Leaks
 
@@ -27,13 +30,13 @@ Each method has different tradeoffs.
 
 Memory allocation regions, go by various names: arenas, pools, contexts; The idea dates back to the 1960's with the IBM OS/360 mainframes having a similar system. Memory regions are efficient for managing many memory allocations and can be freed in a single operation, and are particularly effective when we know the memory will not be needed later. That is, we know the memory's lifetime. This idea is powerful and used in many applications like web server request handlers or database transactions, as used by the [Apache webserver](https://httpd.apache.org/) and the [Postgres database](https://www.postgresql.org/). 
 
-Memory allocation regions use a single buffer so have good locality because all the allocation are closely associated together, making it more efficient for CPU access, compared to traditional `malloc` where allocations are spread throughout the heap.
+Memory allocation regions use a single buffer so have good locality because all the allocations are closely associated together, making it more efficient for CPU access, compared to traditional `malloc` where allocations are spread throughout the heap.
 
 Memory allocation regions may make it easier to manage memory, however you still need to *remember* to free them, and if you forget to do call free, then that memory will still leak.
 
 ### Enter The Temp Allocator
 
-The Temp allocator in C3 is a region based allocator which is *automatically* reset once execution leaves it's scope, so you cannot forget to free the memory and can't leak memory. The Temp allocator in C3 is a builtin in the standard library, called `@pool()` and using it you can define the scope where the allocated variables are available, for example:
+The Temp allocator in C3 is a region based allocator which is *automatically* reset once execution leaves its scope, so you cannot forget to free the memory and can't leak memory. The Temp allocator in C3 is a builtin in the standard library, called `@pool()` and using it you can define the scope where the allocated variables are available, for example:
 
 ```c
 fn int example(int input) 
@@ -69,7 +72,7 @@ We have relatively performant memory allocations managed automatically without n
 
 ## Controlling Variable Cleanup
 
-Normally temp allocated variables are cleaned up at the end of the closest `@pool` scope, but what if you have nested `@pool` and want explicit control over when it's cleaned up? Assign the temp allocator with the scope you need to a variable, and use it explicitly. The temp allocator in a scope is a global variable called `tmem`.
+Normally temp allocated variables are cleaned up at the end of the closest `@pool` scope, but what if you have nested `@pool` and want explicit control over when it's cleaned up? Simple: assign the temp allocator with the scope you need to a variable, and use it explicitly. The temp allocator in a scope is a global variable called `tmem`.
  
 ```c
 fn String* example(int input)
@@ -114,7 +117,7 @@ fn int example(int input) => @pool(reserve: 2048)
 ```
 
 ### In Simple Cases Omit @pool()
-Happy with the defaults? We can actually omit the `@pool()` all together!
+Happy with the defaults? We can actually omit the `@pool()` in `main()` all together!
 
 The compiler automatically adds a `@pool()` scope to the `main()` function for us, once it finds a temp allocation function like `mem::tnew()`, without an enclosing `@pool()` scope. That simplifies our code to:
 
@@ -132,7 +135,10 @@ fn int example(int input)
 
 ## Conclusion
 
-We showed off the temp allocator, a new memory management technique in C3, with configurable memory tradeoffs and good usability. 
+The Temp allocator has landed in C3; combining scoped compile time known memory lifetimes, ease of use and performance. Tying memory lifetimes to scope and automating cleanup, you get the benefits of manual control without the risks. No more memory leaks, use after free, or slow compile times with complex ownership tracking.
+
+Whether you're building low-latency systems or just want more explicit code without garbage collection overhead, the C3 Temp allocator is a powerful tool to have in your arsenal, making memory management nearly effortless.
+
 
 ## Want To Dive Into C3?
 Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
