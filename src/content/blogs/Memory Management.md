@@ -1,5 +1,5 @@
 ---
-title: "Known Lifetime, Ease Of Use, Performance: Pick Any Three"
+title: "Forget Borrow Checkers: C3 Solved Lifetimes With Scopes"
 date: 2025-07-11
 author: "Josh Ring"
 ---
