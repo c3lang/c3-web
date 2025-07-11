@@ -26,7 +26,7 @@ Each method has different tradeoffs.
 
 
 
-## Memory Allocation Regions
+### Memory Allocation Regions
 
 Memory allocation regions, go by various names: arenas, pools, contexts; The idea dates back to the 1960's with the IBM OS/360 mainframes having a similar system. Memory regions are efficient for managing many memory allocations and can be freed in a single operation, and are particularly effective when we know the memory will not be needed later. That is, we know the memory's lifetime. This idea is powerful and used in many applications like web server request handlers or database transactions, as used by the [Apache webserver](https://httpd.apache.org/) and the [Postgres database](https://www.postgresql.org/). 
 
@@ -70,7 +70,7 @@ valgrind ./pool_example |& grep "All heap blocks were freed"
 We have relatively performant memory allocations managed automatically without needing [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization), [garbage collection](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) or [reference counting](https://en.wikipedia.org/wiki/Reference_counting). 
 
 
-## Controlling Variable Cleanup
+### Controlling Variable Cleanup
 
 Normally temp allocated variables are cleaned up at the end of the closest `@pool` scope, but what if you have nested `@pool` and want explicit control over when it's cleaned up? Simple: assign the temp allocator with the scope you need to a variable, and use it explicitly. The temp allocator in a scope is a global variable called `tmem`.
  
@@ -133,14 +133,14 @@ fn int example(int input)
 }
 ```
 
-## Conclusion
+### Conclusion
 
 The Temp allocator has landed in C3; combining scoped compile time known memory lifetimes, ease of use and performance. Tying memory lifetimes to scope and automating cleanup, you get the benefits of manual control without the risks. No more memory leaks, use after free, or slow compile times with complex ownership tracking.
 
 Whether you're building low-latency systems or just want more explicit code without garbage collection overhead, the C3 Temp allocator is a powerful tool to have in your arsenal, making memory management nearly effortless.
 
 
-## Want To Dive Into C3?
+### Want To Dive Into C3?
 Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
