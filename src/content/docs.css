@@ -96,6 +96,7 @@
 	--sl-text-h5: var(--sl-text-lg);
 
 	--sl-line-height: 1.8;
+	--sl-line-height-p: 1.5;
 	--sl-line-height-headings: 1.2;
 
 	--sl-font-system: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
