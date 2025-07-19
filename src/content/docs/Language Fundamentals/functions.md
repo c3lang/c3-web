@@ -244,7 +244,7 @@ fn void test()
     // to let the compiler know we're deliberately
     // ignoring the Optional result.
     (void)io::printfn("%d", test_error());
-    
+
     // ?? sets a default value if an Excuse is found
     double x = (test_error() + test_error()) ?? 100;
 
@@ -258,7 +258,7 @@ This allows us to chain functions:
 ```c3
 fn void print_input_with_explicit_checks()
 {
-    String? line = io::readline();
+    String? line = io::treadline();
     if (try line)
     {
         // line is a regular "string" here.
@@ -274,7 +274,7 @@ fn void print_input_with_explicit_checks()
 
 fn void print_input_with_chaining()
 {
-    if (try int val = io::readline().to_int())
+    if (try int val = io::treadline().to_int())
     {
         io::printfn("You typed the number %d", val);
         return;
