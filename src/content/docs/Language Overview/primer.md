@@ -358,14 +358,14 @@ return false;
 // C3, direct translation:
 do FAIL:
 {
-    Foo* foo = malloc(sizeof(Foo));
+    Foo* foo = malloc(Foo.sizeof);
 
     if (tryFoo(foo)) break FAIL;
     if (modifyFoo(foo)) break FAIL;
 
     free(foo);
     return true;
-}
+};
 free(foo);
 return false;
 
