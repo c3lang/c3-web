@@ -3592,7 +3592,7 @@ macro usz? read_any(stream, any ref)
 macro usz? read_varint(stream, x_ptr)
 ```
 ```c3
-macro String? readline(stream = io::stdin(), Allocator allocator = allocator::heap())
+macro String? readline(Allocator allocator, stream = io::stdin())
 ```
 ```c3
 macro String? treadline(stream = io::stdin())

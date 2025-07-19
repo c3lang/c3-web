@@ -760,13 +760,13 @@ fn int main()
 {
     int secret = rand(20) + 1;
     int tries = 6;
-    
+
     // game loop
     while OUTER: (true)
     {
         io::printfn("Enter a guess between 1 and 20, "
                     "%d tries remaining", tries);
-    
+
         int? guess = io::treadline().to_int();
         if (catch err = guess)
         {
@@ -774,7 +774,7 @@ fn int main()
             io::printn("That wasn't a valid number, try again.");
             continue;
         }
-    
+
         switch
         {
             case guess < secret: io::printn("Too Small");
@@ -811,19 +811,19 @@ fn int main()
     int p_score;
     int c_score;
     int rounds = ROUNDS;
-    
+
     io::printfn("Let's play Rock-Paper-Scissors!");
     while (rounds > 0)
     {
         io::printfn("Best out of %d, %d rounds remaining. ", ROUNDS, rounds);
         io::printn("What is your guess? [r]ock, [p]aper, or [s]cissors?");
-        
+
         Action guess;
         while (true)
         {
             String? s = io::treadline();
             if (catch s) return 1;
-        
+
             if (try current_guess = Action.lookup_field(abbrev, s))
             {
                 guess = current_guess;
@@ -831,12 +831,12 @@ fn int main()
             }
             io::printn("input invalid.");
         }
-        
+
         io::printfn("Player: %s", guess.full);
-        
+
         Action comp = Action.from_ordinal(rand(3));
         io::printfn("Computer: %s", comp.full);
-        
+
         switch
         {
             case comp == ROCK && guess == SCISSORS:
@@ -856,7 +856,7 @@ fn int main()
         }
         io::printfn("Score: Player: %d, Computer: %d", p_score, c_score);
     }
-    
+
     switch
     {
         case p_score < c_score: io::printn("COMPUTER WINS GAME!");

@@ -332,7 +332,7 @@ moving the output pointer 1 or 2 steps.
 
 ## `std::io`
 
-### `String? readline(stream = io::stdin(), Allocator allocator = allocator::heap())`
+### `String? readline(Allocator allocator, stream = io::stdin())`
 Read a `String?` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream.
 `Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
@@ -341,7 +341,7 @@ import std::io;
 
 fn void? hello_name()
 {
-    String? name = io::readline();
+    String? name = io::readline(mem); // Warning: leaking memory
     if (catch excuse = name)
     {
         return excuse?;
