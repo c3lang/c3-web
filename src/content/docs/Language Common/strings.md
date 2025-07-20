@@ -60,7 +60,7 @@ typedef DString (OutStream) = void*;
 ### `String` Member Functions
 
 ```c3
-fn Char16[]? String.to_new_utf16(s, Allocator allocator = allocator::heap())
+fn Char16[]? String.to_new_utf16(s, Allocator allocator = mem)
 ```
 
 ```c3
@@ -72,15 +72,15 @@ fn WString? String.to_wstring(s, Allocator allocator)
 ```
 
 ```c3 implementation
-fn String String.free(&s, Allocator allocator = allocator::heap())
+fn String String.free(&s, Allocator allocator = mem)
 ```
 
 ```c3 implementation
-fn String String.tcopy(s) => s.copy(allocator::temp()) @inline;
+fn String String.tcopy(s) => s.copy(tmem) @inline;
 ```
 
 ```c3 implementation
-fn String String.copy(s, Allocator allocator = allocator::heap())
+fn String String.copy(s, Allocator allocator = mem)
 ```
 
 ```c3 implementation
@@ -123,16 +123,16 @@ fn usz? String.rindex_of(s, String needle)
 ```
 
 ```c3 implementation
-fn String[] String.split(s, String needle, usz max = 0, Allocator allocator = allocator::heap());
+fn String[] String.split(s, String needle, usz max = 0, Allocator allocator = mem);
 ```
 
 ```c3 implementation
-fn String String.new_split(s, String needle, usz max = 0) => s.split(needle, max, allocator::heap()) @inline;
+fn String String.new_split(s, String needle, usz max = 0) => s.split(needle, max, mem) @inline;
 ```
 
 ```c3 implementation
 // temporary String split
-fn String String.tsplit(s, String needle, usz max = 0) => s.split(needle, max, allocator::temp());
+fn String String.tsplit(s, String needle, usz max = 0) => s.split(needle, max, tmem);
 ```
 
 ```c3 implementation
@@ -140,13 +140,13 @@ fn String String.tconcat(s1, String s2);
 ```
 
 ```c3 implementation
-fn String String.tconcat(s1, String s2) => s1.concat(s2, allocator::temp());
+fn String String.tconcat(s1, String s2) => s1.concat(s2, tmem);
 ```
 ```c3 implementation
-fn WString? String.to_temp_wstring(s) => s.to_wstring(allocator::temp());
+fn WString? String.to_temp_wstring(s) => s.to_wstring(tmem);
 ```
 ```c3 implementation
-fn WString? String.to_new_wstring(s) => s.to_wstring(allocator::heap());
+fn WString? String.to_new_wstring(s) => s.to_wstring(mem);
 ```
 ```c3 implementation
 fn int128? String.to_int128(s, int base = 10) => s.to_integer(int128, base);
@@ -185,11 +185,11 @@ fn double? String.to_double(s) => s.to_real(double);
 fn float? String.to_float(s) => s.to_real(float);
 ```
 ```c3 implementation
-fn String String.new_ascii_to_upper(s, Allocator allocator = allocator::heap());
+fn String String.new_ascii_to_upper(s, Allocator allocator = mem);
 ```
 
 ```c3 implementation
-fn Char16[]? String.to_new_utf16(s, Allocator allocator = allocator::heap());
+fn Char16[]? String.to_new_utf16(s, Allocator allocator = mem);
 ```
 
 ```c3 implementation
@@ -201,11 +201,11 @@ fn Char32[]? String.to_utf32(s, Allocator allocator);
 ```
 
 ```c3 implementation
-fn Char32[]? String.to_new_utf32(s) => s.to_utf32(allocator::heap()) @inline;
+fn Char32[]? String.to_new_utf32(s) => s.to_utf32(mem) @inline;
 ```
 
 ```c3 implementation
-fn Char32[]? String.to_temp_utf32(s) => s.to_utf32(allocator::temp()) @inline;
+fn Char32[]? String.to_temp_utf32(s) => s.to_utf32(tmem) @inline;
 ```
 
 ```c3 implementation
@@ -213,10 +213,10 @@ fn WString? String.to_wstring(s, Allocator allocator);
 ```
 
 ```c3
-fn WString? String.to_new_wstring(s) => s.to_wstring(allocator::heap());
+fn WString? String.to_new_wstring(s) => s.to_wstring(mem);
 ```
 ```c3
-fn WString? String.to_temp_wstring(s) => s.to_wstring(allocator::temp());
+fn WString? String.to_temp_wstring(s) => s.to_wstring(tmem);
 ```
 ```c3
 fn StringIterator String.iterator(s);
@@ -237,8 +237,8 @@ fn usz ZString.len(str);
 
 ```
 ```c3 implementation
-fn ZString String.zstr_copy(s, Allocator allocator = allocator::heap())
+fn ZString String.zstr_copy(s, Allocator allocator = mem)
 ```
 ```c3 implementation
-fn ZString String.zstr_tcopy(s) => s.zstr_copy(allocator::temp()) @inline;
+fn ZString String.zstr_tcopy(s) => s.zstr_copy(tmem) @inline;
 ```

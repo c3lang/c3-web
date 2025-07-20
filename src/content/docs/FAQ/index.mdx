@@ -158,7 +158,7 @@ speed = speed * 2;
 
 **A:** There is `malloc`, `calloc` and `free` just like in C. The main difference is that these will invoke whatever
 the current heap allocator is, which does not need to be the allocator provided by libc. You can get the current heap
-allocator using `allocator::heap()` and do allocations directly. There is also a temporary allocator.
+allocator using `mem` and do allocations directly. There is also a temporary allocator.
 
 Convenience functions are available for allocating particular types: `mem::new(Type)` would allocate a single `Type`
 on the heap and zero initialize it. `mem::alloc(Type)` does the same but without zero initialization.

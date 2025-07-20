@@ -523,7 +523,7 @@ Load up to buffer.len characters into the buffer.
 
 Returns IoError.OVERFLOW if the file is longer than the buffer.
 
-### `char[]? load_new(String filename, Allocator allocator = allocator::heap())`
+### `char[]? load_new(String filename, Allocator allocator = mem)`
 Load the entire file into a new buffer.
 
 ### `char[]? load_temp(String filename)`

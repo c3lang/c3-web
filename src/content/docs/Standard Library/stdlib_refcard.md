@@ -984,13 +984,13 @@ fn any? AnyList.last_any(&self) @inline
 fn usz AnyList.len(&self) @operator(len) @inline
 ```
 ```c3
-fn AnyList* AnyList.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap())
+fn AnyList* AnyList.new_init(&self, usz initial_capacity = 16, Allocator allocator = mem)
 ```
 ```c3
-fn any? AnyList.new_pop(&self, Allocator allocator = allocator::heap())
+fn any? AnyList.new_pop(&self, Allocator allocator = mem)
 ```
 ```c3
-fn any? AnyList.new_pop_first(&self, Allocator allocator = allocator::heap())
+fn any? AnyList.new_pop_first(&self, Allocator allocator = mem)
 ```
 ```c3
 macro AnyList.pop(&self, $Type)
@@ -1056,7 +1056,7 @@ fn any? AnyList.temp_pop_first(&self)
 fn usz? AnyList.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String AnyList.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String AnyList.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String AnyList.to_tstring(&self)
@@ -1106,7 +1106,7 @@ fn void EnumMap.set(&self, Enum key, ValueType value) @operator([]=) @inline
 fn usz? EnumMap.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String EnumMap.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String EnumMap.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String EnumMap.to_tstring(&self) @dynamic
@@ -1149,7 +1149,7 @@ fn void EnumSet.retain_all(&self, EnumSet s)
 fn usz? EnumSet.to_format(&set, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String EnumSet.to_new_string(&set, Allocator allocator = allocator::heap()) @dynamic
+fn String EnumSet.to_new_string(&set, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String EnumSet.to_tstring(&set) @dynamic
@@ -1178,7 +1178,7 @@ fn bool GrowableBitSet.get(&self, usz i) @operator([]) @inline
 fn usz GrowableBitSet.len(&self) @operator(len)
 ```
 ```c3
-fn GrowableBitSet* GrowableBitSet.new_init(&self, usz initial_capacity = 1, Allocator allocator = allocator::heap())
+fn GrowableBitSet* GrowableBitSet.new_init(&self, usz initial_capacity = 1, Allocator allocator = mem)
 ```
 ```c3
 fn void GrowableBitSet.set(&self, usz i)
@@ -1218,7 +1218,7 @@ fn Type? LinkedList.last(&self)
 fn usz LinkedList.len(&self) @inline
 ```
 ```c3
-fn LinkedList* LinkedList.new_init(&self, Allocator allocator = allocator::heap())
+fn LinkedList* LinkedList.new_init(&self, Allocator allocator = mem)
 ```
 ```c3
 macro Node* LinkedList.node_at_index(&self, usz index)
@@ -1315,7 +1315,7 @@ fn Type* List.get_ref(&self, usz index) @operator(&[]) @inline
 fn usz? List.index_of(&self, Type type) @if(ELEMENT_IS_EQUATABLE)
 ```
 ```c3
-fn void List.init_wrapping_array(&self, Type[] types, Allocator allocator = allocator::heap())
+fn void List.init_wrapping_array(&self, Type[] types, Allocator allocator = mem)
 ```
 ```c3
 fn void List.insert_at(&self, usz index, Type type)
@@ -1330,7 +1330,7 @@ fn Type? List.last(&self)
 fn usz List.len(&self) @operator(len) @inline
 ```
 ```c3
-fn List* List.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap())
+fn List* List.new_init(&self, usz initial_capacity = 16, Allocator allocator = mem)
 ```
 ```c3
 fn Type? List.pop(&self)
@@ -1402,10 +1402,10 @@ fn List* List.temp_init(&self, usz initial_capacity = 16)
 fn usz? List.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn Type[] List.to_new_array(&self, Allocator allocator = allocator::heap())
+fn Type[] List.to_new_array(&self, Allocator allocator = mem)
 ```
 ```c3
-fn String List.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String List.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn Type[] List.to_tarray(&self)
@@ -1457,7 +1457,7 @@ fn bool HashMap.is_empty(&map) @inline
 fn bool HashMap.is_initialized(&map)
 ```
 ```c3
-fn Key[] HashMap.key_new_list(&map, Allocator allocator = allocator::heap())
+fn Key[] HashMap.key_new_list(&map, Allocator allocator = mem)
 ```
 ```c3
 fn Key[] HashMap.key_tlist(&map)
@@ -1466,10 +1466,10 @@ fn Key[] HashMap.key_tlist(&map)
 fn usz HashMap.len(&map) @inline
 ```
 ```c3
-fn HashMap* HashMap.new_init(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR, Allocator allocator = allocator::heap())
+fn HashMap* HashMap.new_init(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, float load_factor = DEFAULT_LOAD_FACTOR, Allocator allocator = mem)
 ```
 ```c3
-fn HashMap* HashMap.new_init_from_map(&self, HashMap* other_map, Allocator allocator = allocator::heap())
+fn HashMap* HashMap.new_init_from_map(&self, HashMap* other_map, Allocator allocator = mem)
 ```
 ```c3
 fn void? HashMap.remove(&map, Key key) @maydiscard
@@ -1484,7 +1484,7 @@ fn HashMap* HashMap.temp_init(&self, uint capacity = DEFAULT_INITIAL_CAPACITY, f
 fn HashMap* HashMap.temp_init_from_map(&map, HashMap* other_map)
 ```
 ```c3
-fn Value[] HashMap.value_new_list(&map, Allocator allocator = allocator::heap())
+fn Value[] HashMap.value_new_list(&map, Allocator allocator = mem)
 ```
 ```c3
 fn Value[] HashMap.value_tlist(&map)
@@ -1704,7 +1704,7 @@ fn bool PrivatePriorityQueue.is_empty(&self)
 fn usz PrivatePriorityQueue.len(&self) @operator(len)
 ```
 ```c3
-fn void PrivatePriorityQueue.new_init(&self, usz initial_capacity = 16, Allocator allocator = allocator::heap()) @inline
+fn void PrivatePriorityQueue.new_init(&self, usz initial_capacity = 16, Allocator allocator = mem) @inline
 ```
 ```c3
 fn Type? PrivatePriorityQueue.pop(&self)
@@ -1719,7 +1719,7 @@ fn void PrivatePriorityQueue.temp_init(&self, usz initial_capacity = 16) @inline
 fn usz? PrivatePriorityQueue.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String PrivatePriorityQueue.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String PrivatePriorityQueue.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ### `std::collections::range {Type}`
 ```c3
@@ -1741,7 +1741,7 @@ fn usz ExclusiveRange.len(&self) @operator(len)
 fn usz? ExclusiveRange.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String ExclusiveRange.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String ExclusiveRange.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String ExclusiveRange.to_tstring(&self)
@@ -1759,7 +1759,7 @@ fn usz Range.len(&self) @operator(len)
 fn usz? Range.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String Range.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String Range.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String Range.to_tstring(&self)
@@ -1796,7 +1796,7 @@ struct Tuple
 ```
 ### `std::core::array`
 ```c3
-macro concat_new(arr1, arr2, Allocator allocator = allocator::heap())
+macro concat_new(arr1, arr2, Allocator allocator = mem)
 ```
 ```c3
 macro index_of(array, element)
@@ -2059,13 +2059,13 @@ fn void DString.clear(self)
 fn DString DString.copy(self, Allocator allocator = null)
 ```
 ```c3
-fn String DString.copy_str(self, Allocator allocator = allocator::heap())
+fn String DString.copy_str(self, Allocator allocator = mem)
 ```
 ```c3
-fn Char32[] DString.copy_utf32(&self, Allocator allocator = allocator::heap())
+fn Char32[] DString.copy_utf32(&self, Allocator allocator = mem)
 ```
 ```c3
-fn ZString DString.copy_zstr(self, Allocator allocator = allocator::heap())
+fn ZString DString.copy_zstr(self, Allocator allocator = mem)
 ```
 ```c3
 fn void DString.delete(&self, usz start, usz len = 1)
@@ -2089,10 +2089,10 @@ fn usz DString.len(&self) @dynamic
 fn bool DString.less(self, DString other_string)
 ```
 ```c3
-fn DString DString.new_concat(self, DString b, Allocator allocator = allocator::heap())
+fn DString DString.new_concat(self, DString b, Allocator allocator = mem)
 ```
 ```c3
-fn DString DString.new_init(&self, usz capacity = MIN_CAPACITY, Allocator allocator = allocator::heap())
+fn DString DString.new_init(&self, usz capacity = MIN_CAPACITY, Allocator allocator = mem)
 ```
 ```c3
 fn usz? DString.read_from_stream(&self, InStream reader)
@@ -2128,13 +2128,13 @@ fn void? DString.write_byte(&self, char c) @dynamic
 fn ZString DString.zstr_view(&self)
 ```
 ```c3
-fn DString new(String c = "", Allocator allocator = allocator::heap())
+fn DString new(String c = "", Allocator allocator = mem)
 ```
 ```c3
-fn DString new_join(String[] s, String joiner, Allocator allocator = allocator::heap())
+fn DString new_join(String[] s, String joiner, Allocator allocator = mem)
 ```
 ```c3
-fn DString new_with_capacity(usz capacity, Allocator allocator = allocator::heap())
+fn DString new_with_capacity(usz capacity, Allocator allocator = mem)
 ```
 ```c3
 fn DString tnew(String s = "")
@@ -2663,7 +2663,7 @@ struct TestContext
 struct TestUnit
 ```
 ```c3
-fn BenchmarkUnit[] benchmark_collection_create(Allocator allocator = allocator::heap())
+fn BenchmarkUnit[] benchmark_collection_create(Allocator allocator = mem)
 ```
 ```c3
 fn int cmp_test_unit(TestUnit a, TestUnit b)
@@ -2687,7 +2687,7 @@ fn void set_benchmark_max_iterations(uint value) @builtin
 fn void set_benchmark_warmup_iterations(uint value) @builtin
 ```
 ```c3
-fn TestUnit[] test_collection_create(Allocator allocator = allocator::heap())
+fn TestUnit[] test_collection_create(Allocator allocator = mem)
 ```
 ```c3
 fn void test_panic(String message, String file, String function, uint line)
@@ -2719,7 +2719,7 @@ fn String? Splitter.next(&self)
 fn void Splitter.reset(&self)
 ```
 ```c3
-fn String String.concat(s1, String s2, Allocator allocator = allocator::heap())
+fn String String.concat(s1, String s2, Allocator allocator = mem)
 ```
 ```c3
 fn bool String.contains(s, String needle)
@@ -2731,13 +2731,13 @@ fn void String.convert_ascii_to_lower(s)
 fn void String.convert_ascii_to_upper(s)
 ```
 ```c3
-fn String String.copy(s, Allocator allocator = allocator::heap())
+fn String String.copy(s, Allocator allocator = mem)
 ```
 ```c3
 fn bool String.ends_with(string, String needle)
 ```
 ```c3
-fn void String.free(&s, Allocator allocator = allocator::heap())
+fn void String.free(&s, Allocator allocator = mem)
 ```
 ```c3
 fn usz? String.index_of(s, String needle)
@@ -2749,10 +2749,10 @@ fn usz? String.index_of_char(s, char needle)
 fn StringIterator String.iterator(s)
 ```
 ```c3
-fn String String.new_ascii_to_lower(s, Allocator allocator = allocator::heap())
+fn String String.new_ascii_to_lower(s, Allocator allocator = mem)
 ```
 ```c3
-fn String String.new_ascii_to_upper(s, Allocator allocator = allocator::heap())
+fn String String.new_ascii_to_upper(s, Allocator allocator = mem)
 ```
 ```c3
 fn usz? String.rindex_of(s, String needle)
@@ -2761,7 +2761,7 @@ fn usz? String.rindex_of(s, String needle)
 fn usz? String.rindex_of_char(s, char needle)
 ```
 ```c3
-fn String[] String.split(s, String needle, usz max = 0, Allocator allocator = allocator::heap())
+fn String[] String.split(s, String needle, usz max = 0, Allocator allocator = mem)
 ```
 ```c3
 fn Splitter String.splitter(self, String split)
@@ -2782,7 +2782,7 @@ fn String String.tconcat(s1, String s2)
 fn String String.tcopy(s)
 ```
 ```c3
-fn String String.temp_ascii_to_lower(s, Allocator allocator = allocator::heap())
+fn String String.temp_ascii_to_lower(s, Allocator allocator = mem)
 ```
 ```c3
 fn String String.temp_ascii_to_upper(s)
@@ -2809,13 +2809,13 @@ macro String.to_integer(string, $Type, int base = 10)
 fn long? String.to_long(s, int base = 10)
 ```
 ```c3
-fn Char16[]? String.to_new_utf16(s, Allocator allocator = allocator::heap())
+fn Char16[]? String.to_new_utf16(s, Allocator allocator = mem)
 ```
 ```c3
-fn Char32[]? String.to_new_utf32(s, Allocator allocator = allocator::heap())
+fn Char32[]? String.to_new_utf32(s, Allocator allocator = mem)
 ```
 ```c3
-fn WString? String.to_new_wstring(s, Allocator allocator = allocator::heap())
+fn WString? String.to_new_wstring(s, Allocator allocator = mem)
 ```
 ```c3
 fn short? String.to_short(s, int base = 10)
@@ -2854,7 +2854,7 @@ fn String[] String.tsplit(s, String needle, usz max = 0)
 fn usz String.utf8_codepoints(s)
 ```
 ```c3
-fn ZString String.zstr_copy(s, Allocator allocator = allocator::heap())
+fn ZString String.zstr_copy(s, Allocator allocator = mem)
 ```
 ```c3
 fn ZString String.zstr_tcopy(s)
@@ -2863,7 +2863,7 @@ fn ZString String.zstr_tcopy(s)
 fn usz ZString.char_len(str)
 ```
 ```c3
-fn String ZString.copy(z, Allocator allocator = allocator::temp())
+fn String ZString.copy(z, Allocator allocator = tmem)
 ```
 ```c3
 fn usz ZString.len(str)
@@ -2884,19 +2884,19 @@ macro double? decfloat(char[] chars, int $bits, int $emin, int sign)
 macro double? hexfloat(char[] chars, int $bits, int $emin, int sign)
 ```
 ```c3
-fn String join_new(String[] s, String joiner, Allocator allocator = allocator::heap())
+fn String join_new(String[] s, String joiner, Allocator allocator = mem)
 ```
 ```c3
-macro String new_format(String fmt, ..., Allocator allocator = allocator::heap())
+macro String new_format(String fmt, ..., Allocator allocator = mem)
 ```
 ```c3
-fn String? new_from_utf16(Char16[] utf16, Allocator allocator = allocator::heap())
+fn String? new_from_utf16(Char16[] utf16, Allocator allocator = mem)
 ```
 ```c3
-fn String? new_from_utf32(Char32[] utf32, Allocator allocator = allocator::heap())
+fn String? new_from_utf32(Char32[] utf32, Allocator allocator = mem)
 ```
 ```c3
-fn String? new_from_wstring(WString wstring, Allocator allocator = allocator::heap())
+fn String? new_from_wstring(WString wstring, Allocator allocator = mem)
 ```
 ```c3
 fn String? temp_from_utf16(Char16[] utf16)
@@ -3149,10 +3149,10 @@ macro CsvReader.@each_row(self, int rows = int.max; @body(String[] row))
 fn void CsvReader.init(&self, InStream stream, String separator = ",")
 ```
 ```c3
-fn String[]? CsvReader.read_new_row(self, Allocator allocator = allocator::heap())
+fn String[]? CsvReader.read_new_row(self, Allocator allocator = mem)
 ```
 ```c3
-fn String[]? CsvReader.read_new_row_with_allocator(self, Allocator allocator = allocator::heap())
+fn String[]? CsvReader.read_new_row_with_allocator(self, Allocator allocator = mem)
 ```
 ```c3
 fn String[]? CsvReader.read_temp_row(self)
@@ -3168,7 +3168,7 @@ fault JsonParsingError
 fn JsonTokenType? lex_string(JsonContext* context)
 ```
 ```c3
-fn Object*? parse(InStream s, Allocator allocator = allocator::heap())
+fn Object*? parse(InStream s, Allocator allocator = mem)
 ```
 ### `std::hash::adler32`
 ```c3
@@ -3379,7 +3379,7 @@ fn void? ByteBuffer.grow(&self, usz n)
 fn ByteBuffer*? ByteBuffer.init_with_buffer(&self, char[] buf)
 ```
 ```c3
-fn ByteBuffer*? ByteBuffer.new_init(&self, usz max_read, usz initial_capacity = 16, Allocator allocator = allocator::heap())
+fn ByteBuffer*? ByteBuffer.new_init(&self, usz max_read, usz initial_capacity = 16, Allocator allocator = mem)
 ```
 ```c3
 fn void? ByteBuffer.pushback_byte(&self) @dynamic
@@ -3439,7 +3439,7 @@ fn void? ByteWriter.ensure_capacity(&self, usz len) @inline
 fn ByteWriter* ByteWriter.init_with_buffer(&self, char[] data)
 ```
 ```c3
-fn ByteWriter* ByteWriter.new_init(&self, Allocator allocator = allocator::heap())
+fn ByteWriter* ByteWriter.new_init(&self, Allocator allocator = mem)
 ```
 ```c3
 fn usz? ByteWriter.read_from(&self, InStream reader) @dynamic
@@ -3679,7 +3679,7 @@ fn bool is_file(String path)
 fn char[]? load_buffer(String filename, char[] buffer)
 ```
 ```c3
-fn char[]? load_new(String filename, Allocator allocator = allocator::heap())
+fn char[]? load_new(String filename, Allocator allocator = mem)
 ```
 ```c3
 fn char[]? load_temp(String filename)
@@ -3692,7 +3692,7 @@ fn File? open_path(Path path, String mode)
 ```
 ### `std::io::os`
 ```c3
-macro String? getcwd(Allocator allocator = allocator::heap())
+macro String? getcwd(Allocator allocator = mem)
 ```
 ```c3
 macro void? native_chdir(Path path)
@@ -3747,10 +3747,10 @@ fn usz? native_fwrite(CFile file, char[] buffer) @inline
 fn void? native_remove(String filename)
 ```
 ```c3
-fn Path? native_temp_directory(Allocator allocator = allocator::heap()) @if(!env::WIN32)
+fn Path? native_temp_directory(Allocator allocator = mem) @if(!env::WIN32)
 ```
 ```c3
-fn Path? native_temp_directory(Allocator allocator = allocator::heap()) @if(env::WIN32)
+fn Path? native_temp_directory(Allocator allocator = mem) @if(env::WIN32)
 ```
 ### `std::io::os @if(env::NO_LIBC)`
 ```c3
@@ -3775,7 +3775,7 @@ fn usz? native_fwrite(CFile file, char[] buffer) @inline
 fn void? native_remove(String filename) @inline
 ```
 ```c3
-macro Path? native_temp_directory(Allocator allocator = allocator::heap())
+macro Path? native_temp_directory(Allocator allocator = mem)
 ```
 ### `std::io::os @if(env::POSIX)`
 ```c3
@@ -3805,10 +3805,10 @@ fault PathResult
 struct Path (Printable)
 ```
 ```c3
-fn Path? Path.absolute(self, Allocator allocator = allocator::heap())
+fn Path? Path.absolute(self, Allocator allocator = mem)
 ```
 ```c3
-fn Path? Path.append(self, String filename, Allocator allocator = allocator::heap())
+fn Path? Path.append(self, String filename, Allocator allocator = mem)
 ```
 ```c3
 fn ZString Path.as_zstr(self)
@@ -3850,7 +3850,7 @@ fn Path? Path.tappend(self, String filename)
 fn usz? Path.to_format(&self, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String Path.to_new_string(&self, Allocator allocator = allocator::heap()) @dynamic
+fn String Path.to_new_string(&self, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn String Path.volume_name(self)
@@ -3871,7 +3871,7 @@ fn bool exists(Path path)
 fn usz? file_size(Path path)
 ```
 ```c3
-fn Path? getcwd(Allocator allocator = allocator::heap())
+fn Path? getcwd(Allocator allocator = mem)
 ```
 ```c3
 fn bool is_dir(Path path)
@@ -3895,22 +3895,22 @@ macro bool is_separator(char c, PathEnv path_env = DEFAULT_PATH_ENV)
 macro bool is_win32_separator(char c)
 ```
 ```c3
-fn PathList? ls(Path dir, bool no_dirs = false, bool no_symlinks = false, String mask = "", Allocator allocator = allocator::heap())
+fn PathList? ls(Path dir, bool no_dirs = false, bool no_symlinks = false, String mask = "", Allocator allocator = mem)
 ```
 ```c3
 fn bool? mkdir(Path path, bool recursive = false, MkdirPermissions permissions = NORMAL)
 ```
 ```c3
-fn Path? new(String path, Allocator allocator = allocator::heap(), PathEnv path_env = DEFAULT_PATH_ENV)
+fn Path? new(String path, Allocator allocator = mem, PathEnv path_env = DEFAULT_PATH_ENV)
 ```
 ```c3
-fn Path? new_posix(String path, Allocator allocator = allocator::heap())
+fn Path? new_posix(String path, Allocator allocator = mem)
 ```
 ```c3
-fn Path? new_win32_wstring(WString path, Allocator allocator = allocator::heap())
+fn Path? new_win32_wstring(WString path, Allocator allocator = mem)
 ```
 ```c3
-fn Path? new_windows(String path, Allocator allocator = allocator::heap())
+fn Path? new_windows(String path, Allocator allocator = mem)
 ```
 ```c3
 fn String? normalize(String path_str, PathEnv path_env = DEFAULT_PATH_ENV)
@@ -3922,7 +3922,7 @@ fn bool? rmdir(Path path)
 fn void? rmtree(Path path)
 ```
 ```c3
-fn Path? temp_directory(Allocator allocator = allocator::heap())
+fn Path? temp_directory(Allocator allocator = mem)
 ```
 ```c3
 fn Path? tnew(String path, PathEnv path_env = DEFAULT_PATH_ENV)
@@ -6332,13 +6332,13 @@ fn bool InetAddress.is_site_local(InetAddress* addr)
 fn usz? InetAddress.to_format(InetAddress* addr, Formatter* formatter) @dynamic
 ```
 ```c3
-fn String InetAddress.to_new_string(InetAddress* addr, Allocator allocator = allocator::heap()) @dynamic
+fn String InetAddress.to_new_string(InetAddress* addr, Allocator allocator = mem) @dynamic
 ```
 ```c3
 fn AddrInfo*? addrinfo(String host, uint port, AIFamily ai_family, AISockType ai_socktype) @if(os::SUPPORTS_INET)
 ```
 ```c3
-fn String? int_to_new_ipv4(uint val, Allocator allocator = allocator::heap())
+fn String? int_to_new_ipv4(uint val, Allocator allocator = mem)
 ```
 ```c3
 fn String? int_to_temp_ipv4(uint val)
@@ -6593,16 +6593,16 @@ fn BacktraceList? symbolize_backtrace(void*[] backtrace, Allocator allocator)
 fn bool clear_var(String name)
 ```
 ```c3
-fn String? executable_path(Allocator allocator = allocator::heap())
+fn String? executable_path(Allocator allocator = mem)
 ```
 ```c3
-fn Path? get_config_dir(Allocator allocator = allocator::heap())
+fn Path? get_config_dir(Allocator allocator = mem)
 ```
 ```c3
-fn String? get_home_dir(Allocator using = allocator::heap())
+fn String? get_home_dir(Allocator using = mem)
 ```
 ```c3
-fn String? get_var(String name, Allocator allocator = allocator::heap())
+fn String? get_var(String name, Allocator allocator = mem)
 ```
 ```c3
 fn String? get_var_temp(String name)
@@ -6704,7 +6704,7 @@ macro bool Selector.equals(Selector a, Selector b)
 macro Class? class_by_name(ZString c)
 ```
 ```c3
-macro Class[] class_get_list(Allocator allocator = allocator::heap())
+macro Class[] class_get_list(Allocator allocator = mem)
 ```
 ### `std::os::posix @if(env::POSIX)`
 ```c3
