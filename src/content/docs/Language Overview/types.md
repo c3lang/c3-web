@@ -863,7 +863,7 @@ fn void test()
 {
     Foo f;
     f.a = 2;
-    char x = (char)f;
+
     io::printfn("%d", (char)f); // prints 2
     f.b = 1;
     io::printfn("%d", (char)f); // prints 18
