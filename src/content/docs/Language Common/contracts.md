@@ -181,4 +181,4 @@ A C3 compiler may have different levels of contract use:
 | 3     | `@require` is added at caller side as well                                                                                                   |
 | 4     | Static analysis is extended beyond compile time folding |
 
-The c3c compiler is currently does level 3 checking.
+The c3c compiler currently does level 3 checking.
