@@ -676,35 +676,55 @@ fn State read_enum()
 }
 ```
 
-### Enum conversions using "inline"
+### Const enums
 
-It is possible to make an enum implicitly convert to its ordinal
-value or one of its associated values using `inline`:
+When interfacing with C code, you may encounter enums that are not sequential.
+For situations like this, you can use a const enum:
 
 ```c3
-enum MyEnum : char (inline String s)
-{
-    FOO = "Hello",
-    BAR = "C3"
-}
+extern fn KeyCode get_key_code();
 
-enum OtherEnum : inline int
+enum KeyCode : const CInt
 {
-    ABC,
-    DEF,
-    GHI
+    UNKNOWN = 0,
+    RETURN = 13,
+    ESCAPE = 27,
+    BACKSPACE = 8,
+    TAB = 9,
+    SPACE = 32,
+    EXCLAIM, // automatically incremented to 33
+    QUOTEDBL,
+    HASH,
 }
 
 fn void main()
 {
-    String a = MyEnum.FOO; // Same as MyEnum.FOO.s due to inline
-    String b = MyEnum.BAR;
-    io::printfn("%s %s!", a, b); // Print "Hello C3!"
-    int x = OtherEnum.GHI; // Assigns the value 2 to x.
+    int a = (int) KeyCode.SPACE; // assigns 32 to a
+    KeyCode b = 2; // const enums behave like typedef and will not enforce that every value has been declared beforehand
+    KeyCode key = get_key_code(); // can safely interact with a C function that returns the same enum
 }
 ```
 
-An enum may only declare *one* `inline` parameter.
+If you need a const enum to be converted to its assigned value without using a cast, `inline` can be used:
+```c3
+enum ConstInline : const inline String
+{
+    A = "Hello",
+    B = "World",
+}
+
+fn void main()
+{
+    String a = ConstInline.A; // implicitly converted to string due to inline
+    ConstInline b = B;
+    String b_str = b;
+
+    io::printfn("%s, %s!", a, b_str); // Prints "Hello, World!"
+}
+
+```
+
+Const enums *cannot* have associated values and do not have the `nameof` property at runtime.
 
 ### Enum type properties
 
