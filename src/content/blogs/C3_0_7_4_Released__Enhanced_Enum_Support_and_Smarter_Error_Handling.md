@@ -1,6 +1,6 @@
 ---
 title: "C3 0.7.4 Released: Enhanced Enum Support and Smarter Error Handling"
-date: 2025-01-08
+date: 2025-08-01
 author: "Christoffer Lernö"
 ---
 
