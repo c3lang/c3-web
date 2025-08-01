@@ -201,7 +201,7 @@ fn void update_old()
 }
 fn void update_new()
 {
-    (void)@try(my_global, temp);
+    (void)@try(my_global, foo());
 }
 ```
 
