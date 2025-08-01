@@ -43,6 +43,7 @@ C3 0.7.4 focuses heavily on improving the developer experience:
 - **Smarter output directories**: Projects now output to `out` by default, with temp folders used for command-line builds
 - **Absolute path support**: `$embed` now accepts absolute paths
 - **Math library auto-linking**: libc math functions are now only linked when math functions are used.
+- **Author field improvements**: The project `authors` field can now be accessed using `env::AUTHORS` and `env::AUTHOR_EMAILS`.
 
 ## Performance and Memory Management
 ### Hash Function Additions
