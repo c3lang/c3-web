@@ -4,8 +4,6 @@ date: 2025-07-29
 author: "Christoffer Lernö"
 ---
 
-# C3 0.7.4 – enum updates and more
-
 C3 version 0.7.4 brings a substantial set of improvements focused on better enum support, enhanced error handling, improved debugging capabilities, and numerous quality-of-life improvements. Here's a comprehensive look at what's new.
 
 ## Major Language Features
