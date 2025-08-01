@@ -29,7 +29,7 @@ Several compile-time features have been enhanced:
 
 ## Developer Experience Enhancements
 ### Better Error Messages and Debugging
-C3 0.7.4 focuses heavily on improving the developer experience:
+C3 0.7.4 continues the focus on improving the developer experience:
 - **Improved error messages**: Better reporting for missing enum qualifiers, struct initialization errors, and unsigned-to-signed conversion issues
 - **Common mistake detection**: The compiler now catches accidental `foo == BAR;` where `foo = BAR;` was likely intended
 - **Enhanced debugging output**: Added `--echo-prefix` for customizing `$echo` statement prefixes with `{FILE}` and `{LINE}` support
