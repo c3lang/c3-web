@@ -4,7 +4,7 @@ date: 2025-01-08
 author: "Christoffer Lernö"
 ---
 
-C3 version 0.7.4 brings a substantial set of improvements focused on better enum support, enhanced error handling, improved debugging capabilities, and numerous quality-of-life improvements. Here's a comprehensive look at what's new.
+C3 version 0.7.4 brings a substantial set of improvements focused on better enum support, enhanced error handling, improved debugging capabilities, and numerous quality-of-life improvements. And we're now also releasing binaries for OpenBSD! Here's a comprehensive look at what's new.
 
 ## Major Language Features
 
@@ -135,6 +135,103 @@ fn void main()
 The cost we pay for this is that we cannot get the ordinal, nor the name, so neither `Greeting.YO.nameof` nor `Greeting.YO.ordinal` will work.
 :::
 
+## The new @try and @try_catch
+
+Usually in C3, implicit unwrapping is used to convert an Optional to a normal value:
+
+```c3
+fn void test1()
+{
+    int? f = foo();
+    if (catch err = f)
+    {
+        /* do something */
+        return;
+    }
+    /* f is unwrapped here */
+}
+```
+
+However, sometimes the assignment may involve an already existing value, in which case we need a temporary:
+
+```c3
+fn void test2_old()
+{
+    int f = abc();
+    while (some_condition())
+    {
+        /* use f */
+        // f = foo(); <- we can't do this
+        int? temp = foo();
+        if (catch err = temp)
+        {
+            /* do something */
+            return;
+        }
+        f = temp;
+        /* continue */
+    }
+}
+```
+
+Having to introduce the `temp` variable isn't always ideal, and this is where `@try` comes in. It conditionally sets a variable if the value isn't Empty and otherwise returns the error. This allows us to rewrite the code without a temporary like this:
+
+```c3
+fn void test2_new()
+{
+    int f = abc();
+    while (some_condition())
+    {
+        /* use f */
+        if (catch err = @try(f, foo()))
+        {
+            /* do something */
+            return;
+        }
+        /* continue */
+    }
+}
+```
+
+Another situation is when you only want to change a value if it's a non-Empty, it can also be improved:
+```c3
+fn void update_old()
+{
+    if (try temp = foo()) my_global = temp;
+}
+fn void update_new()
+{
+    (void)@try(my_global, temp);
+}
+```
+
+The `@try_catch` works similar to `@try` but is useful when you have one *expected* fault and the other faults should be rethrown. It will also conditionally set a variable, but will return a `bool?` which is false when the variable is set, true if the expected fault is caught, or an Empty otherwise.
+
+```c3
+fn void? test3_old()
+{
+    while (true)
+    {
+        String? s = next_string();
+        if (catch err = s)
+        {
+            if (err == io::EOF) break;
+            return err?;
+        }
+        use_string(s);
+    }
+}
+
+fn void? test3_new()
+{
+    while (true)
+    {
+        String s;
+        if (@try_catch(s, next_string(), io::EOF)!) break;
+        use_string(s);
+    }
+}
+```
 
 ## TLDR;
 
