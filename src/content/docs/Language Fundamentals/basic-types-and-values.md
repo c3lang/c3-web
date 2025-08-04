@@ -231,7 +231,7 @@ String bar = "\"Say `hello`\"";
 
 ## Base64 and hex data literals
 
-Base64 literals are strings prefixed with `b64` to containing
+Base64 literals are strings prefixed with `b64` containing
 [Base64 encoded](https://en.wikipedia.org/wiki/Base64) data, which
 is converted into a char array at compile time:
 
