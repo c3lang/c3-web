@@ -122,8 +122,8 @@ constant array of bytes:
 char[*] my_image = $embed("my_image.png");
 ```
 
-The result of an embed work similar to a string literal and can implicitly convert to a `char*`,
-`void*`, `char[]`, `char[*]` and `String`.
+The result of an embed works similar to a string literal and may implicitly convert to a `char*`,
+`void*`, `char[]`, `char[*]` or `String`.
 
 ##### Limiting length
 
