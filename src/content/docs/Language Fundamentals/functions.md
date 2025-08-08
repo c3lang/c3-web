@@ -355,7 +355,7 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 
 ### Guidelines on method use
 
-Methods are customary associated with Object-Oriented programming.
+Methods are customarily associated with object-oriented programming.
 In this style one will often encounter code like `some_object.run_everythin()`.
 C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
 Both the standard library and the design of the language instead follows
