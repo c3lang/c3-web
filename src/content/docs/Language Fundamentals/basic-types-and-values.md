@@ -11,7 +11,7 @@ expands on this set by adding slices and vectors, as well as the `any` and `type
 ## Integers
 
 C3 has signed and unsigned integer types. The built-in signed integer types are `ichar`, `short`, `int`, `long`,
-`int128`, `iptr` and `isz`. `ichar` to `int128` have all well-defined power-of-two bit sizes, whereas `iptr`
+`int128`, `iptr` and `isz`. `ichar` to `int128` have well-defined power-of-two bit sizes, whereas `iptr`
 has the same number of bits as a `void*` and `isz` has the same number of bits as the maximum difference
 between two pointers. For each signed integer type there is a corresponding unsigned integer type: `char`,
 `ushort`, `uint`, `ulong`, `uint128`, `uptr` and `usz`.
@@ -42,7 +42,7 @@ Numeric constants typically use decimal, e.g. `234`, but may also use hexadecima
 the number with `0x` or `0X`, e.g. `int a = 0x42edaa02;`. There is also octal (base 8) using the
 `0o` or `0O` prefix, and `0b` for binary (base 2) numbers:
 
-Numbers may also insert underscore `_` between digits to improve readability, e.g. `1_000_000`.
+Numbers may also insert underscores (`_`) between digits to improve readability, e.g. `1_000_000`.
 
 ```c3
 a = -2_000;
@@ -56,14 +56,13 @@ For decimal numbers, the value is assumed to be a signed `int`, unless the numbe
 For hexadecimal, octal and binary, the type is assumed to be unsigned.
 
 A integer literal can *implicitly* convert to a floating point literal, or an integer of
-a different type provided the number fits in the type.
+a different type, provided the number fits in the target type.
 
-### Constant suffixes
+### Integer constant suffixes
 
-If you want to ensure that a constant is of a certain type, you can either add an explicit cast
-like: `(ushort)345`, or use an integer suffix: `345u16`.
+If you want to ensure that a integer constant is of a certain type, you can add an explicit cast, like `(ushort)345`.
 
-The following integer suffixes are available:
+Integer suffixes are also technically available (e.g. `345u16`), but are now **deprecated** in favor of just prefixing each integer with an equivalent type cast, such as `(ichar)1` instead of `1i8`. Nonetheless, here is the old table of deprecated integer suffixes:
 
 | suffix |    type |
 |--------|--------:|
@@ -81,10 +80,14 @@ The following integer suffixes are available:
 
 Note how `uint` also has the `u` suffix.
 
+The use of type casts instead of these deprecated numeric suffixes results in better readability because the numeric suffixes create more visual noise when reading the numbers compared to type cast syntax.
+
+There are "experimental" `LL` and `ULL` suffixes for `int128` and `uint128` that have been added recently though.
+
 ## Booleans
 
 A `bool` will be either `true` or `false`. Although a bool is only a single bit of data,
-it should be noted that it is stored in a byte.
+it should be noted that it is stored in a byte. (Note that a byte contains 8 bits on almost all modern computers, though this is not a physical necessity and computers with unusual bit widths have existed, especially historically and for special purposes.)
 
 ```c
 bool b = true;
@@ -106,30 +109,36 @@ of the target.
 - 8 character literals, e.g. `'FOOBAR11'` converts to an ulong.
 
 The 4 character literals correspond to the layout of [FourCC](https://en.wikipedia.org/wiki/FourCC)
-codes. It will also correctly arrange unicode characters in memory. E.g. `Char32 smiley = '\u1F603'`
+codes. This means that you can store tiny fixed-width pseudo-strings in single integers, among other things. It will also correctly arrange unicode characters in memory. E.g. `Char32 smiley = '\u1F603'`
 
 ## Floating point types
 
 As is common, C3 has two floating point types: `float` and `double`. `float` is the 32 bit floating
 point type and `double` is 64 bits.
 
+A 16 bit floating point type named `float16` may also be available on some systems.
+
 ### Floating point constants
 
-Floating point constants will *at least* use 64 bit precision.
-Just like for integer constants, it is possible to use `_` to improve
-readability, but it may not occur immediately before or after a dot or an exponential.
+Just like for integer constants, it is possible to use `_` to improve the
+readability of floating point constants, but it may not occur immediately before or after a dot or an exponential.
 
 C3 supports floating points values either written in decimal or hexadecimal formats.
-For decimal, the exponential symbol is e (or E, both are acceptable),
-for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
+For decimal, the exponential symbol is `e` (or `E`, both are acceptable),
+for hexadecimal `p` (or `P`) is used: `-2.22e-21` `-0x21.93p-10`
 
-While floating point numbers default to `double` it is possible to type a
-floating point by adding a suffix:
+While floating point numbers default to `double` (64 bits of precision) it is also possible to type a floating point number by adding a suffix in a literal:
 
-| Suffix           | type       |
-| ---------------- | ----------:|
-| `f32` *or* `f`   | `float`    |
-| `f64`            | `double`   |
+| Suffix             | type       |
+| ------------------ | ----------:|
+| `f`                | `float`    |
+| `d`                | `double`   |
+| `f32` (deprecated) | `float`    |
+| `f64` (deprecated) | `double`   |
+
+Numeric-style prefixes such as `f32` and `f64` have been deprecated for the sake of readability, much like the similar integer suffixes discussed earlier.
+
+Notice though that unlike most of the integer types, suffixes for floating point types still exist that are *not* deprecated (e.g. `f` and `d`, as above).
 
 ## Arrays
 
@@ -161,7 +170,7 @@ int[] slice = &abc;       // A slice pointing to abc with length 3
 ```
 
 Because indexing into slices is range checked in safe mode, slices are vastly more safe
-providing pointer + length separately.
+than providing pointer + length separately.
 
 The internal representation of a slice is a two element struct:
 ```c3
@@ -175,9 +184,8 @@ This definition can be found in the module `std::core::runtime`.
 
 ## Vectors
 
-[Vectors](/language-common/vectors/) similar to arrays, use the format
-`Type[<size>]`, with the restriction that vectors may only form out
-of integers, floats and booleans. Similar to arrays, wildcard can be
+[Vectors](/language-common/vectors/) are similar to arrays and are declared using the format `Type[<size>]`, but with the restriction that vectors may only form out
+of integers, floats and booleans. Similar to arrays, wildcards can be
 used to infer the size of a vector:
 
 ```c3
@@ -185,7 +193,7 @@ int[<*>] a = { 1, 2 };
 ```
 
 Vectors are based on hardware SIMD vectors, and supports many different operations that work
-on all elements in parallel, including arithmetics:
+on all elements in parallel, including arithmetic operators:
 
 ```c3
 int[<2>] b = { 3, 8 };
@@ -193,7 +201,7 @@ int[<2>] c = { 7, 2 };
 int[<2>] d = b * c;    // d is { 21, 16 }
 ```
 
-Vector initialization and literals work the same way as arrays, using `{ ... }`
+Vector initialization and literals work the same way as arrays, using `{ ... }`.
 
 ## String literals
 
@@ -312,9 +320,7 @@ fn void main()
 ```
 
 We can apply the [standard printf formatting rules](https://en.cppreference.com/w/c/io/fprintf), but
-unlike in C/C++ there is no need to indicate the type when using `%d` - it will print unsigned and
-signed up to `int128`, in fact there is no support for `%u`, `%lld` etc in `io::printf`. Furthermore,
-`%s` works not just on strings but on any type:
+unlike in C/C++ there is no need to indicate the type when using `%d` &mdash; it will print unsigned and signed up to `int128`. In fact, there is no support for `%u`, `%lld` etc in `io::printf`. Furthermore, `%s` works not just on strings but on any type:
 
 ```c3
 import std::io;
