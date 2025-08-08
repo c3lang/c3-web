@@ -360,7 +360,7 @@ In this style one will often encounter code like `some_object.run_everything()`.
 C3 is not accommodating to this style; instead one should prefer `task::run_everything(some_object)`.
 Both the standard library and the design of the language instead follows
 the principle that functions are used whenever the system is mutating
-global data, whereas methods are used for mutating a particular value, or
+global data, whereas methods are used for mutating a particular value or
 extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`
 are all good uses of methods. On the flip side, methods usage like
 `context.parse_data(data)`, `game.run(settings)` and `url.make_request()`
