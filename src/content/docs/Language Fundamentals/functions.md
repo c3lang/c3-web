@@ -362,9 +362,9 @@ Both the standard library and the design of the language instead follows
 the principle that functions are used whenever the system is mutating
 global data, whereas methods are used for mutating a particular value or
 extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`
-are all good uses of methods. On the flip side, methods usage like
-`context.parse_data(data)`, `game.run(settings)` and `url.make_request()`
-are emphatically *not* recommended.
+are all good uses of methods. On the flip side, method usage like
+`context.parse_data(data)`, `game.run(settings)` or `url.make_request()`
+is emphatically *not* recommended.
 
 ## Contracts
 
