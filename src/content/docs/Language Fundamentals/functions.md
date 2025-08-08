@@ -90,7 +90,7 @@ fn void test()
 }
 ```
 
-#### Vaargs
+#### Variable argument lists (vaargs)
 
 There are four types of vaargs:
 
