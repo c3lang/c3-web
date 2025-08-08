@@ -34,7 +34,7 @@ module bar;
 /* ... */
 ```
 
-Here `file_a.c3` and `file_b.c3` belong to the same module, **foo** while `file_c.c3` belongs to to **bar**.
+Here `file_a.c3` and `file_b.c3` belong to the same module, **foo**, while `file_c.c3` belongs to module **bar**.
 
 ## Details
 
