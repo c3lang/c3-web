@@ -357,7 +357,7 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 
 Methods are customarily associated with object-oriented programming.
 In this style one will often encounter code like `some_object.run_everything()`.
-C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
+C3 is not accommodating to this style; instead one should prefer `task::run_everything(some_object)`.
 Both the standard library and the design of the language instead follows
 the principle that functions are used whenever the system is mutating
 global data, whereas methods are used for mutating a particular value, or
