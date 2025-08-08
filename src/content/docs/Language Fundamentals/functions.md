@@ -285,7 +285,7 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with the type name and is (usually)
+Methods look exactly like functions, but are prefixed with the type name and are (usually)
 invoked using dot syntax:
 
 ```c3
