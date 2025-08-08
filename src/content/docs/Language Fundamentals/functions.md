@@ -239,7 +239,7 @@ if all Optional values contain a *result*, otherwise the first Excuse found is r
 ```c3
 fn void test()
 {
-    // The following line is either prints a value less than 0.2
+    // The following line either prints a value less than 0.2
     // or does not print at all. The (void) is needed
     // to let the compiler know we're deliberately
     // ignoring the Optional result.
