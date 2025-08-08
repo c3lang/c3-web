@@ -37,7 +37,7 @@ faultdef OOPS, LOTS_OF_OOPS;
 
 ### Variables and parameters
 
-All variables and parameters *except for* global constant variables must start with a-z after any optional initial `_`. `___a` `fooBar` and `_test_` are all valid variable / parameter names. `_`, `_Bar`, `X` are not.
+All variables and parameters *except for* global constant variables must start with a-z after any optional initial `_`. `___a` `fooBar` and `_test_` are all valid variable or parameter names. `_`, `_Bar`, `X` are not.
 
 ```c3
 int theGlobal = 1;
