@@ -39,7 +39,7 @@ fn void test()
 }
 ```
 
-Named arguments
+Named arguments:
 
 ```c3
 fn void test_named(int times, double data)
