@@ -7,7 +7,7 @@ sidebar:
 
 C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools.
 
-As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
+As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number.
 
 ### Structs, unions, enums and faults
 
