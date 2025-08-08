@@ -11,7 +11,7 @@ As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initi
 
 ### Structs, unions, enums and faults
 
-All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
+All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid type names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
 
 ```c3
 struct Foo @extern("foo")
