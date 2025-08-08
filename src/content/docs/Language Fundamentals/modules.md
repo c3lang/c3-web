@@ -125,8 +125,7 @@ fn void open() @private { .. }
 
 In this example, the other modules can use the init() function after importing foo, but only files in the foo module can use open(), as it is specified as `private`.
 
-It's possible to further restrict visibility: `@local` works like `@private` except it's only visible in the
-local context.
+It's possible to further restrict visibility: `@local` works like `@private` except it's only visible in the local context, meaning in the current file if there's only one module per file or else the current module section if the originating file declares multiple different modules.
 
 ```c3
 // File foo.c3
