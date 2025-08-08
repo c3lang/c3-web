@@ -368,7 +368,7 @@ is emphatically *not* recommended.
 
 ## Contracts
 
-C3's error handling is not intended to use errors to signal invalid data or to check invariants and post conditions. Instead C3's approach is to add annotations to the function, that conditionally will be compiled into asserts.
+C3's error handling is not intended to use errors to signal invalid data or to check invariants and post conditions. Instead C3's approach is to add annotations to the function that conditionally will be compiled into asserts.
 
 As an example, the following code:
 
