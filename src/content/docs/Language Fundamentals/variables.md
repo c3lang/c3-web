@@ -21,3 +21,5 @@ AStruct baz @noinit; // baz is explicitly undefined
 
 Using a variable that is explicitly undefined before will trap or be initialized to a 
 specific value when compiling "safe" and is undefined behaviour in "fast" builds.
+
+To observe the effect of unintialized memory, try setting the optimization level to `-O2` or higher, such as via `c3c run -O5` in a project, and printing a `@noinit` variable's value.
