@@ -265,8 +265,7 @@ Printing values can be done using `io::print`, `io::printn`, `io::printf` and `i
 importing the module `std::io`.
 
 :::note
-The `n` variants of the print functions will add a newline after printing, which is what we'll often
-use in the examples, but `print` and `printf` work the same way.
+The `n` variants of the print functions will add a newline after printing, which is what we'll often use in the examples, but `print` and `printf` work the same way besides not printing a newline.
 
 :::
 
