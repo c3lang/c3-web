@@ -488,9 +488,9 @@ be called during abnormal shutdown.
 
 ### Changing priority of static initializers and finalizers
 
-It is possible to provide an argument to the attributes to set the actual priority. It is recommended
-that programs use a priority of 1024 or higher. The higher the value, the later it
-will be called. The lowest priority is 65535.
+It is possible to provide an argument to the attributes to set the actual priority. It is recommended that programs use a priority of 1024 or higher. The higher the priority, the later it will be called. The lowest priority is 65535.
+
+Functions annotated with smaller priority numbers are called *earlier* than those with larger priority numbers, not later. By analogy, priority numbers are like rankings in a contest; #1 is a higher rank than #10. Here is an illustrative example:
 
 ```c3
 // Print "Hello World" at startup.
