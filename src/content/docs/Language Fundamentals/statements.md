@@ -9,8 +9,7 @@ Statements largely work like in C, but with some additions.
 
 ## Labelled break and continue
 
-Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `if`, 
-`switch`, `while` and `do` statements.
+Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `if`, `switch`, `for`, `while` and `do` statements.
 
 ```c3
 fn void test(int i)
