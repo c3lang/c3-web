@@ -195,3 +195,5 @@ Signed integer overflow always wraps using 2s complement. It is never undefined 
 
 The old `0777` octal syntax is removed and replaced by a `0o` prefix, e.g. `0o777`. Strings do not support octal sequences aside
 from `'\0'`.
+
+This change was made because C's octal syntax looks too much like base 10 with leading zeros prepended (as is sometimes used outside of C to represent fixed-width base 10 numbers). Thus, removing such ambiguous octal syntax prevents a common source of subtle numerical errors in C.
