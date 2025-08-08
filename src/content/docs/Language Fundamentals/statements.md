@@ -85,7 +85,7 @@ switch MAIN: (enum_var)
 }
 ```
 
-Which can be used as structured `goto` when creating state machines.
+This can be used as structured `goto` when creating state machines.
 
 ## Switch cases with runtime evaluation
 
