@@ -191,7 +191,7 @@ happens after expression evaluation.
 
 Signed integer overflow always wraps using 2s complement. It is never undefined behaviour.
 
-##### Octal removed
+##### Misleading C-like octal syntax removed
 
 The old `0777` octal syntax is removed and replaced by a `0o` prefix, e.g. `0o777`. Strings do not support octal sequences aside
 from `'\0'`.
