@@ -222,7 +222,7 @@ function might either return an Optional with a result, or an Optional with an E
 For example this function might return an Excuse of type `SomeError` or `OtherResult`.
 
 ```c3
-faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
+faultdef BAD_LUCK_ERROR, BAD_JOSS_ERORR;
 
 fn double? test_error()
 {
