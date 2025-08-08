@@ -127,7 +127,7 @@ The result of an embed works similar to a string literal and may implicitly conv
 
 ##### Limiting length
 
-It's possible to limit the length of included with the optional second parameter.
+It's possible to limit the length included by providing an optional second parameter to `$embed`:
 
 ```c3
 char[4] my_data = $embed("foo.txt", 4);
