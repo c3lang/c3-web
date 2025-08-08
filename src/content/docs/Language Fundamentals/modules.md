@@ -187,8 +187,7 @@ fn void test()
 ## Changing The Default Visibility
 
 In a normal module, global declarations will be public by default. If some other
-visibility is desired, it's possible to declare `@private` or `@local` after the module name.
-It will affect all declaration in the same section.
+visibility is desired, it's possible to declare `@private` or `@local` after the module name. It will affect all declarations in the same section.
 
 ```c3
 module foo @private;
