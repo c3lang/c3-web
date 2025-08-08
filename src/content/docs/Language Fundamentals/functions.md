@@ -157,7 +157,7 @@ fn void main()
 }
 ```
 
-- Splat `...` any array anywhere
+- Splat `...` any array anywhere.
 
 ```c3
 fn void foo(int a, int b, int c)
@@ -172,7 +172,7 @@ fn void main()
 ```
 
 
-- Splat `...` known size slices anywhere
+- Splat `...` known size slices anywhere.
 
 ```c3
 fn void foo(int a, int b, int c)
