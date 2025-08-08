@@ -233,7 +233,7 @@ As a rule, functions, macros, constants, variables and types in the same module 
 
 1. Functions, macros, constants and variables require *at least* the (sub-) module name.
 2. Types do not require the module name unless the name is ambiguous.
-3. In case of ambiguity, only so many levels of module names are needed as to make the symbol unambiguous.
+3. In case of ambiguity, only as many levels of module names are needed as to make the symbol unambiguous.
 
 
 ```c3
