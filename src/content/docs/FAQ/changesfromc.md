@@ -54,8 +54,8 @@ C3 has three different array types. Variable arrays and slices decay to pointers
 
 ```c3
 int[3] a = { 1, 2, 3 };
-int[4]* b = &a; // No conversion
-int* c = a; // ERROR
+int[4]* b = &a; // ERROR: Implicitly casting 'int[3]*' to 'int[4]*' is not permitted.
+int* c = a; // ERROR: Cannot cast 'int[3]' to 'int*'.
 int* d = &a; // Valid implicit conversion
 int* e = b; // Valid implicit conversion
 int[3] f = a; // Copy by value!
@@ -112,7 +112,7 @@ the code is harder to understand as well. The replacements together with `defer`
 
 ##### Implicit break in switches
 
-Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed
+Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed.
 `nextcase` can also be used to jump to any other case statement in the switch.
 
 ```c3
