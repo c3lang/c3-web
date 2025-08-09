@@ -82,14 +82,16 @@ fn void example_foreach_by_ref(float[] values)
 ```c3
 fn void example_while()
 {
-    // again exactly the same as C
+    // C3's while-loops are very similar to C's.
     int a = 10;
     while (a > 0)
     {
         a--;
     }
 
-    // Declaration
+    // However, unlike C, C3 allows variable declarations 
+    // inside the condition, thus generalizing while-loops 
+    // to be similarly expressive of local scoping as for-loops.
     while (Point* p = getPoint())
     {
         // ..
@@ -97,9 +99,9 @@ fn void example_while()
 }
 ```
 
-## Enum And Switch
+## Enum and Switch
 
-Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
+Switches have implicit breaks and scopes, thus reducing accidental logical errors. However, you may use `nextcase` to explicitly fallthrough to the next case (or to a specific one) or you may list multiple case conditions next to each other for brevity:
 
 ```c3
 enum Height : uint
@@ -121,7 +123,7 @@ fn void demo_enum(Height h)
             io::printn("High");
     }
 
-    // This also works
+    // This also works:
     switch (h)
     {
         case LOW:
@@ -143,19 +145,19 @@ fn void demo_enum(Height h)
             break;
     }
 
-    // special checking of switching on enum types
+    // Special checking of switching on enum types:
     switch (h)
     {
         case LOW:
         case MEDIUM:
         case HIGH:
             break;
-        default:    // warning: default label in switch which covers all enumeration value
+        default:    // Default cases cover all remaining cases.
             break;
     }
 
-    // Using "nextcase" will fallthrough to the next case statement,
-    // and each case statement starts its own scope.
+    // Using `nextcase` will fallthrough to the next case statement,
+    // and each case statement has its own scope for declarations.
     switch (h)
     {
         case LOW:
