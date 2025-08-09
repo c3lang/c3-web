@@ -146,6 +146,8 @@ switch
 }
 ```
 
+The generalized form of `switch` that supports arbitrary conditionals (not just constants) only works when the controlling switch statement has the form `switch (true) { ... }` or `switch { ... }`. Otherwise, type errors will likely occur because the `switch` will assume each case must be a compile-time constant but arbitrary conditions often aren't.
+
 ## Jumptable switches with `@jump`
 
 Regular switch statements with only enum or integer cases may use the `@jump`
