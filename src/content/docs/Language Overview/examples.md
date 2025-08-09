@@ -542,7 +542,7 @@ fn int test2()
 }
 ```
 
-Improve macro errors with preconditions:
+Improve macro errors with preconditions, so that users are warned of misuse:
 ```c3
 <*
  @param x : "value to square"
