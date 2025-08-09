@@ -655,7 +655,13 @@ Read more about operator overloading [here](generic-programming/operator-overloa
 
 ## Generic Modules
 
-Generic modules implements a generic system.
+Generic modules make it easy to create reusable data structures that abstract over types and behavior, thus filling a similar role as type templates in C++ or generics in other languages. This is a very valuable tool for code reuse and library design.
+
+Unlike implementations of type generics in some other languages though, C3's generics are declared at the module level instead of the per object level, thereby arguably providing a more natural scope of abstraction for most systems, one that reduces conflation of data and behavior and accounts better for the fact that data types seldom operate in a vacuum.
+
+Keep in mind though that multiple modules can be defined in a single file, by simply writing `module module_name;` multiple times to create what are called "module sections" (which behave much the same as separate files would) and thus the per module abstraction is actually essentially just as expedient to work with as a per object system would be but with cleaner dependencies since each module manages its imports separately.
+
+Some usage examples follow:
 
 ```c3
 module stack {Type};
