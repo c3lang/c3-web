@@ -103,7 +103,7 @@ Integer types (except for `bool`) also have the following type properties:
 
 ### Integer arithmetics
 
-All signed integer arithmetics uses 2's complement.
+All signed integer arithmetic uses 2's complement.
 
 ## Integer constants
 
