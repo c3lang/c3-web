@@ -30,7 +30,7 @@ fn void if_example(int a)
 ```c3
 fn void example_for()
 {
-    // the for-loop is the same as C99.
+    // C3's for-loop is very similar to C99's for-loop.
     for (int i = 0; i < 10; i++)
     {
         io::printfn("%d", i);
