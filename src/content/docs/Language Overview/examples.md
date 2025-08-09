@@ -169,7 +169,7 @@ fn void demo_enum(Height h)
             io::printn("B");
             nextcase;
         case HIGH:
-            // a is not defined here
+            // `a` is not defined here.
             io::printn("C");
     }
 }
