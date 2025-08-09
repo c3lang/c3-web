@@ -29,12 +29,12 @@ This affects generated C headers, but little else.
 
 Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
-Instead of `volatile`, volatile loads and stores are used using `@volatile_load` and `@volatile_store`.
+Instead of `volatile`, volatile loads and stores are implemented using `@volatile_load` and `@volatile_store`.
 Restrictions on function parameter usage are implemented though parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-C's `typedef` has a slightly different syntax and renamed `alias`.
+C3's equivalent of C's `typedef` has a slightly different syntax in C3 and is renamed `alias`. In contrast, in C3 a *distinct* type is created when using C3's `typedef` keyword. As such, take care to not confuse C3's `alias` and `typedef` keywords relative to C.
 
-C3 also requires all function pointers to be used with a `alias`, for example:
+C3 also requires all function pointers to be used with an `alias`. For example:
 
 ```c3
 alias Callback = fn void();
