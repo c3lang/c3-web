@@ -17,11 +17,11 @@ fn void if_example(int a)
 {
     if (a > 0)
     {
-        // ..
+        // ...
     }
     else
     {
-        // ..
+        // ...
     }
 }
 ```
@@ -36,10 +36,21 @@ fn void example_for()
         io::printfn("%d", i);
     }
 
-    // also equal
+    // Just as in C, omission of a for-loop's 
+    // parameters creates an infinite loop.
     for (;;)
     {
-        // ..
+        // ...
+    }
+    
+    // However, unlike C, C3's for-loop supports 
+    // labeled `break` and `continue` instead of `goto`.
+    for OUTER_LOOP: (;;) {
+        for INNER_LOOP: (;;) 
+        {
+            // ...
+            break OUTER_LOOP;
+        }
     }
 }
 ```
