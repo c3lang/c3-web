@@ -360,7 +360,7 @@ fn void? test_may_fail()
 
 fn void main()
 {
-    // ratio is an optional result.
+    // `ratio` is an optional result.
     double? ratio = divide(foo(), bar());
 
     // Handle the optional result value if it exists.
