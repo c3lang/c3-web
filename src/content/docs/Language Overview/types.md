@@ -74,7 +74,7 @@ Integer types are either signed or unsigned.
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
-| `bool`\*    | 1        | no     |
+| `bool`&dagger;    | 1        | no     |
 | `ichar`     | 8        | yes    |
 | `char`      | 8        | no     |
 | `short`     | 16       | yes    |
@@ -85,13 +85,14 @@ Integer types are either signed or unsigned.
 | `ulong`     | 64       | no     |
 | `int128`    | 128      | yes    |
 | `uint128`   | 128      | no     |
-| `iptr`\*\*  | varies   | yes    |
-| `uptr`\*\*  | varies   | no     |
-| `isz`\*\*   | varies   | yes    |
-| `usz`\*\*   | varies   | no     |
+| `iptr`&Dagger;  | varies   | yes    |
+| `uptr`&Dagger;  | varies   | no     |
+| `isz`&Dagger;   | varies   | yes    |
+| `usz`&Dagger;   | varies   | no     |
 
-\* `bool` will be stored as a byte.
-\*\* size, pointer and pointer sized types depend on platform.
+&dagger;: `bool` will be stored as a byte.
+
+&Dagger;: Size, pointer and pointer-sized types depend on the target platform.
 
 ### Integer type properties
 
