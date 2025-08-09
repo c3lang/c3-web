@@ -66,7 +66,9 @@ are common to all C3 runtime types:
 
 # Basic types
 
-Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
+Basic types are divided into floating point types and integer types. 
+
+Integer types are either signed or unsigned.
 
 ## Integer types
 
