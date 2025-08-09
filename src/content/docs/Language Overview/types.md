@@ -96,7 +96,7 @@ Integer types are either signed or unsigned.
 
 ### Integer type properties
 
-Integer types, except for `bool` also has the following type properties:
+Integer types (except for `bool`) also have the following type properties:
 
 1. `max` The maximum value for the type.
 2. `min` The minimum value for the type.
