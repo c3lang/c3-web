@@ -8,8 +8,8 @@ sidebar:
 ## Overview
 This is intended for existing C programmers.
 
-This primer is intended as a guide to how the C syntax –
-and in some cases C semantics – is different in C3. It is intended to help you take a piece of C code and understand
+This primer is intended as a guide to how the C syntax &mdash;
+and in some cases C semantics &mdash; is different in C3. It is intended to help you take a piece of C code and understand
 how it can be converted manually to C3.
 
 ## Struct, Enum And Union Declarations
