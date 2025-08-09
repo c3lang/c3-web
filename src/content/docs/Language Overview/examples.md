@@ -178,7 +178,7 @@ fn void demo_enum(Height h)
 
 Enums are always namespaced.
 
-Enum support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
+Enums support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
 of enum values, `.inner` returns the storage type. `.names` returns an array with the names of all enums. `.associated`
 returns an array of the typeids of the associated values for the enum.
 
