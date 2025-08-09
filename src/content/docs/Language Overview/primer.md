@@ -473,8 +473,7 @@ bitstruct Foo : short
 }
 ```
 
-There exists a simplified form for a bitstruct containing only booleans,
-it is the same except the ranges are left out:
+There exists a simplified form for a bitstruct containing only booleans. It is the same except the ranges are left out:
 
 ```c3
 struct Flags : char
