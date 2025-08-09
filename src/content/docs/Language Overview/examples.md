@@ -772,7 +772,7 @@ Read more about dynamic calls [here](/generic-programming/anyinterfaces/).
 
 ## Classic text games
 
-Here are two classic simple text based games showcasing C3 feature and the C3 standard library.
+Here are two classic simple text based games showcasing C3 language features and the C3 standard library.
 
 ### Guess a number
 
