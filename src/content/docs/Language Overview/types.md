@@ -216,12 +216,11 @@ On top of the regular properties, floating point types also have the following p
 
 ## Floating point constants
 
-Floating point constants will *at least* use 64 bit precision. Just like for integer constants, it is allowed to use underscore, but it may not occur immediately before or after a dot or an exponential.
+Floating point constants will *at least* use 64 bit precision. Just like for integer constants, floating point constants are allowed to use underscores, but the underscores may not occur immediately before or after a dot or an exponential.
 
-Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is e (or E, both are acceptable), for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
+Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is `e` (or `E`, both are acceptable), for hexadecimal `p` (or `P`) is used: `-2.22e-21` `-0x21.93p-10`
 
-By default a floating point literal is of type double, but if the suffix `f` is used (eg `1.0f`), it is instead of 
-`float` type.
+By default a floating point literal is of type `double`, but if the suffix `f` is used (e.g. `1.0f`), it is instead of type `float` (which has half as much precision as `double`).
 
 # C compatibility
 
