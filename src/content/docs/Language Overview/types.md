@@ -107,17 +107,15 @@ All signed integer arithmetic uses 2's complement.
 
 ## Integer constants
 
-Integer constants are 1293832 or -918212.
+Integers may be written in decimal (e.g. `0`, `100`, `-5000`, etc), but also:
 
-Integers may be written in decimal, but also
-
-- in binary with the prefix 0b e.g. `0b0101000111011`, `0b011`
-- in octal with the prefix 0o e.g. `0o0770`, `0o12345670`
-- in hexadecimal with the prefix 0x e.g. `0xdeadbeef` `0x7f7f7f`
+- in binary with the prefix `0b`, e.g. `0b0101000111011`, `0b011`, etc.
+- in octal with the prefix `0o`, e.g. `0o0770`, `0o12345670`, etc.
+- in hexadecimal with the prefix `0x`, e.g. `0xdeadbeef`, `0x7f7f7f`, etc.
 
 In the case of binary, octal and hexadecimal, the type is assumed to be *unsigned*.
 
-Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
+Furthermore, underscore `_` may be used to add space between digits to improve readability, e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`, etc.
 
 ### Integer literal suffix and type
 
