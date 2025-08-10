@@ -119,7 +119,7 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 ### Integer literal suffix and type
 
-Integer literals follow C rules:
+Integer literals follow C's rules:
 
 1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
 2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
