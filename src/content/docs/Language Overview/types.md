@@ -344,64 +344,93 @@ However, at runtime only a few are available:
 
 ## The `any` type
 
-C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
+C3 contains a built-in variant type (a.k.a. a tagged union), which is essentially a `struct` containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type,
 it is recommended to use the `anycast` macro or to check the type explicitly first.
 
+The following examples (like all `@test` functions) may be tested via the `c3c test` command:
+
 ```c3
-fn void main()
+fn void any_basics() @test
 {
-    int x;
-    any y = &x;
-    int* w = (int*)y;                // Returns the pointer to x
-    double* z_bad = (double*)y;      // Don't do this!
-    double! z = anycast(y, double);  // The safe way to get a value
-    if (y.type == int.typeid)
+    int val = 0xC3;
+    any any_val = &val;
+    
+    int* int_ptr = (int*)any_val;  // Only safe because of the context, otherwise not.
+    double* unsafe_double_ptr = (double*)any_val;  // Unsafe, like casting a `void*` wrongly.
+    
+    int safe_int_val = *anycast(any_val, int)!!;  
+    // If `any_val` weren't actually an `int` above then this would panic (crash)
+    // instead of silently endangering the integrity of the program state.
+    // The `!!` essentially means "panic (crash) if there's an error".
+    
+    if (any_val.type == int.typeid)
     {
-        // Do something if y contains an int*
+        assert(val == *(int*)any_val);
     }
 }
 ```
 
-Switching over the `any` type is another method to unwrap the pointer inside:
+Switching over an `any` is a common way to handle the possible underlying types:
 
 ```c3
-fn void test(any z)
+fn void any_switches() @test
 {
-    // Unwrapping switch
-    switch (z)
+    int val = 1;
+    double other_val = 2.0;
+    any any_val = &val;
+
+    // Handling the type of an `any` via a `switch`:
+    switch (any_val.type)
     {
         case int:
-            // z is unwrapped to int* here
+            assert(*(int*)any_val == 1);
         case double:
-            // z is unwrapped to double* here
+            assert(*(double*)any_val == 2.0);
     }
-    // Assignment switch
-    switch (y = z)
+    
+    // Assigning to a `switch`-local variable:
+    switch (typeid tid = any_val.type)
     {
         case int:
-            // y is int* here
+            assert(tid == int.typeid);
+        case double:
+            assert(tid == double.typeid);
     }
-    // Direct unwrapping to a value is also possible:
-    switch (w = *z)
+    
+    // An `any` can change what type it points to, 
+    // such that it is essentially a typed `void*`:
+    any_val = &other_val;
+    
+    // Alternatively, normal `if` branches may be used.
+    if (any_val.type == int.typeid)
     {
-        case int:
-            // w is int here
+        assert(*(int*)any_val == 1);
     }
-    // Finally, if we just want to deal with the case
-    // where it is a single specific type:
-    if (z.type == int.typeid)
+    else if (any_val.type == double.typeid)
     {
-        // This is safe here:
-        int* a = (int*)z;
+        assert(*(double*)any_val == 2.0);
     }
-    if (try b = *anycast(z, int))
+    
+    // `try` and `catch` can handle optionals from `anycast`:
+    double? optional_val = *anycast(any_val, double);
+    if (try double_val = optional_val)
     {
-        // b is an int:
-        foo(b * 3);
+        // `double_val` is a normal `double` here, not an `any`:
+        $assert($typeof(double_val).nameof == "double");
+        assert(double_val == 2.0);
+    }
+    else if (catch err = optional_val)
+    {
+        // `err` is a `fault` (an error enum essentially) within this scope.
+        assert(err == TYPE_MISMATCH);
     }
 }
 ```
+
+The `try` and `catch` pattern of optional handling enables you to treat `any` values as if they are the normal values that you usually intend to use them as, whether that is a "valid" (a.k.a. "expected" or "non-empty" or "normal") value in the case of `try`  or an "invalid" (a.k.a. "unrepresentable" or "out of domain" (if input) or "out of range" (if output) or "error") value in the case of `catch`. `try` and `catch` unwrap and bind.
+
+As a side note though: What is a "normal" result and what is an "error" is actually subjective in the sense that all data is valid data from a computer's perspective since the computer is an unbiased and unthinking machine and always does exactly as it is instructed to do. Nonetheless, it is useful for modeling concepts as a human to have a natural mechanism to streamline this kind of commonly recurring splitting of logic. Optional types in C3 help in that regard. Handling `any` values via optionals enables you to mostly pretend you are working with the values you care about instead of the raw "typed `void*`" values that `any` values themselves represent.
 
 ### `any` fields
 
