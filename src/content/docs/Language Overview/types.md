@@ -281,13 +281,14 @@ int? x = 0; // ✅ Ok!
 fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn paramater
 ```
 
-An Optional value can use the special `if-try` and `if-catch` to unwrap its result or its Empty,
-it is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
+An Optional value can use the special if-try (e.g. `if (try val = opt_func()) { ... }`) and if-catch (e.g. `if (catch err = opt_func()) { ... }`) to unwrap its result or its Empty.
+
+It is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
 
 To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](/language-common/optionals-essential/).
 
 :::note
-If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::colletions.
+If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in `std::collections`.
 :::
 
 ## The `fault` type 
