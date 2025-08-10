@@ -294,7 +294,7 @@ If you want a more regular "optional" value, to store in structs, then you can u
 ## The `fault` type 
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault have the special property that together with the `?` suffix it creates an Empty value:
+normal value. A `fault` has the special property that together with the `?` suffix it creates an Empty value:
 
 ```c3
 int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
