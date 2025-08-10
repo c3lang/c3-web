@@ -194,11 +194,11 @@ struct Stat @if(env::X86_64)
 struct Stat @if(!env::X86_64)
 ```
 ```c3
-fn CInt stat(ZString path, Stat* stat)
+extern fn CInt stat(ZString path, Stat* stat)
 ```
 ### `libc @if(env::DARWIN || env::FREEBSD)`
 ```c3
-fn usz malloc_size(void* ptr) @if(!env::FREEBSD)
+extern fn usz malloc_size(void* ptr) @if(!env::FREEBSD)
 ```
 ```c3
 macro CFile stdout()
@@ -229,7 +229,7 @@ alias Ino_t = ulong
 struct Stat
 ```
 ```c3
-fn int stat(ZString str, Stat* stat) @extern("stat64")
+extern fn int stat(ZString str, Stat* stat) @extern("stat64")
 ```
 ### `libc @if(env::FREEBSD)`
 ```c3
@@ -260,11 +260,11 @@ struct Stat @if(env::X86_64)
 struct Stat @if(!env::X86_64)
 ```
 ```c3
-fn CInt stat(ZString path, Stat* stat)
+extern fn CInt stat(ZString path, Stat* stat)
 ```
 ### `libc @if(env::LIBC)`
 ```c3
-fn void abort()
+extern fn void abort()
 ```
 ```c3
 macro CFile stdout()
@@ -304,7 +304,7 @@ struct Stat @if(env::X86_64)
 struct Stat @if(!env::X86_64)
 ```
 ```c3
-fn CInt stat(ZString path, Stat* stat)
+extern fn CInt stat(ZString path, Stat* stat)
 ```
 ### `libc @if(env::OPENBSD)`
 ```c3
@@ -335,17 +335,17 @@ struct Stat @if(env::X86_64)
 struct Stat @if(!env::X86_64)
 ```
 ```c3
-fn CInt stat(ZString path, Stat* stat)
+extern fn CInt stat(ZString path, Stat* stat)
 ```
 ### `libc @if(env::POSIX)`
 ```c3
-fn CInt shutdown(Fd sockfd, CInt how)
+extern fn CInt shutdown(Fd sockfd, CInt how)
 ```
 ```c3
 struct Stack_t
 ```
 ```c3
-fn CInt sigaltstack(Stack_t* ss, Stack_t* old_ss)
+extern fn CInt sigaltstack(Stack_t* ss, Stack_t* old_ss)
 ```
 ### `libc @if(env::WIN32)`
 ```c3
@@ -376,10 +376,10 @@ alias timegm = _mkgmtime64
 alias mktime = _mktime64
 ```
 ```c3
-fn CFile __acrt_iob_func(CInt c)
+extern fn CFile __acrt_iob_func(CInt c)
 ```
 ```c3
-fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
+extern fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
 ```
 ### `libc::errno`
 ### `libc::errno @if(!env::WIN32 && !env::DARWIN)`
@@ -387,13 +387,13 @@ fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
 ### `libc::errno @if(env::WIN32)`
 ### `libc::os @if(env::LIBC)`
 ```c3
-fn int* __errno_location() @if(env::LINUX)
+extern fn int* __errno_location() @if(env::LINUX)
 ```
 ```c3
 macro void errno_set(int err) @if(env::WIN32)
 ```
 ```c3
-fn void _get_errno(int* result) @if(env::WIN32)
+extern fn void _get_errno(int* result) @if(env::WIN32)
 ```
 ### `libc::termios @if(!env::LIBC ||| !env::POSIX)`
 ```c3
@@ -3496,7 +3496,7 @@ macro int @main_to_void_main_args(#m, int argc, char** argv)
 ```
 ### `std::core::main_stub @if(env::WIN32)`
 ```c3
-fn Char16** _win_command_line_to_argv_w(ushort* cmd_line, int* argc_ptr) @extern("CommandLineToArgvW")
+extern fn Char16** _win_command_line_to_argv_w(ushort* cmd_line, int* argc_ptr) @extern("CommandLineToArgvW")
 ```
 ```c3
 macro int @win_to_err_main_noargs(#m, void* handle, void* prev_handle, Char16* cmd_line, int show_cmd)
@@ -4372,7 +4372,7 @@ fn bool default_test_runner(String[] args)
 ```
 ### `std::core::runtime @if(WASM_NOLIBC)`
 ```c3
-fn void __wasm_call_ctors()
+extern fn void __wasm_call_ctors()
 ```
 ### `std::core::sanitizer`
 ```c3
@@ -4392,7 +4392,7 @@ fn void set_death_callback(VoidFn callback)
 struct __Sanitizer_sandbox_arguments
 ```
 ```c3
-fn void __sanitizer_set_report_path(ZString path)
+extern fn void __sanitizer_set_report_path(ZString path)
 ```
 ### `std::core::sanitizer::asan`
 ```c3
@@ -4415,7 +4415,7 @@ fn void set_error_report_callback(ErrorCallback callback)
 ```
 ### `std::core::sanitizer::asan @if(env::ADDRESS_SANITIZER)`
 ```c3
-fn void __asan_poison_memory_region(void* addr, usz size)
+extern fn void __asan_poison_memory_region(void* addr, usz size)
 ```
 ### `std::core::sanitizer::tsan`
 ```c3
@@ -7760,13 +7760,13 @@ macro void float.set_word(float* f, uint u)
 macro double scalbn(double x, int n)
 ```
 ```c3
-fn double _atan(double x) @MathLibc("atan")
+extern fn double _atan(double x) @MathLibc("atan")
 ```
 ```c3
 fn void _sincosf(float a, float* s, float* c) @extern("sincosf") @if(env::WIN32)
 ```
 ```c3
-fn double _tan(double x) @MathLibc("tan")
+extern fn double _tan(double x) @MathLibc("tan")
 ```
 ```c3
 fn float _frexpf(float x, int* e)
@@ -9595,7 +9595,7 @@ typedef SockAddrPtr = void*
 struct AddrInfo
 ```
 ```c3
-fn CInt getaddrinfo(ZString nodename, ZString servname, AddrInfo* hints, AddrInfo** res) @if(SUPPORTS_INET)
+extern fn CInt getaddrinfo(ZString nodename, ZString servname, AddrInfo* hints, AddrInfo** res) @if(SUPPORTS_INET)
 ```
 ### `std::net::os @if(env::ANDROID)`
 ### `std::net::os @if(env::DARWIN)`
@@ -9611,7 +9611,7 @@ struct Posix_pollfd
 alias Posix_nfds_t = CUInt
 ```
 ```c3
-fn CInt connect(NativeSocket socket, SockAddrPtr address, Socklen_t address_len)
+extern fn CInt connect(NativeSocket socket, SockAddrPtr address, Socklen_t address_len)
 ```
 ```c3
 fn fault socket_error()
@@ -9633,7 +9633,7 @@ macro bool NativeSocket.is_non_blocking(self)
 typedef NativeSocket = inline Win32_SOCKET
 ```
 ```c3
-fn CInt ioctlsocket(NativeSocket, CLong cmd, CULong *argp)
+extern fn CInt ioctlsocket(NativeSocket, CLong cmd, CULong *argp)
 ```
 ```c3
 fn void? NativeSocket.set_non_blocking(self, bool non_blocking)
@@ -9795,10 +9795,10 @@ enum LogId : (CInt val)
 struct LogMessage @packed
 ```
 ```c3
-fn CInt log_write(LogPriority prio, ZString tag, ZString text) @extern("__android_log_write")
+extern fn CInt log_write(LogPriority prio, ZString tag, ZString text) @extern("__android_log_write")
 ```
 ```c3
-fn CInt log_buf_write(CInt bufID, CInt prio, ZString tag, ZString text) @extern("__android_log_buf_write")
+extern fn CInt log_buf_write(CInt bufID, CInt prio, ZString tag, ZString text) @extern("__android_log_buf_write")
 ```
 ### `std::os::backtrace`
 ```c3
@@ -9846,7 +9846,7 @@ fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace) @i
 ```
 ### `std::os::darwin @if(env::DARWIN)`
 ```c3
-fn CInt sysctl(CInt *name, CUInt namelen, void *oldp, usz *oldlenp, void *newp, usz newlen)
+extern fn CInt sysctl(CInt *name, CUInt namelen, void *oldp, usz *oldlenp, void *newp, usz newlen)
 ```
 ```c3
 struct Darwin_segment_command_64
@@ -9861,17 +9861,17 @@ alias Darwin_mach_timebase_info_t = Darwin_mach_timebase_info
 alias Darwin_mach_timebase_info_data_t = Darwin_mach_timebase_info
 ```
 ```c3
-fn void mach_timebase_info(Darwin_mach_timebase_info_data_t* timebase)
+extern fn void mach_timebase_info(Darwin_mach_timebase_info_data_t* timebase)
 ```
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace)
 ```
 ```c3
-fn usz malloc_size(void* ptr)
+extern fn usz malloc_size(void* ptr)
 ```
 ### `std::os::darwin::cocoa @if(env::OS_TYPE == MACOS) @link("Cocoa.framework")`
 ```c3
-fn int nsApplicationMain(int argc, char **argv) @extern("NSApplicationMain")
+extern fn int nsApplicationMain(int argc, char **argv) @extern("NSApplicationMain")
 ```
 ### `std::os::env`
 ```c3
@@ -9898,10 +9898,10 @@ fn String? executable_path()
 ### `std::os::freebsd @if(env::FREEBSD)`
 ### `std::os::linux @if(env::LINUX)`
 ```c3
-fn usz malloc_usable_size(void* ptr)
+extern fn usz malloc_usable_size(void* ptr)
 ```
 ```c3
-fn isz readlink(ZString path, char* buf, usz bufsize)
+extern fn isz readlink(ZString path, char* buf, usz bufsize)
 ```
 ```c3
 struct Elf32_Phdr
@@ -9937,7 +9937,7 @@ struct Elf64_Ehdr
 struct Elf64_Phdr
 ```
 ```c3
-fn CInt dladdr(void* addr, Linux_Dl_info* info)
+extern fn CInt dladdr(void* addr, Linux_Dl_info* info)
 ```
 ```c3
 fn Backtrace? backtrace_line_parse(Allocator allocator, String string, String obj_name, String func_name, bool is_inlined)
@@ -9971,7 +9971,7 @@ macro usz CFAllocatorRef.get_preferred_size(CFAllocatorRef allocator, usz req_si
 macro void CFAllocatorRef.set_default(CFAllocatorRef allocator)
 ```
 ```c3
-fn CFAllocatorRef macos_CFAllocatorCreate(CFAllocatorRef allocator, CFAllocatorContextRef context) @extern("CFAllocatorCreate") @builtin
+extern fn CFAllocatorRef macos_CFAllocatorCreate(CFAllocatorRef allocator, CFAllocatorContextRef context) @extern("CFAllocatorCreate") @builtin
 ```
 ```c3
 typedef CFArrayRef = void*
@@ -9983,7 +9983,7 @@ typedef CFArrayCallBacksRef = void*
 typedef CFMutableArrayRef = void*
 ```
 ```c3
-fn CFArrayRef macos_CFArrayCreate(CFAllocatorRef allocator, void** values, CFIndex num_values, CFArrayCallBacksRef callBacks) @extern("CFArrayCreate") @builtin
+extern fn CFArrayRef macos_CFArrayCreate(CFAllocatorRef allocator, void** values, CFIndex num_values, CFArrayCallBacksRef callBacks) @extern("CFArrayCreate") @builtin
 ```
 ```c3
 typedef CFTypeRef = void*
@@ -9995,7 +9995,7 @@ alias CFIndex = isz
 struct CFRange
 ```
 ```c3
-fn CFTypeRef macos_CFRetain(CFTypeRef cf) @extern("CFRetain") @builtin
+extern fn CFTypeRef macos_CFRetain(CFTypeRef cf) @extern("CFRetain") @builtin
 ```
 ### `std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
@@ -10050,10 +10050,10 @@ macro ObjcClass? class_by_name(ZString c)
 macro ObjcClass[] class_get_list(Allocator allocator)
 ```
 ```c3
-fn void msgSend(...) @extern("objc_msgSend") @builtin
+extern fn void msgSend(...) @extern("objc_msgSend") @builtin
 ```
 ```c3
-fn ObjcClass getClass(ZString name) @extern("objc_getClass")
+extern fn ObjcClass getClass(ZString name) @extern("objc_getClass")
 ```
 ```c3
 enum ApplicationActivationPolicy : (int val)
@@ -10079,14 +10079,14 @@ enum EventModifierFlag : (int val)
 ### `std::os::netbsd @if(env::NETBSD)`
 ### `std::os::openbsd @if(env::OPENBSD)`
 ```c3
-fn ZString* backtrace_symbols_fmt(void **addrlist, usz len, ZString fmt)
+extern fn ZString* backtrace_symbols_fmt(void **addrlist, usz len, ZString fmt)
 ```
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace)
 ```
 ### `std::os::posix @if(env::POSIX)`
 ```c3
-fn CInt clock_gettime(int type, TimeSpec *time)
+extern fn CInt clock_gettime(int type, TimeSpec *time)
 ```
 ```c3
 alias Mode_t = uint
@@ -10098,16 +10098,16 @@ typedef DIRPtr = void*
 struct Posix_dirent
 ```
 ```c3
-fn int rmdir(ZString)
+extern fn int rmdir(ZString)
 ```
 ```c3
-fn CLong sysconf(CInt name)
+extern fn CLong sysconf(CInt name)
 ```
 ```c3
-fn CInt posix_memalign(void **memptr, usz alignment, usz size)
+extern fn CInt posix_memalign(void **memptr, usz alignment, usz size)
 ```
 ```c3
-fn void* mmap(void*, usz, CInt, CInt, CInt, Off_t)
+extern fn void* mmap(void*, usz, CInt, CInt, CInt, Off_t)
 ```
 ```c3
 struct Posix_spawn_file_actions_t
@@ -10116,7 +10116,7 @@ struct Posix_spawn_file_actions_t
 struct Posix_spawnattr_t
 ```
 ```c3
-fn CInt posix_spawn_file_actions_init(Posix_spawn_file_actions_t *file_actions)
+extern fn CInt posix_spawn_file_actions_init(Posix_spawn_file_actions_t *file_actions)
 ```
 ```c3
 alias PosixThreadFn = fn void*(void*)
@@ -10125,7 +10125,7 @@ alias PosixThreadFn = fn void*(void*)
 typedef Pthread_t = void*
 ```
 ```c3
-fn CInt pthread_create(Pthread_t*, Pthread_attr_t*, PosixThreadFn, void*)
+extern fn CInt pthread_create(Pthread_t*, Pthread_attr_t*, PosixThreadFn, void*)
 ```
 ### `std::os::process @if(env::WIN32 || env::POSIX)`
 ```c3
@@ -10875,7 +10875,7 @@ alias Win32_LPMODULEINFO = Win32_MODULEINFO*
 ```
 ### `std::os::win32 @if(env::WIN32)`
 ```c3
-fn void getSystemTimeAsFileTime(Win32_FILETIME* time) @extern("GetSystemTimeAsFileTime")
+extern fn void getSystemTimeAsFileTime(Win32_FILETIME* time) @extern("GetSystemTimeAsFileTime")
 ```
 ```c3
 enum Win32_GET_FILEEX_INFO_LEVELS
@@ -10890,16 +10890,16 @@ struct Win32_WIN32_FIND_DATAW
 alias Win32_LPWIN32_FIND_DATAW = Win32_WIN32_FIND_DATAW*
 ```
 ```c3
-fn Win32_BOOL closeHandle(Win32_HANDLE) @extern("CloseHandle")
+extern fn Win32_BOOL closeHandle(Win32_HANDLE) @extern("CloseHandle")
 ```
 ```c3
-fn Win32_HBRUSH createSolidBrush(Win32_COLORREF) @extern("CreateSolidBrush")
+extern fn Win32_HBRUSH createSolidBrush(Win32_COLORREF) @extern("CreateSolidBrush")
 ```
 ```c3
-fn Win32_DWORD getLastError() @extern("GetLastError")
+extern fn Win32_DWORD getLastError() @extern("GetLastError")
 ```
 ```c3
-fn void* _aligned_malloc(usz size, usz alignment)
+extern fn void* _aligned_malloc(usz size, usz alignment)
 ```
 ```c3
 enum Win32_AllocationType : const Win32_DWORD
@@ -10911,13 +10911,13 @@ enum Win32_Protect : const Win32_DWORD
 enum Win32_FreeType : const Win32_DWORD
 ```
 ```c3
-fn Win32_LPVOID virtualAlloc(Win32_LPVOID lpAddres, Win32_SIZE_T dwSize, Win32_AllocationType flAllocationType, Win32_Protect flProtect) @extern("VirtualAlloc")
+extern fn Win32_LPVOID virtualAlloc(Win32_LPVOID lpAddres, Win32_SIZE_T dwSize, Win32_AllocationType flAllocationType, Win32_Protect flProtect) @extern("VirtualAlloc")
 ```
 ```c3
 alias Win32_INIT_ONCE_FN = fn Win32_BOOL(Win32_INIT_ONCE* initOnce, void* parameter, void** context)
 ```
 ```c3
-fn void initializeCriticalSection(Win32_CRITICAL_SECTION* section) @extern("InitializeCriticalSection")
+extern fn void initializeCriticalSection(Win32_CRITICAL_SECTION* section) @extern("InitializeCriticalSection")
 ```
 ```c3
 struct Symbol
@@ -11064,7 +11064,7 @@ alias Win32_NPMSG = Win32_MSG*
 alias Win32_ATOM = ushort
 ```
 ```c3
-fn Win32_HDC beginPaint(Win32_HWND, Win32_LPPAINTSTRUCT) @extern("BeginPaint")
+extern fn Win32_HDC beginPaint(Win32_HWND, Win32_LPPAINTSTRUCT) @extern("BeginPaint")
 ```
 ```c3
 macro setWindowLongPtr(Win32_HWND hWnd, CInt nIndex, dwNewLong)
@@ -11177,7 +11177,7 @@ alias Win32_LPFn_ACCEPTEX = fn bool(
 )
 ```
 ```c3
-fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT timeout) @extern("WSAPoll")
+extern fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT timeout) @extern("WSAPoll")
 ```
 ### `std::sort`
 ```c3
