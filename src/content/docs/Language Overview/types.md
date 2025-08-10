@@ -177,11 +177,11 @@ These different variants thus enable a precise and expressive range of byte data
 
 The ["FourCC" strings](#twocc-fourcc-and-eightcc-literals) (fixed-width pseudo-strings packed into single integers), such as `'C3'` (a `ushort`) above, provide a more specialized option for creating and using string-like data than normal strings, among other things enabling *mutable* string-like data that still compares as efficiently as pointers to constant strings do but at the cost of being fixed width (e.g. 8 characters if stored in a 64 bit integer).
 
-## String literals, and raw strings
+## String literals and raw strings
 
-Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
+Regular string literals are text enclosed in (i.e. delimited by) double quotes (`"`), as in `"some text"`, just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
 
-Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
+Raw strings and multi-line strings are text enclosed in (i.e. delimited by) backticks (<code>\`</code>), as in <code>\`some text\`</code>. Inside of a raw string, none of the usual escapes are available. To write a <code>\`</code> inside a raw string however, double the character:
 
 ```c3
 String foo = `C:\foo\bar.dll`;
@@ -190,6 +190,8 @@ ZString bar = `"Say ``hello``"`;
 String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
+
+See [the earlier "basic types and values" page on string literals](https://c3-lang.org/language-fundamentals/basic-types-and-values/#string-literals) and [the language spec section on string literals](https://c3-lang.org/implementation-details/specification/#string-literals) for more information or examples.
 
 ## Floating point types
 
