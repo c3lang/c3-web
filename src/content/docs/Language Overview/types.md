@@ -197,13 +197,13 @@ See [the earlier "basic types and values" page on string literals](https://c3-la
 
 | Name        | bit size |
 |-------------| --------:|
-| `bfloat16`* | 16       |
-| `float16`*  | 16       |
+| `bfloat16`&dagger; | 16       |
+| `float16`&dagger;  | 16       |
 | `float`     | 32       |
 | `double`    | 64       |
-| `float128`* | 128      |
+| `float128`&dagger; | 128      |
 
-*support is still incomplete.
+&dagger;: Support is still incomplete and not all systems have native support.
 
 ### Floating point type properties
 
