@@ -162,6 +162,21 @@ char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
 char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ```
 
+Note that these data literals permit either single or double quotes, but in contrast normal strings do not. The following example, which passes all assertions successfully, greatly clarfies what they each really are:
+
+```c3
+$assert($typeof('C3').nameof == "ushort");
+$assert($typeof("C3").nameof == "String");
+$assert($typeof(b64'C3').nameof == "char[1]");
+$assert($typeof(b64"C3").nameof == "char[1]");
+$assert($typeof(x'C3').nameof == "char[1]");
+$assert($typeof(x"C3").nameof == "char[1]");
+```
+
+These different variants thus enable a precise and expressive range of byte data handling. The `$embed` compile-time function will likely also interest you if these kinds of encodings do. 
+
+The ["FourCC" strings](#twocc-fourcc-and-eightcc-literals) (fixed-width pseudo-strings packed into single integers), such as `'C3'` (a `ushort`) above, provide a more specialized option for creating and using string-like data than normal strings, among other things enabling *mutable* string-like data that still compares as efficiently as pointers to constant strings do but at the cost of being fixed width (e.g. 8 characters if stored in a 64 bit integer).
+
 ## String literals, and raw strings
 
 Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
