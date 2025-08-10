@@ -4,6 +4,11 @@ description: Standard Library Reference
 sidebar:
     order: 141
 ---
+
+:::caution[This page is out of date]
+While a doc generator is in development, this page is still being updated manually and will not reflect the latest stdlib changes. To view an up to date version browse the standard library source code [here](https://github.com/c3lang/c3c/tree/v0.7.4/lib/std)
+:::
+
 ### `libc`
 ```c3
 typedef Errno = inline CInt;
