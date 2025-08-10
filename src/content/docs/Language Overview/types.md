@@ -155,7 +155,7 @@ Base64 encoded values work like TwoCC/FourCC/EightCC, in that is it laid out in 
 
 In our case we could encode `b64'Rk9PQkFSMTE='` as `'FOOBAR11'`.
 
-Base64 and hex data literals initializes to arrays of the char type:
+Base64 and hex data literals initialize to fixed sized `char` arrays (i.e. `char[*]` inferring to some specific `char[n]`):
 
 ```c3
 char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
