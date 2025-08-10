@@ -121,12 +121,12 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 Integer literals follow C's rules:
 
-1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
-2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
+1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`, picking the smallest type that fits the literal.
+2. If the literal is suffixed by `u` or `U` it is instead assumed to be a `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
 3. Binary, octal and hexadecimal will implicitly be unsigned.
 4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
 5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
-6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
+6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
 
 ```c3
 $typeof(1);              // int
