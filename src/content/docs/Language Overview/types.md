@@ -346,7 +346,7 @@ However, at runtime only a few are available:
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type,
-it is recommended to use the `anycast` macro or checking the type explicitly first.
+it is recommended to use the `anycast` macro or to check the type explicitly first.
 
 ```c3
 fn void main()
