@@ -30,10 +30,9 @@ int? b = io::FILE_NOT_FOUND?;
 ## 🎁 Unwrapping an Optional
 :::note
 
-Unwrapping an Optional is safe because it checks it has a
-result present before trying to use it.
+Unwrapping an Optional is safe because the language checks whether the Optional has a ("non-empty", non-`fault` &mdash; hence representable as intended) result present before trying to use it. Used properly, this enables easy handling of special cases.
 
-After unwrapping, the variable then behaves like a normal variable, a non-Optional.
+After unwrapping, the variable then behaves like a normal variable: a non-Optional.
 :::
 
 ## Checking if an Optional is empty
