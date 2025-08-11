@@ -11,18 +11,17 @@ In the [advanced section](/language-common/optionals-advanced/) (the next websit
 
 ## What is an Optional?
 
-Optionals are a safer alternative to returning `-1` or `null` from
-a function, when a valid value can't be returned. An Optional
-has either a *result* or is *empty*. When an Optional
-is empty it has an `Excuse` explaining what happened.
+Optionals are a safer alternative to returning -1 or null from a function when a valid value can’t be returned (as is commonly done in C and elsewhere, but which is often a messy and error-prone approach). Optionals offer a cleaner and much more generalized way of indicating such unavailable (i.e. out of domain or out of range) or erroneous return values and communicate intent far better. 
 
-- For example trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
-- Optionals are declared by adding `?` after the type.
-- An `Excuse` is of type `fault`.
+When an Optional is "empty", it has an `Excuse` (a `fault`) explaining what happened.
+
+- For example, trying to open a missing file returns the `Excuse` (the `fault`) `io::FILE_NOT_FOUND`.
+- Optionals are declared by adding `?` after the intended normal (valid, non-`fault`) type of the Optional. So, for example, to represent an integer that is sometimes unrepresentable due to the presence of a `fault`, you would write its type as `int?`.
+- `@catch` can be used to retrieve the `fault` (if any) from an Optional's `Excuse`.
 ```c3
 int? a = 1; // Set the Optional to a result
 ```
-The Optional Excuse is set with `?` after the value.
+An Optional's `Excuse` (the `fault`) is set by writing `?` after the `fault` value.
 ```c3
 // Set the Optional to empty with a specific Excuse.
 int? b = io::FILE_NOT_FOUND?;
