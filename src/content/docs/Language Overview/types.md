@@ -653,7 +653,7 @@ enum State : int
 State current_state = WAITING; // or '= State.WAITING' 
 ```
 The access requires referencing the `enum`'s name as `State.WAITING` because
-an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
+an enum like `State` is a separate namespace by default, just like `enum class` in C++.
 
 
 ### Enum associated values
