@@ -511,7 +511,7 @@ alias not_pie = bad_pi;
 
 ## Function pointer types
 
-Function pointers are always used through a `alias`:
+Function pointers are always used through an `alias`:
 
 ```c3
 alias Callback = fn void(int value);
