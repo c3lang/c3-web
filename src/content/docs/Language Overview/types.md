@@ -895,7 +895,7 @@ union Integral
 }
 ```
 
-As usual unions are used to hold one of many possible values:
+As usual, unions are used to hold one of multiple possible values:
 
 ```c3
 fn void test()
