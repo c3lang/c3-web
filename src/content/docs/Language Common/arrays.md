@@ -251,7 +251,7 @@ fn void test()
 ```
 
 ### `foreach_r` reverse iterating
-With `foreach_r`, arrays or slices can be iterated over in reverse order[.]
+With `foreach_r`, arrays or slices can be iterated over in reverse order.
 
 ```c3
 fn void test()
