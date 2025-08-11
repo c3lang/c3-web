@@ -59,11 +59,16 @@ Behaviour here is analogous how structs may use `inline` to create struct subtyp
 ```c3
 typedef CString = char*;
 typedef ZString = inline char*;
-...
-CString abc = "abc";
-ZString alias = "alias";
-// char* from_abc = abc; // Error!
-char* from_def = alias; // Valid!
+
+//...
+
+CString cstr = "cstr";
+ZString zstr = "zstr";
+
+//...
+
+// char* from_cstr = cstr;  // Error!
+char* from_zstr = zstr;  // Valid!
 ```
 
 ## Function and variable aliases
