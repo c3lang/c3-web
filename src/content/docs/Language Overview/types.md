@@ -916,8 +916,7 @@ Note that unions only take up as much space as their largest member, so `Integra
 
 ### Nested sub-structs / unions
 
-Just like in C99 and later, nested anonymous sub-structs / unions are allowed. Note that
-the placement of struct / union names is different to match the difference in declaration.
+Just like in C, nested anonymous sub-structs and unions are allowed. Note though that member access paths only need to specify the *named* substructures along the way. The unnamed substructures in contrast are brought into the parent structure's namespace.
 
 ```c3
 struct Person
@@ -937,6 +936,10 @@ struct Person
 }
 ```
 
+For the above example, `cb` would be accessed as `obj.subname.cb` whereas `employee_nr` would be accessed as `obj.employee_nr`. 
+
+Anonymous structs and unions cannot be referred to by name, hence the reason why their members must be treated as if they are members of the enclosing type instead.
+
 ### Union and structs type properties
 
 Structs and unions also support the `membersof` property,
@@ -945,9 +948,9 @@ which returns a list of struct members.
 ## Bitstructs
 
 Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
-integer types and booleans, in most other respects it works like a struct.
+integer types and booleans. In most other respects though, it works like a struct.
 
-The main differences is that the bitstruct has a *backing type* and each field
+The main difference is that the bitstruct has a *backing type* and each field
 has a specific bit range. In addition, it's not possible *to take the address* of a
 bitstruct field.
 
