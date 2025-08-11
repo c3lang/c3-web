@@ -11,7 +11,7 @@ The `alias` statement in C3 is intended for making new names for function pointe
 
 ## Defining a type alias
 
-`alias <type alias> = <type>` creates a type alias. A Type `alias` needs to follow the naming convention of user defined types (i.e. capitalized
+`alias <type alias> = <type>` creates a type alias. A Type `alias` needs to follow the naming convention of user defined types (i.e. a capitalized
 name with at least one lower case letter).
 
 ```c3
@@ -25,7 +25,7 @@ Function pointers _must_ be aliased in C3. The syntax is somewhat different from
 alias Callback = fn void(int a, bool b);
 ```
 
-This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample usage:
+This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample to illustrate usage:
 
 ```c3
 Callback cb = &my_callback;
