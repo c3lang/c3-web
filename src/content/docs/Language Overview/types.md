@@ -475,7 +475,7 @@ Arrays are indicated by `[size]` after the type, e.g. `int[4]`, whereas to indic
 ## Vector types
 
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
-of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
+of integers, floats and booleans. Similar to arrays, a wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
 
 ### Array and vector type properties
 
