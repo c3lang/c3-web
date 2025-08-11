@@ -46,7 +46,7 @@ The `std::math` module contains a wealth of additional operations available on v
 - `.max()` - get the maximum element.
 - `.min()` - get the minimum element.
 - `.dot(other)` - return the dot product with the other vector.
-- `.length(other)` - return the square root of the dot product (not available on integer vectors).
+- `.length` - return the square root of the dot product (not available on integer vectors).
 - `.distance(other)` - return the length of the difference of the two vectors (not available on integer vectors).
 - `.normalize()` - return a normalized vector (not available on integer vectors).
 - `.comp_lt(other)` - return a boolean vector with a component wise "<" 
@@ -56,7 +56,7 @@ The `std::math` module contains a wealth of additional operations available on v
 - `.comp_ge(other)` - return a boolean vector with a component wise ">="  
 - `.comp_ne(other)` - return a boolean vector with a component wise "!="  
 
-Dot methods available for scalar values, such as `ceil`, `fma` etc are in general also available for vectors.
+Dot methods available for scalar values (such as `ceil`, `fma`, etc) are in general also available for vectors.
 
 ## Swizzling
 
