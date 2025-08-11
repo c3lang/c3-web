@@ -5,15 +5,9 @@ sidebar:
     order: 64
 ---
 
-In this section we will go over the *essential* information about Optionals and safe methods for working with them, for example
- [`if (catch optional_value)`](#checking-if-an-optional-is-empty)
- and the [Rethrow operator `!`](#using-the-rethrow-operator--to-unwrap-an-optional-value).
+In this section we will go over the *essential* information about Optionals and safe methods for working with them. For example, this page covers [`if (catch optional_value)`](#checking-if-an-optional-is-empty) and the [Rethrow operator `!`](#using-the-rethrow-operator--to-unwrap-an-optional-value), among other things.
 
-In the [advanced section](/language-common/optionals-advanced/) there are other *nice to have* features.
-Like an alternative to safely unwrap a result from an Optionals using
-[`if (try optional_value)`](/language-common/optionals-advanced/#run-code-if-the-optional-has-a-result)
-and an unsafe method to [force unwrap `!!`](/language-common/optionals-advanced/#force-unwrapping-expressions)
-a result from an Optional, return [default values for optionals `??`](/language-common/optionals-advanced/#return-a-default-value-if-optional-is-empty) if they are empty and other more specialised concepts.
+In the [advanced section](/language-common/optionals-advanced/) (the next website page after this one), there are other *nice to have* features that will be covered, such as: an alternative to safely unwrap a result from an Optional using [`if (try optional_value)`](/language-common/optionals-advanced/#run-code-if-the-optional-has-a-result), an unsafe method to [force unwrap `!!`](/language-common/optionals-advanced/#force-unwrapping-expressions) a result from an Optional, return [default values for optionals `??`](/language-common/optionals-advanced/#return-a-default-value-if-optional-is-empty) if they are empty (i.e. if they contain a `fault`) and other more specialised concepts.
 
 ## What is an Optional?
 
