@@ -488,7 +488,7 @@ Array and vector types also support:
 
 ## Type aliases (C's typedef)
 
-Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
+C3 has a construct that behaves essentially the same as C's "typedef", an `alias`, and it is declared using the syntax `alias <new_name> = <old_name>`. For example:
 
 ```c3
 alias Int32 = int;
@@ -500,8 +500,14 @@ Int32 a = 1;
 int b = a;
 ```
 
-These are not proper types, just aliases, and querying
-their properties will query the properties of its aliased type.
+Like C's "typedefs", C3's aliases are not proper distinct types, just aliases (i.e. new synonymous names), and hence querying the properties of an alias will query the properties of the aliased (i.e. underlying) type instead.
+
+Aliases can also be used as synonyms for variables, but must obey the same declaration rules as type declarations and hence can only refer to globals and such (not function-local variables) in practice. For example:
+
+```c3
+double bad_pi = 3.14;
+alias not_pie = bad_pi;
+```
 
 ## Function pointer types
 
