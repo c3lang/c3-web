@@ -123,8 +123,8 @@ For more information, see the chapter on [generics](/generic-programming/generic
 It is possible to attach default arguments to function pointer aliases. There is no requirement
 that the function has the same default arguments. In fact, the function pointer may have
 default arguments where the function doesn't have it and vice-versa. Calling the function
-directly will then use the function's default arguments, and calling through the function pointer
-will yield the function pointer alias' default argument.
+directly will then use the function's default arguments, whereas calling through the function pointer
+will use the function pointer alias's default argument.
 
 Similarly, named parameter arguments follow the alias definition when calling through the
 function pointer:
