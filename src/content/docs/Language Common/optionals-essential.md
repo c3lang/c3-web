@@ -91,18 +91,19 @@ fn int? maybe_func() { /* ... */ }
 
 fn void? test()
 {
-    // ❌ This will be a compile error
-    // maybe_function() returns an Optional
-    // and 'bar' is not declared Optional:
-    // int bar = maybe_function();
+    // int bar = maybe_func();
+    // ❌ The above would be a compile error
+    // because `maybe_func()` returns an Optional
+    // and `bar` is just an `int`, not an Optional `int?`.
 
-    int bar = maybe_function()!;
+    int bar = maybe_func()!;
     // ✅ The above is equivalent to:
-    // int? temp = maybe_function();
-    // if (catch excuse = temp) return excuse?
-
-    // Now temp is unwrapped to a non-Optional
-    int bar = temp; // ✅ This is OK
+    // int bar;
+    // {
+    //   int? temp = maybe_func();
+    //   if (catch excuse = temp) { return excuse?; }
+    //   else { bar = temp; }
+    //}
 }
 ```
 
