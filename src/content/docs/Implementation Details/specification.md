@@ -341,15 +341,17 @@ STRING_LIT      ::= \x22 (CHAR_LIT_BYTE | UNICODE_CHAR)* \x22
 
 #### Compile time string concatenation
 
-Strings will concatenate if declared in sequence.
+Inside normal code, string literals will concatenate if written in sequence (i.e. each literal just separated by whitespace), much like in C.
 
 Example:
 
-```c
+```c3
 String s = "abc" "def" "ghi";
 // This is equivalent to:
 String s = "abcdefghi";
 ```
+
+However, inside of macros you must use `+++` ([the compile-time concatenation operator](https://c3-lang.org/generic-programming/compiletime/#concatenation)) between the string literals to make the concatenation happen.
 
 ### Raw string literals
 
