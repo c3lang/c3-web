@@ -812,17 +812,26 @@ user defined types:
 
 ## Struct types
 
-Structs are always named:
+Structs must always be named, except when nested:
 
 ```c3
 struct Person
 {
     char age;
     String name;
+    struct location {  //Nested structs must have lowercase names.
+        String street;
+        String city;
+        String country;
+    }
+    struct @packed {  //Anonymous structs enable more layout control.
+        uchar height;
+        String nickname;
+    }
 }
 ```
 
-A struct's members may be accessed using dot notation, even for pointers to structs.
+A `struct`'s members may be accessed using dot notation, even for pointers to structs.
 
 ```c3
 fn void test()
@@ -839,7 +848,7 @@ fn void test()
     io::printfn("%s is %d years old.", p_ptr.name, p_ptr.age);
 }
 ```
-(One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
+(One might wonder whether it's possible to take a `Person**` and use dot access. &mdash; It's not allowed; only one level of dereference is done.)
 
 To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
 
