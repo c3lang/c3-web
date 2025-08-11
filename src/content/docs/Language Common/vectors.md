@@ -49,12 +49,12 @@ The `std::math` module contains a wealth of additional operations available on v
 - `.length` - return the square root of the dot product (not available on integer vectors).
 - `.distance(other)` - return the length of the difference of the two vectors (not available on integer vectors).
 - `.normalize()` - return a normalized vector (not available on integer vectors).
-- `.comp_lt(other)` - return a boolean vector with a component wise "<" 
-- `.comp_le(other)` - return a boolean vector with a component wise "<="  
-- `.comp_eq(other)` - return a boolean vector with a component wise "=="  
-- `.comp_gt(other)` - return a boolean vector with a component wise ">"  
-- `.comp_ge(other)` - return a boolean vector with a component wise ">="  
-- `.comp_ne(other)` - return a boolean vector with a component wise "!="  
+- `.comp_lt(other)` - apply a component-wise `<`, returning a boolean vector.
+- `.comp_le(other)` - apply a component-wise `<=`, returning a boolean vector.
+- `.comp_eq(other)` - apply a component-wise `==`, returning a boolean vector.
+- `.comp_gt(other)` - apply a component-wise `>`, returning a boolean vector.
+- `.comp_ge(other)` - apply a component-wise `>=`, returning a boolean vector.
+- `.comp_ne(other)` - apply a component-wise `!=`, returning a boolean vector.
 
 Dot methods available for scalar values (such as `ceil`, `fma`, etc) are in general also available for vectors.
 
