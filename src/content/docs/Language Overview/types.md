@@ -509,6 +509,8 @@ double bad_pi = 3.14;
 alias not_pie = bad_pi;
 ```
 
+User-defined aliases of types in C3 must use "PascalCase" (more specifically: they must begin with a capital letter and use at least some lowercase letters too), whereas aliases of variables do not have this restriction.
+
 ## Function pointer types
 
 Function pointers are always used through an `alias`:
@@ -551,9 +553,9 @@ Function pointer types also support:
 
 ## Typedef - Distinct type definitions
 
-`typedef` creates a new type, that has the same properties as the original type
-but is distinct from it. It cannot implicitly convert into the other type using the syntax
-`typedef <name> = <type>`
+In C3, unlike C, `typedef` creates a new type that has the same properties as the original type but is distinct from it. The resulting type cannot implicitly convert into the type upon which it was based, except via assignments to literals (thus preventing the need to cast every initialization). Such implicit conversion of literals for ease of use applies not only to primitives but also to aggregate types such as struct literals (e.g. `(Vec2){1, 2}`).
+
+The syntax for declaring `typedef`s is `typedef <NewType> = <old_type>`. Also, user defined types in C3 must use "PascalCase", for the sake of consistency and ease of recognition by tooling and reducing inconsistencies between codebases. For example:
 
 ```c3
 typedef MyId = int;
