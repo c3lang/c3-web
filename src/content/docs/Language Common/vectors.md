@@ -5,7 +5,7 @@ sidebar:
     order: 63
 ---
 
-Vectors - where possible - based on underlying hardware vector implementations. A vector is similar to an array, but 
+Vectors &mdash; where possible &mdash; are based on underlying hardware vector implementations. A vector is similar to an array, but 
 with additional functionality. The restriction is that a vector may only consist of elements that are numerical
 types, boolean or pointers.
 
