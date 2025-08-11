@@ -16,7 +16,7 @@ library [`List` type](/language-common/arrays/#dynamic-arrays-and-lists).)
 
 ## Arithmetics on vectors
 
-Vectors support all arithmetics and other operations supported by its underlying type. The operations are
+Vectors support all arithmetic and other operations supported by the elements' underlying type. The operations are
 always performed elementwise.
 
 ```c3
@@ -25,8 +25,7 @@ int[<2>] b = { 2, 1 };
 int[<2>] c = a * b;     // c = { 46, 11 }
 ```
 
-For integer and boolean types, bit operations such as `^ | & << >>` are available, and for pointers, pointer arithmetic
-is supported.
+For integer and boolean types, bit operations such as `^ | & << >>` are also available. Similarly, for pointers, pointer arithmetic operations are supported.
 
 ### Scalar values
 
