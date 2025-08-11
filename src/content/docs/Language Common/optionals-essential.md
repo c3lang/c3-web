@@ -68,7 +68,8 @@ fn void? test()
     int? foo = unreliable_function();
     if (catch excuse = foo)
     {
-        // Return the excuse with `?` operator
+        // Return the excuse with the `?` operator,
+        // converting it from a `fault` back into an Optional.
         return excuse?;
     }
     // Because the compiler knows 'foo' cannot
