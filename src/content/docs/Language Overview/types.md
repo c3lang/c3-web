@@ -621,21 +621,22 @@ In addition to the normal properties, typedef also supports:
 
 ## Generic types
 ```c3
-import generic_list; // Contains the generic MyList
+import generic_list;  // Contains the generic MyList data structure.
 
 struct Foo {
     int x;
 }
 
-// ✅ alias for each type used with a generic module.
-alias IntMyList = MyList {Foo};
+// ✅ An `alias` should be defined for each type created from a generic module.
+alias MyListFoo = MyList {Foo};
 MyListFoo working_example;
 
-// ❌ An inline type definition will give an error.
-// Only allowed in a type definition or macro
+// ❌ A direct use of a generic type will give an error normally.
+// Such direct uses are only allowed in a type definition or macro.
 MyList {Foo} failing_example = MyList {Foo};
 ```
-Find out more about [generic types](/generic-programming/generics).
+
+Find out more in [the generic types section](/generic-programming/generics).
 
 ## Enum
 
