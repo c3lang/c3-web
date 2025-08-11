@@ -346,9 +346,9 @@ However, at runtime only a few are available:
 
 C3 contains a built-in variant type (a.k.a. a tagged union), which is essentially a `struct` containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type,
-it is recommended to use the `anycast` macro or to check the type explicitly first.
+it is recommended to use the `anycast` macro (which has safety checks built in) or to check the type explicitly first.
 
-The following examples (like all `@test` functions) may be tested via the `c3c test` command:
+The following test functions all pass when run via the `c3c test` command:
 
 ```c3
 fn void any_basics() @test
