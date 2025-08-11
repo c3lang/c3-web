@@ -616,8 +616,8 @@ $assert(Int8Inline.nameof == "Int8Inline");
 
 In addition to the normal properties, typedef also supports:
 
-1. `inner` - Returns the type this is based on.
-2. `parentof` - If this is an inline typedef, return the same as `inner`.
+1. `inner` - Returns the underlying type an `alias` or `typedef` is based on, discarding all `typedef` distinctions.
+2. `parentof` - If a type is an inline typedef, returns the same type as `inner`, else returns type `void`.
 
 ## Generic types
 ```c3
