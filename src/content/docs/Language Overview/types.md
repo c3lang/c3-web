@@ -596,6 +596,22 @@ fn void test()
 }
 ```
 
+Another reason to use inline `typedef` is because it changes how the name of the type prints and is represented as a string yet still permits more implicit conversions than non-inline `typedef`. Aliases always print as the underlying type via `nameof` whereas typedefs always print the new type name (whether inline or not). Note also that aliases are transitive. Thus, consider the implications of the following, which passes:
+
+```c3
+alias IntAlias = isz;
+typedef IntInline = inline isz;
+
+alias Int8Alias = char;
+typedef Int8Inline = inline char;
+
+$assert(IntAlias.nameof == "long");
+$assert(IntInline.nameof == "IntInline");
+
+$assert(Int8Alias.nameof == "char");
+$assert(Int8Inline.nameof == "Int8Inline");
+```
+
 ### Typedef type properties
 
 In addition to the normal properties, typedef also supports:
