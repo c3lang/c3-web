@@ -470,8 +470,7 @@ any some_inner_int = any_struct.as_inner();
 
 ## Array types
 
-Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
-from the initializer. See the chapter on [arrays](/language-common/arrays/).
+Arrays are indicated by `[size]` after the type, e.g. `int[4]`, whereas to indicate a slice you omit the size, e.g. `int[]`. For initialization the wildcard `type[*]` can be used to infer the size from the initializer, but keep in mind that the size of a `type[*]` is still fixed at compile time (exactly as if a specific size `type[N]` had been given), whereas the size of a `type[]` may vary at run time. See the chapter on [arrays](/language-common/arrays/) for more info.
 
 ## Vector types
 
