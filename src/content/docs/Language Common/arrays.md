@@ -10,7 +10,7 @@ The standard library enhances this further with dynamically sized arrays and oth
 
 ## Fixed Size 1D Arrays
 
-These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameter. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`.
+These are declared as `<type>[<size>]`, e.g. `int[4]`. Fixed arrays are treated as values and will be copied if given as parameters. Unlike C, the number is part of its type. Taking a pointer to a fixed array will create a pointer to a fixed array, e.g. `int[4]*`.
 
 Unlike C, fixed arrays do not decay into pointers. Instead, an `int[4]*` may be implicitly converted into an `int*`.
 
