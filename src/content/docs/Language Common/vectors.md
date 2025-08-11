@@ -76,5 +76,5 @@ color.rg += { 1, 2 };
 
 Like arrays, it's possible to make slices and iterate over vectors. 
 :::note
-The storage alignment of vectors are often different from arrays, which should be taken into account when storing vectors.
+The storage alignment requirements of vectors are often different from arrays, which should be taken into account when storing vectors.
 :::
