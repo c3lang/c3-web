@@ -80,7 +80,8 @@ fn void test()
 }
 ```
 
-You can also use `arr[<start-index> : <slice-length>]`
+You can also use `arr[<start-index> : <slice-length>]`.
+
 ```c3
 fn void test()
 {
@@ -92,12 +93,12 @@ fn void test()
 ```
 
 It’s possible to omit the first and last indices of a range:
-- `arr[..<end-index>]` Omitting the start index will default it to 0
-- `arr[<start-index>..]` Omitting the end index will assign it to `arr.len-1` (this is not allowed on pointers)
+- `arr[..<end-index>]` Omitting the start index will default it to 0.
+- `arr[<start-index>..]` Omitting the end index will assign it to `arr.len-1` (this is not allowed on pointers).
 
-Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index`
+Equivalently with index offset `arr[:<slice-length>]` you can omit the `start-index`.
 
-The following are all equivalent and slice the whole array
+The following are all equivalent and slice the whole array:
 
 ```c3
 fn void test()
