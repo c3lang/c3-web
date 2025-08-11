@@ -209,8 +209,8 @@ struct SliceRaw
 ### `foreach` element by copy
 
 You may iterate over slices, arrays and vectors using `foreach (Type x : array)`.
-Using compile-time type inference this can be abbreviated
-to `foreach (x : array)` for example:
+Using compile-time type inference, this can be abbreviated
+to `foreach (x : array)`. For example:
 
 ```c3
 fn void test()
