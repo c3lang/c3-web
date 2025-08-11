@@ -344,10 +344,11 @@ fn void test()
 
 ## Fixed Size Multi-Dimensional Arrays
 
-To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
+The syntax for declaring rectangular two-dimensional fixed-size arrays is `<type>[<columns>][<rows>] arr`. The innermost dimensions come first, unlike C. Thus, for example, `int[4][2] arr` can be thought of as `(int[4])[2]`, meaning that it has two "rows" of four integers, for a total of 8 integers that have been placed contiguously in memory. It is *not* an array of two pointers to `int[4]` arrays, unlike in some other languages. Accesses use the innermost dimensions first also, for consistency, thus "reversing" the indexing order relative to the declaration, like pealing layers off of an onion or popping elements off a stack by analogy but for array typing. Below you can see how this compares to C:
+
 ```c
 // C
-// Uses: name[<rows>][<columns>]
+// Syntax: <type> <array_name>[<rows>][<columns>]
 int array_in_c[4][2] = {
     {1, 2},
     {3, 4},
@@ -356,14 +357,14 @@ int array_in_c[4][2] = {
 };
 
 // C3
-// Uses: <type>[<x-size>][<y-size>]
-// C3 declares the dimensions, inner-most to outer-most
+// Syntax: <type>[<columns>][<rows>] <array_name>
+// C3 declares the dimensions in inner-most to outer-most order, unlike C:
 int[4][2] array = {
     {1, 2, 3, 4},
     {5, 6, 7, 8},
 };
 
-// To match C we must invert the order of the dimensions
+// To match C we must invert the order of the dimensions:
 int[2][4] array = {
     {1, 2},
     {3, 4},
@@ -371,7 +372,7 @@ int[2][4] array = {
     {7, 8},
 };
 
-// C3 also supports Irregular arrays, for example:
+// C3 also supports irregular arrays (a.k.a. jagged arrays). For example:
 int[][4] array = {
     { 1 },
     { 2, 3 },
@@ -381,10 +382,10 @@ int[][4] array = {
 ```
 
 :::note
-Accessing the multi-dimensional fixed array has inverted array index order to when the array was declared.
+Accessing a multi-dimensional fixed array in C3 has inverted array index order relative to how the array was declared. Compare declaration to access below:
 
 ```c3
-// Uses: <type>[<x-size>][<y-size>]
+// Declaration: <type>[<columns>][<rows>] <array_name>
 int[2][4] array = {
     {1, 2},
     {3, 4},
@@ -392,8 +393,8 @@ int[2][4] array = {
     {7, 8},
 };
 
-// Access fixed array using: array[<row>][<column>]
-int value = array[3][1]; // 8
+// Access: <array_name>[<row>][<column>]
+int value = array[3][1];  // 8
 ```
 :::
 
