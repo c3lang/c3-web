@@ -14,8 +14,8 @@ typedef String = inline char[];
 
 ```
 \
-`String`s are usually the typical type to use, they can be sliced , compared etc ... \
-It is possible to access the length of a `String` instance through the  ` .len  `  operator.
+`String`s are usually the typical type to use. They can be sliced, compared, etc. \
+It is possible to access the length of a `String` instance through the `.len` operator.
 
 
 ### `ZString`
