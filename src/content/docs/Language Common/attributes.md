@@ -210,7 +210,7 @@ Prevents the compiler from inlining the function or a particular function call.
 
 *Used for: struct, union*
 
-Ensures that a struct of union has no padding, emits a
+Ensures that a struct of union has no padding, emitting a
 compile time error otherwise.
 
 ### `@norecurse`
