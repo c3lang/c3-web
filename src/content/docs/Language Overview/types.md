@@ -191,7 +191,7 @@ String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
 
-See [the earlier "basic types and values" page on string literals](https://c3-lang.org/language-fundamentals/basic-types-and-values/#string-literals) and [the language spec section on string literals](https://c3-lang.org/implementation-details/specification/#string-literals) for more information or examples.
+See [the earlier "basic types and values" page on string literals](/language-fundamentals/basic-types-and-values/#string-literals) and [the language spec section on string literals](/implementation-details/specification/#string-literals) for more information or examples.
 
 ## Floating point types
 
