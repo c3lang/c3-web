@@ -139,7 +139,7 @@ The function must be a void function taking no arguments.
 
 *Used for: function, call*
 
-Declares a function to always be inlined or if placed on a call, that the call should be inlined.
+If placed on a function declaration, then that function will always be inlined. Otherwise, if placed on a function call, then just that specific call will be inlined.
 
 ### `@link`
 
