@@ -150,7 +150,7 @@ fn void main()
 }
 ```
 
-Circumventing "pure" annotations will cause the compiler optimize under the assumption
+Circumventing "pure" annotations will cause the compiler to optimize under the assumption
 that globals are not affected, even if this isn't true.
 
 
