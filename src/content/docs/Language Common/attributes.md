@@ -351,9 +351,9 @@ and the second is the name. It can only be used for `extern` symbols.
 *Used for: function*
 
 This attribute is ignored on non-windows targets. On Windows,
-it will create a `WinMain` entry point that will which calls
+it will create a `WinMain` entry point that will call
 the main function. This will give other options for the `main`
-argument, and is recommended for Windows GUI applications.
+argument and is recommended for Windows GUI applications.
 
 It is only valid for the `main` function.
 
