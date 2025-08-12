@@ -287,8 +287,13 @@ Sets the visibility to "private", which means it is visible in the same module, 
 
 *Used for: call*
 
-Used to annotate a non pure function as "pure" when checking for conformance to `@pure` on
-functions.
+Used to annotate a non-pure function call as "pure" when checking for conformance to `@pure` on functions, so that pure functions can use impure ones in cases where it is known to be safe to do so. 
+
+Using this on a function call that is not actually (in effect) pure (such as on any function that mutates global state) may cause undefined behavior. To annotate a function call, append the `@pure` attribute to the end of the call, such as in `some_func() @pure;`. 
+
+Writing `@pure` at the end of a function *call* like this actually essentially casts away impurity and is hence a compiler aid for when the compiler doesn't know whether doing so is safe. In contrast, `@pure` function *declarations* in contracts are a programmer aid, a tool for preventing unintended state changes and hence preventing bugs. 
+
+For information about declaring `@pure` functions (rather than making `@pure` calls) see [the contract documentation for @pure](https://c3-lang.org/language-common/contracts/#pure-in-detail).
 
 ### `@reflect`
 
