@@ -351,7 +351,7 @@ String s = "abc" "def" "ghi";
 String s = "abcdefghi";
 ```
 
-However, inside of macros you must use `+++` ([the compile-time concatenation operator](https://c3-lang.org/generic-programming/compiletime/#concatenation)) between the string literals to make the concatenation happen.
+However, inside of macros you must use `+++` ([the compile-time concatenation operator](/generic-programming/compiletime/#concatenation)) between the string literals to make the concatenation happen.
 
 ### Raw string literals
 
