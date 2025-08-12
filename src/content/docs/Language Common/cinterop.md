@@ -70,8 +70,7 @@ If you have a library `foo.a` or `foo.so` or `foo.obj` (depending on type and OS
 `-l foo` on the command line, or in the project file add it to the `linked-libraries` value, e.g.
 `"linked-libraries" = ["foo"]`.
 
-To add library search paths, use `-L <directory>` from the command line and `linker-search-paths`
-the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
+To add library search paths, use `-L <directory>` from the command line or use `linker-search-paths` from the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`).
 
 ### Gotchas
 
