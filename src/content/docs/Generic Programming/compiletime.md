@@ -172,8 +172,7 @@ It's not possible to compile partial statements.
 
 ### Compile time macro execution
 
-If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate
-any other statements than returns, then the macro will be completely compile time executed.
+If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate any other statements than returns, then the macro will be completely compile time executed.
 
 ```c3
 macro @test($abc)
@@ -184,8 +183,7 @@ macro @test($abc)
 const int MY_CONST = @test(2); // Will fold to "4"
 ```
 
-This constant evaluation allows us to write some limited compile time code. For example, this
-macro will compute Fibonacci at compile time:
+This constant evaluation allows us to write some limited compile time code. For example, this macro will compute Fibonacci numbers at compile time:
 
 ```c3
 macro long @fib(long $n)
@@ -198,9 +196,15 @@ macro long @fib(long $n)
 }
 ```
 
-It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1`
-is not be considered to be a constant expression, even if the actual argument to the macro was a constant.
-This limitation is deliberate, to offer control over what is compiled out and what isn't.
+It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1` is not considered to be a constant expression, even if the actual argument to the macro was a constant. This limitation is deliberate, to offer control over what is compiled out and what isn't.
+
+:::note
+The act of code generation itself will still complete in compile time regardless of whether a macro is run time dependent or not. In that sense all macros could be said to "complete in compile time" when actually understood rigorously and clearly. As such, compile time code generation should not be confused with the run time effects of such generated code. 
+
+Run time code may theoretically be transformable into compile time code (or even deleted entirely) on a case by case basis, and any compiler's optimizer may do so at its discretion, especially when higher optimization levels are enabled (e.g. try `c3c build -O5` or `c3c build -Oz` and disassemble the executable, looking for computation that exists in the source code but not in the built binary).
+
+However, code generation or compile time evaluation via macros or compile time functions in contrast always completes in compile time, making it one of the most foolproof methods of optimization. Understanding the nuances of this distinction is key to using macros and compile time evaluation as effectively and efficiently as possible.
+:::
 
 ### Conditional compilation at the top level using `@if`
 
