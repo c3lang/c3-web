@@ -132,9 +132,7 @@ value is `true` then the declaration is retained, on false it is removed.
 
 *Used for: function*
 
-Make this function run at startup before main. It has an optional priority 1 - 65535, with lower
-being executed earlier. It is not recommended to use values less than 128 as they are generally
-reserved and using them may interfere with standard program initialization.
+Make this function run at startup before main. It has an optional priority 1 - 65535, with lower priorities being executed earlier. It is not recommended to use values less than 128 as they are generally reserved and using them may interfere with standard program initialization.
 
 The function must be a void function taking no arguments.
 
