@@ -47,9 +47,11 @@ import std::io;
 
 fn char[]? file_read(String filename, char[] buffer)
 {
-    // return Excuse if failed to open file
+    // Return an Optional containing a `fault` if 
+    // opening the file fails, else continue:
     File file = file::open(filename, "r")!;
-
+    
+    // Set up how the file will be closed once the scope ends:
     defer {
         io::printn("File was found, close the file");
         if (catch excuse = file.close())
@@ -58,15 +60,15 @@ fn char[]? file_read(String filename, char[] buffer)
         }
     }
 
-    // return if fault reading the file into the buffer
+    // Return an Optional containing a `fault` if 
+    // there's a problem reading the file into the buffer, else continue:
     file.read(buffer)!;
+    
     return buffer;
 }
 ```
 
-If the file named `filename` is found the function will read the content into a buffer,
-`defer` will then make sure that any open `File` handlers are closed.
-Note that if a scope exit happens before the `defer` declaration, the `defer` will not run, this a useful property because if the file failed to open, we don't need to close it.
+If the file named `filename` is found then the function will read the contents of the file into a buffer. `defer` will then make sure that any open `File` handlers are closed when the enclosing scope ends. Note that if the end of a scope happens before the `defer` statement is reached then the `defer` will not run. This a useful property because if the file failed to open then we don't need to close it.
 
 
 ## `defer try`
