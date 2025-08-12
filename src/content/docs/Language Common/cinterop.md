@@ -15,7 +15,7 @@ extern fn void puts(char*); // C "puts"
 fn void main()
 {
     // This will call the "puts"
-    // function in the standard c lib.
+    // function in the standard C lib.
     puts("Hello, world!"); 
 }
 ```
