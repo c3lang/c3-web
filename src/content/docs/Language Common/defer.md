@@ -123,7 +123,7 @@ defer catch { ... }
 ```c3
 defer (catch err) { ... }
 ```
-When the fault is captured this is convenient for logging the fault:
+The capturing behavior of `defer catch` is convenient for logging the `fault`:
 
 ```c3
 defer (catch err) io::printfn("fault found: %s", err);
