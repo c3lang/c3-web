@@ -333,7 +333,7 @@ Marks the declaration as possibly unused (but should not emit a warning).
 
 *Used for: any declaration*
 
-Marks a parameter, value etc. as must being used.
+Marks a declaration (parameter, value, etc) as needing to be used at least once.
 
 ### `@wasm `
 
