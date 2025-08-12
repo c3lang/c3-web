@@ -208,7 +208,7 @@ However, code generation or compile time evaluation via macros or compile time f
 
 ### Conditional compilation at the top level using `@if`
 
-At the top level, conditional compilation is controlled using with `@if` attributes on declarations
+At the top level (where globals are declared; such as functions, variables, etc), conditional compilation is controlled by appending `@if` attributes onto declarations:
 
 ```c3
 fn void foo_win32() @if(env::WIN32)
@@ -223,15 +223,34 @@ struct Foo
 }
 ```
 
-The argument to `@if` must be possible to resolve to a constant at compile time. This means that argument
-may also be a compile time evaluated macro:
+The argument to `@if` must be resolvable to a constant at compile time. This means that the argument may also be a compile time evaluated macro:
 
 ```c3
 macro bool @foo($x) => $x > 2;
 
-int x @if(@foo(5)); // Will be included
-int y @if(@foo(0)); // Will not be included
+int x @if(@foo(5));  // Will be included
+int y @if(@foo(0));  // Will not be included
 ```
+
+In contrast though, attempts to use more general-purpose compile-time features such as `$if` at the top level will cause compilation failure. Compare:
+
+```c3
+// Compiles:
+fn void func_a() @if(true) 
+{ 
+	//...
+}
+
+// Doesn't compile:
+$if true:
+fn void func_b()
+{ 
+	//...
+}
+$endif
+```
+
+For more information about the motivation and rationale behind this design choice to use `@if` (and a limited subset of other compile-time constructs such as `$assert`) at the top level for declarations instead of allowing arbitrary compile-time evaluation, see the related discussion about why in [the part of the macro page that covers top level `@if`](/generic-programming/macros#top-level-evaluation).
 
 #### Evaluation order of top level conditional compilation
 
