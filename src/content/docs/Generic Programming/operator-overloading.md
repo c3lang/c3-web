@@ -160,7 +160,7 @@ fn void main()
     Foo x = { 1.0f };
     Foo y = { 2.2f };
     Foo zf = x - 2.0f; // Uses Foo.minus_float
-    Foo zi = x - 2;    // ERROR: Ambiguous, implicitly casted value matches both overloads.
+    Foo zi = x - 2;    // ERROR: Ambiguous. Implicitly casted value matches both overloads.
 }
 
 ```
