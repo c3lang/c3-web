@@ -18,8 +18,8 @@ fn int? example() { /* ... */ }
 ## Handling an empty Optional
 
 ### File reading example
-- If the file is present the Optional result will be the first 100 bytes of the file.
-- If the file is not present the Optional `Excuse` will be `io::FILE_NOT_FOUND`.
+- If the file is present, the Optional result will be the first 100 bytes of the file.
+- If the file is not present, the Optional `Excuse` (the `fault`) will be `io::FILE_NOT_FOUND`.
 
 Try running this code below with and without a file called `file_to_open.txt` in the same directory.
 
