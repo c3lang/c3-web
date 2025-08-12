@@ -110,7 +110,7 @@ fn void? test()
 ## ⚠️ Optionals affect types and control flow
 
 ### Optionals in expressions produce Optionals
-Use an Optional anywhere in an expression the resulting
+If you use an Optional anywhere in an expression then the resulting
 expression will be an Optional too.
 ```c3
 import std::io;
