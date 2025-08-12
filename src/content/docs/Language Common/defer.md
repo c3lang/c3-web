@@ -73,7 +73,7 @@ If the file named `filename` is found then the function will read the contents o
 
 ## `defer try`
 
-A `defer try` is called at [end of a scope](#end-of-a-scope) when the returned [Optional contained a result](/language-common/optionals-essential/#what-is-an-optional) value.
+A `defer try` is called at the [end of a scope](#end-of-a-scope) when the returned [Optional](/language-common/optionals-essential/#what-is-an-optional) contains a normal (non-`fault`) result value. In other words, `defer try` is often used for cleanup code that you only want to run when there are no "errors" or other special cases (i.e. when the program is currently on the "successful" or "happy path" case).
 
 ### Examples
 
@@ -90,8 +90,7 @@ fn void main(String[] args)
     (void)test();
 }
 ```
-Function returns an [Optional result](/language-common/optionals-essential/#what-is-an-optional) value,
-this means `defer try` runs on [scope exit](#end-of-a-scope).
+The above function returns an [Optional result](/language-common/optionals-essential/#what-is-an-optional) value, and thus the `defer try` runs on [scope exit](#end-of-a-scope).
 
 ```c3
 fn void? test()
@@ -109,8 +108,7 @@ fn void main(String[] args)
     }
 }
 ```
-Function returns an [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional),
-this means the `defer try` does *not* run on [scope exit](#end-of-a-scope).
+The above function returns an [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional), and thus the `defer try` does *not* run on [scope exit](#end-of-a-scope).
 
 ## `defer catch`
 
