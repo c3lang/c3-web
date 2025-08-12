@@ -64,14 +64,14 @@ values passed in this manner. Doing so would very likely break user expectations
 
 ## Interfaces
 
-Most statically typed object-oriented languages implements extensibility using vtables. In C, and by extension
-C3, this is possible to emulate by passing around structs containing list of function pointers in addition to the data.
+Most statically typed object-oriented languages implement extensibility using virtual pointer tables (vtables). In C, and by extension
+C3, this is possible to emulate by passing around structs containing a pointer to a list of function pointers in addition to the data.
 
 While this is efficient and often the best solution, it puts certain assumptions on the code and makes interfaces
 more challenging to evolve over time.
 
 As an alternative there are languages (such as Objective-C) which instead use message passing to dynamically typed
-objects, where the availability of a certain functionality may be queried at runtime.
+objects, where the availability of functionality may be queried at runtime.
 
 C3 provides this latter functionality over the `any` type using *interfaces*.
 
