@@ -436,7 +436,7 @@ evaluate the expression multiple times. This corresponds to `#` parameters.
 ### `$vatype`
 
 Returns the argument as a type. This corresponds to `$Type` style parameters,
-e.g. `$vatype(2) a = 2`
+e.g. `$vatype(2) a = 2`.
 
 ### `$vasplat`
 
