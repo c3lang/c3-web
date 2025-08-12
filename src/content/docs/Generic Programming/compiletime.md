@@ -340,7 +340,24 @@ Print a message to stdout when compiling the code.
 ### `$embed`
 
 Embed binary data from a file.
-See [expressions](/language-fundamentals/expressions/#including-binary-data).
+See [the "including binary data" secton of the expressions page](/language-fundamentals/expressions/#including-binary-data) to see a few different usage examples.
+
+This is very useful for bundling any necessary data inside the executable or library itself so that there is no need for managing separate files when the program is redistributed to users. Such embedded data is fixed at compile time though, and so `$embed` shouldn't be used for files that need to persist changes *between invocations* of the program (e.g. work documents, saved games, etc). However, once loaded, `$embed` data is just arbitrary run-time data and thus you can still create and modify whatever other data you want based on it during each program run.
+
+For example:
+
+```
+char[*] img_data = $embed("some_image.png");
+
+import std::io;
+
+fn void main()
+{
+    io::printn(img_data);
+    // Prints an image's raw data
+    // as an array of unsigned bytes.
+}
+```
 
 ### `$error`
 
