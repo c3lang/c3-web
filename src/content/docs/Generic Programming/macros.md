@@ -204,12 +204,15 @@ macro @check(#expr)
 
 ## Top level evaluation
 
-Script languages, and also upcoming languages like *Jai*,
-usually have unbounded top level evaluation.
-The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
+Script languages, and also upcoming languages like *Jai*, usually have unbounded top level evaluation. The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
 
-In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or
-disable declarations. This makes the code easier to read, but at the cost of expressive power.
+In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or disable declarations and a handful of other somewhat limited compile time evaluation features (e.g. `$assert`, etc). This makes the code easier to read, but comes at the cost of expressive power. However, C3 makes this tradeoff for a carefully balanced and thoughtfully considered reason:
+
+Preventing top level compile time evaluation helps prevent lots of declarations from popping into existence seemingly by magic, which is a common source of codebase intelligibility degrading over time in C and C++. By restricting the system to only either including or removing those declarations that are or aren't applicable, via `@if`, C3 makes it so that you still get conditional compilation and macros but with much less bewildering "magic". 
+
+In effect, top level declarations become always *visible* in C3, regardless of whether they are included or removed, whereas in C and C++ unbounded invisible declarations may occur, causing code to become increasingly opaque and riddled with seemingly indecipherable "magic" and numerous variables and constants seemingly coming from nowhere.
+
+Local function scopes in contrast have the full range of [C3's compile time evaulation features](/generic-programming/compiletime/) available though, which are arguably often more expressive and pleasant to use than C and C++'s equivalents for many use cases.
 
 ## Macro declarations
 
