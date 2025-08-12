@@ -224,7 +224,9 @@ Macros that use any expression parameters (`#`) or trailing macro bodies (`@body
 
 The `@` warns the reader of a macro call of the possibility that the call may be doing more "magic" or may be more prone to bugs than if the macro lacked the `@`. Thus, unlike most languages, C3 enables the programmer to choose between more safe or more expressive macros and to make that choice immediately clear to the reader.
 
-For example, here is a basic swap:
+Note that `$` parameters (unlike `#` and `@body` parameters) do *not* cause a macro to need a `@` prefix, despite what old docs may have misled some users to believe.
+
+For example, here's a basic swap written as a macro instead of using pointers, which makes it potentially more efficient by avoiding pointer indirection overhead:
 
 ```c3
 <*
