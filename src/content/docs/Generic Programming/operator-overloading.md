@@ -69,9 +69,9 @@ to get the last element assuming the indexing uses integers.
 
 ### Enabling `foreach`
 
-In order to use a type with foreach, e.g. `foreach(d : foo)`, at a minimum methods 
+In order to use a type with foreach, e.g. `foreach(d : foo)`, at a minimum, methods 
 with overloads for `[]` (`@operator([])`) and `len` (`@operator(len)`) need to be added. 
-If `&[]` is implemented, foreach by reference is enabled (e.g. `foreach(double* &d : foo)`)
+If `&[]` is implemented, `foreach` by reference will be enabled (e.g. `foreach(double* &d : foo)`).
 
 ```c3
 fn double Foo.get(&self, usz i) @operator([])
