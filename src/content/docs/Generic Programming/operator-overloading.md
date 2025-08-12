@@ -171,7 +171,7 @@ defined on bitstructs.
 
 ### Combined assignment operators
 
-If `+` is defined for a type, then `+=` is defined as well, and similar for the
+If `+` is defined for a type, then `+=` is defined as well, and similarly for the
 other operators. However, it is also possible to explicitly override the combined assignment
 operators to optimize those cases.
 
