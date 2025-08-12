@@ -125,8 +125,7 @@ The function must be a void function taking no arguments.
 
 *Used for: all declarations*
 
-Conditionally includes the declaration in the compilation. It takes a constant compile time value argument, if this
-value is `true` then the declaration is retained, on false it is removed.
+Conditionally includes the declaration in the compilation. It takes a constant compile time value argument and if this value is `true` then the declaration is retained, else it is removed (i.e. treated as if it never existed in the source code).
 
 ### `@init`
 
