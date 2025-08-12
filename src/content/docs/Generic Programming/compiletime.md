@@ -388,10 +388,20 @@ See [reflection](/generic-programming/reflection/#evaltype).
 Execute a script at compile time and include the result in the source code.
 [See more](/language-fundamentals/modules/#exec).
 
-### `$extnameof`, `$qnameof` and `$nameof`
+### `$extnameof`
 
 Get the external name of a symbol.
 See [reflection](/generic-programming/reflection/#extnameof).
+
+External names are the names written into the symbol table of the executable or library binary, which subsequently may later be used by other programs to call into the binary by linking to those names, such as via foreign function interfaces (FFI) from another language or via direct use of the binary interface (such as enabled by the ABI and library compatibility of C and C3). 
+
+The external name of a symbol in the built binary can be set by attaching an `@export("<intended_symbol_name>")` attribute.
+
+On Linux, the `nm` shell command can be used to view the symbol table of a binary directly, thus enabling determination of what names a foreign program would see when looking at the binary. For example, try running `nm path/to/binary &> nm_out.txt` then viewing the `nm_out.txt` file. The `&>` combines both normal (`stdout`) and error (`stderrr`) output into the file, whereas just `>` would redirect only normal (`stdout`) output. 
+
+On Windows, you can try `dumpbin /SYMBOLS` for debug builds, `dumpbin /EXPORTS` for libraries, or `dumpbin /IMPORTS` for executables, but it may not help as much since large parts of the symbol table may be missing and hence misleading. There may also be tools available only in Visual Studio or associated with it, since Microsoft designs it that way intentionally to encourage programs to be built the way Microsoft wants.
+
+On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before may help.
 
 ### `$feature`
 
