@@ -213,7 +213,7 @@ fn void main()
 ```
 
 ### Reflection invocation
-*This functionality is not yet implemented and may see syntax changes*
+*This functionality is not yet implemented and may see syntax changes.*
 
 It is possible to retrieve any `@dynamic` function by name and invoke it:
 
