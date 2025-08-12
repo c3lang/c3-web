@@ -58,7 +58,10 @@ The post condition uses the `@ensure` annotation. Where `return` is used to repr
 fn uint check_foo(Foo* foo)
 {
     uint y = abs(foo.x) + 1;
-    // If we had row: foo.x = 0, then this would be a runtime contract error.
+    
+    // If we put `foo.x = 0;` here, then it
+    // would cause a run-time contract error.
+    
     return y * abs(foo.x);
 }
 ```
