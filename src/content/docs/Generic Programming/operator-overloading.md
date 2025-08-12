@@ -104,7 +104,7 @@ numerical types. These overloads are limited to user-defined types.
 For numerical types, `@operator_s` (defining a symmetric operator)
 and `@operator_r` (defining a reverse operator) are available.
 
-These are only available when matching different types, for example
+These are only available when matching different types. For example
 defining `+` between a Complex number and a double can look like this:
 
 ```c3
@@ -116,10 +116,10 @@ macro Complex Complex.add_double(self, double d) @operator_s(+)
 
 The above would match both "Complex + double" and "double + Complex",
 with the actual evaluation order of the arguments happening in 
-the expected order (Something like `get_double() + get_complex()`
-would always evaluate the arguments from left to right)
+the expected order, meaning something like `get_double() + get_complex()`
+would always evaluate the arguments from left to right.
 
-For the `@operator_r`, this is useful in the case when the evaluation
+As for `@operator_r`, it is useful in the case where the evaluation
 isn't symmetric:
 
 ```c3
