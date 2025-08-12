@@ -148,10 +148,8 @@ fn void main(String[] args)
 
 ### Functions conditionally run when called with Optional arguments
 
-When calling a function with an Optionals as arguments,
-the result will be the first Excuse found looking left-to-right.
-The function is only executed if all Optional arguments
-have a result.
+When calling a function with an Optional as an argument,
+the result will be the first Excuse found looking left-to-right through the function call's argument list. The function is only executed if all Optional arguments have normal results (i.e. don't contain `fault`s). This ensures orderly handling of "errors" and special cases before calls.
 
 ```c3
 import std::io;
