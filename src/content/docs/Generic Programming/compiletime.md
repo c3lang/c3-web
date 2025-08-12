@@ -296,23 +296,42 @@ $assert($arg > 3);
 
 ### `$assignable`
 
-Check if an expression is assignable to the given type, e.g. `Type x = expr;` would be valid.
+`$assignable(<expr>, <Type>)` checks whether an expression is assignable to the given type, meaning that `Type id = expr;` would be valid for some identifier `id`. 
+
+For example, `$assignable("7", int)` tests whether the string `"7"` can be assigned to an `int`. It can't. This isn't JavaScript, thankfully. Such tests are useful for generic code and testing the operating environment, so that modules and macros can behave correctly or at least report errors when incompatibilities are present.
+
+Anyway, here's a longer example:
 
 ```c3
 fn void main()
 {
     int x;
+    
     $assert($assignable(x, long));
-    $assert($assignable(3, char));      // Allowed even though the type of 3 is int
-    $assert(!$assignable(x, void*));    // int -> void* not implicitly available
-    $assert(!$assignable(x + x, long)); // Ambiguous widening
+    $assert($assignable(3, char));       // Allowed even though the type of 3 is `int`.
+    $assert(!$assignable(x, void*));     // `int` -> `void*` is not implicitly available.
+    $assert(!$assignable(x + x, long));  // Ambiguous widening. Not allowed.
+    
+    // All the above pass.
+    // Notice the `!`s in those last two.
+    
+    // By the way, `$assert` is run in compile time,
+    // hence `main` isn't actually needed here.
 }
 ```
 
+Alternatively, if an identifer `id` of type `Type` already exists in the context, then the `$defined` compile time function may be used instead to mirror C3's natural syntax more closely, like so: `$defined(id = <expr>)`. Notice the dependency on `id`'s existence though, which does not apply to `$assignable`. `$defined` in contracts may refer to any of the associated function's parameters by name however, as is common.
+
 ### `$defined`
 
-Returns true if a type or identifier is defined.
+Returns true if a type or identifier is defined, as embodied by an expression written in C3's natural syntax, such as `$defined(id)`, `$defined(SomeType)`, `$defined(id = some_val)`, `$defined(some_num + other_num)`, `$defined(some_func(some_data))`, etc.
 See [reflection](/generic-programming/reflection/#defined).
+
+However, be aware that `$defined` is for handling well-defined expressions, not arbitrary syntax. It cannot in the general case be used to test whether any arbitrary expression is valid C3 syntax. `$defined` can only fill that role for *some* expressions (specifically: those expressions that yield types, typed values, indentifiers, etc). 
+
+Undefined indentifiers and invalid syntax placed inside `$defined` will cause compilation to fail, not return false.
+
+Compare `$defined` to `$assignable`. Each have pros and cons and will be more or less natural in different contexts.
 
 ### `$echo`
 
