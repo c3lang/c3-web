@@ -216,13 +216,15 @@ Local function scopes in contrast have the full range of [C3's compile time evau
 
 ## Macro declarations
 
-A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `$` or `#` parameters.
+A macro is defined using the syntax `macro <return_type> <name>(<parameters>)`. Specifying the return type of a macro is optional and if omitted the return type is inferred but must always be well defined (hence different paths cannot return different types, etc). 
 
-The parameters have different sigils:
-`$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated,
-but is bound to where it was defined. `@` is required on macros that use `#` parameters or trailing macro bodies.
+The parameters have different sigils that must prefix their names where applicable: `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, but is bound to where it was defined.
 
-A basic swap:
+Macros that use any expression parameters (`#`) or trailing macro bodies (`@body(...)`) must have a name that begins with `@`. The reason for this is because macros that *don't* use such features can be thought of as being more similar to normal functions because of the absence of potential for unexpected expression-based behavior, such as the danger of using expression arguments with side effects multiple times unintentionally. 
+
+The `@` warns the reader of a macro call of the possibility that the call may be doing more "magic" or may be more prone to bugs than if the macro lacked the `@`. Thus, unlike most languages, C3 enables the programmer to choose between more safe or more expressive macros and to make that choice immediately clear to the reader.
+
+For example, here is a basic swap:
 
 ```c3
 <*
