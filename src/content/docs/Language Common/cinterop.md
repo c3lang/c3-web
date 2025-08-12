@@ -36,7 +36,8 @@ define an external name using `@extern` or `@export` with a name to match C usag
 
 ```c3
 module foo;
-fn int square(int x) @export // @export ensures external visibility
+
+fn int foo__square(int x) @export   // `@export` ensures external visibility
 {
     return x * x;
 }
