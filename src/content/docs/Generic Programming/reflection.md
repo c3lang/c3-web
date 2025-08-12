@@ -311,7 +311,7 @@ The full list of what `$defined` can check:
 - `&<expr>` - check if you can take the address of `<expr>`, `<expr>` must
     already be valid
 - `&&<expr>` - check if you can take the
-    [temp address](https://c3-lang.org/language-fundamentals/expressions/#_top)
+    [temporary address](/language-fundamentals/expressions/#_top)
     of `<expr>`, `<expr>` must already be valid
 - `$eval(<expr>)` - check if the [`$eval`](#eval) evaluates to something valid,
     `<expr>` must already be valid
