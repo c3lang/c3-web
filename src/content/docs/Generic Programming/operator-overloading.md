@@ -197,23 +197,21 @@ fn void main()
 }
 ```
 
-## Operator overloading for == and !=
+## Operator overloading for `==` and `!=`
 
-Overloading == and != is, like for arithmetics, only allowed on user defined types.
-If one is defined, the other is also implicitly defined.
+Overloading `==` and `!=` is, like overloading arithmetic operators, only allowed on user-defined types. If one of `==` or `!=` is defined, the other is also implicitly defined.
 
 :::note
 
 **Some words of caution**
 
 Operator overloading should always be written to behave in the same manner
-as with builtin types. `+` should be used for addition, not concatenation. 
-`<<` should be used for left bitshift, not to append values to an array 
-or print things to stdout.
+as the operators behave when used with builtin types. For example: `+` should be used for addition, not concatenation. `<<` should be used for left bitshift, not to append values to an array or print things to `stdout`.
 
 Violating the expected behaviour of operators is why operator overloading
 is often frowned upon despite its usefulness. Operator overloading that
-follows expectation can make the code clearer and easier to read. Violating
+follows expectations can make the code clearer and easier to read. Violating
 expectations on the other hand obfuscates the code and makes it harder to
-share. It is bad style and poor taste.
+read and understand and hence also harder to safely share and reuse. It is 
+bad style and poor taste.
 :::
