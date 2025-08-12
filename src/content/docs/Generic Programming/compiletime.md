@@ -58,7 +58,7 @@ $endif
 
 ### `$if` and `$switch`
 
-`$if <const expr>:` takes a compile time constant value and evaluates it to true or false.
+`$if <const expr>:` takes a compile time constant value and evaluates it to see if it is true or false. Whichever branch of the `$if`, `$elseif`, `$endif` conditional chain is true first is then substituted in during compile time and only that branch's code will exist in the run time code, thus eliminating all run time performance overhead that would otherwise have applied. Thus `$if` is a powerful performance optimization and code structuring technqiue. Here are some basic usage examples:
 
 ```c3
 macro @foo($x, #y)
@@ -100,7 +100,7 @@ macro @foo($x, #y)
 }
 ```
 
-Switching without argument is also allowed, which works like an if-else chain:
+Switching without passing a value argument to `$switch` itself is also allowed (much like [normal `switch`](/language-fundamentals/statements/#switch-cases-with-runtime-evaluation)), which works like an if-else chain in that it permits arbitrary conditional expressions per case instead of only allowing a specific constant per case:
 
 ```c3
 macro @foo($x, #y)
