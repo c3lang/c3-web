@@ -124,8 +124,7 @@ fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
 
 ### `@dynamic` methods
 
-A method must be declared `@dynamic` to implement an interface, but a method may also be declared `@dynamic` *without*
-the type declaring it implements a particular interface. For example, this allows us to write:
+A method must be declared `@dynamic` to implement an interface, but a method may also be declared `@dynamic` *without* the type declaring it implementing a particular interface. For example, this allows us to write:
 
 ```c3
 // This will make "int" satisfy the MyName interface
