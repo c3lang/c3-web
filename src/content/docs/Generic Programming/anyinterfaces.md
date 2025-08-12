@@ -86,8 +86,8 @@ interface MyName
 }
 ```
 
-While `myname` will behave as a method, we declare it without type. Note here that unlike normal methods we leave
-out the first "self", argument.
+While `myname` will behave as a method, we declare it without a type. Note here that unlike normal methods we leave
+out the first "self" argument.
 
 ### Implementing the interface
 
