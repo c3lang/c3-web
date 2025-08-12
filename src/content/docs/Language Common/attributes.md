@@ -32,8 +32,9 @@ and then `@align`.
 
 *Used for: function*
 
-Marks the function as a benchmark function. Will be added to the list of benchmark functions when the benchmarks are run,
-otherwise the function will not be included in the compilation.
+Marks the function as a benchmark function. The function will be added to the list of benchmark functions to run when benchmarking mode is active (i.e. when running the `c3c benchmark` command). Otherwise, outside of benchmarking mode, the function will not be included in the compilation. 
+
+This is similar to the `c3c test` command and the `@test` attribute. You can think of benchmarking mode as being like "unit testing for performance" instead of "unit testing for correctness". As such, both testing and benchmarking should be used regularly for any program where you care about program quality and user experience. 
 
 ### `@bigendian`
 
