@@ -106,8 +106,8 @@ fn String Baz.myname(Baz* self) @dynamic
 }
 ```
 
-If a type declares an interface but does not implement its methods, then that is compile time error.
-A type may implement multiple interfaces, by placing them all inside of `()` e.g. `struct Foo (VeryOptional, MyName) { ... }`
+If a type declares an interface but does not implement its methods then that is a compile time error.
+A type may implement multiple interfaces by placing them all inside of `()`, e.g. `struct Foo (VeryOptional, MyName) { ... }`.
 
 A limitation is that only user-defined types may declare they are implementing interfaces. To make existing types
 implement interfaces is possible but does not provide compile time checks.
