@@ -177,9 +177,10 @@ fn void main(String[] args)
 
 ## Interfacing with C
 
-For C the interface to C3:
-- The `Excuse` in the Optional of type `fault` is returned as the regular return.
-- The result in the Optional is passed by reference.
+To create functions in C that properly interface with C3's Optional system whenever a C function needs to return a C3 Optional of type `T?`:
+
+- The C function must return `c3fault_t` (not `T`), which corresponds to the potential `Excuse` (the `fault`) of the C3 Optional.
+- Simultaneously, the actual value of the Optional of C3 type `T?` (if any) must be set via an output pointer of C type `T*`.
 
 For example:
 
