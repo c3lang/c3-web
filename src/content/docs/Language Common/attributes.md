@@ -34,7 +34,9 @@ and then `@align`.
 
 Marks the function as a benchmark function. The function will be added to the list of benchmark functions to run when benchmarking mode is active (i.e. when running the `c3c benchmark` command). Otherwise, outside of benchmarking mode, the function will not be included in the compilation. 
 
-This is similar to the `c3c test` command and the `@test` attribute. You can think of benchmarking mode as being like "unit testing for performance" instead of "unit testing for correctness". As such, both testing and benchmarking should be used regularly for any program where you care about program quality and user experience. 
+This is similar to the `c3c test` command and the `@test` attribute. You can think of benchmarking mode as being like "unit testing for performance" instead of "unit testing for correctness". As such, both testing and benchmarking should be used regularly for any program where you care about program quality and user experience.
+
+Years of software bloat caused by disregard for performance (and also poor tooling and falsely treating abstractions as having "practically no cost") in the industry has proven that performance should be treated as a key user experience and API reusability consideration, not as blindly neglible. Having an easy built-in benchmarking system, as is available in C3, helps to remedy that. All abstractions "leak" and are tightly interwoven with their surface interfaces, contrary to wishful thinking otherwise, and hence acknowledging that reality is much more empowering than ignoring it.
 
 ### `@bigendian`
 
