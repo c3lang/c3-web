@@ -162,7 +162,7 @@ Lays out the bits as if the data was stored in a little endian type, regardless 
 
 *Used for: any declaration*
 
-Sets the visibility to "local", which means that the associated declaration will only be visible in the current [module section](https://c3-lang.org/language-fundamentals/modules/#module-sections). 
+Sets the visibility to "local", which means that the associated declaration will only be visible in the current [module section](/language-fundamentals/modules/#module-sections). 
 
 This also implies that `@local` can be used to create file-local declarations since each module section's `@local` scope is limited to the current file whereas the non-`@local` parts of module sections with identical module names are appended together across all files (even including `@private` declarations) to create the complete corresponding module. So, use `@local` for file locals and `@private` for module locals.
 
@@ -293,7 +293,7 @@ Using this on a function call that is not actually (in effect) pure (such as on 
 
 Writing `@pure` at the end of a function *call* like this actually essentially casts away impurity and is hence a compiler aid for when the compiler doesn't know whether doing so is safe. In contrast, `@pure` function *declarations* in contracts are a programmer aid, a tool for preventing unintended state changes and hence preventing bugs. 
 
-For information about declaring `@pure` functions (rather than making `@pure` calls) see [the contract documentation for @pure](https://c3-lang.org/language-common/contracts/#pure-in-detail).
+For information about declaring `@pure` functions (rather than making `@pure` calls) see [the contract documentation for @pure](/language-common/contracts/#pure-in-detail).
 
 ### `@reflect`
 
