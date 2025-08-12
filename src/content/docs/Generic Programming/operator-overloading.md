@@ -26,7 +26,7 @@ fn double Foo.get(&self, usz i) @operator([])
 }
 ```
 
-It's possible to use any type as argument, such as a string:
+It's possible to use any type as the argument, such as a string:
 
 ```c3
 fn double Bar.get(&self, String str) @operator([])
