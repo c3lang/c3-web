@@ -39,7 +39,7 @@ Only a single `[]` overload is allowed.
 
 ### "Element ref" operator `&[]`
 
-Similar to `[]`, the operator returns a value for `&my_type[<value>]`, which may
+Similar to `[]`, the `&[]` operator returns a value for `&my_type[<value>]`, which may
 be retrieved in a different way. If this overload isn't defined, then `&my_type[<value>]` would
 be a syntax error.
 
