@@ -431,7 +431,7 @@ e.g. `$foo = $vaconst[1]`. This corresponds to `$` parameters.
 ### `$vaexpr`
 
 Returns the argument as an unevaluated expression. Multiple uses will
-evaluate the expression multiple times, this corresponds to `#` parameters.
+evaluate the expression multiple times. This corresponds to `#` parameters.
 
 ### `$vatype`
 
