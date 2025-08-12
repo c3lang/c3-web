@@ -415,7 +415,7 @@ $endif
 
 ### `$vacount`
 
-Returns the number of arguments.
+Returns the number of arguments passed into the macro's vaarg list.
 
 ### `$vaarg`
 
