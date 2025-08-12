@@ -357,7 +357,7 @@ fn void test()
 
 ## Macros returning values
 
-A macro may return a value, it is then considered an expression rather than a statement:
+A macro may return a value, in which case it is then considered an expression rather than a statement:
 
 ```c3
 macro square(x)
