@@ -24,7 +24,7 @@ fn void test()
 The `defer` runs **after** the other print statements, at the function return.
 
 :::note
-[Rethrow `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) unwraps the Optional result if present, afterwards the previously Optional variable is a normal variable again, if the Optional result is empty then the Excuse is returned from the function back to the caller.
+[Rethrow `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) unwraps the Optional result if present (i.e. if not containing a `fault`). Afterwards, if code beyond the `!` is reached, the previously Optional variable becomes a normal (i.e. not Optional) variable, and hence usable thereafter without error checking. In contrast, if the Optional result is "empty" (i.e. contains a `fault`) then the Excuse (the `fault`) is immediately returned from the function back to the caller. Either way, all deferred actions will be performed at the end of each scope.
 :::
 
 ### Defer Execution order
