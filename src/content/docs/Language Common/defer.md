@@ -121,12 +121,12 @@ defer catch { ... }
 ```
 
 ```c3
-defer (catch err) { ... };
+defer (catch err) { ... }
 ```
 When the fault is captured this is convenient for logging the fault:
 
 ```c3
-defer (catch err) io::printfn("fault found: %s", err)
+defer (catch err) io::printfn("fault found: %s", err);
 ```
 ### Memory allocation example
 
