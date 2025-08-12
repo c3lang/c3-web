@@ -145,12 +145,12 @@ If placed on a function declaration, then that function will always be inlined. 
 
 *Used for: module, function, macro, global, const*
 
-Syntax for this attribute is `@link(cond, link1, link2, ...)`,
-where "link1" etc are strings names for libraries to implicitly
+The syntax for this attribute is `@link(cond, link1, link2, ...)`,
+where "link1" etc are string names for libraries to implicitly
 link to when this symbol is used.
 
 In the case of a module section, adding `@link` implicitly places the
-attribute on all of its symbols.
+attribute on all of the module's symbols.
 
 ### `@littleendian `
 
