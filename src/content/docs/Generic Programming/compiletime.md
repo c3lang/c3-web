@@ -11,11 +11,9 @@ it is possible to perform limited compile time execution.
 ### Compile time values
 
 During compilation, global constants are considered compile time values, as are any
-derived constant values, such as type names and sizes, variable alignments etc.
+derived constant values, such as type names and sizes, variable alignments, etc.
 
-Inside of a macro or a function, it is possible to define mutable compile time variables. Such
-local variables are prefixed with `$` (e.g. `$foo`). It is also possible to define local *type* variables,
-that are also prefixed using `$` (e.g. `$MyType` `$ParamType`).
+Inside of a macro or a function, it is possible to define mutable compile time variables. Such local variables are prefixed with `$` (e.g. `$foo`). It is also possible to define local *type* variables, which are also prefixed using `$` (e.g. `$MyType`, `$ParamType`, etc).
 
 Mutable compile time variables are *not* allowed in the global scope.
 
