@@ -104,7 +104,7 @@ numerical types. These overloads are limited to user-defined types.
 For numerical types, `@operator_s` (defining a symmetric operator)
 and `@operator_r` (defining a reverse operator) are available.
 
-These are only available when matching different types. For example
+These are only available when matching different types. For example,
 defining `+` between a Complex number and a double can look like this:
 
 ```c3
