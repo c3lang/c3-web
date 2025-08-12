@@ -151,6 +151,8 @@ macro usz @offset($Type, #field)
 
 ### Declaration attributes
 
+Consider these two examples comparing declaration attribute syntax in C vs C3:
+
 ```c
 // C Macro
 #define PURE_INLINE __attribute__((pure)) __attribute__((always_inline))
@@ -162,6 +164,16 @@ int foo(int x) PURE_INLINE { ... }
 attrdef @NoDiscardInline = @nodiscard, @inline;
 fn int foo(int) @NoDiscardInline { ... }
 ```
+
+Note that C3's equivalent of function purity is a contract constraint, not an attribute.
+That is why the C3 example here is not the same in effect as the C example and instead only
+demonstrates the broader point of how to combine attributes. C3 *does* have a [`@pure`
+attribute](/language-common/attributes/#pure), but it may only be applied to *calls* (not declarations) and doesn't make
+the call pure but rather it tells the compiler to *pretend* that the call will be pure
+for the purposes of ignoring `@pure` contract constraints when a call is known to be safe.
+Do not confuse these two different uses of `@pure` in C3. They are very different.
+
+[C3's equivalent of a pure *declaration*](/language-common/contracts/#pure-in-detail) is a contract constraint written between `<* ... *>`, *not* an attribute appended to the end of a function signature.
 
 ### Declaration macros
 ```c
