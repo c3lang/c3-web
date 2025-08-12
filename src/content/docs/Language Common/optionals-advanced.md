@@ -239,10 +239,10 @@ fn void main(String[] args)
     // Unwrap the result from reliable_result1 and reliable_result2
     if (try reliable_result1 && try reliable_result2 && 5 > 2)
     {
-        // `reliable_result1` is can be used as a normal variable here
+        // `reliable_result1` can be used as a normal variable here.
         io::printfn("reliable_result1: %s", reliable_result1);
 
-        // `reliable_result2` is can be used as a normal variable here
+        // `reliable_result2` can be used as a normal variable here.
         io::printfn("reliable_result2: %s", reliable_result2);
     }
 
