@@ -279,7 +279,7 @@ To read more about all the fields available at compile time, see the page on [re
 
 ## Compile time functions
 
-A set of compile time functions are available at compile time:
+The following is a list of functions available at compile time:
 
 ### `$alignof`
 
