@@ -394,7 +394,7 @@ The maximum recursion depth is limited to the `macro-recursion-depth` build sett
 ## Macro vaargs
 
 Macros support the typed vaargs used by C3 functions: `macro void foo(int... args)` and `macro void bar(args...)`
-but it also supports a unique set of macro vaargs that look like C style vaargs: `macro void baz(...)`
+but also support a unique set of macro vaargs that look like C-style vaargs: `macro void baz(...)`.
 
 To access the arguments there is a family of $va-* built-in functions to retrieve
 the arguments:
