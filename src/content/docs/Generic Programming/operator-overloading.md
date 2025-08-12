@@ -52,7 +52,7 @@ fn double* Foo.get_ref(&self, usz i) @operator(&[])
 
 ### "Element set" operator `[]=`
 
-The counterpart of `[]` allows setting an element using `my_type[<index>] = <value>`.
+This operator, the assignment counterpart of `[]`, allows setting an element using `my_type[<index>] = <value>`.
 
 ```c3
 fn void Foo.set(&self, usz i, double new_val) @operator([]=)
