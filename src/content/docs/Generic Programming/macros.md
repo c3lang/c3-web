@@ -159,7 +159,7 @@ int foo(int x) PURE_INLINE { ... }
 
 ```c3
 // C3 Macro
-attrdef @NoDiscardInline = { @nodiscard @inline };
+attrdef @NoDiscardInline = @nodiscard, @inline;
 fn int foo(int) @NoDiscardInline { ... }
 ```
 
