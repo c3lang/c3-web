@@ -246,7 +246,7 @@ These operations are only valid for integers.
 1. Resolve the inner operand.
 2. If the type inner type is not a number this is an error.
 3. If the inner type is an unsigned integer, cast it to the same signed type.
-4. The type is the type of the result from (3)
+4. The type is the type of the result from (3).
 
 #### 4. `&` and `&&`
 
