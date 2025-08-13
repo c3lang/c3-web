@@ -34,7 +34,7 @@ $assert($sizeof(sh) == $typeof(sh).sizeof);
 
 ### Type properties
 
-It is possible to access properties on the type itself:
+Here are the property-like ("dot notation") constants associated with each type:
 
 - `alignof`
 - `associated`
@@ -58,6 +58,8 @@ It is possible to access properties on the type itself:
 - `sizeof`
 - `typeid`
 - `values`
+
+Many of these properties are very useful, especially for properly handling generic or portable code that must account for the characteristics of types correctly.
 
 #### `alignof`
 
