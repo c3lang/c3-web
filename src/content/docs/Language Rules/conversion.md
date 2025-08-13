@@ -132,12 +132,10 @@ the inline member can be used to find a maximum type (see below under substruct 
  
 ### Substruct conversions
 
-Substructs may be used in place of its parent structs in many cases. The rule is as follows:
+A substruct may be used in place of any of its parent structs (i.e. in place of any of the types of its `inline` members) in many cases. The rule is as follows:
 
 1. A substruct pointer may implicitly convert to a parent struct.
-2. A substruct *value* may be implicitly assigned to a variable with the parent struct type, 
-This will *truncate* the value, copying only the parent part of the substruct. However, a 
-substruct value cannot be assigned its parent struct.
+2. A substruct *value* may be implicitly assigned to a variable with the parent struct type. This will *truncate* the value, copying only the parent part of the substruct. However, a substruct value cannot be assigned its parent struct.
 3. Substruct slices and arrays *can not* be cast (implicitly or explicitly) to an array of the parent struct type.
 
 ### Pointer conversions
