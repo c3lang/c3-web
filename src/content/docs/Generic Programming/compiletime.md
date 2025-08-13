@@ -413,7 +413,15 @@ Check if the expression is constant at compile time.
 
 ### `$include`
 
-Includes a file into the current file at the top level.
+Includes a file into the current file at the top level as raw text, resulting in that file's text being compiled as if directly written into the location of the `$include`.
+
+Often it will be cleaner to `import` a proper module though. Give it some thought.
+
+More broadly speaking though, you should also consider using macros, generic modules, module sections, compile time functions, builtins, `$embed`, `$eval` and/or `$exec`. One or more of those may be more suited to your specific use case than `$include` and hence more easily managed. 
+
+For instance, if pure data inclusion is what you want then `$embed` may be more helpful than `$include`. Macros, compile time functions and `$exec` can be used for arbitrary code generation. Generic modules are probably the cleanest way to abstract over types for reusable data structures. 
+
+Nonetheless, plain C-like text inclusion via `$include` may sometimes be useful. Use what is most effective and strive to always think from first principles and direct evidence. Many "best practices" have no real basis besides social forces and are very context dependent or even just false. Abstractions are imperfect. There is no substitute for rigorous reasoning.
 
 ### `$nameof`
 
