@@ -256,7 +256,11 @@ String x = FooEnum.values[1].nameof; // "BAR"
 
 ### Compile time functions
 
-There are several built-in functions to inspect the code during compile time.
+There are several built-in functions for retrieving information about the characteristics of values and expressions in the code during compile time. These differ from [the "dot notation" properties of types above](/generic-programming/reflection/#type-properties) because these functions below in contrast are usable on values and expressions (and sometimes also on types), whereas the former are only usable on types. 
+
+Regardless though, both these `$` functions below and the "dot notation" properties above all evaluate as compile time constants. In contrast, run time type information is either retrieved by accessing run time properties of data of type `any`, managed manually to fit a specific purpose (such as for custom tagged unions) or handled automatically by using [interfaces](/generic-programming/anyinterfaces/#interfaces) and [dynamic calls](/generic-programming/anyinterfaces/#dynamic-methods), as discussed elsewhere.
+
+Anyway, here are the available compile time reflection functions:
 
 - `$alignof`
 - `$defined`
