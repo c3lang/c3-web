@@ -334,10 +334,10 @@ fn int test()
 
 **Q:** Why does C3 require that types start with upper case but functions with lower case?
 
-**A:** C grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
+**A:** C's grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
 exist as well, such as delayed parsing. It is also possible to make it unambiguous using infinite lookahead.
 
-However, all of those methods makes it much harder for tools to search the source code accurately. By making
+However, all of those methods make it much harder for tools to search the source code accurately. By making
 the naming convention part of the grammar, C3 is straightforward to parse with a single token lookahead.
 
 **Q:** Why are there no closures and only non-capturing lambdas?
@@ -353,9 +353,7 @@ while C3 isn't the best, no real better alternative has come along.
 
 **Q:** Why are there no static methods?
 
-**A:** Static methods creates a tension between free functions in modules and functions namespaced by the type.
-Java for example, resolves this by not having free functions at all. C3 solves it by not having static methods (nor
-static variables). Consequently more functions becomes part of the module rather than the type.
+**A:** Static methods create a tension between free functions in modules and functions namespaced by the type. Java for example, resolves this by not having free functions at all. C3 resolves it by not having static methods (nor static variables). Consequently more functions become part of the module rather than the type.
 
 **Q:** Why do macros with trailing bodies require `;` at the end?
 
@@ -379,8 +377,7 @@ int a = @test() {} + @test() {};
 *b = 123;
 ```
 
-C3 strives for a simple grammar, and so the trade-off having to use `;` was a fairly
-low prices to pay for this feature.
+C3 strives for a simple grammar, and so the trade-off of having to use `;` was a fairly low price to pay for this feature.
 
 ## Cross-compiling To Windows From Linux
 **Q:** How do I cross-compile my C3 program For Windows On Linux?
