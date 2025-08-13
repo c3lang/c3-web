@@ -47,10 +47,7 @@ Both targets expect `my_lib_static` to be available for linking. If this library
 
 ### Source code
 
-Aside from the manifest, C3 will read any C and C3 files in the same directory as `manifest.json`
-as well as any files in the target subdirectory for the current target. For static libraries
-typically a `.c3i` file (that is, a C3 file without any implementations) is provided, similar to
-how .h files are used in C.
+Aside from the manifest, C3 will read any C and C3 files in the same directory as `manifest.json`, as well as any files in the target subdirectory for the current target. For static libraries, typically a `.c3i` file (that is, a C3 file without any implementations) is provided, similar to how `.h` files are used in C, but much better because C3 has proper module support and hence `.c3i` interface files are optional and are simply a helpful way to declare library interfaces to bind to, such as for prebuilt/binary libraries.
 
 ### Additional actions
 
