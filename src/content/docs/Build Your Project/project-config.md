@@ -102,7 +102,7 @@ This is a description of the configuration options in `project.json`:
 By default, an executable is assumed, but changing the type to `"static-lib"` or `"dynamic-lib"` 
 creates static library and dynamic library targets respectively.
 
-*This part will be updated, stay tuned* 
+*This part will be updated, so stay tuned!* 
 
 ## Compilation options
 
