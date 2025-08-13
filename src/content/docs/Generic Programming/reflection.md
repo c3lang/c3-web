@@ -448,9 +448,25 @@ $typeof(a)* x = allocate_bytes($sizeof(a));
 
 #### `$stringify`
 
-Returns the expression as a string. It has a special behaviour for macro expression parameters,
-where `$stringify(#foo)` will return the expression contained in `#foo` rather than simply return
-"#foo"
+Returns the expression as a string. `$stringify` has a special behaviour for handling macro expression parameters, where `$stringify(#foo)` will return the expression contained in `#foo` as a string, exactly as written in the macro call's arguments, rather than simply return `"#foo"`.
+
+Thus, for example:
+
+```c3
+import std::io;
+
+macro @describe(#expr)
+{
+	io::printfn("The value of `%s` is `%s`.", $stringify(#expr), #expr);
+}
+
+fn void main()
+{
+	@describe(isz.sizeof);
+  //Prints:
+  //  The value of `isz.sizeof` is `8`.
+}
+```
 
 #### `$typeof`
 
