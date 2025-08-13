@@ -124,10 +124,10 @@ the maximum type is the floating point type. E.g. `int + float -> float`.
 5. If both types are integer types with the same signedness, the 
 maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`.
 6. If both types are integer types with different signedness, the 
-maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`
+maximum type is a signed integer with the same bit width as the maximum integer type. E.g. `ulong + int -> long`.
 7. If at least one side is a struct or a pointer to a struct with an 
-`inline` directive on a member, check recursively check if the type of 
-the inline member can be used to find a maximum type (see below under sub struct conversions)
+`inline` directive on a member, check recursively whether the type of 
+the inline member can be used to find a maximum type (see below under substruct conversions).
 8. All other cases are errors.
  
 ### Substruct conversions
