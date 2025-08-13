@@ -28,7 +28,9 @@ An array of addresses to the benchmark functions as a `void*[]`.
 The program must be run in benchmark mode (e.g. via the `c3c benchmark` command) for this array to be non-empty.
 
 #### `$$DATE`
-The current date.
+The current date (year, month, day) as a `String`.
+
+In contrast, to retreive the time of day (hours, minutes, seconds) try using `$$TIME`.
 
 #### `$$FILE`
 The current file name.
