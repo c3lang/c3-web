@@ -430,6 +430,10 @@ See [reflection](/generic-programming/reflection/#offsetof).
 Get the qualified name of a symbol.
 See [reflection](/generic-programming/reflection/#qnameof).
 
+Qualified names are the full ("absolute") namespace paths needed to reach a symbol.
+
+For example, `$qnameof(io::printn)` is `std::io::printn`.
+
 ### `$vacount`
 
 Return the number of macro vaarg arguments.
