@@ -240,7 +240,7 @@ There are many examples of this in the `std::os` modules.
 
 ## Patterns
 
-**Q:** When do I put functionality in method and when is it a free function?
+**Q:** When should I put functionality in a method versus a free function?
 
 **A:** In the C3 standard library, free functions are preferred unless the function is only acting on the particular
 type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s", name)` over
@@ -284,9 +284,7 @@ macro void Obj.func(&self, ...)
 }
 ```
 
-The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`.
-(The use of `&&&` is the same as `&&` except the right hand side is *lazily* evaluated,
-in this case, it only is checked if $vacount is `1`)
+The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`. (The use of `&&&` is the same as `&&` except that the right hand side is lazily evaluated. In this case, it only is checked if `$vacount` is `1`.)
 
 ## Platform support
 
