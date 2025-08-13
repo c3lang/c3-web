@@ -462,7 +462,9 @@ Return a vaarg as an `#expr` parameter.
 
 ### `$vasplat`
 
-Expand the vaargs in an initializer list or function call.
+Expand the vaargs into an initializer list or function call, thus providing a way of passing part or all of the vaarg list's arguments onward.
+
+To expand only part of a vaarg list rather than all of it, use `$vasplat[<min>..<max>]` with the intended indices instead of just `$vasplat`. See the section on [slicing arrays](/language-common/arrays/#slicing-arrays) to learn more about the wide variety of ways that such index ranges can be formed.
 
 ### `$vatype`
 
@@ -474,7 +476,33 @@ Return the size of an expression.
 
 ### `$stringify`
 
-Turn an expression into a string. Typically used with `#foo` parameters.
+Turn an expression into a string. This is typically used with expression parameters (`#` prefixed parameters) in macros.
+
+Such stringification is very useful for debug printing and code generation, among other things. For example, just to illustrate why:
+
+```c3
+import std::io;
+
+macro @show(#expr)
+{
+    io::printfn("%s == %s", $stringify(#expr), #expr);
+}
+macro @announce(#expr)
+{
+    io::printn($stringify(#expr));
+    #expr;
+}
+
+fn void main()
+{
+    int num = 0;
+    @show(num);
+    @announce(num += 5);
+    @show(num);
+}
+```
+
+This elminates redundancy when print debugging. This code could be refined to be better, such as by making `@show` handle [Optionals](/language-common/optionals-essential/#what-is-an-optional) correctly, but the simple version above is less distracting. However, as you can see, code can be annoted for temporary print debugging very easily by using `$stringify` based expression macros. 
 
 ### `$typeof`
 
