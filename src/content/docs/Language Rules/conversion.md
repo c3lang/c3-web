@@ -42,8 +42,8 @@ The left hand side of an assignment, or the parameter type in a call, is known a
 
 Like C, C3 uses implicit arithmetic promotion of integer and floating point variables before arithmetic operations:
 
-1. For any floating point type with a bitwidth smaller than 32 bits, widen to `float`. E.g. `f16 -> float`
-2. For an integer type smaller than the *minimum arithmetic width* promote the value to a same signed integer of the *minimum arithmetic width* (this usually corresponds to a c int/uint). E.g. `ushort -> uint`
+1. For any floating point type with a bitwidth smaller than 32 bits, widen to `float`. For example, in C3 `float16` converts to `float` before arithmetic is performed.
+2. For an integer type smaller than the *minimum arithmetic width*, promote the value to a same-signed integer of the *minimum arithmetic width*. This usually corresponds to a C `int` or `unsigned int`. For example, in C3 `ushort` converts to `uint` before arithmetic is performed.
 
 ### Implicit narrowing
 
