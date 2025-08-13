@@ -121,7 +121,7 @@ List of C3 libraries (".c3l") to use when compiling the target.
 
 #### `sources`
 
-List of source files to compile and for tests which will run.
+List of source files to compile or run tests for.
 
 #### `cc`
 
