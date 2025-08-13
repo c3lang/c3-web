@@ -5,7 +5,7 @@ sidebar:
     order: 227
 ---
 
-*Note, the library system is in early alpha, everything below is subject to change*
+*Note that the library system is in early alpha. Everything below is subject to change.*
 
 C3 allows convenient packaging of C3 source files optionally with  statically or dynamically linked libraries.
 To use such a library, simply pass the path to the library directory and add the library you wish to link to.
