@@ -5,9 +5,17 @@ sidebar:
     order: 85
 ---
 
-C3 allows both compile time and runtime reflection.
+C3 allows both compile time and run time reflection.
 
-During compile time the type information may be directly used as compile time constants, the same data is then available dynamically at runtime.
+During compile time, some type information is available in the form of compile time constants associated with each type.
+
+Run time type information is also available by retrieving a `typeid` from a run time object (such as from an object of type `any` via `<runtime_obj>.type` most commonly) and then comparing the properties of the returned run time `typeid` against the corresponding properties (if any) of the compile time equivalent `<type>.typeid`. Note however that run time `typeid`s currently have [a much smaller set of available properties](/language-overview/types/#typeid-fields). 
+
+See [the documentation about the `any` type](https://c3-lang.org/language-overview/types/#the-any-type) for more information if you want or need run time reflection. Such run time info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`)  to implement run time polymorphism for example, though [tagged unions](https://en.wikipedia.org/wiki/Tagged_union) are another option that's often better for types whose sizes don't differ extremely and [struct subtyping](/language-overview/types/#struct-subtyping) via `inline` is also often efficient and sufficient as long as member truncation (chopping off all the "derived" data members, a.k.a. "object slicing" in C++ terminology) is permissible (such as when no "virtual" behavior is needed). 
+
+The rest of this page covers only compile time reflection, which is still applicable (and indeed essential) to properly utilizing run time reflection via the above run time `typeid` retrieval mechanism because each run time type still corresponds to an underlying compiled type. 
+
+For those unfamiliar though, be aware that run time typing may be substantially less performant than compile time typing and is often much less necessary and much less beneficial than a programmer accustomed to rigid "OOP" languages may assume by habit. In contrast, tagged unions, `inline` struct subtyping, generic modules and macros offer similar expressiveness (polymorphism, etc) without as much (or any) indirection overhead. In fact, the performance overhead of such alternative techniques often is (or can be reduced to) zero if used with care, unlike run time reflection via `any` or [dynamic call](/generic-programming/anyinterfaces/#dynamic-methods)  [interfaces](/generic-programming/anyinterfaces/#interfaces) generally.
 
 ## Compile time reflection
 
