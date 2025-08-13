@@ -95,7 +95,7 @@ int f = (int)(d + ~b); // Valid
 long g = a + b; // Valid
 ```
 
-As a rule of thumb, if there are more than one possible conversion an explicit cast is needed.
+As a rule of thumb, if there are more than one possible conversion, then an explicit cast is needed.
 
 Example:
 
