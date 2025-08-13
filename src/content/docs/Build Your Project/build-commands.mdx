@@ -166,10 +166,13 @@ For example, you can use scripts to build an archive file containing the executa
 c3c docs [target]
 ```
 
-*Not added yet* 
+*Not added yet!*
 
-Rebuilds the documentation. 
+Rebuilds the documentation based upon whatever documentation comments and contracts have been written into your C3 code, so that you and other programmers working on your project can easily get a more expedient and more readily navigable overview of what things are available and what they do and how to use them.
 
+This is what is known as a "documentation generation" or "docgen" system. The most common example of a documentation generator in the C and C++ ecosystem is perhaps [Doxygen](https://www.doxygen.nl/) (a 3rd party tool) but many other languages have their own built-in documentation generators.
+
+Alternatively, if you do not want to maintain documentation for your project, such as if your project is too transient for documentation to matter or if you want to potentially iterate faster, then consider instead at least ensuring that you have lots of unit tests (via the `@test` attribute) and assertions (`$assert` and `assert`) in your code so that the "self documenting" qualities of your codebase are maximized. Be aware however that some things can never be adequately expressed in any amount of "self documenting" code. Each approach has tradeoffs. A balanced mix is also a good approach.
 
 ## Bench
 
