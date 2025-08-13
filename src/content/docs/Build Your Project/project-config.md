@@ -138,8 +138,8 @@ This adds paths for the linker to search, when linking normal C libraries.
 #### `linked-libraries`
 
 This is a list of C libraries to link to. The names need to follow the normal
-naming standard for how libraries are provided to the system linker,
-so for example on Linux, libraries have names like `libfoo.a` but when
+naming standard for how libraries are provided to the system linker. 
+So, for example, on Linux libraries have names like `libfoo.a` but when
 presented to the linker the name is `foo`. As an example `"linked-libraries": ["curl"]`
 would on Linux look for the library `libcurl.a` and `libcurl.so` in the 
 paths given by "linker-search-paths".
