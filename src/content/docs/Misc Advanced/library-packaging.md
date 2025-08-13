@@ -55,7 +55,7 @@ Aside from the manifest, C3 will read any C and C3 files in the same directory a
 invoked when a library is used. This requires running the compiler at **full trust level** using the 
 `--trust=full` option.
 
-## How to – automatically – export libraries
+## How to &mdash; automatically &mdash; export libraries
 
-*This is not implemented yet, docs will materialize once it is finished*
+*This feature is not implemented yet. The documentation for this feature will materialize once it is finished.*
 
