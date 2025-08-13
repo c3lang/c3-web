@@ -187,7 +187,7 @@ Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
 
 This mandatory option should be one of "executable", "dynamic-lib" and "static-lib".
 
-*More types will be added*
+*More types will be added.*
 
 ## Using environment variables
 
