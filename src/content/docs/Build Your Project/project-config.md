@@ -173,7 +173,7 @@ in the source code using `$feature(NAME_OF_FEATURE)`.
 
 #### `warnings`
 
-*Not completely supported yet*
+*Not completely supported yet.*
 
 List of warnings to enable during compilation.
 
@@ -191,8 +191,8 @@ This mandatory option should be one of "executable", "dynamic-lib" and "static-l
 
 ## Using environment variables
 
-*Not supported yet*
+*Not supported yet.*
 
-In addition to constants any values starting with "$" will be assumed to be environment variables.
+In addition to constants, any values starting with `$` will be assumed to be environment variables.
 
-For example `"$HOME"` would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
+For example `"$HOME"` would on Unix-like systems (e.g. Linux, the BSDs, Mac) return the home directory. For strings that start with `$` but *should not* be interpreted as an environment variable you need to escape it with a backslash (`\`). For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
