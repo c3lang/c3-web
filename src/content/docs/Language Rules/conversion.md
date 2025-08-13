@@ -154,7 +154,7 @@ Vectors can also be cast to the corresponding array type.
 
 For example: `char[<2>]` &harr; `char[2]`.
 
-## Binary conversions
+## Binary operator conversions
 
 #### 1. Multiplication, division, remainder, subtraction / addition with both operands being numbers
 
@@ -162,7 +162,7 @@ These operations are only valid for integer and float types.
 
 1. Resolve the operands.
 2. Find the [maximum type](#maximum-type) of the two operands.
-3. Promote both operands to the resulting type if both are simple expressions
+3. Promote both operands to the resulting type if both are simple expressions.
 4. The resulting type of the expression is the [maximum type](#maximum-type).
 
 #### 2. Addition with left side being a pointer
