@@ -64,7 +64,9 @@ The current module name as a `String`.
 Keep in mind that there can be multiple modules per file in C3 if multiple [module sections](/language-fundamentals/modules/#module-sections) are used. In contrast, for a per file name try `$$FILE` or `$$FILEPATH`.
 
 #### `$$TIME`
-The current time.
+The current time of day (hours, minutes, seconds) as a `String`.
+
+In contrast, to retreive the calendar day (year, month, day) try using `$$DATE`..
 
 
 ## Compiler builtin functions
