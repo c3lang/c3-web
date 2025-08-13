@@ -32,11 +32,11 @@ C3 uses two's complement arithmetic for all integer math.
 
 :::note 
 These abbreviations are used in the text below:
-- "lhs" meaning "left hand side".
-- "rhs" meaning "right hand side".
+- "lhs" means "left hand side".
+- "rhs" means "right hand side".
 :::
 
-The left hand side of an assignment, or the parameter type in a call is known as the *target type* the target type is used for implicit widening and inferring struct initialization.
+The left hand side of an assignment, or the parameter type in a call, is known as the *target type*. The target type is used for implicit widening and inferring struct initialization.
 
 ### Common arithmetic promotion
 
