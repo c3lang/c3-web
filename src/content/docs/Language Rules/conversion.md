@@ -47,19 +47,19 @@ Like C, C3 uses implicit arithmetic promotion of integer and floating point vari
 
 ### Implicit narrowing
 
-An expression with an integer type, may implicitly narrow to smaller integer type, and similarly a float type may implicitly narrow to less wide floating point type is determined from the following algorithm.
+Under some circumstances, such as after arithmetic promotion or when initializing from literals, an expression with an integer type may implicitly narrow to a smaller integer type. Similarly, a floating point type may likewise implicitly narrow to a less wide floating point type under the right conditions. This is despite [the above rules](/language-rules/conversion/#conversion-rules-for-c3); it is done only when likely to be safe and natural. This process is determined by the following algorithm:
 
-1. Shifts and assign look at the lhs expression.
-2. `++`, `--`, `~`, `-`, `!!`, `!` - check the inner type.
-3. `+`, `-`, `*`, `/`, `%`, `^`, `|`, `&`, `??`, `?:` - check both lhs and rhs.
-4. Narrowing `int`/`float` cast, assume the type is the narrowed type.
-5. Widening `int`/`float` cast, look at the inner expression, ignoring the cast.
-6. In the case of any other cast, assume it is opaque and the type is that of the cast.
+1. Shifts and assignment use the type of the left hand side (lhs) of the expression.
+2. `++`, `--`, `~`, `-`, `!!`, `!` &mdash; all check the inner type.
+3. `+`, `-`, `*`, `/`, `%`, `^`, `|`, `&`, `??`, `?:` &mdash; all check both the lhs and the rhs.
+4. Narrowing integer or floating point casts: assume the type is the narrowed type.
+5. Widening integer or floating point casts: look at the inner expression, ignoring the cast.
+6. In the case of any other cast, the data is assumed to be opaque (like untyped binary data; `void*` referenced data) and the type is that of the cast.
 7. In the case of an integer literal, instead of looking at the type, check that the integer would fit the type to narrow to.
-8. For `.len` access, allow narrowing to C int width.
+8. For `.len` access, allow narrowing to C `int` width for better compatibility with C.
 9. For all other expressions, check against the size of the type.
 
-As rough guide: if all the sub expressions originally are small enough it's ok to implicitly convert the result.
+As a rough guide: if all the subexpressions originally were small enough before arithmetic promotion or as literals then it's ok to implicitly convert the result. Otherwise though, conversions that could lose information generally require casts.
 
 Examples:
 ```c3
@@ -72,10 +72,10 @@ short y = -3;
 int z = 0xFFFFF;
 ulong w = -0xFFFFFFF;
 
-x = x + x; // => calculated as x = (char)((int)x + (int)x);
-x = y + x; // => Error, narrowing not allowed as y > char
-h = x * h; // => calculated as h = (float16)((float)x * (float)h);
-h = f + x; // => Error, narrowing not allowed since f > f16
+x = x + x;  // => Calculated as `x = (char)((int)x + (int)x);`.
+x = y + x;  // => Error. Narrowing is not allowed because short y is wider than char x.
+h = x * h;  // => Calculated as `h = (float16)((float)x * (float)h);`.
+h = f + x;  // => Error. Narrowing is not allowed because float f is wider than float16 h.
 ```
 
 ### Implicit widening
