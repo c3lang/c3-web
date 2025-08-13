@@ -6,27 +6,33 @@ sidebar:
 ---
 
 ## Conversion Rules For C3
-C3 differs in some crucial respects when it comes to number conversions and promotions. These are the rules for C3:
+C3 differs from C in some crucial respects when it comes to number conversions and promotions. These are the rules for C3:
 
-- `float` to `int` conversions require a cast.
-- `int` to `float` conversions *do not* require a cast.
-- `bool` to `float` converts to `0.0` or `1.0`
-- Widening `float` conversions are only conditionally allowed<sup>*</sup>.
-- Narrowing conversions require a cast<sup>*</sup>.
-- Widening `int` conversions are only conditionally allowed<sup>*</sup>.
-- Signed <-> unsigned conversions of the same type *do not* require a cast.
-- In conditionals `float` to `bool` *do not* require a cast, any non zero `float` value considered true.
-- Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `()` e.g. `bool x = (1.0)` or `if (1.0) { ... }`
+- Floating point to integer conversions require a cast.
+- Intger to floating point conversions do not require a cast.
+- `bool` values convert to floating point as `0.0` or `1.0`.
+- Widening floating point conversions are only conditionally allowed&dagger;.
+- Narrowing conversions require a cast&dagger;.
+- Widening integer conversions are only conditionally allowed&dagger;.
+- Conversions between signed and unsigned values of the same type do not require a cast. As such, values will wrap around if outside the representable range of the target type.
+- In conditionals, conversions from floating point to `bool` do not require a cast. Any non-zero floating point values are considered true.
+- Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `(...)`, e.g. `bool x = (1.0)` or `if (1.0) { ... }`.
+
+&dagger;: These statements are approximate and have additional nuances to account for.
+
+The reason why conversion from integers to floating point numbers happens implicitly is because floating point numbers can preserve a very wide range of magnitudes, even though the conversion may lose precision in the least significant digits, and thus the approximate sense of what a value was is not lost. In other words, floating point values generally preserve the *relative magnitude* of the other number types, hence implicit conversions to them generally preserve numbers' meaning relative to each other.
+
+In contrast, applications where precision must *always* be retained in *all* numeric digits (such as when all parts of a simulation's space must behave numerically the same, such as occasionally is required for some games that require both a large *but approximately fixed-scale* space and uniformly precise physics) should considering using integers or fixed point numbers instead of floating point numbers. Most applications though will work fine with floating point math. Just make sure you understand that the least significant digits in floating point values can behave as if they don't exist as a value scales up, such that (for example) repeatedly adding 1 millions of times in succession can have *no effect* on the value, among other similarly insidiously subtle numerical problems.
 
 C3 uses two's complement arithmetic for all integer math.
+
+### Target type
 
 :::note 
 These abbreviations are used in the text below:
 - "lhs" meaning "left hand side".
 - "rhs" meaning "right hand side".
 :::
-
-### Target type
 
 The left hand side of an assignment, or the parameter type in a call is known as the *target type* the target type is used for implicit widening and inferring struct initialization.
 
