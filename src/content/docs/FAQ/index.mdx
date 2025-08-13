@@ -129,9 +129,7 @@ fn void main()
 
 (see [Vectors](/language-common/vectors) for more info.)
 
-**A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`, the element type may also only
-be of integer, float, bool or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetics
-available on the element type is available on the vector and is done element wise:
+**A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`. The element type may also only be of integer, floating point, `bool` or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetic operators available on the element type are also available on the vector as a whole and are performed element-wise, thus enabling more convenient vector math. For example:
 
 ```c3
 int[<2>] pos = { 1, 3 };
@@ -139,7 +137,7 @@ int[<2>] speed = { 5, 7 };
 pos += speed;              // pos is now { 6, 10 }
 ```
 
-Swizzling is also supported:
+Swizzling (shorthand for rearranging vector components, which is commonly used in graphics and game programming) is also supported:
 
 ```c3
 int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
@@ -186,10 +184,7 @@ Regardless of how they are allocated, they can be freed using `free()`
 
 **Q:** How does the temporary allocator work?
 
-**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to
-`malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are free when pool of temporary
-objects are released. You use the `@pool()` macro to create a temporary allocation scope. When execution exits
-this scope, the temporary objects are all freed:
+**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to `malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are freed when the entire pool (a.k.a. arena) of temporary objects is released all at once (making it both very easy to use and extremely performant). You use the `@pool()` macro to create a temporary allocation scope. When execution exits this scope, the temporary objects within it are all freed automatically. For example:
 
 ```c3
 @pool()
@@ -230,13 +225,12 @@ Allocator temp = tmem;
 
 **Q:** How do I call a C function from C3?
 
-**A:** Just copy the C function definition and prefix it with `extern` (and don't forget the `fn` as well).
+**A:** Just copy the C function declaration and prefix it with `extern` (and don’t forget the `fn` as well).
 
 Imagine for example that you have the function `double test(int a, void* b)`. To call it from C3 just declare
 `extern fn double test(CInt a, void* b)` in the C3 code.
 
-**Q:** My C function / global has a name that doesn't conform to the C3 name requirements, just `extern fn` doesn't
-work.
+**Q:** My C function / global has a name that doesn't conform to the C3 name requirements. Just `extern fn` doesn't work.
 
 **A:** In this case you need to give the function a C3-compatible name and then use the `@extern` attribute to
 indicate its actual external name. For example, the function `int *ABC(void *x)` could be declared in the C3 code as
