@@ -115,6 +115,14 @@ The built-in templates define two targets: `debug` (which is the default) and `r
 c3c clean
 ```
 
+Removes some of the generated build artifacts of previous builds of the C3 project.
+
+The two most likely reasons to do this are:
+
+1. The user wants to clean out some of the unnecessary data before transfering the project over the network or into a storage device, so that less memory and time is consumed in doing so. Open source projects may also want to run `c3c clean` before redistribution, for very similar reasons. Closed source projects should just use `c3c dist` (if/when it is sufficient) or custom packaging scripts instead for redistribution to end users though, obviously.
+
+2. To ensure that any old cached or generated data or files aren't causing incorrect behavior. Usually this shouldn't be needed though, and may be a sign of either project structure flaws or a shortcoming in the build system itself.
+
 ## Build and Run
 
 ```bash
