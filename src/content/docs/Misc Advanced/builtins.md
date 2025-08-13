@@ -18,10 +18,14 @@ For example, `$$LINE` may be used as a constant (e.g. as a fixed array size) but
 As such, be alert for contextual nuances when using these. For instance, `#`-prefixed expression parameters to macros will use the macro's context if passed a builtin, not the call site's context. In the case of `$$LINE` this may result in seemingly incorrect line numbers. Be alert for such subtleties.
 
 #### `$$BENCHMARK_NAMES`
-An array of names of the benchmark functions.
+An array of names of the benchmark functions as a `String[]`.
+
+The program must be run in benchmark mode (e.g. via the `c3c benchmark` shell command) for this array to be non-empty.
 
 #### `$$BENCHMARK_FNS`
-An array of addresses to the benchmark functions.
+An array of addresses to the benchmark functions as a `void*[]`.
+
+The program must be run in benchmark mode (e.g. via the `c3c benchmark` command) for this array to be non-empty.
 
 #### `$$DATE`
 The current date.
