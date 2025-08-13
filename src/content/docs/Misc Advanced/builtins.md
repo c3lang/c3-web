@@ -54,8 +54,9 @@ The current line as an integer.
 This is most commonly used for printing diagnostic info to help debug your code by making it easier to find where something came from in the code or to inform you of the state of your build process.
 
 #### `$$LINE_RAW`
-Usually the same as `$$LINE`, but in case of a macro inclusion it returns the line in the macro rather than
-the line where the macro was included.
+Usually the same as `$$LINE`, but in case of a macro inclusion it returns the line in the macro rather than the line where the macro was included.
+
+In contrast, to handle the *opposite* problem (passing a `$$LINE` into a `#`-prefixed macro expression argument but wanting the line number from the *call site*, not the line number from within the macro) try using a local `const` to store the result of `$$LINE` at the call site first and then pass that constant into the macro after. Thus: try something like `{ const CALL_LINE = $$LINE; @expr_macro(CALL_LINE); }` as one line instead of the naive `@expr_macro($$LINE);`. The surrounding `{}` (the anonymous scope) prevents `CALL_LINE` from becoming part of the local namespace and writing it all on one line prevents the line number from incrementing itself again.
 
 #### `$$MODULE`
 The current module name.
