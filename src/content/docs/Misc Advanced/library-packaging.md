@@ -13,9 +13,7 @@ The compiler will resolve any dependencies to other libraries and only compile t
 
 ## How it works
 
-A library may be used either packaged or unpacked. If unpacked, it is simply a directory with the `.c3l`
-suffix, which contains all the necessary files, if packed, this is simply a compressed variant of 
-a directory with the same structure.
+A library may be used either packaged or unpacked. If unpacked, it is simply a directory with the `.c3l` suffix, which contains all the necessary files. If packed, it is simply a compressed variant of a directory with the same structure.
 
 ### The specification
 
