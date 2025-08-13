@@ -147,11 +147,12 @@ Conversion rules from and to arrays are detailed under [the arrays section](/lan
 ### Vector conversions
 
 Conversion between underlying vector types need explicit conversions. They work
-as regular conversions with one notable exception: converting a `true` boolean
-vector value into an int will yield a value with all bits set. So `bool[<2>] { true, false }`
-converted to for example `char[<2>]` will yield `{ 255, 0 }`.
+the same as regular conversions with one notable exception: converting a `true` boolean
+vector value into any other integer type will yield a value with all bits set. So, for example, `bool[<2>] { true, false }` converted to `char[<2>]` will yield `{ 255, 0 }`.
 
-Vectors can also be cast to the corresponding array type, for example: `char[<2>]` <=> `char[2]`.
+Vectors can also be cast to the corresponding array type. 
+
+For example: `char[<2>]` &harr; `char[2]`.
 
 ## Binary conversions
 
