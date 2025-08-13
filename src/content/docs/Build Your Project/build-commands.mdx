@@ -174,10 +174,12 @@ This is what is known as a "documentation generation" or "docgen" system. The mo
 
 Alternatively, if you do not want to maintain documentation for your project, such as if your project is too transient for documentation to matter or if you want to potentially iterate faster, then consider instead at least ensuring that you have lots of unit tests (via the `@test` attribute) and assertions (`$assert` and `assert`) in your code so that the "self documenting" qualities of your codebase are maximized. Be aware however that some things can never be adequately expressed in any amount of "self documenting" code. Each approach has tradeoffs. A balanced mix is also a good approach.
 
-## Bench
+## Benchmark
 
 ```bash
-c3c bench [target]
+c3c benchmark [target]
 ```
 
-Runs benchmarks on a target.
+Runs benchmarks on a target, meaning that every function that has been annotated with `@benchmark` will be run and have its performance profiled (including time spent and a CPU cycle count) so that you can easily monitor opportunities for optimization and avoid computational waste.
+
+This can be thought of as kind of being like "unit testing for performance" and is something that more programming languages should support well. Much like regular testing helps prevent bugs, regular performance monitoring with benchmarks helps prevent performance degradation and waste. Performance is a key component of good software and arguably could even be considered part of the "interface" of software since it can be such a determining factor in viability and usefulness in practice.
