@@ -506,7 +506,20 @@ This elminates redundancy when print debugging. This code could be refined to be
 
 ### `$typeof`
 
-Get the type of an expression (without evaluating it).
+Get the type of an expression at compile time, without ever evaluating it at run time and thus without causing side effects.
+
+For example, the following C3 test passes:
+
+```
+fn void typeof_has_no_side_effects() @test
+{
+    int minutes_left = 20;
+    $assert($typeof(minutes_left += 10).nameof == "int");
+    assert(minutes_left == 20);
+    
+    // The state of `minutes_left` above never changes.
+}
+```
 
 ### `$typefrom`
 
