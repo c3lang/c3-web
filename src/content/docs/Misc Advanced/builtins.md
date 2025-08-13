@@ -75,7 +75,7 @@ The `$$` namespace defines *compiler builtin functions*.
 These special functions are __not guaranteed__ to exist on 
 all platforms, and are ways to wrap compiler implemented, optimized implementations
 of some particular functionality. They are mainly intended for standard 
-library *internal* use. The standard library have macros 
+library *internal* use. The standard library has macros 
 that wrap these builtins, so they should normally not be used on their own. 
 
 #### `$$trap`
