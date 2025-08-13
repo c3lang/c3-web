@@ -154,7 +154,11 @@ Version for library. Will also be provided as a compile time constant.
 
 *Not handled yet.*
 
-List of authors to add for library compilation.
+List of authors who are credited with creating and/or working on the project.
+
+Be aware that this list may or may not be comprehensive for a given project.
+
+It is just another place where authors and contributors can be listed.
 
 #### `langrev`
 
