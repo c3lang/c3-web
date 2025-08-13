@@ -19,7 +19,18 @@ For those unfamiliar though, be aware that run time typing may be substantially 
 
 ## Compile time reflection
 
-During compile time there are a number of compile time fields that may be accessed directly.
+During compile time there are many compile time fields that may be accessed using "dot notation" of the form `<type>.<property>`. That works for types, but in contrast when you want to retrieve type information about *values* or other expressions then try [the `$` functions](/generic-programming/reflection/#compile-time-functions) instead.
+
+For example, notice that `<type>.sizeof` and `$sizeof(<value>)` do not operate on the same kinds of entities. The former is for types whereas the later is for values.
+
+They can nonetheless be used to achieve similar effects though. For example, the following assertions all pass:
+
+```c3
+$assert(short.sizeof == $sizeof((short)0));
+
+short sh = 0;
+$assert($sizeof(sh) == $typeof(sh).sizeof);
+```
 
 ### Type properties
 
