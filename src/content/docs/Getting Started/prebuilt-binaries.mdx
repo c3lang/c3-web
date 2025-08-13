@@ -82,3 +82,13 @@ git clone https://aur.archlinux.org/c3c-git.git
 cd c3c-git
 makepkg -si
 ```
+
+## Install a linker
+You will also need a *linker*, which is a program that C3 uses to join its compiled outputs into one file.
+It is likely you already have one. If you get linker errors, you should install a C compiler, which will typically include a linker.
+A C compiler is also useful because some C3 packages depend on C code and will need a C compiler.
+
+Linux users should generally install GCC or Clang, according to their distribution's documentation. For example, if you use Ubuntu, you can install the `gcc` package:
+```bash
+sudo apt-get install gcc
+```
