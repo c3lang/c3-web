@@ -51,6 +51,8 @@ As such, it may be queried for associated info (e.g. `$$FUNCTION.nameof`, `$type
 #### `$$LINE`
 The current line as an integer.
 
+This is most commonly used for printing diagnostic info to help debug your code by making it easier to find where something came from in the code or to inform you of the state of your build process.
+
 #### `$$LINE_RAW`
 Usually the same as `$$LINE`, but in case of a macro inclusion it returns the line in the macro rather than
 the line where the macro was included.
