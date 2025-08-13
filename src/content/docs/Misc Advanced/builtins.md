@@ -39,7 +39,9 @@ The current source code file name (not including any of the path) as a `String`.
 The full ("absolute") path to the current source code file as a `String`.
 
 #### `$$FUNC`
-The current function name, will return "<GLOBAL>" on the global level.
+The current function name as a `String`. 
+
+This will return `"<GLOBAL>"` if used on the global level (outside any function), such as via `String global_func_name = $$FUNC;`, because there is no corresponding function name in that case.
 
 #### `$$FUNCTION`
 The current function as an expression.
