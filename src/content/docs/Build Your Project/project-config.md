@@ -106,9 +106,8 @@ creates static library and dynamic library targets respectively.
 
 ## Compilation options
 
-The project file contains common settings at the top level, that can be overridden by each
-target, by simply assigning that particular key. So if the top level defines `target` to be `macos-x64`
-and the actual target defines it to be `windows-x64`, then the `windows-x64` will be used for compilation.
+The project file contains common settings at the top level that can be overridden by each
+target by simply assigning that particular key. So if the top level defines `target` to be `macos-x64` and the actual target defines it to be `windows-x64`, then the `windows-x64` target will be used for compilation.
 
 Similarly, compiler command line parameters can be used in turn to override the target setting.
 
