@@ -146,19 +146,19 @@ paths given by "linker-search-paths".
 
 #### `version`
 
-*Not handled yet*
+*Not handled yet.*
 
-Version for library, will also be provided as a compile time constant.
+Version for library. Will also be provided as a compile time constant.
 
 #### `authors`
 
-*Not handled yet*
+*Not handled yet.*
 
 List of authors to add for library compilation.
 
 #### `langrev`
 
-*Not handled yet*
+*Not handled yet.*
 
 The language revision to use. 
 
