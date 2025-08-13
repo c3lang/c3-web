@@ -39,15 +39,11 @@ In the top of the library resides the `manifest.json` file which has the followi
 }
 ```
 
-In the example here, this library supports two targets: **macos-x64** and **windows-x64**. If 
-we tried to use it with any other target, the compiler would give an error.
+In the example above, this library supports two targets: **macos-x64** and **windows-x64**. If we tried to use it with any other target, the compiler would give an error.
 
-We see that if we use the **windows-x64** target it will also load the **ms_my_extra** library. And
-we also see that the linker would have a special argument on that platform.
+We see that if we use the **windows-x64** target it will also load the **ms_my_extra** library. We also see that the linker would have a special argument on that platform.
 
-Both targets expect `my_lib_static` to be available for linking. If this library provides this
-or dynamic library it will be in the target sub-directories, so it likely has the path 
-`windows-x64/my_lib_static.lib` and `macos-z64/libmy_lib_static.a`.
+Both targets expect `my_lib_static` to be available for linking. If this library provides this static or dynamic library it will be in the target sub-directories, so it likely has the path `windows-x64/my_lib_static.lib` or `macos-z64/libmy_lib_static.a`.
 
 ### Source code
 
