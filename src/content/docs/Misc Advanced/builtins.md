@@ -33,10 +33,10 @@ The current date (year, month, day) as a `String`.
 In contrast, to retreive the time of day (hours, minutes, seconds) try using `$$TIME`.
 
 #### `$$FILE`
-The current file name.
+The current source code file name (not including any of the path) as a `String`.
 
 #### `$$FILEPATH`
-The current file with path.
+The full ("absolute") path to the current source code file as a `String`.
 
 #### `$$FUNC`
 The current function name, will return "<GLOBAL>" on the global level.
