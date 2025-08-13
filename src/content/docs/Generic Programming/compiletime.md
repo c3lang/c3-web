@@ -420,6 +420,10 @@ Includes a file into the current file at the top level.
 Get the local name of a symbol.
 See [reflection](/generic-programming/reflection/#nameof-1).
 
+Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
+
+For example, `$nameof(io::printn)` is `printn`.
+
 ### `$offsetof`
 
 Get the offset of a member.
