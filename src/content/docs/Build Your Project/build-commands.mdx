@@ -145,10 +145,19 @@ Clean, build and run the target.
 c3c dist [target]
 ```
 
-*Not properly added yet*
+Clean, build and package the target for distribution to end users.
 
-Clean, build and package the target for distribution.
-Will also run the target if it is a executable.
+The `c3c dist` command will also run the target afterwards if it is a executable, for convenience, as it is likely you will want to check that the program is still working.
+
+You should also transfer the distribution package to a clean machine and test that the application works correctly there too at a minimum. Otherwise, there is a high risk that your application will be broken due to some dependencies existing on your machine that don't exist on end users' machines. Developers' machines often have many more libraries already installed than users' machines, hence users' machines are far more likely to lack necessary dependencies. It is hard to reliably discern without testing.
+
+:::caution
+*`c3c dist` has not been properly added yet! However:*
+
+In the meantime, if `c3c dist` is still insufficient at the time you are reading this, then you can use custom packaging scripts (e.g. shell scripts or C3 scripts written by you) to build whatever redistributable package structure you want or need.
+
+For example, you can use scripts to build an archive file containing the executable, shared libraries, folder structure and asset/resource files *as they should appear on the end user's computer*. Some aspects of packaging may also be made easier by using `$embed` to reduce file management needs on the target system(s).
+:::
 
 ## Docs
 
