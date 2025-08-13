@@ -14,11 +14,15 @@ You can also [customise the project build config](/build-your-project/project-co
 
 ## Compile Individual Files
 
-By default the compiler is compiling stand-alone files to output an executable binary.
+By default the compiler will compile a stand-alone file as an executable binary, rather than as a static or dynamic library.
+
+The resulting executable binary will be given the same name as whichever C3 file contains the `main` function.
 
 ```bash
 c3c compile <file1> <file2> <file3>
 ```
+
+Alternatively, libraries can be compiled via `c3c static-lib` or `c3c dynamic-lib` or by creating a project configured as such and built via `c3c build` and `c3c run` and so on.
 
 ## Run
 
