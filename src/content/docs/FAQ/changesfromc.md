@@ -26,11 +26,11 @@ The `->` operator is removed, access uses dot for both direct and pointer access
 
 ##### Different operator precedence
 
-Notably bit operations have higher precedence than +/-, making code like this: `a & b == c` evaluate like `(a & b) == c` instead of C's `a & (b == c)`. See the page about [precedence rules](/language-rules/precedence/).
+Notably bit operations have higher precedence than arithmetic and comparison operators (among others), making code like this: `a & b == c` evaluate like `(a & b) == c` instead of C's `a & (b == c)`. See the page about [precedence rules](/language-rules/precedence/).
 
 ##### Removal of the const type qualifier
 
-The const qualifier is only retained for actual constant variables. C3 uses a special type of [post condition](/language-common/contracts/) for functions to indicate that they do not alter in parameters.
+The const qualifier is only retained for actual constant variables. C3 uses a special type of [post condition](/language-common/contracts/) for functions to indicate that they do not alter input parameters.
 
 ```c3
 <*
@@ -84,8 +84,7 @@ C3 allows implicit widening only
 where there is only a single way to widen the expression. To explain the latter:
 take the case of `long x = int_val_1 + int_val_2`. In C this would widen the result of the addition:
 `long x = (long)(int_val_1 + int_val_2)`, but there is another possible 
-way to widen: `long x = (long)int_val_1 + (long)int_val_2`. so in this case, the widening
-is disallowed. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](/language-rules/conversion/). 
+way to widen: `long x = (long)int_val_1 + (long)int_val_2`. So, in this case, the widening is disallowed in C3. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](/language-rules/conversion/). 
 
 C3 also adds *safe signed-unsigned comparisons*: this means that comparing signed and unsigned values will always yield the correct result:
 
@@ -112,8 +111,7 @@ the code is harder to understand as well. The replacements together with `defer`
 
 ##### Implicit break in switches
 
-Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed.
-`nextcase` can also be used to jump to any other case statement in the switch.
+Empty `case` statements have implicit fall through in C3, otherwise the `nextcase` statement is needed. `nextcase` can also be used to jump to any other `case` statement in the `switch`.
 
 ```c3
 switch (h)
@@ -133,9 +131,7 @@ switch (h)
 
 ##### Locals variables are implicitly zeroed
 
-In C global variables are implicitly zeroed out, but local variables aren't. 
-In C3 local variables are zeroed out by default, but may be *explicitly* undefined 
-(using the `@noinit` attribute) if you wish to match the C behaviour.
+In C global variables are implicitly zeroed out, but local variables aren’t. In C3 both global and local variables are zeroed out by default, but may be *explicitly* undefined (using the `@noinit` attribute) if you wish to match the C behaviour.
 
 ###### Rationale for this change 
 - In the "zero-is-initialization" paradigm, zeroing variables, in particular structs, 
@@ -146,8 +142,7 @@ but this adds a lot of extra boilerplate.
 
 ##### Bitfields replaced by bitstructs
 
-Bitfields are replaced by bitstructs that have a well-defined encapsulating type, and 
-an exact bit layout.
+Bitfields are replaced by bitstructs that have a well-defined encapsulating type and an exact bit layout.
 
 ```c
 // C
@@ -184,16 +179,14 @@ struct Flags : char
 
 ##### Evaluation order is well-defined
 
-Evaluation order is left-to-right, and in assignment expressions, assignment
-happens after expression evaluation.
+Evaluation order (after precedence, meaning when operators have equal precedence, a.ka. associativity) is left-to-right and in assignment expressions assignment happens after expression evaluation.
 
 ##### Signed overflow is well-defined
 
-Signed integer overflow always wraps using 2s complement. It is never undefined behaviour.
+Signed integer overflow always wraps using 2s complement. It is never undefined behaviour. This is unlike C, where unsigned values wrap around upon overflow but signed values have undefined overflow behavior, which in C is a common source of bugs for the unwary and for beginners.
 
 ##### Misleading C-like octal syntax removed
 
-The old `0777` octal syntax is removed and replaced by a `0o` prefix, e.g. `0o777`. Strings do not support octal sequences aside
-from `'\0'`.
+The old `0777` octal syntax present in C has been removed and replaced by a `0o` prefix in C3, e.g. `0o777`. Strings in C3 do not support octal sequences aside from `'\0'`.
 
 This change was made because C's octal syntax looks too much like base 10 with leading zeros prepended (as is sometimes used outside of C to represent fixed-width base 10 numbers). Thus, removing such ambiguous octal syntax prevents a common source of subtle numerical errors in C.
