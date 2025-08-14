@@ -129,7 +129,7 @@ Can be applied to float vectors or numbers. Returns the same type.
 
 Functions `$$min`, `$$abs` and `$$max` can be applied to any integer or float number or vector.
 
-Function `$pow_int` takes a floating point value or vector and an integer and returns
+Function `$$pow_int` takes a floating point value or vector and an integer and returns
 the same type as the first parameter.
 
 Saturated addition, subtraction and left shift for integers and integer vectors:
