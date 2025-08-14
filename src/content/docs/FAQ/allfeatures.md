@@ -115,26 +115,26 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 1. Array initializers may use ranges. (e.g. `int[256] x = { [0..128] = 1 }`)
 2. `?:` operator, returning the first value if it can be converted to a boolean true, otherwise the second value is returned.
-3. Orelse `??` returning the first value if it is a result, the second if the first value was an optional value.
-4. Rethrow `!` suffix operator with an implicit `return` the value if it was an optional value.
-5. Dynamic calls, allowing calls to be made on the `any` and interfaces dispatched using a dynamic mechanism.
+3. Optionals support an "or else" operator `??` returning the first value if it is a normal (non-`fault`) result or else the second value if the first value is an abnormal (`fault`-containing) Optional value. Thus, `??` provides a mechanism for returning default values when evaluations encounter problems.
+4. Rethrow `!` suffix operator which implicitly returns the Optional value if it was an abnormal (`fault`-containing) Optional value.
+5. Dynamic calls, allowing function calls to be made on generic data of type `any` or to use interfaces as a dynamic dispatching mechanism.
 6. Create a slice using a range subscript (e.g. `a[4..8]` to form a slice from element 4 to element 8).
 7. Two range subscript methods: `[start..inclusive_end]` and `[start:length]`. Start, end and length may be omitted for default values.
 8. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
 9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
-10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
+10. Slice assignment: copy one range to the other range, e.g. `a[4..8] = b[8..12];`.
 11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers.
 12. `?` suffix operator turns a `fault` into an optional value.
 13. `!!` suffix panics if the value is an optional value.
-14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
+14. `$defined(...)` returns true if the last expression contained within it is defined. Sub-expressions must also be valid.
 15. Compile time "and" and "or" using `&&&` and `|||`. Both sides of the operator should be compile-time constants. If the left hand side of `&&&` is false, the right hand side is not type-checked. For `|||` the right hand side is not type-checked if the left hand side is true.
-16. Lambdas (anonymous functions) may be defined, they work just like functions and do not capture any state.
+16. Lambdas (anonymous functions) may be defined. They work just like functions and do not capture any state (i.e. are not "closures", unlike in some other languages). Not capturing state makes it easier for C3 to retain a simpler lifetime model.
 17. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
 18. Structs may implicitly convert to their `inline` member if they have one.
 19. Pointers to arrays may implicitly convert to slices.
-20. Any pointer may implicitly convert to an `any` with type being the pointee.
-21. Optional values will implicitly invoke "flatmap" on an expression it is a subexpression of.
-22. Swizzling for arrays and vectors.
+20. Any pointer may implicitly convert to an `any` of the same type as the pointee.
+21. An optional values will implicitly invoke “flatmap” on an expression it is a subexpression of.
+22. Swizzling for arrays and vectors. For example, to reverse a 3-element vector `vec` via swizzling you can use `vec.xyz = vec.zyx;`.
 
 ### Changed
 
@@ -142,8 +142,8 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 2. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
 3. `sizeof` is `$sizeof` and only works on expressions. Use `Type.sizeof` on types.
 4. `alignof` is `$alignof` for expressions. Types use `Type.alignof`.
-5. Narrowing conversions are only allowed if all sub-expressions is as small or smaller than the type.
-6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened)
+5. Narrowing conversions are only allowed if all sub-expressions are as small or smaller than the type.
+6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened).
 
 ### Removed
 
