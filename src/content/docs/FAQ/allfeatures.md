@@ -155,15 +155,15 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Added
 
-1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(name: a, len: 2)`.
+1. Functions may be called using named arguments. The name is the same as the parameter name, but followed by `:` in the call. For example: `foo(name: a, len: 2)`.
 2. Typed vaargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
 3. It is possible to "splat" an array or slice into the location of a typed vararg using `...`: `foo(a, b, ...list)`
-4. `any` vaargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
+4. `any` vaargs are declared as `argument...` (i.e. without a type in the function parameter list). Such a vaarg list can take 0 or more arguments of any type. All passed arguments are implicitly converted to the `any` type when the function is called.
 5. The function declaration may have `@inline` or `@noinline` as a default.
 6. Using `@inline` or `@noinline` on a function call expression will override the function default.
-7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`, they can be invoked using dot syntax.
+7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`. They can be invoked using dot syntax.
 8. Type methods may be attached to any type, even arrays and vectors.
-9. Error handling using optional return types.
+9. Error handling uses Optional return types, which are similar to tagged unions that either contain a valid result or a `fault` state.
 
 ### Changed
 
