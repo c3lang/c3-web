@@ -212,11 +212,11 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. Match-style variant of the `switch` statement, allows each `case` to hold an expression to test.
-2. Switching over type with `typeid`.
+1. Match-style variant of the switch statement, which allows each case to hold an expression to test.
+2. Switching over types with `typeid`, which supports both compile-time and run-time type information (though less for run-time).
 3. `asm` blocks for inline assembly.
 4. `nextcase` to fallthrough to the next case.
-5. `nextcase <expr>` to jump to the case with the expression value (this may be an expression evaluated at runtime).
+5. `nextcase <expr>` to jump to the case with the expression value. This may be an expression evaluated at runtime.
 6. `nextcase default` to jump to the `default` clause.
 7. Labelled `while`/`do`/`for`/`foreach` to use with `break` `nextcase` and `continue`.
 8. `foreach` to iterate over arrays, vectors, slices and user-defined containers using operator overloading.
@@ -226,22 +226,22 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 12. `$echo` printing a message at compile time.
 13. `$assert` compile time assert.
 14. `defer` statement to execute statements at scope exit.
-15. `defer catch` and `defer try` similar to `defer` but executes only on optional exit or regular exit of scope respectively.
-16. `do` statements may omit `while`, behaving same as `while (0)`
+15. `defer catch` and `defer try`, which are similar to `defer` but execute only if the Optional value contains a `fault` or a normal result respectively.
+16. `do` statements may omit while, behaving same as `while (0)`.
 17. `if` may have a label. Labelled `if` may be exited using labelled break.
-18. if-try statements allows you to run code where an expression is a result.
-19. if-catch statements runs code on `fault`. It can be used to implicitly unwrap variables.
+18. `if (try ...)` statements run code when an expression is a "valid"/"normal" result (i.e. to handle the "happy path" when working with Optionals). It can be used to implicitly unwrap variables.
+19. `if (catch ...)` statements run code when an expression is an "invalid"/"abnormal" (`fault`-containing) result (i.e. to handle the "failure path" when working with Optionals). It can be used to implicitly unwrap variables.
 20. Exhaustive switching on enums.
 
 ### Changed
 
 1. Switch cases will have implicit break, rather than implicit fallthrough.
 2. `assert` is an actual statement and may take a string or a format + arguments.
-3. `static_assert` is `$assert` and is a statement.
+3. `static_assert` from C (2023 ISO standard) and C++ corresponds to `$assert` in C3 and is a statement.
 
 ### Removed
 
-1. `goto` removed, replaced by labelled break, continue and nextcase.
+1. `goto` has been removed and replaced by labelled `break`, `continue` and `nextcase`.
 
 ## Compile time evaluation
 
