@@ -5,7 +5,7 @@ sidebar:
     order: 701
 ---
 
-Here is a summary of _all_ the features of C3 and changes from C.
+Here is a summary of _all_ the features of C3 and how it differs from C.
 
 ## Symbols and literals
 
