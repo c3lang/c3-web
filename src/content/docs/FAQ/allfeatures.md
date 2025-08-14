@@ -98,7 +98,7 @@ Changes relating to literals, identifiers etc.
 2. Enum, struct and union declarations should not have a trailing ';'
 3. `alias` can only be used at the top level, not inside a function.
 4. Anonymous structs are not allowed.
-5. Type qualifiers are all removed, including `const`, `restrict`, `volatile`
+5. Type qualifiers for run-time values are all removed, including `const`, `restrict`, and `volatile`. However, `const` may be applied to compile-time values and their name must be written in `ALL_CAPS`.
 6. Function pointers types **cannot** be used "raw", but must always be used through a type alias.
 
 ### Introspection
