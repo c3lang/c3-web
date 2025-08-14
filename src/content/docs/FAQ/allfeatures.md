@@ -89,8 +89,8 @@ Changes relating to literals, identifiers etc.
 ### Changed
 
 1. C's typedef is replaced by `alias` and has somewhat different syntax (e.g. `alias MyTypeAlias = int;`).
-2. Function pointer syntax is prefix `fn` followed by a regular function declaration without the function name.
-3. `typedef` in C3 creates a new type which can have it's own methods, but shares the common internal representation as the original type.
+2. Function pointer syntax is prefixed by an `fn` and followed by a regular function declaration without the function name. For example, `fn void(int)` is the type for a function that takes an `int` and returns nothing. Named parameters and default arguments are also permitted, such as `fn void(int num = 0)`.
+3. `typedef` in C3 creates a new type which can have it's own methods, but shares the same common internal representation as the original type.
 
 ### Removed
 
