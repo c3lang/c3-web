@@ -84,7 +84,7 @@ Changes relating to literals, identifiers etc.
 12. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
 13. Types may add operator overloading to support `foreach` and subscript operations.
 14. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
-15. Interface types, `any` types which allows dynamic invocation of methods.
+15. Interface types and `any` types, which allow dynamic invocation of methods.
 
 ### Changed
 
