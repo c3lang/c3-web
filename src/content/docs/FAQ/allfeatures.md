@@ -301,15 +301,14 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ## Features provided by builtins
 
-Some features are provided by builtins, and appears as normal functions and macros in the standard library
-but nonetheless provided unique functionality:
+Some features are [provided by "builtins" in the standard library](/standard-library/stdlib_refcard/#stdcorebuiltin) (not to be confused with `$$` builtins in the *language*), and appear like normal functions and macros in the standard library, but nonetheless provided unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.
 2. `@anycast(...)` casts an `any` with an optional result.
 3. `unreachable(...)` marks a path as unreachable with a panic in safe mode.
 4. `unsupported(...)` similar to unreachable but for functionality not implemented.
 5. `@expect(...)` expect a certain value with an optional probability for the optimizer.
-6. `@prefetch(...)` prefect a pointer.
+6. `@prefetch(...)` prefetches a pointer, meaning that the memory at the pointed to address will be loaded before it is necessarily required, thus possibly improving performance under the right conditions.
 7. `swizzle(...)` swizzles a vector.
 8. `@volatile_load(...)` and `@volatile_store(...)` volatile load/store.
 9. `@atomic_load(...)` and `@atomic_store(...)` atomic load/store.
@@ -319,17 +318,17 @@ but nonetheless provided unique functionality:
 
 ## Modules
 
-1. Modules are defined using `module <name>`. Where name is on the form `foo::bar::baz`
-2. Modules can be split into an unlimited number of module sections, each starting with the same module name declaration.
+1. Modules are defined using `module <name>;`, where `<name>` is of the form `foo::bar::baz`.
+2. Modules can be split into an unlimited number of module sections, each starting with the same module name declaration if intended to become part of the same module. Multiple differently named modules can also be defined per file.
 3. The `import` statement imports a given module.
 4. Each module section has its own set of import statements.
 5. Importing a module gives access to the declarations that are `@public`.
-6. Declarations are default `@public`, but a module section may set a different default (e.g. `module my_module @private;`)
-7. `@private` means the declaration is only visible in the module.
-8. `@local` means only visible to the current module section.
+6. Declarations are default `@public`, but a module section may set a different default (e.g. `module my_module @private;`).
+7. `@private` means the declaration is only visible in the current module.
+8. `@local` means the declaration is only visible in the current module section. This also implies that the declaration will not be visible outside the current file either.
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
-11. Generic modules have a set of parameters after the module name `module arr {Type, LEN};`
+11. Generic modules are not type checked until any of their types, functions or globals are instantiated.
 12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts
