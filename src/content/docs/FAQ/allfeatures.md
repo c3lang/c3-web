@@ -247,13 +247,13 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. `@if(cond)` to conditionally include a struct/union field, a user-defined type etc.
-2. Compile time variables with `$` prefix e.g. `$foo`.
+1. `@if(cond)` to conditionally include a struct/union field, a user-defined type, etc.
+2. Compile time variables with `$` prefix, e.g. `$foo`.
 3. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
 4. `$for` and `$foreach` to loop over compile time variables and data.
 5. `$typeof` determines an expression type without evaluating it.
 6. Type properties may be accessed at compile time.
-7. `$define` returns true if the variable, function or type exists.
+7. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects. The input to `$defined` must already be valid code though. `$defined` is not a syntax checker.
 8. `$error` emits an error if encountered.
 9. `$embed` includes a file as binary data.
 10. `$include` includes a file as text.
@@ -264,20 +264,20 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 15. `$nameof` turns an identifier into its local string name.
 16. `$qnameof` turns an identifier into its local string name with the module prefixed.
 17. Compile time constant values are always compile time folded for arithmetic operations and casts.
-18. `$$FUNCTION` returns the current function as an identifier.
+18. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
 
 ### Changed
 
 1. `#define` for constants is replaced by untyped constants, e.g. `#define SOME_CONSTANT 1` becomes `const SOME_CONSTANT = 1;`.
 2. `#define` for variable and function aliases is replaced by `alias`, e.g. `#define native_foo win32_foo` becomes `alias native_foo = win32_foo;`
-3. In-function `#if...#else..#endif` is replaced by `$if`, `#if...#elif...#endif` is replaced by `$switch`.
+3. In-function `#if...#else..#endif` is replaced by `$if` and `#if...#elif...#endif` is replaced by `$switch`.
 4. For converting code into a string use `$stringify`.
 5. Macros for date, line etc are replaced by `$$DATE`, `$$FILE`, `$$FILEPATH`, `$$FUNC`, `$$LINE`, `$$MODULE`, `$$TIME`.
 
 ### Removed
 
 1. Top level `#if...#endif` does not have a counterpart. Use `@if` instead.
-2. No `#include` directives, `$include` will include text but isn't for the same use.
+2. No C-like overuse of `#include` directives. `$include` exists in C3 and will include text but isn’t for the same use and C3 has cleaner alternatives such as modules and a variety of precise ways of manipulating code at compile time.
 
 ## Macros
 
