@@ -61,9 +61,9 @@ Changes relating to literals, identifiers etc.
 
 ### Removed
 
-1. The spiral rule type declaration (see above).
-2. Complex types
-3. size_t, ptrdiff_t (see above).
+1. The C-like "spiral rule" (technically actually precedence-based, not spiral) type declaration (see above).
+2. Complex types.
+3. `size_t`, `ptrdiff_t` (see above).
 4. Array types do not decay.
 
 ## Types
