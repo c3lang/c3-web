@@ -284,10 +284,10 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 ### Added
 
 1. `macro` for defining macros.
-2. "Function-like" macros have no prefix and has only regular parameters or type parameters.
-3. "At"-macros are prefixed with `@` and may also have compile time values, expression parameters, and may have a trailing body.
-4. Type parameters have the prefix `$` and conform to the type naming standard ("$TypeFoo").
-5. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
+2. “Function-like” macros have no prefix and have only regular parameters or type parameters.
+3. “At”-macros are prefixed with `@` and may also have compile time values, expression parameters, and a trailing body.
+4. Type parameters are prefixed with `$` and conform to C3's required type naming convention (e.g. `$TypeFoo`, a.k.a. "PascalCase").
+5. Expression parameters (i.e. macro parameters prefixed with `#`) are unevaluated expressions. This is similar to arguments to `#define` in C.
 6. Compile time values have a `$` prefix and must contain compile time constant values.
 7. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
 8. Macros may be recursively evaluated.
