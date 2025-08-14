@@ -102,13 +102,12 @@ This is a description of the configuration options in `project.json`:
 By default, an executable is assumed, but changing the type to `"static-lib"` or `"dynamic-lib"` 
 creates static library and dynamic library targets respectively.
 
-*This part will be updated, stay tuned* 
+*This part will be updated, so stay tuned!* 
 
 ## Compilation options
 
-The project file contains common settings at the top level, that can be overridden by each
-target, by simply assigning that particular key. So if the top level defines `target` to be `macos-x64`
-and the actual target defines it to be `windows-x64`, then the `windows-x64` will be used for compilation.
+The project file contains common settings at the top level that can be overridden by each
+target by simply assigning that particular key. So if the top level defines `target` to be `macos-x64` and the actual target defines it to be `windows-x64`, then the `windows-x64` target will be used for compilation.
 
 Similarly, compiler command line parameters can be used in turn to override the target setting.
 
@@ -122,7 +121,7 @@ List of C3 libraries (".c3l") to use when compiling the target.
 
 #### `sources`
 
-List of source files to compile and for tests which will run.
+List of source files to compile or run tests for.
 
 #### `cc`
 
@@ -139,27 +138,31 @@ This adds paths for the linker to search, when linking normal C libraries.
 #### `linked-libraries`
 
 This is a list of C libraries to link to. The names need to follow the normal
-naming standard for how libraries are provided to the system linker,
-so for example on Linux, libraries have names like `libfoo.a` but when
+naming standard for how libraries are provided to the system linker. 
+So, for example, on Linux libraries have names like `libfoo.a` but when
 presented to the linker the name is `foo`. As an example `"linked-libraries": ["curl"]`
 would on Linux look for the library `libcurl.a` and `libcurl.so` in the 
 paths given by "linker-search-paths".
 
 #### `version`
 
-*Not handled yet*
+*Not handled yet.*
 
-Version for library, will also be provided as a compile time constant.
+Version for library. Will also be provided as a compile time constant.
 
 #### `authors`
 
-*Not handled yet*
+*Not handled yet.*
 
-List of authors to add for library compilation.
+List of authors who are credited with creating and/or working on the project.
+
+Be aware that this list may or may not be comprehensive for a given project.
+
+It is just another place where authors and contributors can be listed.
 
 #### `langrev`
 
-*Not handled yet*
+*Not handled yet.*
 
 The language revision to use. 
 
@@ -170,7 +173,7 @@ in the source code using `$feature(NAME_OF_FEATURE)`.
 
 #### `warnings`
 
-*Not completely supported yet*
+*Not completely supported yet.*
 
 List of warnings to enable during compilation.
 
@@ -184,12 +187,12 @@ Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
 
 This mandatory option should be one of "executable", "dynamic-lib" and "static-lib".
 
-*More types will be added*
+*More types will be added.*
 
 ## Using environment variables
 
-*Not supported yet*
+*Not supported yet.*
 
-In addition to constants any values starting with "$" will be assumed to be environment variables.
+In addition to constants, any values starting with `$` will be assumed to be environment variables.
 
-For example `"$HOME"` would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
+For example `"$HOME"` would on Unix-like systems (e.g. Linux, the BSDs, Mac) return the home directory. For strings that start with `$` but *should not* be interpreted as an environment variable you need to escape it with a backslash (`\`). For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.

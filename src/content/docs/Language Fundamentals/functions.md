@@ -39,7 +39,7 @@ fn void test()
 }
 ```
 
-Named arguments
+Named arguments:
 
 ```c3
 fn void test_named(int times, double data)
@@ -90,7 +90,7 @@ fn void test()
 }
 ```
 
-#### Vaargs
+#### Variable argument lists (vaargs)
 
 There are four types of vaargs:
 
@@ -157,7 +157,7 @@ fn void main()
 }
 ```
 
-- Splat `...` any array anywhere
+- Splat `...` any array anywhere.
 
 ```c3
 fn void foo(int a, int b, int c)
@@ -172,7 +172,7 @@ fn void main()
 ```
 
 
-- Splat `...` known size slices anywhere
+- Splat `...` known size slices anywhere.
 
 ```c3
 fn void foo(int a, int b, int c)
@@ -222,7 +222,7 @@ function might either return an Optional with a result, or an Optional with an E
 For example this function might return an Excuse of type `SomeError` or `OtherResult`.
 
 ```c3
-faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
+faultdef BAD_LUCK_ERROR, BAD_JOSS_ERORR;
 
 fn double? test_error()
 {
@@ -239,7 +239,7 @@ if all Optional values contain a *result*, otherwise the first Excuse found is r
 ```c3
 fn void test()
 {
-    // The following line is either prints a value less than 0.2
+    // The following line either prints a value less than 0.2
     // or does not print at all. The (void) is needed
     // to let the compiler know we're deliberately
     // ignoring the Optional result.
@@ -285,7 +285,7 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with the type name and is (usually)
+Methods look exactly like functions, but are prefixed with the type name and are (usually)
 invoked using dot syntax:
 
 ```c3
@@ -355,20 +355,20 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 
 ### Guidelines on method use
 
-Methods are customary associated with Object-Oriented programming.
-In this style one will often encounter code like `some_object.run_everythin()`.
-C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
+Methods are customarily associated with object-oriented programming.
+In this style one will often encounter code like `some_object.run_everything()`.
+C3 is not accommodating to this style; instead one should prefer `task::run_everything(some_object)`.
 Both the standard library and the design of the language instead follows
 the principle that functions are used whenever the system is mutating
-global data, whereas methods are used for mutating a particular value, or
+global data, whereas methods are used for mutating a particular value or
 extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`
-are all good uses of methods. On the flip side, methods usage like
-`context.parse_data(data)`, `game.run(settings)` and `url.make_request()`
-are emphatically *not* recommended.
+are all good uses of methods. On the flip side, method usage like
+`context.parse_data(data)`, `game.run(settings)` or `url.make_request()`
+is emphatically *not* recommended.
 
 ## Contracts
 
-C3's error handling is not intended to use errors to signal invalid data or to check invariants and post conditions. Instead C3's approach is to add annotations to the function, that conditionally will be compiled into asserts.
+C3's error handling is not intended to use errors to signal invalid data or to check invariants and post conditions. Instead C3's approach is to add annotations to the function that conditionally will be compiled into asserts.
 
 As an example, the following code:
 
@@ -488,9 +488,9 @@ be called during abnormal shutdown.
 
 ### Changing priority of static initializers and finalizers
 
-It is possible to provide an argument to the attributes to set the actual priority. It is recommended
-that programs use a priority of 1024 or higher. The higher the value, the later it
-will be called. The lowest priority is 65535.
+It is possible to provide an argument to the attributes to set the actual priority. It is recommended that programs use a priority of 1024 or higher. The higher the priority, the later it will be called. The lowest priority is 65535.
+
+Functions annotated with smaller priority numbers are called *earlier* than those with larger priority numbers, not later. By analogy, priority numbers are like rankings in a contest; #1 is a higher rank than #10. Here is an illustrative example:
 
 ```c3
 // Print "Hello World" at startup.

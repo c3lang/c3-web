@@ -29,12 +29,12 @@ This affects generated C headers, but little else.
 
 Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
-Instead of `volatile`, volatile loads and stores are used using `@volatile_load` and `@volatile_store`.
+Instead of `volatile`, volatile loads and stores are implemented using `@volatile_load` and `@volatile_store`.
 Restrictions on function parameter usage are implemented though parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-C's `typedef` has a slightly different syntax and renamed `alias`.
+C3's equivalent of C's `typedef` has a slightly different syntax in C3 and is renamed `alias`. In contrast, in C3 a *distinct* type is created when using C3's `typedef` keyword. As such, take care to not confuse C3's `alias` and `typedef` keywords relative to C.
 
-C3 also requires all function pointers to be used with a `alias`, for example:
+C3 also requires all function pointers to be used with an `alias`. For example:
 
 ```c3
 alias Callback = fn void();
@@ -66,13 +66,15 @@ are common to all C3 runtime types:
 
 # Basic types
 
-Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
+Basic types are divided into floating point types and integer types. 
+
+Integer types are either signed or unsigned.
 
 ## Integer types
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
-| `bool`\*    | 1        | no     |
+| `bool`&dagger;    | 1        | no     |
 | `ichar`     | 8        | yes    |
 | `char`      | 8        | no     |
 | `short`     | 16       | yes    |
@@ -83,49 +85,48 @@ Basic types are divided into floating point types, and integer types. Integer ty
 | `ulong`     | 64       | no     |
 | `int128`    | 128      | yes    |
 | `uint128`   | 128      | no     |
-| `iptr`\*\*  | varies   | yes    |
-| `uptr`\*\*  | varies   | no     |
-| `isz`\*\*   | varies   | yes    |
-| `usz`\*\*   | varies   | no     |
+| `iptr`&Dagger;  | varies   | yes    |
+| `uptr`&Dagger;  | varies   | no     |
+| `isz`&Dagger;   | varies   | yes    |
+| `usz`&Dagger;   | varies   | no     |
 
-\* `bool` will be stored as a byte.
-\*\* size, pointer and pointer sized types depend on platform.
+&dagger;: `bool` will be stored as a byte.
+
+&Dagger;: Size, pointer and pointer-sized types depend on the target platform.
 
 ### Integer type properties
 
-Integer types, except for `bool` also has the following type properties:
+Integer types (except for `bool`) also have the following type properties:
 
 1. `max` The maximum value for the type.
 2. `min` The minimum value for the type.
 
 ### Integer arithmetics
 
-All signed integer arithmetics uses 2's complement.
+All signed integer arithmetic uses 2's complement.
 
 ## Integer constants
 
-Integer constants are 1293832 or -918212.
+Integers may be written in decimal (e.g. `0`, `100`, `-5000`, etc), but also:
 
-Integers may be written in decimal, but also
-
-- in binary with the prefix 0b e.g. `0b0101000111011`, `0b011`
-- in octal with the prefix 0o e.g. `0o0770`, `0o12345670`
-- in hexadecimal with the prefix 0x e.g. `0xdeadbeef` `0x7f7f7f`
+- in binary with the prefix `0b`, e.g. `0b0101000111011`, `0b011`, etc.
+- in octal with the prefix `0o`, e.g. `0o0770`, `0o12345670`, etc.
+- in hexadecimal with the prefix `0x`, e.g. `0xdeadbeef`, `0x7f7f7f`, etc.
 
 In the case of binary, octal and hexadecimal, the type is assumed to be *unsigned*.
 
-Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
+Furthermore, underscore `_` may be used to add space between digits to improve readability, e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`, etc.
 
 ### Integer literal suffix and type
 
-Integer literals follow C rules:
+Integer literals follow C's rules:
 
-1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
-2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
+1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`, picking the smallest type that fits the literal.
+2. If the literal is suffixed by `u` or `U` it is instead assumed to be a `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
 3. Binary, octal and hexadecimal will implicitly be unsigned.
 4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
 5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
-6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
+6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
 
 ```c3
 $typeof(1);              // int
@@ -154,18 +155,33 @@ Base64 encoded values work like TwoCC/FourCC/EightCC, in that is it laid out in 
 
 In our case we could encode `b64'Rk9PQkFSMTE='` as `'FOOBAR11'`.
 
-Base64 and hex data literals initializes to arrays of the char type:
+Base64 and hex data literals initialize to fixed sized `char` arrays (i.e. `char[*]` inferring to some specific `char[n]`):
 
 ```c3
 char[*] hello_world_base64 = b64"SGVsbG8gV29ybGQh";
 char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 ```
 
-## String literals, and raw strings
+Note that these data literals permit either single or double quotes, but in contrast normal strings do not. The following example, which passes all assertions successfully, greatly clarfies what they each really are:
 
-Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
+```c3
+$assert($typeof('C3').nameof == "ushort");
+$assert($typeof("C3").nameof == "String");
+$assert($typeof(b64'C3').nameof == "char[1]");
+$assert($typeof(b64"C3").nameof == "char[1]");
+$assert($typeof(x'C3').nameof == "char[1]");
+$assert($typeof(x"C3").nameof == "char[1]");
+```
 
-Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
+These different variants thus enable a precise and expressive range of byte data handling. The `$embed` compile-time function will likely also interest you if these kinds of encodings do. 
+
+The ["FourCC" strings](#twocc-fourcc-and-eightcc-literals) (fixed-width pseudo-strings packed into single integers), such as `'C3'` (a `ushort`) above, provide a more specialized option for creating and using string-like data than normal strings, among other things enabling *mutable* string-like data that still compares as efficiently as pointers to constant strings do but at the cost of being fixed width (e.g. 8 characters if stored in a 64 bit integer).
+
+## String literals and raw strings
+
+Regular string literals are text enclosed in (i.e. delimited by) double quotes (`"`), as in `"some text"`, just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
+
+Raw strings and multi-line strings are text enclosed in (i.e. delimited by) backticks (<code>\`</code>), as in <code>\`some text\`</code>. Inside of a raw string, none of the usual escapes are available. To write a <code>\`</code> inside a raw string however, double the character:
 
 ```c3
 String foo = `C:\foo\bar.dll`;
@@ -175,17 +191,19 @@ String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
 
+See [the earlier "basic types and values" page on string literals](/language-fundamentals/basic-types-and-values/#string-literals) and [the language spec section on string literals](/implementation-details/specification/#string-literals) for more information or examples.
+
 ## Floating point types
 
 | Name        | bit size |
 |-------------| --------:|
-| `bfloat16`* | 16       |
-| `float16`*  | 16       |
+| `bfloat16`&dagger; | 16       |
+| `float16`&dagger;  | 16       |
 | `float`     | 32       |
 | `double`    | 64       |
-| `float128`* | 128      |
+| `float128`&dagger; | 128      |
 
-*support is still incomplete.
+&dagger;: Support is still incomplete and not all systems have native support.
 
 ### Floating point type properties
 
@@ -198,12 +216,11 @@ On top of the regular properties, floating point types also have the following p
 
 ## Floating point constants
 
-Floating point constants will *at least* use 64 bit precision. Just like for integer constants, it is allowed to use underscore, but it may not occur immediately before or after a dot or an exponential.
+Floating point constants will *at least* use 64 bit precision. Just like for integer constants, floating point constants are allowed to use underscores, but the underscores may not occur immediately before or after a dot or an exponential.
 
-Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is e (or E, both are acceptable), for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
+Floating point values may be written in decimal or hexadecimal. For decimal, the exponential symbol is `e` (or `E`, both are acceptable), for hexadecimal `p` (or `P`) is used: `-2.22e-21` `-0x21.93p-10`
 
-By default a floating point literal is of type double, but if the suffix `f` is used (eg `1.0f`), it is instead of 
-`float` type.
+By default a floating point literal is of type `double`, but if the suffix `f` is used (e.g. `1.0f`), it is instead of type `float` (which has half as much precision as `double`).
 
 # C compatibility
 
@@ -264,19 +281,20 @@ int? x = 0; // ✅ Ok!
 fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn paramater
 ```
 
-An Optional value can use the special `if-try` and `if-catch` to unwrap its result or its Empty,
-it is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
+An Optional value can use the special if-try (e.g. `if (try val = opt_func()) { ... }`) and if-catch (e.g. `if (catch err = opt_func()) { ... }`) to unwrap its result or its Empty.
+
+It is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
 
 To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](/language-common/optionals-essential/).
 
 :::note
-If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::colletions.
+If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in `std::collections`.
 :::
 
 ## The `fault` type 
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault have the special property that together with the `?` suffix it creates an Empty value:
+normal value. A `fault` has the special property that together with the `?` suffix it creates an Empty value:
 
 ```c3
 int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
@@ -326,64 +344,93 @@ However, at runtime only a few are available:
 
 ## The `any` type
 
-C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
+C3 contains a built-in variant type (a.k.a. a tagged union), which is essentially a `struct` containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type,
-it is recommended to use the `anycast` macro or checking the type explicitly first.
+it is recommended to use the `anycast` macro (which has safety checks built in) or to check the type explicitly first.
+
+The following test functions all pass when run via the `c3c test` command:
 
 ```c3
-fn void main()
+fn void any_basics() @test
 {
-    int x;
-    any y = &x;
-    int* w = (int*)y;                // Returns the pointer to x
-    double* z_bad = (double*)y;      // Don't do this!
-    double! z = anycast(y, double);  // The safe way to get a value
-    if (y.type == int.typeid)
+    int val = 0xC3;
+    any any_val = &val;
+    
+    int* int_ptr = (int*)any_val;  // Only safe because of the context, otherwise not.
+    double* unsafe_double_ptr = (double*)any_val;  // Unsafe, like casting a `void*` wrongly.
+    
+    int safe_int_val = *anycast(any_val, int)!!;  
+    // If `any_val` weren't actually an `int` above then this would panic (crash)
+    // instead of silently endangering the integrity of the program state.
+    // The `!!` essentially means "panic (crash) if there's an error".
+    
+    if (any_val.type == int.typeid)
     {
-        // Do something if y contains an int*
+        assert(val == *(int*)any_val);
     }
 }
 ```
 
-Switching over the `any` type is another method to unwrap the pointer inside:
+Switching over an `any` is a common way to handle the possible underlying types:
 
 ```c3
-fn void test(any z)
+fn void any_switches() @test
 {
-    // Unwrapping switch
-    switch (z)
+    int val = 1;
+    double other_val = 2.0;
+    any any_val = &val;
+
+    // Handling the type of an `any` via a `switch`:
+    switch (any_val.type)
     {
         case int:
-            // z is unwrapped to int* here
+            assert(*(int*)any_val == 1);
         case double:
-            // z is unwrapped to double* here
+            assert(*(double*)any_val == 2.0);
     }
-    // Assignment switch
-    switch (y = z)
+    
+    // Assigning to a `switch`-local variable:
+    switch (typeid tid = any_val.type)
     {
         case int:
-            // y is int* here
+            assert(tid == int.typeid);
+        case double:
+            assert(tid == double.typeid);
     }
-    // Direct unwrapping to a value is also possible:
-    switch (w = *z)
+    
+    // An `any` can change what type it points to, 
+    // such that it is essentially a typed `void*`:
+    any_val = &other_val;
+    
+    // Alternatively, normal `if` branches may be used.
+    if (any_val.type == int.typeid)
     {
-        case int:
-            // w is int here
+        assert(*(int*)any_val == 1);
     }
-    // Finally, if we just want to deal with the case
-    // where it is a single specific type:
-    if (z.type == int.typeid)
+    else if (any_val.type == double.typeid)
     {
-        // This is safe here:
-        int* a = (int*)z;
+        assert(*(double*)any_val == 2.0);
     }
-    if (try b = *anycast(z, int))
+    
+    // `try` and `catch` can handle optionals from `anycast`:
+    double? optional_val = *anycast(any_val, double);
+    if (try double_val = optional_val)
     {
-        // b is an int:
-        foo(b * 3);
+        // `double_val` is a normal `double` here, not an `any`:
+        $assert($typeof(double_val).nameof == "double");
+        assert(double_val == 2.0);
+    }
+    else if (catch err = optional_val)
+    {
+        // `err` is a `fault` (an error enum essentially) within this scope.
+        assert(err == TYPE_MISMATCH);
     }
 }
 ```
+
+The `try` and `catch` pattern of optional handling enables you to treat `any` values as if they are the normal values that you usually intend to use them as, whether that is a "valid" (a.k.a. "expected" or "non-empty" or "normal") value in the case of `try`  or an "invalid" (a.k.a. "unrepresentable" or "out of domain" (if input) or "out of range" (if output) or "error") value in the case of `catch`. `try` and `catch` unwrap and bind.
+
+As a side note though: What is a "normal" result and what is an "error" is actually subjective in the sense that all data is valid data from a computer's perspective since the computer is an unbiased and unthinking machine and always does exactly as it is instructed to do. Nonetheless, it is useful for modeling concepts as a human to have a natural mechanism to streamline this kind of commonly recurring splitting of logic. Optional types in C3 help in that regard. Handling `any` values via optionals enables you to mostly pretend you are working with the values you care about instead of the raw "typed `void*`" values that `any` values themselves represent.
 
 ### `any` fields
 
@@ -423,13 +470,12 @@ any some_inner_int = any_struct.as_inner();
 
 ## Array types
 
-Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
-from the initializer. See the chapter on [arrays](/language-common/arrays/).
+Arrays are indicated by `[size]` after the type, e.g. `int[4]`, whereas to indicate a slice you omit the size, e.g. `int[]`. For initialization the wildcard `type[*]` can be used to infer the size from the initializer, but keep in mind that the size of a `type[*]` is still fixed at compile time (exactly as if a specific size `type[N]` had been given), whereas the size of a `type[]` may vary at run time. See the chapter on [arrays](/language-common/arrays/) for more info.
 
 ## Vector types
 
 Vectors use `[<size>]` after the type, e.g. `float[<3>]`, with the restriction that vectors may only form out
-of integers, floats and booleans. Similar to arrays, wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
+of integers, floats and booleans. Similar to arrays, a wildcard can be used to infer the size of a vector: `int[<*>] a = { 1, 2 }`.
 
 ### Array and vector type properties
 
@@ -442,7 +488,7 @@ Array and vector types also support:
 
 ## Type aliases (C's typedef)
 
-Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
+C3 has a construct that behaves essentially the same as C's "typedef", an `alias`, and it is declared using the syntax `alias <new_name> = <old_name>`. For example:
 
 ```c3
 alias Int32 = int;
@@ -454,12 +500,20 @@ Int32 a = 1;
 int b = a;
 ```
 
-These are not proper types, just aliases, and querying
-their properties will query the properties of its aliased type.
+Like C's "typedefs", C3's aliases are not proper distinct types, just aliases (i.e. new synonymous names), and hence querying the properties of an alias will query the properties of the aliased (i.e. underlying) type instead.
+
+Aliases can also be used as synonyms for variables, but must obey the same declaration rules as type declarations and hence can only refer to globals and such (not function-local variables) in practice. For example:
+
+```c3
+double bad_pi = 3.14;
+alias not_pie = bad_pi;
+```
+
+User-defined aliases of types in C3 must use "PascalCase" (more specifically: they must begin with a capital letter and use at least some lowercase letters too), whereas aliases of variables do not have this restriction.
 
 ## Function pointer types
 
-Function pointers are always used through a `alias`:
+Function pointers are always used through an `alias`:
 
 ```c3
 alias Callback = fn void(int value);
@@ -499,9 +553,9 @@ Function pointer types also support:
 
 ## Typedef - Distinct type definitions
 
-`typedef` creates a new type, that has the same properties as the original type
-but is distinct from it. It cannot implicitly convert into the other type using the syntax
-`typedef <name> = <type>`
+In C3, unlike C, `typedef` creates a new type that has the same properties as the original type but is distinct from it. The resulting type cannot implicitly convert into the type upon which it was based, except via assignments to literals (thus preventing the need to cast every initialization). Such implicit conversion of literals for ease of use applies not only to primitives but also to aggregate types such as struct literals (e.g. `(Vec2){1, 2}`).
+
+The syntax for declaring `typedef`s is `typedef <NewType> = <old_type>`. Also, user defined types in C3 must use "PascalCase", for the sake of consistency and ease of recognition by tooling and reducing inconsistencies between codebases. For example:
 
 ```c3
 typedef MyId = int;
@@ -542,30 +596,47 @@ fn void test()
 }
 ```
 
+Another reason to use inline `typedef` is because it changes how the name of the type prints and is represented as a string yet still permits more implicit conversions than non-inline `typedef`. Aliases always print as the underlying type via `nameof` whereas typedefs always print the new type name (whether inline or not). Note also that aliases are transitive. Thus, consider the implications of the following, which passes:
+
+```c3
+alias IntAlias = isz;
+typedef IntInline = inline isz;
+
+alias Int8Alias = char;
+typedef Int8Inline = inline char;
+
+$assert(IntAlias.nameof == "long");
+$assert(IntInline.nameof == "IntInline");
+
+$assert(Int8Alias.nameof == "char");
+$assert(Int8Inline.nameof == "Int8Inline");
+```
+
 ### Typedef type properties
 
 In addition to the normal properties, typedef also supports:
 
-1. `inner` - Returns the type this is based on.
-2. `parentof` - If this is an inline typedef, return the same as `inner`.
+1. `inner` - Returns the underlying type an `alias` or `typedef` is based on, discarding all `typedef` distinctions.
+2. `parentof` - If a type is an inline typedef, returns the same type as `inner`, else returns type `void`.
 
 ## Generic types
 ```c3
-import generic_list; // Contains the generic MyList
+import generic_list;  // Contains the generic MyList data structure.
 
 struct Foo {
     int x;
 }
 
-// ✅ alias for each type used with a generic module.
-alias IntMyList = MyList {Foo};
+// ✅ An `alias` should be defined for each type created from a generic module.
+alias MyListFoo = MyList {Foo};
 MyListFoo working_example;
 
-// ❌ An inline type definition will give an error.
-// Only allowed in a type definition or macro
+// ❌ A direct use of a generic type will give an error normally.
+// Such direct uses are only allowed in a type definition or macro.
 MyList {Foo} failing_example = MyList {Foo};
 ```
-Find out more about [generic types](/generic-programming/generics).
+
+Find out more in [the generic types section](/generic-programming/generics).
 
 ## Enum
 
@@ -582,7 +653,7 @@ enum State : int
 State current_state = WAITING; // or '= State.WAITING' 
 ```
 The access requires referencing the `enum`'s name as `State.WAITING` because
-an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
+an enum like `State` is a separate namespace by default, just like `enum class` in C++.
 
 
 ### Enum associated values
@@ -741,17 +812,26 @@ user defined types:
 
 ## Struct types
 
-Structs are always named:
+Structs must always be named, except when nested:
 
 ```c3
 struct Person
 {
     char age;
     String name;
+    struct location {  //Nested structs must have lowercase names.
+        String street;
+        String city;
+        String country;
+    }
+    struct @packed {  //Anonymous structs enable more layout control.
+        uchar height;
+        String nickname;
+    }
 }
 ```
 
-A struct's members may be accessed using dot notation, even for pointers to structs.
+A `struct`'s members may be accessed using dot notation, even for pointers to structs.
 
 ```c3
 fn void test()
@@ -768,7 +848,7 @@ fn void test()
     io::printfn("%s is %d years old.", p_ptr.name, p_ptr.age);
 }
 ```
-(One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
+(One might wonder whether it's possible to take a `Person**` and use dot access. &mdash; It's not allowed; only one level of dereference is done.)
 
 To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
 
@@ -815,7 +895,7 @@ union Integral
 }
 ```
 
-As usual unions are used to hold one of many possible values:
+As usual, unions are used to hold one of multiple possible values:
 
 ```c3
 fn void test()
@@ -836,8 +916,7 @@ Note that unions only take up as much space as their largest member, so `Integra
 
 ### Nested sub-structs / unions
 
-Just like in C99 and later, nested anonymous sub-structs / unions are allowed. Note that
-the placement of struct / union names is different to match the difference in declaration.
+Just like in C, nested anonymous sub-structs and unions are allowed. Note though that member access paths only need to specify the *named* substructures along the way. The unnamed substructures in contrast are brought into the parent structure's namespace.
 
 ```c3
 struct Person
@@ -857,6 +936,10 @@ struct Person
 }
 ```
 
+For the above example, `cb` would be accessed as `obj.subname.cb` whereas `employee_nr` would be accessed as `obj.employee_nr`. 
+
+Anonymous structs and unions cannot be referred to by name, hence the reason why their members must be treated as if they are members of the enclosing type instead.
+
 ### Union and structs type properties
 
 Structs and unions also support the `membersof` property,
@@ -865,9 +948,9 @@ which returns a list of struct members.
 ## Bitstructs
 
 Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
-integer types and booleans, in most other respects it works like a struct.
+integer types and booleans. In most other respects though, it works like a struct.
 
-The main differences is that the bitstruct has a *backing type* and each field
+The main difference is that the bitstruct has a *backing type* and each field
 has a specific bit range. In addition, it's not possible *to take the address* of a
 bitstruct field.
 

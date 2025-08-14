@@ -9,8 +9,7 @@ Statements largely work like in C, but with some additions.
 
 ## Labelled break and continue
 
-Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `if`, 
-`switch`, `while` and `do` statements.
+Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `if`, `switch`, `for`, `while` and `do` statements.
 
 ```c3
 fn void test(int i)
@@ -86,7 +85,7 @@ switch MAIN: (enum_var)
 }
 ```
 
-Which can be used as structured `goto` when creating state machines.
+This can be used as structured `goto` when creating state machines.
 
 ## Switch cases with runtime evaluation
 
@@ -146,6 +145,8 @@ switch
         baz();
 }
 ```
+
+The generalized form of `switch` that supports arbitrary conditionals (not just constants) only works when the controlling switch statement has the form `switch (true) { ... }` or `switch { ... }`. Otherwise, type errors will likely occur because the `switch` will assume each case must be a compile-time constant but arbitrary conditions often aren't.
 
 ## Jumptable switches with `@jump`
 

@@ -127,7 +127,7 @@ The result of an embed works similar to a string literal and may implicitly conv
 
 ##### Limiting length
 
-It's possible to limit the length of included with the optional second parameter.
+It's possible to limit the length included by providing an optional second parameter to `$embed`:
 
 ```c3
 char[4] my_data = $embed("foo.txt", 4);
@@ -142,7 +142,7 @@ If this is desired, declare the left hand side an [Optional](/language-common/op
 char[]? my_image = $embed("my_image.png");
 ```
 
-`my_image` with be an optional `io::FILE_NOT_FOUND?` if the image is missing.
+`my_image` will be an optional `io::FILE_NOT_FOUND?` if the image is missing.
 
 This also allows us to pass a [default value using `??`](/language-common/optionals-advanced/#return-a-default-value-if-optional-is-empty):
 ```c3

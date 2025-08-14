@@ -24,7 +24,7 @@ fn void test()
 The `defer` runs **after** the other print statements, at the function return.
 
 :::note
-[Rethrow `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) unwraps the Optional result if present, afterwards the previously Optional variable is a normal variable again, if the Optional result is empty then the Excuse is returned from the function back to the caller.
+[Rethrow `!`](/language-common/optionals-essential/#using-the-rethrow-operator--to-unwrap-an-optional-value) unwraps the Optional result if present (i.e. if not containing a `fault`). Afterwards, if code beyond the `!` is reached, the previously Optional variable becomes a normal (i.e. not Optional) variable, and hence usable thereafter without error checking. In contrast, if the Optional result is "empty" (i.e. contains a `fault`) then the Excuse (the `fault`) is immediately returned from the function back to the caller. Either way, all deferred actions will be performed at the end of each scope.
 :::
 
 ### Defer Execution order
@@ -47,9 +47,11 @@ import std::io;
 
 fn char[]? file_read(String filename, char[] buffer)
 {
-    // return Excuse if failed to open file
+    // Return an Optional containing a `fault` if 
+    // opening the file fails, else continue:
     File file = file::open(filename, "r")!;
-
+    
+    // Set up how the file will be closed once the scope ends:
     defer {
         io::printn("File was found, close the file");
         if (catch excuse = file.close())
@@ -58,20 +60,20 @@ fn char[]? file_read(String filename, char[] buffer)
         }
     }
 
-    // return if fault reading the file into the buffer
+    // Return an Optional containing a `fault` if 
+    // there's a problem reading the file into the buffer, else continue:
     file.read(buffer)!;
+    
     return buffer;
 }
 ```
 
-If the file named `filename` is found the function will read the content into a buffer,
-`defer` will then make sure that any open `File` handlers are closed.
-Note that if a scope exit happens before the `defer` declaration, the `defer` will not run, this a useful property because if the file failed to open, we don't need to close it.
+If the file named `filename` is found then the function will read the contents of the file into a buffer. `defer` will then make sure that any open `File` handlers are closed when the enclosing scope ends. Note that if the end of a scope happens before the `defer` statement is reached then the `defer` will not run. This a useful property because if the file failed to open then we don't need to close it.
 
 
 ## `defer try`
 
-A `defer try` is called at [end of a scope](#end-of-a-scope) when the returned [Optional contained a result](/language-common/optionals-essential/#what-is-an-optional) value.
+A `defer try` is called at the [end of a scope](#end-of-a-scope) when the returned [Optional](/language-common/optionals-essential/#what-is-an-optional) contains a normal (non-`fault`) result value. In other words, `defer try` is often used for cleanup code that you only want to run when there are no "errors" or other special cases (i.e. when the program is currently on the "successful" or "happy path" case).
 
 ### Examples
 
@@ -88,8 +90,7 @@ fn void main(String[] args)
     (void)test();
 }
 ```
-Function returns an [Optional result](/language-common/optionals-essential/#what-is-an-optional) value,
-this means `defer try` runs on [scope exit](#end-of-a-scope).
+The above function returns an [Optional result](/language-common/optionals-essential/#what-is-an-optional) value, and thus the `defer try` runs on [scope exit](#end-of-a-scope).
 
 ```c3
 fn void? test()
@@ -107,8 +108,7 @@ fn void main(String[] args)
     }
 }
 ```
-Function returns an [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional),
-this means the `defer try` does *not* run on [scope exit](#end-of-a-scope).
+The above function returns an [Optional Excuse](/language-common/optionals-essential/#what-is-an-optional), and thus the `defer try` does *not* run on [scope exit](#end-of-a-scope).
 
 ## `defer catch`
 
@@ -121,12 +121,12 @@ defer catch { ... }
 ```
 
 ```c3
-defer (catch err) { ... };
+defer (catch err) { ... }
 ```
-When the fault is captured this is convenient for logging the fault:
+The capturing behavior of `defer catch` is convenient for logging the `fault`:
 
 ```c3
-defer (catch err) io::printfn("fault found: %s", err)
+defer (catch err) io::printfn("fault found: %s", err);
 ```
 ### Memory allocation example
 

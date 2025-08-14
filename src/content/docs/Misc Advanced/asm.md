@@ -5,9 +5,9 @@ sidebar:
     order: 232
 ---
 
-C3 provides two ways to insert inline assembly: asm strings and asm blocks. 
+C3 provides two ways to insert inline assembly code: `asm` strings and `asm` blocks. 
 
-## Asm strings
+## Assembly strings
 
 This form takes a single compile time string and passes it directly to the underlying
 backend without any changes.
@@ -18,10 +18,9 @@ asm("nop");
 int y = x;
 ```
 
-## Asm block
+## Assembly blocks
 
-Asm blocks uses a common grammar for all types of processors. It assumes that
-all assembly statements can be reduced to the format:
+Assembly blocks use a common grammar for all types of processors. C3's `asm` implementation assumes that all assembly statements can be reduced to variations of the following general format:
 
 ```asm
 instruction (arg (',' arg)*)?;
@@ -57,8 +56,11 @@ asm
 ```
 The asm block will infer register clobbers and in/out parameters.
 
-*\*Please note that the current state of inline asm is a __work in progress__,
-only a subset of x86, aarch64 and riscv instructions are available, other platforms
-have no support at all. It is likely that the grammar will be extended as more 
-architectures are supported. More instructions can be added as they are needed,
-so please file issues when you encounter missing instructions you need.*
+:::note
+The current state of inline asm is a __work in progress__. 
+Only a subset of x86, aarch64 and riscv instructions are available, 
+and other platforms have no support at all. It is likely that the 
+grammar will be extended as more architectures are supported. 
+More instructions can be added as they are needed, so please 
+file issues when you encounter missing instructions you need.
+:::
