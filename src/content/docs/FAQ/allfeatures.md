@@ -49,7 +49,7 @@ Changes relating to literals, identifiers etc.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
 8. Pointer-sized `iptr` and `uptr` integers.
 9. `isz` and `usz` integers corresponding to the `size_t` bitwidth.
-10. Optional types are formed using the `!` suffix.
+10. Optional types are formed using the `?` suffix.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
 13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
