@@ -333,13 +333,13 @@ Some features are [provided by "builtins" in the standard library](/standard-lib
 
 ## Contracts
 
-1. Doc contracts (starting with `<*`) are parsed.
+1. Doc contracts (starting with `<*` and ending with `*>`) are parsed for correct contract syntax and semantics. They are not inert comments, despite also serving as documentation comments.
 2. The first part, up until the first `@` directive on a new line, is ignored.
 3. The `@param` directive for pointer arguments may define usage constraints `[in]` `[out]` and `[inout]`.
 4. Pointer argument constraints may add a `&` prefix to indicate that they may not be `null`, e.g. `[&inout]`.
 5. Contracts may be attached to generic modules, functions and macros.
 6. `@require` directives are evaluated given the arguments provided. Failing them may be a compile time or runtime error.
-7. The `@ensure` directive is evaluated at exit - if the return is a result and not an optional.
+7. The `@ensure` directive is evaluated at exit &mdash; if the return is a "valid"/"normal" (non-`fault`) result and not an "invalid"/"abnormal" (`fault`-containing) Optional.
 8. `return` can be used as a variable identifier inside of `@ensure`, and holds the return value.
 9. `@return?` optionally lists the errors used. This will be checked at compile time.
 10. `@pure` says that no writing to globals is allowed inside and only `@pure` functions may be called.
@@ -360,10 +360,8 @@ Some features are [provided by "builtins" in the standard library](/standard-lib
 
 ## Safe / fast
 
-Compilation has two modes: "safe" and "fast". Safe will insert checks for out-of-bounds access, null-pointer deref,
-shifting by negative numbers, division by zero, violation of contracts and asserts.
+Compilation has two modes: “safe” and “fast”. Safe mode will insert checks for out-of-bounds access, null-pointer deref, shifting by negative numbers, division by zero, violation of contracts and asserts.
 
-Fast will assume all of those checks can be assumed to always pass. This means that unexpected behaviour may result
-from violating those checks. It is recommended to develop in "safe" mode.
+Fast mode will assume that all of those checks always pass. This means that unexpected behaviour may result from violating those checks. It is recommended to develop in "safe" mode.
 
 If debug symbols are available, C3 will produce a stack trace in safe mode where an error occurs.
