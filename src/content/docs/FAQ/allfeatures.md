@@ -13,9 +13,9 @@ Changes relating to literals, identifiers etc.
 
 ### Added
 
-1. 0o prefix for octal.
-2. 0b prefix for binary.
-3. Optional "_" as digit separator.
+1. `0o` prefix for octal.
+2. `0b` prefix for binary.
+3. Optional `_` as digit separator.
 4. Hexadecimal byte data, e.g `x"abcd"`.
 5. Base64 byte data, e.g. `b64"QzM="`.
 6. Type name restrictions (PascalCase).
