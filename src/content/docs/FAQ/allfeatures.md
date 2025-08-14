@@ -192,9 +192,9 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. `var` declaration for type inferred variables in macros. E.g. `var a = some_value;`
-2. `var` declaration for new type variables in macros. E.g. `var $Type = int;`
-3. `var` declaration for compile time mutable variables in function and macros. E.g. `var $foo = 1;`
+1. `var` declaration for type inferred variables in macros. E.g. `var a = some_value;`.
+2. `var` declaration for new type variables in macros. E.g. `var $Type = int;`.
+3. `var` declaration for compile time mutable variables in functions and macros. E.g. `var $foo = 1;`.
 4. `const` declarations may be untyped. Such constants are not stored in the resulting binary.
 
 ### Changed
