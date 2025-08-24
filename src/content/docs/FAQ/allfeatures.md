@@ -5,7 +5,7 @@ sidebar:
     order: 701
 ---
 
-Here is a summary of _all_ the features of C3 and changes from C
+Here is a summary of _all_ the features of C3 and how it differs from C.
 
 ## Symbols and literals
 
@@ -13,9 +13,9 @@ Changes relating to literals, identifiers etc.
 
 ### Added
 
-1. 0o prefix for octal.
-2. 0b prefix for binary.
-3. Optional "_" as digit separator.
+1. `0o` prefix for octal.
+2. `0b` prefix for binary.
+3. Optional `_` as digit separator.
 4. Hexadecimal byte data, e.g `x"abcd"`.
 5. Base64 byte data, e.g. `b64"QzM="`.
 6. Type name restrictions (PascalCase).
@@ -25,8 +25,8 @@ Changes relating to literals, identifiers etc.
 10. Raw string literals between "\`".
 11. `\e` escape character.
 12. Source code must be UTF-8.
-13. Assumes `\n` for new row `\r` is stripped from source.
-14. Bit-width integer and float suffixes: `u8`/`i8`/`u16`/`i16`/... `f32`/`f64`/...
+13. Assumes `\n` for newlines. `\r` is stripped from source.
+14. Integer suffixes are fixed size: `L`, `UL` is 64-bit literals on all platforms, `LL` and `ULL` are guaranteed 128-bit literals.
 15. The `null` literal is a pointer value of 0.
 16. The `true` and `false` are boolean constants true and false.
 
@@ -49,7 +49,7 @@ Changes relating to literals, identifiers etc.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
 8. Pointer-sized `iptr` and `uptr` integers.
 9. `isz` and `usz` integers corresponding to the `size_t` bitwidth.
-10. Optional types are formed using the `!` suffix.
+10. Optional types are formed using the `?` suffix.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
 13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
@@ -61,9 +61,9 @@ Changes relating to literals, identifiers etc.
 
 ### Removed
 
-1. The spiral rule type declaration (see above).
-2. Complex types
-3. size_t, ptrdiff_t (see above).
+1. The C "spiral rule" type declaration (see above).
+2. Complex types (implemented as user-defined types instead).
+3. `size_t`, `ptrdiff_t` (see above).
 4. Array types do not decay.
 
 ## Types
@@ -84,13 +84,14 @@ Changes relating to literals, identifiers etc.
 12. Using `inline` on a `typedef` allows it to be implicitly converted *to* its base type (but not vice versa).
 13. Types may add operator overloading to support `foreach` and subscript operations.
 14. Generic types through generic modules, using `{ ... }` for the generic parameter list (e.g. `List{ int } list;`).
-15. Interface types, `any` types which allows dynamic invocation of methods.
+15. Interface types and `any` types, which allow dynamic invocation of methods.
+16. Types may overload arithmetic operators to implement new numerical types.
 
 ### Changed
 
 1. C's typedef is replaced by `alias` and has somewhat different syntax (e.g. `alias MyTypeAlias = int;`).
-2. Function pointer syntax is prefix `fn` followed by a regular function declaration without the function name.
-3. `typedef` in C3 creates a new type which can have it's own methods, but shares the common internal representation as the original type.
+2. Function pointer syntax is prefixed by an `fn` and followed by a regular function declaration without the function name. For example, `fn void(int)` is the type for a function that takes an `int` and returns nothing. Named parameters and default arguments are also permitted, such as `fn void(int num = 0)`.
+3. `typedef` in C3 creates a new type which can have its own methods, but shares the same common internal representation as the original type.
 
 ### Removed
 
@@ -98,7 +99,7 @@ Changes relating to literals, identifiers etc.
 2. Enum, struct and union declarations should not have a trailing ';'
 3. `alias` can only be used at the top level, not inside a function.
 4. Anonymous structs are not allowed.
-5. Type qualifiers are all removed, including `const`, `restrict`, `volatile`
+5. Type qualifiers are all removed, including `const`, `restrict`, and `volatile`. However, `const` may be applied to compile-time values and each such constant must have its name written in `ALL_CAPS`.
 6. Function pointers types **cannot** be used "raw", but must always be used through a type alias.
 
 ### Introspection
@@ -115,26 +116,26 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 1. Array initializers may use ranges. (e.g. `int[256] x = { [0..128] = 1 }`)
 2. `?:` operator, returning the first value if it can be converted to a boolean true, otherwise the second value is returned.
-3. Orelse `??` returning the first value if it is a result, the second if the first value was an optional value.
-4. Rethrow `!` suffix operator with an implicit `return` the value if it was an optional value.
-5. Dynamic calls, allowing calls to be made on the `any` and interfaces dispatched using a dynamic mechanism.
+3. Optionals support an "or else" operator `??` returning the first value if it is a normal (non-`fault`) result or else the second value if the first value is an abnormal (`fault`-containing) Optional value. Thus, `??` provides a mechanism for returning default values when evaluations encounter problems.
+4. Rethrow `!` suffix operator which implicitly returns the Optional value if it was an abnormal (`fault`-containing) Optional value.
+5. Dynamic calls, allowing function calls to be made on generic data of type `any` or to use interfaces as a dynamic dispatching mechanism.
 6. Create a slice using a range subscript (e.g. `a[4..8]` to form a slice from element 4 to element 8).
 7. Two range subscript methods: `[start..inclusive_end]` and `[start:length]`. Start, end and length may be omitted for default values.
 8. Indexing from end: slices, arrays and vectors may be indexed from the end using `^`. `^1` represents the last element. This works for ranges as well.
 9. Range assignment, assign a single value to an entire range e.g. `a[4..8] = 1;`.
-10. Slice assignment, copy one range to the other range e.g. `a[4..8] = b[8..12];`.
+10. Slice assignment: copy one range to the other range, e.g. `a[4..8] = b[8..12];`.
 11. Array, vector and slice comparison: `==` can be used to make an element-wise comparison of two containers.
 12. `?` suffix operator turns a `fault` into an optional value.
 13. `!!` suffix panics if the value is an optional value.
-14. `$defined(...)` returns true if the last expression is defined (sub-expressions must be valid).
+14. `$defined(...)` returns true if the outermost expression contained within it is defined. Sub-expressions must also be valid.
 15. Compile time "and" and "or" using `&&&` and `|||`. Both sides of the operator should be compile-time constants. If the left hand side of `&&&` is false, the right hand side is not type-checked. For `|||` the right hand side is not type-checked if the left hand side is true.
-16. Lambdas (anonymous functions) may be defined, they work just like functions and do not capture any state.
+16. Lambdas (anonymous functions) may be defined. They work just like functions and do not capture any state (i.e. are not "closures", unlike in some other languages). Not capturing state makes it easier for C3 to retain a simpler lifetime model.
 17. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
 18. Structs may implicitly convert to their `inline` member if they have one.
 19. Pointers to arrays may implicitly convert to slices.
 20. Any pointer may implicitly convert to an `any` with type being the pointee.
-21. Optional values will implicitly invoke "flatmap" on an expression it is a subexpression of.
-22. Swizzling for arrays and vectors.
+21. An optional values will implicitly invoke “flatmap” on an expression it is a subexpression of.
+22. Swizzling for arrays and vectors. For example, to reverse a 3-element vector `vec` via swizzling you can use `vec.xyz = vec.zyx;`.
 
 ### Changed
 
@@ -142,8 +143,8 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 2. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
 3. `sizeof` is `$sizeof` and only works on expressions. Use `Type.sizeof` on types.
 4. `alignof` is `$alignof` for expressions. Types use `Type.alignof`.
-5. Narrowing conversions are only allowed if all sub-expressions is as small or smaller than the type.
-6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened)
+5. Narrowing conversions are only allowed if all sub-expressions are as small or smaller than the type.
+6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened).
 
 ### Removed
 
@@ -155,15 +156,15 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 ### Added
 
-1. Functions may be invoked using named arguments, the name is the dot-prefixed parameter name, e.g. `foo(name: a, len: 2)`.
+1. Functions may be called using named arguments. The name is the same as the parameter name, but followed by `:` in the call. For example: `foo(name: a, len: 2)`.
 2. Typed vaargs are declared `Type... argument`, and will take 0 or more arguments of the given type.
 3. It is possible to "splat" an array or slice into the location of a typed vararg using `...`: `foo(a, b, ...list)`
-4. `any` vaargs are declared `argument...`, it can take 0 or more arguments of any type which are implicitly converted to the `any` type.
+4. `any` vaargs are declared as `argument...` (i.e. without a type in the function parameter list). Such a vaarg list can take 0 or more arguments of any type. All passed arguments are implicitly converted to the `any` type when the function is called.
 5. The function declaration may have `@inline` or `@noinline` as a default.
 6. Using `@inline` or `@noinline` on a function call expression will override the function default.
-7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`, they can be invoked using dot syntax.
+7. Type methods are functions defined in the form `fn void Foo.my_method(Foo* foo) { ... }`. They can be invoked using dot syntax.
 8. Type methods may be attached to any type, even arrays and vectors.
-9. Error handling using optional return types.
+9. Error handling uses Optional return types, which are similar to tagged unions that either contain a valid result or a `fault` state.
 
 ### Changed
 
@@ -192,9 +193,9 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. `var` declaration for type inferred variables in macros. E.g. `var a = some_value;`
-2. `var` declaration for new type variables in macros. E.g. `var $Type = int;`
-3. `var` declaration for compile time mutable variables in function and macros. E.g. `var $foo = 1;`
+1. `var` declaration for type inferred variables in macros. E.g. `var a = some_value;`.
+2. `var` declaration for new type variables in macros. E.g. `var $Type = int;`.
+3. `var` declaration for compile time mutable variables in functions and macros. E.g. `var $foo = 1;`.
 4. `const` declarations may be untyped. Such constants are not stored in the resulting binary.
 
 ### Changed
@@ -212,11 +213,11 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. Match-style variant of the `switch` statement, allows each `case` to hold an expression to test.
+1. Match-style variant of the switch statement, which allows each case to hold an expression to test.
 2. Switching over type with `typeid`.
 3. `asm` blocks for inline assembly.
 4. `nextcase` to fallthrough to the next case.
-5. `nextcase <expr>` to jump to the case with the expression value (this may be an expression evaluated at runtime).
+5. `nextcase <expr>` to jump to the case with the expression value. This may be an expression evaluated at runtime.
 6. `nextcase default` to jump to the `default` clause.
 7. Labelled `while`/`do`/`for`/`foreach` to use with `break` `nextcase` and `continue`.
 8. `foreach` to iterate over arrays, vectors, slices and user-defined containers using operator overloading.
@@ -226,34 +227,34 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 12. `$echo` printing a message at compile time.
 13. `$assert` compile time assert.
 14. `defer` statement to execute statements at scope exit.
-15. `defer catch` and `defer try` similar to `defer` but executes only on optional exit or regular exit of scope respectively.
-16. `do` statements may omit `while`, behaving same as `while (0)`
+15. `defer catch` and `defer try`, which are similar to `defer` but execute only if the Optional value contains a `fault` or a normal result respectively.
+16. `do` statements may omit while, behaving same as `while (0)`.
 17. `if` may have a label. Labelled `if` may be exited using labelled break.
-18. if-try statements allows you to run code where an expression is a result.
-19. if-catch statements runs code on `fault`. It can be used to implicitly unwrap variables.
+18. `if (try ...)` statements run code when an expression is a "valid"/"normal" result (i.e. to handle the "happy path" when working with Optionals).
+19. `if (catch ...)` statements run code when an expression is an "invalid"/"abnormal" (`fault`-containing) result (i.e. to handle the "failure path" when working with Optionals). It can be used to implicitly unwrap variables.
 20. Exhaustive switching on enums.
 
 ### Changed
 
 1. Switch cases will have implicit break, rather than implicit fallthrough.
 2. `assert` is an actual statement and may take a string or a format + arguments.
-3. `static_assert` is `$assert` and is a statement.
+3. `static_assert` from C and C++ corresponds to `$assert` in C3 and is a statement.
 
 ### Removed
 
-1. `goto` removed, replaced by labelled break, continue and nextcase.
+1. `goto` has been removed and replaced by labelled `break`, `continue` and `nextcase`.
 
 ## Compile time evaluation
 
 ### Added
 
-1. `@if(cond)` to conditionally include a struct/union field, a user-defined type etc.
-2. Compile time variables with `$` prefix e.g. `$foo`.
+1. `@if(cond)` to conditionally include a struct/union field, a user-defined type, etc.
+2. Compile time variables with `$` prefix, e.g. `$foo`.
 3. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
 4. `$for` and `$foreach` to loop over compile time variables and data.
 5. `$typeof` determines an expression type without evaluating it.
 6. Type properties may be accessed at compile time.
-7. `$define` returns true if the variable, function or type exists.
+7. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects.
 8. `$error` emits an error if encountered.
 9. `$embed` includes a file as binary data.
 10. `$include` includes a file as text.
@@ -264,30 +265,30 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 15. `$nameof` turns an identifier into its local string name.
 16. `$qnameof` turns an identifier into its local string name with the module prefixed.
 17. Compile time constant values are always compile time folded for arithmetic operations and casts.
-18. `$$FUNCTION` returns the current function as an identifier.
+18. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
 
 ### Changed
 
 1. `#define` for constants is replaced by untyped constants, e.g. `#define SOME_CONSTANT 1` becomes `const SOME_CONSTANT = 1;`.
 2. `#define` for variable and function aliases is replaced by `alias`, e.g. `#define native_foo win32_foo` becomes `alias native_foo = win32_foo;`
-3. In-function `#if...#else..#endif` is replaced by `$if`, `#if...#elif...#endif` is replaced by `$switch`.
+3. In-function `#if...#else..#endif` is replaced by `$if` and `#if...#elif...#endif` is replaced by `$switch`.
 4. For converting code into a string use `$stringify`.
 5. Macros for date, line etc are replaced by `$$DATE`, `$$FILE`, `$$FILEPATH`, `$$FUNC`, `$$LINE`, `$$MODULE`, `$$TIME`.
 
 ### Removed
 
 1. Top level `#if...#endif` does not have a counterpart. Use `@if` instead.
-2. No `#include` directives, `$include` will include text but isn't for the same use.
+2. No `#include` directives, `$include` will include text, but normally C3 code will use `import` to access code from other modules.
 
 ## Macros
 
 ### Added
 
 1. `macro` for defining macros.
-2. "Function-like" macros have no prefix and has only regular parameters or type parameters.
-3. "At"-macros are prefixed with `@` and may also have compile time values, expression parameters, and may have a trailing body.
-4. Type parameters have the prefix `$` and conform to the type naming standard ("$TypeFoo").
-5. Expression parameters are unevaluated expressions, this is similar to arguments to `#define`.
+2. “Function-like” macros have no prefix and have only regular parameters or type parameters.
+3. “At”-macros are prefixed with `@` and may also have compile time values, expression parameters, and a trailing body.
+4. Type parameters are prefixed with `$` and conform to C3's required type naming convention (e.g. `$TypeFoo`, a.k.a. "PascalCase").
+5. Expression parameters (i.e. macro parameters prefixed with `#`) are unevaluated expressions. This is similar to arguments to `#define` in C.
 6. Compile time values have a `$` prefix and must contain compile time constant values.
 7. Any macro that evaluates to a constant result can be used as if it was the resulting constant.
 8. Macros may be recursively evaluated.
@@ -301,15 +302,15 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ## Features provided by builtins
 
-Some features are provided by builtins, and appears as normal functions and macros in the standard library
-but nonetheless provided unique functionality:
+Some features are [provided by "builtins" in the standard library](/standard-library/stdlib_refcard/#stdcorebuiltin), 
+and appear like normal functions and macros in the standard library, but nonetheless provided unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.
 2. `@anycast(...)` casts an `any` with an optional result.
 3. `unreachable(...)` marks a path as unreachable with a panic in safe mode.
 4. `unsupported(...)` similar to unreachable but for functionality not implemented.
 5. `@expect(...)` expect a certain value with an optional probability for the optimizer.
-6. `@prefetch(...)` prefect a pointer.
+6. `@prefetch(...)` prefetches a pointer, meaning that the memory at the pointed to address will be loaded before it is necessarily required, thus possibly improving performance under the right conditions.
 7. `swizzle(...)` swizzles a vector.
 8. `@volatile_load(...)` and `@volatile_store(...)` volatile load/store.
 9. `@atomic_load(...)` and `@atomic_store(...)` atomic load/store.
@@ -319,28 +320,28 @@ but nonetheless provided unique functionality:
 
 ## Modules
 
-1. Modules are defined using `module <name>`. Where name is on the form `foo::bar::baz`
-2. Modules can be split into an unlimited number of module sections, each starting with the same module name declaration.
+1. Modules are defined using `module <name>;`, where `<name>` is of the form `foo::bar::baz`.
+2. Modules can be split into an unlimited number of module sections, each starting with the same module name declaration if intended to become part of the same module. Multiple differently named modules can also be defined per file.
 3. The `import` statement imports a given module.
 4. Each module section has its own set of import statements.
 5. Importing a module gives access to the declarations that are `@public`.
-6. Declarations are default `@public`, but a module section may set a different default (e.g. `module my_module @private;`)
-7. `@private` means the declaration is only visible in the module.
-8. `@local` means only visible to the current module section.
+6. Declarations are default `@public`, but a module section may set a different default (e.g. `module my_module @private;`).
+7. `@private` means the declaration is only visible in the current module.
+8. `@local` means the declaration is only visible in the current module section. This also implies that the declaration will not be visible outside the current file either.
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
-11. Generic modules have a set of parameters after the module name `module arr {Type, LEN};`
+11. Generic modules are not type checked until any of their types, functions or globals are instantiated.
 12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts
 
-1. Doc contracts (starting with `<*`) are parsed.
+1. Doc contracts (starting with `<*` and ending with `*>`) are parsed for correct contract syntax and semantics. They are not inert comments, despite also serving as documentation comments.
 2. The first part, up until the first `@` directive on a new line, is ignored.
 3. The `@param` directive for pointer arguments may define usage constraints `[in]` `[out]` and `[inout]`.
 4. Pointer argument constraints may add a `&` prefix to indicate that they may not be `null`, e.g. `[&inout]`.
 5. Contracts may be attached to generic modules, functions and macros.
 6. `@require` directives are evaluated given the arguments provided. Failing them may be a compile time or runtime error.
-7. The `@ensure` directive is evaluated at exit - if the return is a result and not an optional.
+7. The `@ensure` directive is evaluated at exit – if the return is a "valid"/"normal" (non-`fault`) result and not an "invalid"/"abnormal" (`fault`-containing) Optional.
 8. `return` can be used as a variable identifier inside of `@ensure`, and holds the return value.
 9. `@return?` optionally lists the errors used. This will be checked at compile time.
 10. `@pure` says that no writing to globals is allowed inside and only `@pure` functions may be called.
@@ -361,10 +362,8 @@ but nonetheless provided unique functionality:
 
 ## Safe / fast
 
-Compilation has two modes: "safe" and "fast". Safe will insert checks for out-of-bounds access, null-pointer deref,
-shifting by negative numbers, division by zero, violation of contracts and asserts.
+Compilation has two modes: “safe” and “fast”. Safe mode will insert checks for out-of-bounds access, null-pointer deref, shifting by negative numbers, division by zero, violation of contracts and asserts.
 
-Fast will assume all of those checks can be assumed to always pass. This means that unexpected behaviour may result
-from violating those checks. It is recommended to develop in "safe" mode.
+Fast mode will assume that all of those checks always pass. This means that unexpected behaviour may result from violating those checks. It is recommended to develop in "safe" mode.
 
 If debug symbols are available, C3 will produce a stack trace in safe mode where an error occurs.
