@@ -2,7 +2,7 @@
 title: Build Commands
 description: Build Commands
 sidebar:
-    order: 240
+order: 240
 ---
 import { FileTree } from '@astrojs/starlight/components';
 
@@ -26,7 +26,7 @@ Alternatively, libraries can be compiled via `c3c static-lib` or `c3c dynamic-li
 
 ## Run
 
-When starting out, with C3 it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead. 
+When starting out, with C3 it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead.
 
 The `compile-run` command works the same as normal compilation (via `compile`, `build`, etc), but also immediately runs the resulting executable.
 
@@ -40,7 +40,7 @@ Additional parameters:
 - `--lib <path>` add a library to search.
 - `--output <path>` override the output directory.
 - `--path <path>` execute as if standing at `<path>`
-    
+
 ## Init a new project
 
 ```bash
@@ -63,17 +63,17 @@ Additional parameters:
 For example, `c3c init hello_world` creates the following structure:
 
 <FileTree>
-- build/
-- docs/
-- lib/
-- resources/
-- scripts/
-- src/
-  - main.c3
-- test/
-- LICENSE
-- project.json
-- README.md
+    - build/
+    - docs/
+    - lib/
+    - resources/
+    - scripts/
+    - src/
+    - main.c3
+    - test/
+    - LICENSE
+    - project.json
+    - README.md
 </FileTree>
 
 Check the [project configuration docs](/build-your-project/project-config/) to learn more about configuring your project.

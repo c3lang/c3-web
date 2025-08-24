@@ -64,12 +64,11 @@ different from how C++ does things.
 
 ## Rust
 
-Rust is a safe systems programming language. While not quite as complex as C++,
-it is still a feature rich programming language with semantic macros, traits and
+Rust is a safe systems-programming language. While not quite as complex as C++,
+it is still a feature-rich programming language with semantic macros, traits and
 pattern matching to mention a few.
 
-Error handling is handled using `Result` and `Optional` which is similar to 
-how C3 works.
+Error handling is handled using `Result` and `Optional`, which is similar to how C3 works.
 
 C3 compares to Rust much like C, although the presence of built-in slices and 
 strings reduces the places where C3 is unsafe. Rust provides arrays and strings,
@@ -97,9 +96,9 @@ Zig is a systems programming language with extensive compile time execution to
 enable polymorphic functions and parameterized types. It aims to be a C replacement.
 
 Compared to C3, Zig tries to be a completely new language in terms of syntax and feel.
-C3 uses macros to a modest degree where it is more pervasive in Zig, and
-does not depart from C to the same degree. Like Rust, it features slices as a first
-class type. The standard library uses an explicit allocator to allow it to work
+C3 uses macros to a modest degree, whereas it is more pervasive in Zig, and C3 does not depart from C to the same degree. 
+Like Rust, it features slices as a first-class type. The standard library uses an explicit allocator 
+to allow it to work
 with many different allocation strategies.
 
 Zig is a very ambitious project, aiming to support as many types of platforms as
@@ -123,11 +122,16 @@ missing from Zig)
 - Module system.
 - Operator overloading
 - C ABI compatibility by default
+- First-class lambdas\*
+- Macros with Lazy parameters and/or trailing bodies.
 - Gradual contracts
 - Dynamic interfaces
 - Familiar C syntax and behaviour
 - Declarative integrated build system
 - Built-in benchmarks
+
+(\* In Zig, you can achieve a similar result by creating an
+anonymous struct with a single function.)
 
 ## Jai
 
@@ -170,7 +174,7 @@ the language. For error handling it relies on Go style tuple returns.
 - Ad hoc parametric polymorphism
 - Multiple return values
 - Error handling through multiple returns
-- A rich built in set of types for maths
+- A rich built-in set of types for maths
 
 ##### In C3 but not in Odin
 
@@ -178,13 +182,13 @@ the language. For error handling it relies on Go style tuple returns.
 - Semantic macros
 - Value methods
 - Gradual contracts
-- Built in error handling
+- Built-in error handling
 - Dynamic interfaces
 - Operator overloading
 
 ## D
 
-D is an incredibly extensive language, it covers anything C++ does and adds much more.
+D is an incredibly extensive language. It covers anything C++ does and adds much more.
 D manages this with much fewer syntactic quirks than C++. It is a strong,
 feature-rich language.
 

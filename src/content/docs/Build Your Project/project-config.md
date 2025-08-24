@@ -2,7 +2,7 @@
 title: Project Configuration
 description: Project Configuration
 sidebar:
-    order: 241
+  order: 241
 ---
 # Customizing A Project
 
