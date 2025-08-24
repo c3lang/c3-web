@@ -7,11 +7,11 @@ sidebar:
 
 C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools.
 
-As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
+As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number.
 
 ### Structs, unions, enums and faults
 
-All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
+All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid type names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
 
 ```c3
 struct Foo @extern("foo")
@@ -37,7 +37,7 @@ faultdef OOPS, LOTS_OF_OOPS;
 
 ### Variables and parameters
 
-All variables and parameters *except for* global constant variables must start with a-z after any optional initial `_`. `___a` `fooBar` and `_test_` are all valid variable / parameter names. `_`, `_Bar`, `X` are not.
+All variables and parameters *except for* global constant variables must start with a-z after any optional initial `_`. `___a` `fooBar` and `_test_` are all valid variable or parameter names. `_`, `_Bar`, `X` are not.
 
 ```c3
 int theGlobal = 1;

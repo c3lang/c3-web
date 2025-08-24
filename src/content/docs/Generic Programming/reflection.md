@@ -5,17 +5,36 @@ sidebar:
     order: 85
 ---
 
-C3 allows both compile time and runtime reflection.
+C3 allows both compile time and run time reflection.
 
-During compile time the type information may be directly used as compile time constants, the same data is then available dynamically at runtime.
+During compile time, some type information is available in the form of compile time constants associated with each type.
+
+Run time type information is also available by retrieving a `typeid` from a run time object (such as from an object of type `any` via `<runtime_obj>.type` most commonly) and then comparing the properties of the returned run time `typeid` against the corresponding properties (if any) of the compile time equivalent `<type>.typeid`. Note however that run time `typeid`s currently have [a much smaller set of available properties](/language-overview/types/#typeid-fields). 
+
+See [the documentation about the `any` type](/language-overview/types/#the-any-type) for more information if you want or need run time reflection. Such run time info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`)  to implement run time polymorphism for example, though [tagged unions](https://en.wikipedia.org/wiki/Tagged_union) are another option that's often better for types whose sizes don't differ extremely and [struct subtyping](/language-overview/types/#struct-subtyping) via `inline` is also often efficient and sufficient as long as member truncation (chopping off all the "derived" data members, a.k.a. "object slicing" in C++ terminology) is permissible (such as when no "virtual" behavior is needed). 
+
+The rest of this page covers only compile time reflection, which is still applicable (and indeed essential) to properly utilizing run time reflection via the above run time `typeid` retrieval mechanism because each run time type still corresponds to an underlying compiled type. 
+
+For those unfamiliar though, be aware that run time typing may be substantially less performant than compile time typing and is often much less necessary and much less beneficial than a programmer accustomed to rigid "OOP" languages may assume by habit. In contrast, tagged unions, `inline` struct subtyping, generic modules and macros offer similar expressiveness (polymorphism, etc) without as much (or any) indirection overhead. In fact, the performance overhead of such alternative techniques often is (or can be reduced to) zero if used with care, unlike run time reflection via `any` or [dynamic call](/generic-programming/anyinterfaces/#dynamic-methods)  [interfaces](/generic-programming/anyinterfaces/#interfaces) generally.
 
 ## Compile time reflection
 
-During compile time there are a number of compile time fields that may be accessed directly.
+During compile time there are many compile time fields that may be accessed using "dot notation" of the form `<type>.<property>`. That works for types, but in contrast when you want to retrieve type information about *values* or other expressions then try [the `$` functions](/generic-programming/reflection/#compile-time-functions) instead.
+
+For example, notice that `<type>.sizeof` and `$sizeof(<value>)` do not operate on the same kinds of entities. The former is for types whereas the later is for values.
+
+They can nonetheless be used to achieve similar effects though. For example, the following assertions all pass:
+
+```c3
+$assert(short.sizeof == $sizeof((short)0));
+
+short sh = 0;
+$assert($sizeof(sh) == $typeof(sh).sizeof);
+```
 
 ### Type properties
 
-It is possible to access properties on the type itself:
+Here are the property-like ("dot notation") constants associated with each type:
 
 - `alignof`
 - `associated`
@@ -39,6 +58,8 @@ It is possible to access properties on the type itself:
 - `sizeof`
 - `typeid`
 - `values`
+
+Many of these properties are very useful, especially for properly handling generic or portable code that must account for the characteristics of types correctly.
 
 #### `alignof`
 
@@ -235,7 +256,11 @@ String x = FooEnum.values[1].nameof; // "BAR"
 
 ### Compile time functions
 
-There are several built-in functions to inspect the code during compile time.
+There are several built-in functions for retrieving information about the characteristics of values and expressions in the code during compile time. These differ from [the "dot notation" properties of types above](/generic-programming/reflection/#type-properties) because these functions below in contrast are usable on values and expressions (and sometimes also on types), whereas the former are only usable on types. 
+
+Regardless though, both these `$` functions below and the "dot notation" properties above all evaluate as compile time constants. In contrast, run time type information is either retrieved by accessing run time properties of data of type `any`, managed manually to fit a specific purpose (such as for custom tagged unions) or handled automatically by using [interfaces](/generic-programming/anyinterfaces/#interfaces) and [dynamic calls](/generic-programming/anyinterfaces/#dynamic-methods), as discussed elsewhere.
+
+Anyway, here are the available compile time reflection functions:
 
 - `$alignof`
 - `$defined`
@@ -311,7 +336,7 @@ The full list of what `$defined` can check:
 - `&<expr>` - check if you can take the address of `<expr>`, `<expr>` must
     already be valid
 - `&&<expr>` - check if you can take the
-    [temp address](https://c3-lang.org/language-fundamentals/expressions/#_top)
+    [temporary address](/language-fundamentals/expressions/#_top)
     of `<expr>`, `<expr>` must already be valid
 - `$eval(<expr>)` - check if the [`$eval`](#eval) evaluates to something valid,
     `<expr>` must already be valid
@@ -423,9 +448,25 @@ $typeof(a)* x = allocate_bytes($sizeof(a));
 
 #### `$stringify`
 
-Returns the expression as a string. It has a special behaviour for macro expression parameters,
-where `$stringify(#foo)` will return the expression contained in `#foo` rather than simply return
-"#foo"
+Returns the expression as a string. `$stringify` has a special behaviour for handling macro expression parameters, where `$stringify(#foo)` will return the expression contained in `#foo` as a string, exactly as written in the macro call's arguments, rather than simply return `"#foo"`.
+
+Thus, for example:
+
+```c3
+import std::io;
+
+macro @describe(#expr)
+{
+	io::printfn("The value of `%s` is `%s`.", $stringify(#expr), #expr);
+}
+
+fn void main()
+{
+	@describe(isz.sizeof);
+  //Prints:
+  //  The value of `isz.sizeof` is `8`.
+}
+```
 
 #### `$typeof`
 

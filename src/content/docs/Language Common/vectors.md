@@ -5,7 +5,7 @@ sidebar:
     order: 63
 ---
 
-Vectors - where possible - based on underlying hardware vector implementations. A vector is similar to an array, but 
+Vectors &mdash; where possible &mdash; are based on underlying hardware vector implementations. A vector is similar to an array, but 
 with additional functionality. The restriction is that a vector may only consist of elements that are numerical
 types, boolean or pointers.
 
@@ -16,7 +16,7 @@ library [`List` type](/language-common/arrays/#dynamic-arrays-and-lists).)
 
 ## Arithmetics on vectors
 
-Vectors support all arithmetics and other operations supported by its underlying type. The operations are
+Vectors support all arithmetic and other operations supported by the elements' underlying type. The operations are
 always performed elementwise.
 
 ```c3
@@ -25,8 +25,7 @@ int[<2>] b = { 2, 1 };
 int[<2>] c = a * b;     // c = { 46, 11 }
 ```
 
-For integer and boolean types, bit operations such as `^ | & << >>` are available, and for pointers, pointer arithmetic
-is supported.
+For integer and boolean types, bit operations such as `^ | & << >>` are also available. Similarly, for pointers, pointer arithmetic operations are supported.
 
 ### Scalar values
 
@@ -47,17 +46,17 @@ The `std::math` module contains a wealth of additional operations available on v
 - `.max()` - get the maximum element.
 - `.min()` - get the minimum element.
 - `.dot(other)` - return the dot product with the other vector.
-- `.length(other)` - return the square root of the dot product (not available on integer vectors).
+- `.length` - return the square root of the dot product (not available on integer vectors).
 - `.distance(other)` - return the length of the difference of the two vectors (not available on integer vectors).
 - `.normalize()` - return a normalized vector (not available on integer vectors).
-- `.comp_lt(other)` - return a boolean vector with a component wise "<" 
-- `.comp_le(other)` - return a boolean vector with a component wise "<="  
-- `.comp_eq(other)` - return a boolean vector with a component wise "=="  
-- `.comp_gt(other)` - return a boolean vector with a component wise ">"  
-- `.comp_ge(other)` - return a boolean vector with a component wise ">="  
-- `.comp_ne(other)` - return a boolean vector with a component wise "!="  
+- `.comp_lt(other)` - apply a component-wise `<`, returning a boolean vector.
+- `.comp_le(other)` - apply a component-wise `<=`, returning a boolean vector.
+- `.comp_eq(other)` - apply a component-wise `==`, returning a boolean vector.
+- `.comp_gt(other)` - apply a component-wise `>`, returning a boolean vector.
+- `.comp_ge(other)` - apply a component-wise `>=`, returning a boolean vector.
+- `.comp_ne(other)` - apply a component-wise `!=`, returning a boolean vector.
 
-Dot methods available for scalar values, such as `ceil`, `fma` etc are in general also available for vectors.
+Dot methods available for scalar values (such as `ceil`, `fma`, etc) are in general also available for vectors.
 
 ## Swizzling
 
@@ -77,5 +76,5 @@ color.rg += { 1, 2 };
 
 Like arrays, it's possible to make slices and iterate over vectors. 
 :::note
-The storage alignment of vectors are often different from arrays, which should be taken into account when storing vectors.
+The storage alignment requirements of vectors are often different from arrays, which should be taken into account when storing vectors.
 :::

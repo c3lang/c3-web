@@ -5,7 +5,11 @@ sidebar:
     order: 35
 ---
 ## Overview
-This is meant for a quick reference, to the learn more of the details, check the relevant sections.
+This page is meant to be a quick reference. It is not comprehensive; it covers only some of the most common cases. To learn more of the details and nuances of C3 in-depth, check the relevant dedicated documentation pages on this website (e.g. use the navigation sidebar) and other linked pages (e.g. [C3's GithHub repo](https://github.com/c3lang/c3c), etc).
+
+Alternatively, if all else fails, browsing the source code of the standard library (and perhaps also the compiler) is likely to be helpful. Remember: even if you can't understand some of the code, browsing it will still greatly clarify what things may do and illuminate what's available and thus provides the most foolproof path to authoritative knowledge about C3. Much the same is true of pretty much any new programming language or library. Always remember the value of looking at the code if you can't discern what else to do. That will open up a much wider range of possibilities to you in programming than limiting yourself to just reference documentation.
+
+Anyway, here's the one-page quick reference overview of C3, as promised:
 
 ## If Statement
 ```c3
@@ -13,11 +17,11 @@ fn void if_example(int a)
 {
     if (a > 0)
     {
-        // ..
+        // ...
     }
     else
     {
-        // ..
+        // ...
     }
 }
 ```
@@ -26,16 +30,27 @@ fn void if_example(int a)
 ```c3
 fn void example_for()
 {
-    // the for-loop is the same as C99.
+    // C3's for-loop is very similar to C99's for-loop.
     for (int i = 0; i < 10; i++)
     {
         io::printfn("%d", i);
     }
 
-    // also equal
+    // Just as in C, omission of a for-loop's 
+    // parameters creates an infinite loop.
     for (;;)
     {
-        // ..
+        // ...
+    }
+    
+    // However, unlike C, C3's for-loop supports 
+    // labeled `break` and `continue` instead of `goto`.
+    for OUTER_LOOP: (;;) {
+        for INNER_LOOP: (;;) 
+        {
+            // ...
+            break OUTER_LOOP;
+        }
     }
 }
 ```
@@ -67,14 +82,16 @@ fn void example_foreach_by_ref(float[] values)
 ```c3
 fn void example_while()
 {
-    // again exactly the same as C
+    // C3's while-loops are very similar to C's.
     int a = 10;
     while (a > 0)
     {
         a--;
     }
 
-    // Declaration
+    // However, unlike C, C3 allows variable declarations 
+    // inside the condition, thus generalizing while-loops 
+    // to be similarly expressive of local scoping as for-loops.
     while (Point* p = getPoint())
     {
         // ..
@@ -82,9 +99,9 @@ fn void example_while()
 }
 ```
 
-## Enum And Switch
+## Enum and Switch
 
-Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
+Switches have implicit breaks and scopes, thus reducing accidental logical errors. However, you may use `nextcase` to explicitly fallthrough to the next case (or to a specific one) or you may list multiple case conditions next to each other for brevity:
 
 ```c3
 enum Height : uint
@@ -106,7 +123,7 @@ fn void demo_enum(Height h)
             io::printn("High");
     }
 
-    // This also works
+    // This also works:
     switch (h)
     {
         case LOW:
@@ -128,19 +145,19 @@ fn void demo_enum(Height h)
             break;
     }
 
-    // special checking of switching on enum types
+    // Special checking of switching on enum types:
     switch (h)
     {
         case LOW:
         case MEDIUM:
         case HIGH:
             break;
-        default:    // warning: default label in switch which covers all enumeration value
+        default:    // Default cases cover all remaining cases.
             break;
     }
 
-    // Using "nextcase" will fallthrough to the next case statement,
-    // and each case statement starts its own scope.
+    // Using `nextcase` will fallthrough to the next case statement,
+    // and each case statement has its own scope for declarations.
     switch (h)
     {
         case LOW:
@@ -152,7 +169,7 @@ fn void demo_enum(Height h)
             io::printn("B");
             nextcase;
         case HIGH:
-            // a is not defined here
+            // `a` is not defined here.
             io::printn("C");
     }
 }
@@ -161,7 +178,7 @@ fn void demo_enum(Height h)
 
 Enums are always namespaced.
 
-Enum support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
+Enums support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
 of enum values, `.inner` returns the storage type. `.names` returns an array with the names of all enums. `.associated`
 returns an array of the typeids of the associated values for the enum.
 
@@ -343,7 +360,7 @@ fn void? test_may_fail()
 
 fn void main()
 {
-    // ratio is an optional result.
+    // `ratio` is an optional result.
     double? ratio = divide(foo(), bar());
 
     // Handle the optional result value if it exists.
@@ -525,7 +542,7 @@ fn int test2()
 }
 ```
 
-Improve macro errors with preconditions:
+Improve macro errors with preconditions, so that users are warned of misuse:
 ```c3
 <*
  @param x : "value to square"
@@ -638,7 +655,13 @@ Read more about operator overloading [here](generic-programming/operator-overloa
 
 ## Generic Modules
 
-Generic modules implements a generic system.
+Generic modules make it easy to create reusable data structures that abstract over types and behavior, thus filling a similar role as type templates in C++ or generics in other languages. This is a very valuable tool for code reuse and library design.
+
+Unlike implementations of type generics in some other languages though, C3's generics are declared at the module level instead of the per object level, thereby arguably providing a more natural scope of abstraction for most systems, one that reduces conflation of data and behavior and accounts better for the fact that data types seldom operate in a vacuum.
+
+Keep in mind though that multiple modules can be defined in a single file, by simply writing `module module_name;` multiple times to create what are called "module sections" (which behave much the same as separate files would) and thus the per module abstraction is actually essentially just as expedient to work with as a per object system would be but with cleaner dependencies since each module manages its imports separately.
+
+Some usage examples follow:
 
 ```c3
 module stack {Type};
@@ -749,7 +772,7 @@ Read more about dynamic calls [here](/generic-programming/anyinterfaces/).
 
 ## Classic text games
 
-Here are two classic simple text based games showcasing C3 feature and the C3 standard library.
+Here are two classic simple text based games showcasing C3 language features and the C3 standard library.
 
 ### Guess a number
 

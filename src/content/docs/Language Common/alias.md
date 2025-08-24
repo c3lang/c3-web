@@ -11,7 +11,7 @@ The `alias` statement in C3 is intended for making new names for function pointe
 
 ## Defining a type alias
 
-`alias <type alias> = <type>` creates a type alias. A Type `alias` needs to follow the naming convention of user defined types (i.e. capitalized
+`alias <type alias> = <type>` creates a type alias. A Type `alias` needs to follow the naming convention of user defined types (i.e. a capitalized
 name with at least one lower case letter).
 
 ```c3
@@ -25,7 +25,7 @@ Function pointers _must_ be aliased in C3. The syntax is somewhat different from
 alias Callback = fn void(int a, bool b);
 ```
 
-This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample usage:
+This defines an alias to function pointer type of a function that returns nothing and requires two arguments: an int and a bool. Here is a sample to illustrate usage:
 
 ```c3
 Callback cb = &my_callback;
@@ -59,11 +59,16 @@ Behaviour here is analogous how structs may use `inline` to create struct subtyp
 ```c3
 typedef CString = char*;
 typedef ZString = inline char*;
-...
-CString abc = "abc";
-ZString alias = "alias";
-// char* from_abc = abc; // Error!
-char* from_def = alias; // Valid!
+
+//...
+
+CString cstr = "cstr";
+ZString zstr = "zstr";
+
+//...
+
+// char* from_cstr = cstr;  // Error!
+char* from_zstr = zstr;  // Valid!
 ```
 
 ## Function and variable aliases
@@ -118,8 +123,8 @@ For more information, see the chapter on [generics](/generic-programming/generic
 It is possible to attach default arguments to function pointer aliases. There is no requirement
 that the function has the same default arguments. In fact, the function pointer may have
 default arguments where the function doesn't have it and vice-versa. Calling the function
-directly will then use the function's default arguments, and calling through the function pointer
-will yield the function pointer alias' default argument.
+directly will then use the function's default arguments, whereas calling through the function pointer
+will use the function pointer alias's default argument.
 
 Similarly, named parameter arguments follow the alias definition when calling through the
 function pointer:

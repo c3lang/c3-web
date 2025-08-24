@@ -5,9 +5,9 @@ sidebar:
     order: 212
 ---
 
-Like C, C3 uses undefined behaviour. In contrast, C3 will *trap* - that is, print an error trace and abort – on undefined behaviour in debug builds. This is similar to using C with a UB sanitizer. It is only during release builds that actual undefined behaviour occurs.
+Like C, C3 uses undefined behaviour. In contrast, C3 will *trap* &mdash; that is, print an error trace and abort &mdash; on undefined behaviour in debug builds. This is similar to using C with an undefined behavior (UB) sanitizer such as [UBSan](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html) (to detect UB *before* release, by inserting safety checks) or [Valgrind](https://valgrind.org/) (to detect UB *after* release, via instrumentation of a binary). It is only during release builds that actual undefined behaviour occurs.
 
-In C3, undefined behaviour means that the compiler is free to interpret *undefined behaviour as if behaviour cannot occur*.
+In C3, undefined behaviour means that the compiler is free to interpret *undefined behaviour as if it cannot occur* and hence may be elminated, which may result in errors.
 
 In the example below:
 

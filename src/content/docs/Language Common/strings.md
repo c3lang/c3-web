@@ -14,8 +14,8 @@ typedef String = inline char[];
 
 ```
 \
-`String`s are usually the typical type to use, they can be sliced , compared etc ... \
-It is possible to access the length of a `String` instance through the  ` .len  `  operator.
+`String`s are usually the typical type to use. They can be sliced, compared, etc. \
+It is possible to access the length of a `String` instance through the `.len` operator.
 
 
 ### `ZString`
@@ -27,12 +27,14 @@ typedef ZString = inline char*;
 
 
 `ZString` is used when working with C code, which expects null-terminated C-style strings of type `char*`.
-It is a `typedef` so converting to a `ZString` requires an explicit cast. This helps to remind the user to check there is appropriate `\0` termination of the string data.
+`ZString` is a `typedef` (a distinct type, unlike an `alias`), so converting to a `ZString` requires an explicit cast. This helps to remind the user to check that there are `\0` terminators at the end of each `ZString`. The "Z" in `ZString` stands for "zero" and hence the type name `ZString` is shorthand for "zero-terminated string".
 
 The [`ZString` methods](#zstring-member-functions) are outlined below.
 
 :::caution
-Ensure the terminal `\0` when converting from `String` to `ZString`.
+Ensure the terminal `\0` exists when converting from `String` to `ZString`.
+
+The `\0` is what is used to determine where a C-like string ends.
 :::
 
 #### `WString`

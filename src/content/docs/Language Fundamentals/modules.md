@@ -34,14 +34,14 @@ module bar;
 /* ... */
 ```
 
-Here `file_a.c3` and `file_b.c3` belong to the same module, **foo** while `file_c.c3` belongs to to **bar**.
+Here `file_a.c3` and `file_b.c3` belong to the same module, **foo**, while `file_c.c3` belongs to module **bar**.
 
 ## Details
 
 Some details about the C3 module system:
 
 - Modules can be arbitrarily nested, e.g. `module foo::bar::baz;` to create the sub module baz in the sub module `bar` of the module `foo`.
-- Module names must be alphanumeric lower case letters, and may contain an underscore `_`.
+- Module names must be alphanumeric lower case letters and may contain underscores (`_` characters).
 - Module names are limited to 31 characters.
 - Modules may be spread across multiple files.
 - A single file may have multiple module declarations.
@@ -125,8 +125,7 @@ fn void open() @private { .. }
 
 In this example, the other modules can use the init() function after importing foo, but only files in the foo module can use open(), as it is specified as `private`.
 
-It's possible to further restrict visibility: `@local` works like `@private` except it's only visible in the
-local context.
+It's possible to further restrict visibility: `@local` works like `@private` except it's only visible in the local context, meaning in the current file if there's only one module per file or else the current module section if the originating file declares multiple different modules.
 
 ```c3
 // File foo.c3
@@ -188,8 +187,7 @@ fn void test()
 ## Changing The Default Visibility
 
 In a normal module, global declarations will be public by default. If some other
-visibility is desired, it's possible to declare `@private` or `@local` after the module name.
-It will affect all declaration in the same section.
+visibility is desired, it's possible to declare `@private` or `@local` after the module name. It will affect all declarations in the same section.
 
 ```c3
 module foo @private;
@@ -235,7 +233,7 @@ As a rule, functions, macros, constants, variables and types in the same module 
 
 1. Functions, macros, constants and variables require *at least* the (sub-) module name.
 2. Types do not require the module name unless the name is ambiguous.
-3. In case of ambiguity, only so many levels of module names are needed as to make the symbol unambiguous.
+3. In case of ambiguity, only as many levels of module names are needed as to make the symbol unambiguous.
 
 
 ```c3

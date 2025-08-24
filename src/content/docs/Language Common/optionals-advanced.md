@@ -18,8 +18,8 @@ fn int? example() { /* ... */ }
 ## Handling an empty Optional
 
 ### File reading example
-- If the file is present the Optional result will be the first 100 bytes of the file.
-- If the file is not present the Optional `Excuse` will be `io::FILE_NOT_FOUND`.
+- If the file is present, the Optional result will be the first 100 bytes of the file.
+- If the file is not present, the Optional `Excuse` (the `fault`) will be `io::FILE_NOT_FOUND`.
 
 Try running this code below with and without a file called `file_to_open.txt` in the same directory.
 
@@ -239,10 +239,10 @@ fn void main(String[] args)
     // Unwrap the result from reliable_result1 and reliable_result2
     if (try reliable_result1 && try reliable_result2 && 5 > 2)
     {
-        // `reliable_result1` is can be used as a normal variable here
+        // `reliable_result1` can be used as a normal variable here.
         io::printfn("reliable_result1: %s", reliable_result1);
 
-        // `reliable_result2` is can be used as a normal variable here
+        // `reliable_result2` can be used as a normal variable here.
         io::printfn("reliable_result2: %s", reliable_result2);
     }
 
