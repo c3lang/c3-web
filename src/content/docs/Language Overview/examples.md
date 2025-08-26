@@ -634,7 +634,7 @@ fn void main()
 }
 ```
 
-Read more about operator overloading [here](generic-programming/operator-overloading/).
+Read more about operator overloading [here](/generic-programming/operator-overloading/).
 
 ## Generic Modules
 
