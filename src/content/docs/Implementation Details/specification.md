@@ -345,7 +345,7 @@ Strings will concatenate if declared in sequence.
 
 Example:
 
-```c
+```c3
 String s = "abc" "def" "ghi";
 // This is equivalent to:
 String s = "abcdefghi";
