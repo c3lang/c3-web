@@ -10,7 +10,7 @@
     ".github": true,
     ".astro": true,
     "node_modules": true,
-    "pnpm-lock.yaml": true
+    "pnpm-lock.yaml": true,
   },
   "hide-files.files": [
     ".vscode",
