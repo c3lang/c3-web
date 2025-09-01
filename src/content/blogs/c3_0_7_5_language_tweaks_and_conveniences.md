@@ -8,12 +8,12 @@ The C3 programming language has reached 0.7.5, marking another milestone in the 
 
 Here's what's new and improved in this update.
 
-## Major Language Features
+### Major Language Features
 
-### Module Aliasing Support
+#### Module Aliasing Support
 One of the new features in 0.7.5 is the introduction of module aliasing with the syntax `alias foo = module std::io`. This enhancement improves user control over code organization and readability, allowing developers to create shorter names for modules where needed.
 
-### Enhanced Compile-Time Capabilities
+#### Enhanced Compile-Time Capabilities
 The compile-time system has received several additions:
 - **Optional macro params**: Gives macros arguments that are optional without requiring a default value.
 - **`???`**: Compile time ternary, guaranteed to resolve at compile time and will not execute the false branch.
@@ -21,31 +21,31 @@ The compile-time system has received several additions:
 - **New mathematical builtins**: `@intlog2`, `@clz`, `@min`, `@max` and functions are now available at compile time.
 - **`bitsizeof` macro builtin**: Provides bit-level size information for types.
 
-### Operator Overloading Evolution
+#### Operator Overloading Evolution
 C3 0.7.5 brings improvements to operator overloading:
 - `@operator(==)` now also enables `switch` statement support for the type.
 - Enhanced chained array access: `foo[x][y] = b` now can pass through multiple levels of overloads, and works as expected with proper overload resolution.
 - `Type.is_eq` now correctly returns true for types with equality overloads.
 
-### Type System Enhancements
+#### Type System Enhancements
 - **`$kindof`**: Shorthand for `$typeof(...).kindof` which simplifies contract checks.
 - **Implicit type conversions**: Types now convert to `typeid` implicitly, streamlining contracts and compile time programming.
 - **Enhanced `$defined`**: It now accepts declarations, like `$defined(int x = y)` which removes the need for macros like `@assignable_to`.
 - **Struct inheritance**: Struct and typedef subtypes now inherit dynamic methods.
 
-## Developer Experience Improvements
-### Better Error Messages and Safety
+### Developer Experience Improvements
+#### Better Error Messages and Safety
 The compiler now provides more helpful diagnostics:
 - Improved error messages for missing `$endif` and missing `if` bodies.
 - Better directory creation error messages in project and library creation
 - Huge stack object overflow protection with configurable `--max-stack-object-size`
 
-### Build System Enhancements
+#### Build System Enhancements
 - **Library management**: `c3l`-libraries now package linked libraries in a directory specified by the `"linklib-dir"` setting.
 - **Cross-platform improvements**: Enhanced support for different operating systems and architectures
 
-## Standard Library Expansion
-### New Data Structures and Utilities
+### Standard Library Expansion
+#### New Data Structures and Utilities
 The standard library has grown:
 - **`FileMmap`**: Memory-mapped file management
 - **`FixedBlockPool`**: Memory pool for fixed-size objects
@@ -53,14 +53,14 @@ The standard library has grown:
 - **`AsciiCharset`**: Fast ASCII character matching utilities
 - **Logging system**: Introduction of `std::core::log` for common logging .
 
-### Enhanced String Operations
+#### Enhanced String Operations
 String manipulation gets a boost with:
 - **`String.contains_char`**: Character containment checking
 - **`String.trim_charset`**: Trimming based on character sets
 - **Functional array operations**: New macros including `@zip`, `@reduce`, `@filter`, `@any`, `@all`, `@sum`, `@product` and `@indices_of`.
 
-## Breaking Changes and Deprecations
-### Important Deprecations
+### Breaking Changes and Deprecations
+#### Important Deprecations
 Several features have been deprecated in favor of improved alternatives:
 - `@compact` comparison behavior (use `--use-old-compact-eq` for compatibility)
 - `add_array` in favor of `push_all` on lists.
@@ -69,8 +69,8 @@ Several features have been deprecated in favor of improved alternatives:
 - `@typeis` in favor of `$typeof(foo) == Type`.
 - `@select` in favor of `$foo ??? #expr1 : #expr2`.
 
-## Performance and Bug Fixes
-### Critical Fixes
+### Performance and Bug Fixes
+#### Critical Fixes
 This release addresses numerous important issues:
 - ASAN triggering fixes in `List.remove_at`
 - AVX512 vector handling corrections
@@ -78,18 +78,18 @@ This release addresses numerous important issues:
 - Memory allocation optimizations for 32-bit machines
 - Recursive generic creation detection
 
-### Platform-Specific Improvements
+#### Platform-Specific Improvements
 - Enhanced Android and OpenBSD support
 - Improved native CPU detection
 - Better cross-compilation support
 
-## Looking Forward
+### Looking Forward
 
 Deprecations of many type introspection macros, such as `@typekind` and `@typeis` is together with the improvements in `$defined`, the implicit type conversions to `typeid` and `$kindof` spearheading a shift to making constraint checking succinct while also being completely obvious. Relying on macros would often make the constraints less clear to a reader. On top of this we get compile time ternary using `??? :` to succinctly express compile time selection between two expressions. With the changes, the code is as short to type but without the need to remember particulars of one macro over the other.
 
 Overall, C3 0.7.5 represents another step in maturing the language's core features while laying the groundwork for future enhancements. The focus will continue to be aimed at improve developer experience, performance, and language consistency. Many of the standard library additions are contributions from the community around C3, which is providing essential feedback and direction to polish the language further. C3 is step-by-step establishing itself as a modern evolution of C that maintains simplicity while adding powerful abstractions.
 
-## Demo
+### Demo
 
 For a deeper look at the changes, watch the demo: https://www.youtube.com/watch?v=OuZBxdM_YEI
 
