@@ -10,11 +10,14 @@ Like in C, memory is manually managed in C3. An object can either be passed as a
 ```c3
 fn void test()
 {
-    int a = 12;         // This variable is allocated on the stack.
-    int b = a;          // This copies the value from a to the other stack variable b.
+    int a = 12;     // This variable is allocated on the stack.
+    int b = a;      // This copies the value from a to the stack variable b.
     int[2] c = { 1, 2 };
-    int[2] d = c;       // Unlike C, arrays are values and are copied the same way
-    io::printn(d);      // Prints "{ 1, 2 }"
+    int[2] d = c;   // In C3 arrays are values and are copied by value.
+    io::printn(d);  // Prints "{ 1, 2 }"
+    c[0] = 10;
+    io::printn(c);  // Prints "{ 10, 2 }"
+    io::printn(d);  // Prints "{ 1, 2 }"
 }
 ```
 
@@ -162,7 +165,7 @@ fn void nested()
 }
 ```
 
-:::Temp allocator pitfalls
+:::note[Temp allocator pitfalls]
 
 Because temporary allocations are released using `@pool`, you should never pass temporary allocated data to other threads or store them in variables that outlive the `@pool` scope.
 
@@ -187,9 +190,12 @@ list.free();      // Free the memory in the list
 If you are using `mem`, then in general you will need to free it in some way. Either it's built into the type, such as in the `List` example above, or else you will need to handle it yourself, like in this case:
 
 ```c3
-String s = string::format(mem, "Hello %s", "World"); // The string is allocated on the heap
-io::printn(s);                                       // Prints "Hello World"
-free(s);                                             // Frees the string
+String s = string::format(mem, "Hello %s", "World");
+// The string "s" is allocated on the heap
+io::printn(s);
+// Prints "Hello World"
+free(s);                                  
+// Frees the string
 ```
 
 On the other hand, if you use the temp allocator, you only need to make sure it's wrapped in a `@pool`:
@@ -208,7 +214,7 @@ On the other hand, if you use the temp allocator, you only need to make sure it'
 }; // s and list are freed here, because they used temp memory
 ```
 
-Because of the usefulness of the temp allocator idiom, there are often temp allocator versions of many functions:
+Because of the usefulness of the temp allocator idiom, there are often temp allocator versions of functions, prefixed "t" or "temp_":
 
 ```c3
 @pool()
@@ -222,19 +228,34 @@ Because of the usefulness of the temp allocator idiom, there are often temp allo
 };
 ```
 
-In fact, some types, such as `List`, `HashMap` and `DString` will use the temp allocator by default:
+### Implicit initialization
+
+Some types, such as `List`, `HashMap` and `DString` will use the temp allocator by default if they are not initialized. 
 
 ```c3
 @pool()
 {
    List{int} list;
-   list.push(1);
+   list.push(1);   // Implicitly initialize with the temp allocator
    list.push(42);
    
    DString str;                      // DString is a dynamic string
    str.appendf("Hello %s", "World");
+   // The "appendf" implicitly initializes "str" with the temp allocator
    str.insert_at(5, ",");            
    str.append("!");
    io::printn(str);                  // Prints Hello, World!
 }; // list and str is freed here
+```
+
+This is often useful for locals, but in the case of globals, you might want the container
+to default use the heap allocator. For most containers there is a `ONHEAP` constant which
+allows you to statically initialize globals to use the heap allocator:
+
+```c3
+List {int} l = list::ONHEAP {int};
+fn void main()
+{
+    l.push(1); // Implicitly allocates on the heap, not the temp allcator.
+}
 ```
