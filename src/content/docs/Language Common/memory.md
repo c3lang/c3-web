@@ -259,3 +259,44 @@ fn void main()
     l.push(1); // Implicitly allocates on the heap, not the temp allcator.
 }
 ```
+
+### Beyond just allocating memory
+
+In C, memory is allocated with plain `malloc` (uninitialized memory) and `calloc` (zero-initialized memory). The C3 standard library provides those, but also additional convenience functions:
+
+#### `new` and `alloc` functions
+```c3
+Foo* f = mem::new(Foo);    // Returns zero initialized pointer for a type
+int* p = mem::alloc(int);  // Same as 'new' but memory is uninitialized
+Foo* t = mem::tnew(Foo);   // Same as 'new' but using the temp allocator
+```
+
+`new` and `tnew` also takes an optional initializer, allowing you to allocate and initialize in a single call.
+```c3
+Foo* f = mem::new(Foo, { 1, 2 });
+// Equivalent to:
+Foo* f = mem::alloc(Foo);
+*f = { 1, 2 };
+```
+
+There are also more specialized functions such as `new_with_padding` and `new_aligned`, the former when you need to add additional memory at the end of the allocation, and `new_aligned` for when you have overaligned types – typically vectors with alignment greater than 16.
+
+
+#### `new_array` and `alloc_array` for creating arrays
+
+```c3
+Foo[] arr = mem::new_array(Foo, 3);  // Returns a pointer to a Foo[3] array, zero initialized
+Foo[] a2 = mem::alloc_array(Foo, 3); // Same but memory is unitialized
+Foo[] tarr = mem::temp_array(Foo, 3);// Same as new_array, but using the temp allocator 
+```
+
+#### `@clone` for taking a value and creating a pointer copy from it
+
+```c3
+int* x = @clone(33);        // Creates an int pointer, initialized to 33
+int* y = @tclone(33);       // Same as @clone but using the temp allocator
+int[] z = { 1, 2 };
+int[] a = @clone_slice(z);  // This clones the elements of a slice or array
+int[] t = @tclone_slice(z); // Same as @clone_slice, but using the temp allocator
+```
+
