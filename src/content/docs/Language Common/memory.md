@@ -264,9 +264,12 @@ fn void main()
 
 In C, memory is allocated with plain `malloc` (uninitialized memory) and `calloc` (zero-initialized memory). The C3 standard library provides those, but also additional convenience functions:
 
-#### `new` and `alloc` functions
+#### `new` and `alloc` macros
+
+The `new` and `alloc` macros takes a type and allocates just enough memory for that value. This is often more convenient and clear than `Foo* f = malloc(Foo.sizeof)`.
+
 ```c3
-Foo* f = mem::new(Foo);    // Returns zero initialized pointer for a type
+Foo* f = mem::new(Foo);    // Returns a zero initialized pointer for a type
 int* p = mem::alloc(int);  // Same as 'new' but memory is uninitialized
 Foo* t = mem::tnew(Foo);   // Same as 'new' but using the temp allocator
 ```
@@ -285,18 +288,27 @@ There are also more specialized functions such as `new_with_padding` and `new_al
 #### `new_array` and `alloc_array` for creating arrays
 
 ```c3
-Foo[] arr = mem::new_array(Foo, 3);  // Returns a pointer to a Foo[3] array, zero initialized
-Foo[] a2 = mem::alloc_array(Foo, 3); // Same but memory is unitialized
-Foo[] tarr = mem::temp_array(Foo, 3);// Same as new_array, but using the temp allocator 
+// Returns a pointer to a Foo[3] array, zero initialized
+Foo[] arr = mem::new_array(Foo, 3);  
+// Same but memory is unitialized
+Foo[] a2 = mem::alloc_array(Foo, 3); 
+// Same as new_array, but using the temp allocator
+Foo[] tarr = mem::temp_array(Foo, 3); 
 ```
 
-#### `@clone` for taking a value and creating a pointer copy from it
+#### `@clone`
+
+`@clone` allows you to take a value and create a pointer copy of it.
 
 ```c3
-int* x = @clone(33);        // Creates an int pointer, initialized to 33
-int* y = @tclone(33);       // Same as @clone but using the temp allocator
+// Creates an int pointer, initialized to 33
+int* x = @clone(33);        
+// Same as @clone but using the temp allocator
+int* y = @tclone(33);       
 int[] z = { 1, 2 };
-int[] a = @clone_slice(z);  // This clones the elements of a slice or array
-int[] t = @tclone_slice(z); // Same as @clone_slice, but using the temp allocator
+// This clones the elements of a slice or array, in this case "z"
+int[] a = @clone_slice(z);  
+// Same as @clone_slice, but using the temp allocator
+int[] t = @tclone_slice(z);
 ```
 
