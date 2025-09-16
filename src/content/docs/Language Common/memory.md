@@ -260,7 +260,7 @@ fn void main()
 }
 ```
 
-### Beyond just allocating memory
+### Beyond allocating raw memory
 
 In C, memory is allocated with plain `malloc` (uninitialized memory) and `calloc` (zero-initialized memory). The C3 standard library provides those, but also additional convenience functions:
 
