@@ -464,7 +464,7 @@ fn void main()
 
 #### `$typeof`
 
-Returns the type of an expression or variable as a type itself.
+Returns the type of an expression or variable.
 
 ```c3
 Foo f;

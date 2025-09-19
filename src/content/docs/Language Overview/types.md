@@ -235,7 +235,7 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 ### Pointer type properties
 
 In addition to the standard properties, pointers also have the `inner` 
-property. It returns the type of the object pointed to.
+property. It returns the type of the object pointed to as a `typeid`.
 
 ## Optional
 
@@ -546,7 +546,7 @@ fn void test()
 
 In addition to the normal properties, typedef also supports:
 
-1. `inner` - Returns the type this is based on.
+1. `inner` - Returns the type this is based on as a `typeid`.
 2. `parentof` - If this is an inline typedef, return the same as `inner`.
 
 ## Generic types
@@ -732,7 +732,7 @@ Enum types have the following additional properties in addition to the usual pro
 user defined types:
 
 1. `associated` returns an untyped list of types for the associated values.
-2. `inner` returns the type of the ordinal.
+2. `inner` returns the type of the ordinal as a `typeid`.
 3. `lookup(value)` lookup an enum by inlined value.
 4. `lookup_field(field_name, value)` lookup an enum by associated value.
 5. `names` returns a list containing the names of all enums.
