@@ -128,6 +128,7 @@ There are three types of regular comments:
 1. `// text` a line comment. The text between `//` and line end is ignored.
 2. `/* text */` block comments. The text between `/*` and `*/` is ignored. It has nesting behaviour, so for every `/*`
    discovered between the first `/*` and the last `*/` a corresponding `*/` must be found.
+3. `#!` the shebang comment. It behaves as a line comment but is only allowed as the two first characters in a file.
 
 ### Doc contract
 

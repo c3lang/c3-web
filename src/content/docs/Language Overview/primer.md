@@ -314,8 +314,9 @@ The `/* */` comments are nesting
 /* This /* will all */ be commented out */
 ```
 
-Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are
-_not_ considered a regular comment. Find out more about [contracts](/language-common/contracts/).
+Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are _not_ considered a regular comment. Find out more about [contracts](/language-common/contracts/).
+
+C3 also treats `#!` on the first line as a line comment `//`.
 
 ## Type Qualifiers
 
