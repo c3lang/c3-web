@@ -47,7 +47,7 @@ The `std::math` module contains a wealth of additional operations available on v
 - `.max()` - get the maximum element.
 - `.min()` - get the minimum element.
 - `.dot(other)` - return the dot product with the other vector.
-- `.length(other)` - return the square root of the dot product (not available on integer vectors).
+- `.length()` - return the square root of the dot product (not available on integer vectors).
 - `.distance(other)` - return the length of the difference of the two vectors (not available on integer vectors).
 - `.normalize()` - return a normalized vector (not available on integer vectors).
 - `.comp_lt(other)` - return a boolean vector with a component wise "<" 
