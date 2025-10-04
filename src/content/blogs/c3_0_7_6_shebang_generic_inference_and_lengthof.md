@@ -23,7 +23,8 @@ In other news, C3 is now tracked by Linguist on GitHub which means code on GitHu
 ## Standard Library Expansions
 
 - **InterfaceList:** - A new container for storing values that implement specific interfaces, enabling more flexible polymorphic programming.
-- **Enhanced LinkedList:** - Now supports array view operations including `[]` indexing and both forward and reverse `foreach` iteration (#2438). - **Cross-Platform File System Support:** - Directory location support has been added for home, documents, downloads and other folders in the `path` module.
+- **Enhanced LinkedList:** - Now supports array view operations including `[]` indexing and both forward and reverse `foreach` iteration (#2438).
+- **Cross-Platform File System Support:** - Directory location support has been added for home, documents, downloads and other folders in the `path` module.
 - **Added I/O Operations:** - `io::skip` for skipping data and Little-endian read/write `io::read_le``io::write_le`
 - **CVaList support:** - Added MacOS AArch64 and Linux/MacOS x64 valist support with `CVaList`.
 
