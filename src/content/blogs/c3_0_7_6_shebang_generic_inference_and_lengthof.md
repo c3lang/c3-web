@@ -109,4 +109,4 @@ Check out the [documentation](/getting-started) or [download it and try it out](
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
 
-Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1ny3uxb/c3_language_076_adds_generic_inference_and/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
+Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1ny3uxb/c3_language_076_adds_generic_inference_and/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) or [Hacker News](https://news.ycombinator.com/item?id=45476760).
