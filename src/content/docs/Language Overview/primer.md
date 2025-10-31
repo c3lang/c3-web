@@ -138,10 +138,10 @@ In order to link with other libraries, you need to explicitly tell
 the compiler to link them.
 
 If you want to use a different identifier inside of your C3 code compared to
-the function or variable's external name, use the `@extern` attribute:
+the function or variable's external name, use the `@cname` attribute:
 
 ```c3
-extern fn int _puts(char* message) @extern("puts");
+extern fn int _puts(char* message) @cname("puts");
 ...
 _puts("Hello world"); // <- calls the puts function in libc
 ```

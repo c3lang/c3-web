@@ -95,10 +95,10 @@ to be invoked through interfaces.
 *Used for: function, global, const, enum, union, struct, faultdef*
 
 Marks this declaration as an export, this ensures it is never removed and exposes it as public when linking.
-The attribute takes an optional string value, which is the external name. This acts as if `@extern` had been
+The attribute takes an optional string value, which is the external name. This acts as if `@cname` had been
 added with that name.
 
-### `@extern`
+### `@cname`
 
 *Used for: function, global, const, enum, union, struct, faultdef*
 
@@ -334,7 +334,7 @@ Marks a parameter, value etc. as must being used.
 
 This attribute may take 0, 1 or 2 arguments. With 0 or 1 arguments
 it behaves identical to [`@export`](#export) if it is non-extern. For extern
-symbols it behaves like [`@extern`](#extern).
+symbols it behaves like [`@cname`](#cname).
 
 When used with 2 arguments, the first argument is the wasm module,
 and the second is the name. It can only be used for `extern` symbols.
@@ -362,13 +362,26 @@ User defined attributes are intended for conditional application of built-in att
 
 ```c3
 attrdef @MyAttribute = @noreturn, @inline;
-
+attrdef @MyCname(x) = @cname(x);
 // The following two are equivalent:
 fn void foo() @MyAttribute { /* */ }
 fn void foo() @noreturn @inline { /* */ }
 ```
 
-A user defined attribute may also be completely empty:
+An attribute may also take parameters:
+
+```c3
+attrdef @MyAttr(val) = @tag("foo", val);
+
+struct Test 
+{
+    int foo @MyAttr("test");
+}
+
+$echo Test.foo.tagof("foo"); // Will echo "test" at compile time
+```
+
+The attribute may also be completely empty:
 
 ```c3
 attrdef @MyAttributeEmpty;

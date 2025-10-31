@@ -44,6 +44,30 @@ int[*] b = { 1, 2 };
 int len3 = b.len; // 2
 ```
 
+### Indexing into pointers of arrays
+
+A source of confusion going from C to C3 is that indexing into, for example, a pointer `int[3]*` would yield a `int[3]`, rather than an `int`.
+To get the integer inside of the array that is pointed to, we need to do a dereference:
+
+```c3
+int[3] a = { 1, 2, 3 };
+int[3]* b = &a;
+int x = (*b)[1]; // Correctly returns 2
+// Broken: int x = b[1]
+```
+
+A convenient shorthand for `(*b)[1]` is to use implicit subscript dereference: `b.[1]`. Here the `.` is only doing a dereference if the variable
+is a pointer. So given the example above we have:
+```c3
+a[1];    // Returns 2
+a.[1];   // Returns 2
+b[1];    // BROKEN! Out of bounds access
+(*b)[1]; // Returns 2
+b.[1];   // Returns 2
+```
+
+This feature is mainly useful in generic modules and macros.
+
 ## Slice
 
 The final type is the slice `<type>[]`  e.g. `int[]`. A slice is a view into either a fixed or variable array. Internally it is represented as a struct containing a pointer and a size. Both fixed and variable arrays may be converted into slices, and slices may be implicitly converted to pointers.

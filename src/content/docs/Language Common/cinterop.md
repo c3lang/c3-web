@@ -20,10 +20,10 @@ fn void main()
 }
 ```
 
-To use a different identifier inside of your C3 code compared to the function or variable’s external name, use the `@extern` attribute:
+To use a different identifier inside of your C3 code compared to the function or variable’s external name, use the `@cname` attribute:
 
 ```c3
-extern fn void foo_puts(char*) @extern("puts"); // C "puts"
+extern fn void foo_puts(char*) @cname("puts"); // C "puts"
 
 fn void main()
 {
@@ -32,7 +32,7 @@ fn void main()
 ```
 
 While C3 functions are available from C using their external name, it's often useful to
-define an external name using `@extern` or `@export` with a name to match C usage.
+define an external name using `@cname` or `@export` with a name to match C usage.
 
 ```c3
 module foo;

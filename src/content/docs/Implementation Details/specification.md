@@ -1577,7 +1577,7 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | `@deprecated`   | fn, macro, interface, variables, constants, user-defined types, struct member     |
 | `@dynamic`      | fn                                                                                |
 | `@export`       | fn, globals, constants, struct, union, enum, faultdef                             |
-| `@extern`       | fn, globals, constants, user-defined types, faultdef                              |
+| `@cname`        | fn, globals, constants, user-defined types, faultdef                              |
 | `@if`           | all except local variables and calls                                              |
 | `@inline`       | fn, call                                                                          |
 | `@interface`    | fn                                                                                |

@@ -136,8 +136,8 @@ fn void? examples()
 
     // If you want to immediately return with an Excuse,
     // use the "?" and "!" operators together, see the code below:
-    int? e = test() ?? DOG_ATE_HOMEWORK?!;
-    int? f = test() ?? TEXTBOOK_ON_FIRE?!;
+    int e = test() ?? DOG_ATE_HOMEWORK?!;
+    int f = test() ?? TEXTBOOK_ON_FIRE?!;
 }
 ```
 

@@ -182,7 +182,7 @@ groups certain attributes. Empty attribute groups are permitted.
 
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 `@callconv`, `@deprecated`, `@dynamic`, `@export`,
-`@extern`, `@if`, `@inline`, `@interface`,
+`@cname`, `@if`, `@inline`, `@interface`,
 `@littleendian`, `@local`, `@maydiscard`, `@naked`,
 `@nodiscard`, `@noinit`, `@noreturn`, `@nostrip`,
 `@obfuscate`, `@operator`, `@overlap`, `@priority`,

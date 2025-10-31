@@ -232,9 +232,9 @@ Imagine for example that you have the function `double test(int a, void* b)`. To
 
 **Q:** My C function / global has a name that doesn't conform to the C3 name requirements. Just `extern fn` doesn't work.
 
-**A:** In this case you need to give the function a C3-compatible name and then use the `@extern` attribute to
+**A:** In this case you need to give the function a C3-compatible name and then use the `@cname` attribute to
 indicate its actual external name. For example, the function `int *ABC(void *x)` could be declared in the C3 code as
-`extern fn int* abc(void* x) @extern("ABC")`.
+`extern fn int* abc(void* x) @cname("ABC")`.
 
 There are many examples of this in the `std::os` modules.
 

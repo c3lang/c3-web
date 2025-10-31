@@ -15,7 +15,7 @@ This naming requirement ensures that the language *is easy to parse for tools*.
 It is possible to use attributes to change the *external* name of a type:
 
 ```c3
-struct Stat @extern("stat")
+struct Stat @cname("stat")
 {
     // ...
 }
@@ -542,6 +542,14 @@ fn void test()
 }
 ```
 
+### Aligned typedefs
+
+It's possible to use `typedef` to create underaligned types. For example, typically an `int` will be 4 byte aligned, but we can create a 2-byte aligned type using `typedef IntAlign2 = int @align(2);`.
+
+### Storage SIMD types
+
+Vectors are normally stored and passed as arrays to prevent SIMD alignment overhead. However, it's possible to define types that exactly match the SIMD types in C and other languages for storage and argument passing. These types are defined with `typedef` and the `@simd` attribute, similar to aligned typedefs: `typedef Float4 = float[<4>] @simd`
+
 ### Typedef type properties
 
 In addition to the normal properties, typedef also supports:
@@ -771,6 +779,47 @@ fn void test()
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
 
 To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
+
+### Initializing structs
+
+Structs are typically initialized with an initializer list, which is a list of arguments inside of `{ }`. For example, we can initialize our `Person` struct above like this:
+
+```c3
+Person p = { 21, "John Doe" };
+```
+
+But we can also use so-called designated initialization, where the explicit names of the members are assigned to, with a leading `.`:
+
+```c3
+Person p = { .age = 21, .name = "John Doe" };
+```
+
+With designated initializers we do not need to initialize all fields. The rest of the fields will automatically be zeroed out:
+
+```c3
+Person p = { .name = "John Doe" }; // p.age is 0
+```
+
+If a type contains members which in turn are structs or unions or arrays, then their members may be initialized using repeated `.name` syntax:
+
+```c3
+struct Test
+{
+    Person owner;
+    Person subscriber;
+}
+
+Test t = { .owner = { 21, "John Doe" }, .subscriber.age = 42, .subscriber.name = "Test Person" };
+```
+
+### Struct initializer splatting
+
+It's possible to use the `...` operator together with designated initializers to provide defaults that are overwritten by later assignments:
+
+```c3
+Person p = { 21, "John Doe" };
+Person p_new = { ...p, .age = 22 };  // Same as { 22, "John Doe" }
+```
 
 ### Struct subtyping
 
