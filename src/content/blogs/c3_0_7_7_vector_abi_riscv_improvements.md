@@ -239,3 +239,5 @@ This release wouldn't have been possible without the C3 community. I'd like to e
 Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
+
+Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1okzgsu/c3_077_vector_abi_changes_riscv_improvements_and/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
