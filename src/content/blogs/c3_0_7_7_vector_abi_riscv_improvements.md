@@ -178,3 +178,64 @@ The sorting macros accidentally only took non-slices by value, which would work 
 ## Looking Forward
 With the updated Vector ABI and the change from `@extern` to `@cname` there are a lot of vendor libraries that will need a refresh. There is also a new matrix library in development that hopefully might get included in the next release. There is more functionality to add for fine-tuning processor capabilities for both RISC-V, but also AArch64. There have also been requests for 32-bit Arm support, but the lack of CI tests for different Arm processors is blocking it at the moment.
 
+## Community and Contributions
+This release wouldn't have been possible without the C3 community. I'd like to extend a deep thank you to all who have contributed, both through filed issues, PRs and just plain discussions.
+
+### Change Log
+<details>
+	<summary class="
+		text-black 
+		dark:text-white
+		font-medium
+		text-lg
+		"
+	>
+		Click for full change log
+	</summary>
+
+### Changes / improvements
+- Error when using $vaarg/$vacount/$vasplat and similar in a macro without vaargs #2510.
+- Add splat defaults for designated initialization #2441.
+- Add new builtins `$$str_snakecase` `$$str_replace` and `$$str_pascalcase`.
+- `"build-dir"` option now available for `project.json`, added to project. #2323
+- Allow `..` ranges to use "a..a-1" in order to express zero length.
+- Disallow aliasing of `@local` symbols with a higher visibility in the alias.
+- Add `--max-macro-iterations` to set macro iteration limit.
+- Improved generic inference in initializers #2541.
+- "Maybe-deref" subscripting `foo.[i] += 1` #2540.
+- ABI change for vectors: store and pass them as arrays #2542.
+- Add @simd and @align attributes to typedef #2543.
+- Rename `@extern` to `@cname`, deprecating the old name #2493.
+- Allow `(Foo)0` bitstruct casts even if type sizes do not match.
+- The option `--riscvfloat` renamed `--riscv-abi`.
+- Add initial `--cpu-flags` allowing fine grained control over CPU features.
+- Add `--riscv-cpu` settings for RISC-V processors #2549.
+
+### Fixes
+- Bug in `io::write_using_write_byte`.
+- Bitstruct value cannot be used to index a const array in compile time. #2512
+- Compiler fails to stop error print in recursive macro, and also prints unnecessary "inline at" #2513.
+- Bitstruct truncated constant error escapes `$defined` #2515.
+- Compiler segfault when accessing member of number cast to bitstruct #2516.
+- Compiler assert when getting a member of a `bitstruct : char @bigendian` #2517.
+- Add ??? and +++= to list-precedence.
+- Fix issues with linking when using symbol aliases. #2519
+- Splatting optional compile-time macro parameter from inside lambda expression does not work #2532.
+- Compiler segfault when getting a nonexistant member from an unnamed struct #2533.
+- Correctly mention aliased type when method is not implemented #2534.
+- Regression: Not printing backtrace when tests fail for MacOS #2536.
+
+### Stdlib changes
+- Sorting functions correctly took slices by value, but also other types by value. Now, only slices are accepted by value, other containers are always by ref.
+- Added `@str_snakecase`, `@str_replace` and `@str_pascalcase` builtin compile time macros based on the `$$` builtins.
+- Add TcpSocketPair to create a bidirectional local socket pair.
+- Add `extern fn CInt socketpair(AIFamily domain, AISockType type, CInt protocol, NativeSocket[2]* sv)` binding to posix.
+- Add `extern fn getsockname(NativeSocket socket, SockAddrPtr address, Socklen_t* address_len)` binding to win32.
+
+</details>
+
+### Want To Dive Into C3?
+
+Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
+
+Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
