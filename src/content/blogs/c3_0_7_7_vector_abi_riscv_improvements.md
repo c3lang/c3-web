@@ -116,7 +116,7 @@ fn void test()
 
 ## Typedef with alignment
 
-A new feature for `typedef` is to allow creating a type with a specific alignment without wrapping it in a struct. We may, for example, create an integer that is 16 bit aligned using `typedef Int2 = int @align(2);`. This is an alternative way safely work with references to under-aligned members in packed structs.
+A new feature for `typedef` is to allow creating a type with a specific alignment without wrapping it in a struct. We may, for example, create an integer that is 16 bit aligned using `typedef Int2 = int @align(2);`. This is an alternative way to safely work with references to under-aligned members in packed structs.
 
 ```c3
 // Pre 0.7.7
@@ -164,13 +164,13 @@ fn void test()
 
 ## Small but important changes
 
-Aliases which alias `@local` variables must also be `@local`. `@extern` is renamed `@cname` as it was frequently misunderstood. Generic inference now works better in initializers. For slices with the `..` syntax, it's now possible to have the end index be one less than the starting index, so that zero size slices can be expressed with the `..` syntax as well.
+Aliases that refer to `@local` variables must themselves have local visibility. `@extern` is renamed `@cname` as it was frequently misunderstood. Generic inference now works better in initializers. For slices with the `..` syntax, it's now possible to have the end index be one less than the starting index, so that zero size slices can be expressed with the `..` syntax as well.
 
 ## Cross-Platform and Architecture Support Expansion
-This release significantly strengthens C3C's cross-platform capabilities, particularly for RISC-V architecture support. It's now possible to set individual CPU features using `--cpu-flags`, e.g. `--cpu-flags +avx,-sse`. For RISC-V, `--riscv-cpu` has been added, as well as renaming the RISC-V abi flag the more correct `--riscv-abi`.
+This release significantly strengthens C3C's cross-platform capabilities, particularly for RISC-V architecture support. It's now possible to set individual CPU features using `--cpu-flags`, e.g. `--cpu-flags +avx,-sse`. For RISC-V, `--riscv-cpu` has been added, as well as renaming the RISC-V abi flag to the more correct `--riscv-abi`.
 
 ## Stdlib changes
-The sorting macros accidentally only took non-slices by value, which would work in some cases but not in others. This has been fixed, but might mean that some code needs to update as well. TcpSocketPair to create a bidirectional local socket pair was added to the tcp module, and on Windows, using sockets should implicitly initialize the underlying socket subsystem.
+The sorting macros accidentally only took non-slices by value, which would work in some cases but not in others. This has been fixed, but might mean that some code needs to update as well. TcpSocketPair was added to the tcp module to create a bidirectional local socket pair, and using sockets on Windows should now implicitly initialize the underlying socket subsystem.
 
 ## Fixes
 0.7.7 has only about 11 fixes, which reflects the relatively few bugs encountered in the 0.7.7 cycle. There are outstanding bugs on the inline asm, which has a significant update planned. The most important fix is patching a regression for MacOS which prevented backtrace printing.
