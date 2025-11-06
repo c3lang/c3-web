@@ -94,7 +94,7 @@ fn void? test()
 import std::io;
 
 // Function returning an Optional
-fn int? maybe_func() { /* ... */ }
+fn int? maybe_function() { /* ... */ }
 
 fn void? test()
 {
