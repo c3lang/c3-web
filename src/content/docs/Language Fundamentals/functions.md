@@ -293,7 +293,7 @@ struct Point
 {
     int x;
     int y;
-}pa
+}
 
 fn void Point.add(Point* p, int x)
 {
