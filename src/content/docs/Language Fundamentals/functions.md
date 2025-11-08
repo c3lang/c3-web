@@ -107,14 +107,14 @@ fn void va_singletyped(int... args)
     /* args has type int[] */
 }
 
-fn void va_variants_explicit(any*... args)
+fn void va_variants_explicit(any... args)
 {
-    /* args has type any*[] */
+    /* args has type any[] */
 }
 
 fn void va_variants_implicit(args...)
 {
-    /* args has type any*[] */
+    /* args has type any[] */
 }
 
 extern fn void va_untyped(...); // only used for extern C functions
@@ -124,7 +124,7 @@ fn void test()
     va_singletyped(1, 2, 3);
 
     int x = 1;
-    any* v = &x;
+    any v = &x;
     va_variants_explicit(&&1, &x, v); // pass references for non-any arguments
 
     va_variants_implicit(1, x, "foo"); // arguments are implicitly converted to anys
