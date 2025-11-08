@@ -8,14 +8,18 @@ sidebar:
 The standard library is currently in development, so frequent changes will occur. Note that all std::core modules and
 sub modules are implicitly imported.
 
+:::caution
+This page is missing many new parts of the standard library, see the [Standard Library Reference](/standard-library/stdlib_refcard/) for a more up-to-date overview
+:::
+
 ## `std::core::builtin`
 
 All functions and macros in this library can be used without path qualifiers.
 
-### `void panic(char* message, char *file, char *function, uint line)`
+### `void panic(String message, String file, String function, uint line)`
 Default function called when the asserts fails.
 
-### `void @swap(&a, &b)`
+### `void @swap(#a, #b)`
 Swap values in `a` and `b`.
 
 ```c
@@ -27,7 +31,7 @@ io::printfn("%d", a); // Prints 5
 
 ### `anycast(any v, $Type)`
 
-Optionally cast the value `v` to type `$Type*` on failure returns `CastResult.TYPE_MISMATCH`.
+Optionally cast the value `v` to type `$Type*` on failure returns `TYPE_MISMATCH`.
 
 ```c
 int b;
@@ -76,7 +80,7 @@ fn void? test()
 }
 ```
 
-### `void @scope(&variable; @body)`
+### `void @scope(#variable; @body)`
 
 Scopes a variable:
 
@@ -99,12 +103,6 @@ or `Type.compare_to` may be compared (or if the type implements `<`). Types
 implementing `Type.equals` may use `equals` even if neither `less` nor `compare_to`
 are implemented.
 
-### Faults
-
-- `IteratorResult` returned when reaching the end of an iterator.
-- `SearchResult` used when a search fails.
-- `CastResult` when an anycast fails.
-
 ## `std::core::env`
 
 ### Constants
@@ -117,18 +115,17 @@ are implemented.
 
 ### `malloc`, `malloc_aligned`
 
-Allocate the given number of bytes. `malloc` will panic on out of memory,
-whereas `malloc_aligned` returns an optional value.
+Allocate the given number of bytes. both `malloc` and `malloc_aligned` will panic on out of memory.
 `malloc_aligned` adds an alignment, which must be a power of 2. Any pointer
 allocated using `malloc_aligned` must be freed using `free_aligned` rather
 the normal `free` or memory corruption may result.
 
 ```c
 char* data = malloc(8);
-int[<16>]*? data2 = malloc_aligned(16 * int.sizeof), 128);
+int[<16>]* data2 = malloc_aligned(16 * int.sizeof, 128);
 ```
 
-### `new($Type, #initializer), new_aligned($Type, #initializer)`
+### `new($Type, #init = ...), new_aligned($Type, #init = ...)`
 
 This allocates a single element of $Type, returning the pointer. An optional initializer may be added, which
 immediately initializes the value to that of the initializer.
@@ -157,13 +154,13 @@ int[] ints = mem::new_array(int, 100); // Allocated int[100] on the heap, zero i
 
 ### `alloc_array($Type, usz elements)`, `alloc_array_aligned($Type, usz elements)`
 
-Same as `new_array` but without initialization.
+Same as `new_array` and `new_array_aligned` but without initialization.
 
-### `calloc`, `calloc_checked`, `calloc_aligned`
+### `calloc`, `calloc_aligned`
 
 Identical to the `malloc` variants, except the data is guaranteed to be zeroed out.
 
-### `realloc`, `realloc_checked`, `realloc_aligned`
+### `realloc`, `realloc_aligned`
 
 Resizes memory allocated using `malloc` or `calloc`. Any extra data is
 guaranteed to be zeroed out. `realloc_aligned` can only be used with
@@ -191,15 +188,10 @@ dynamic_arena.destroy();
 
 ```
 
-### `@tscoped(; @body())`
-
-Same as @scoped, but uses the temporary allocator rather than any
-arbitrary allocator.
-
 ### `void* tmalloc(usz size, usz alignment = 0)`
 
 Allocates memory using the temporary allocator. Panic on failure. It has type
-variants similar to `malloc`, so `tmalloc(Type)` would create a `Type*` using
+variants similar to `malloc`, so `tnew(Type)` would create a `Type*` using
 the temporary allocator.
 
 ### `void* tcalloc(usz size, usz alignment = 0)`
@@ -221,15 +213,15 @@ Opens a temporary memory scope.
 ```c3
 @pool()
 {
-    // This allocation uses the dynamic arena
+    // This allocation uses the dynamic arena and is freed automatically at the end of the block
     Foo* f = tmalloc(Foo);
 };
 ```
 
 
-### `@volatile_load(&x)`
+### `@volatile_load(#x)`
 
-Returns the value in `x` using a volatile load.
+Returns the value in `#x` using a volatile load.
 
 ```c3
 // Both loads will always happen:
@@ -238,9 +230,9 @@ y = @volatile_load(my_global);
 ```
 
 
-### `@volatile_store(&x, y)`
+### `@volatile_store(#x, y)`
 
-Store the value `y` in `x` using a volatile store.
+Store the value `y` in `#x` using a volatile store.
 
 ```c3
 // Both stores will always happen:
@@ -308,23 +300,22 @@ Return `true` if the value can be compared using the `equals` macro.
 Return `true` if the value can be compared using the comparison macros.
 
 ### `kind_is_int(TypeKind kind)`
-### `any_to_int(any* v, $Type)`
+### `any_to_int(any v, $Type)`
 
 Returns an optional value of `$Type` if the any value losslessly
-may be converted into the given type. Returns a `ConversionResult` otherwise.
+may be converted into the given type. Returns either `VALUE_OUT_OF_RANGE` or `VALUE_OUT_OF_UNSIGNED_RANGE` otherwise.
 
 ```c
-any* v = &&128;
+any v = &&128;
 short y = any_to_int(v, short)!!; // Works
 ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 ```
 
 ## `std::core::str::conv`
 
-### `usz? char32_to_utf8(Char32 c, char* output, usz available)`
-Convert a UTF32 codepoint to an UTF8 buffer. `size` has the number of
-writable bytes left. It returns the number of bytes used, or
-`UnicodeResult.CONVERSION_FAILED` if the buffer is too small.
+### `usz? char32_to_utf8(Char32 c, char[] output)`
+Convert a UTF32 codepoint to an UTF8 buffer. It returns the number of bytes used, or
+`string::CONVERSION_FAILED` if the buffer is too small.
 
 ### `void char32_to_utf16_unsafe(Char32 c, Char16** output)`
 Convert a UTF32 codepoint to an UTF16 buffer without bounds checking,
@@ -334,7 +325,7 @@ moving the output pointer 1 or 2 steps.
 
 ### `String? readline(Allocator allocator, stream = io::stdin())`
 Read a `String?` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream.
-`Readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
+`readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
 ```c3
 import std::io;
@@ -356,7 +347,7 @@ fn void? hello_name()
 :::
 
 ### `String? treadline(stream = io::stdin())`
-Read a `String?` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `Treadline`, in contrast the `readline` defaults to the heap allocator, but is configurable to other allocators.
+Read a `String?` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `treadline`, in contrast the `readline` can be used with any allocator.
 
 ```c
 import std::io;
@@ -415,7 +406,7 @@ The `eprintn` variant appends a newline.
 See `print` for usage.
 
 ### `usz? printf(String format, args...) @maydiscard`
-Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
+Regular printf functionality: `%s`, `%x`, `%d`, `%f` `%p`, `%h`, and `%c` are supported.
 Will also print enums and vectors. Prints to stdout.
 
 ```c3
@@ -471,7 +462,7 @@ Returns the number of characters printed.
 ### `void putchar(char c) @inline`
 Libc `putchar`, prints a single character to stdout.
 
-### `usz? DString.appendf(DString* str, String format, args...) @maydiscard`
+### `usz? DString.appendf(&self, String format, args...) @maydiscard`
 Same as printf but on dynamic strings.
 
 ### `File* stdout()`, `File* stdin()`, `File* stderr()`
@@ -521,10 +512,10 @@ Read a single byte from a file.
 ### `char[]? load_buffer(String filename, char[] buffer)`
 Load up to buffer.len characters into the buffer.
 
-Returns IoError.OVERFLOW if the file is longer than the buffer.
+Returns `io::OVERFLOW` if the file is longer than the buffer.
 
-### `char[]? load_new(String filename, Allocator allocator = mem)`
-Load the entire file into a new buffer.
+### `char[]? load(Allocator allocator, String filename)`
+Load the entire file into a new buffer using the given allocator.
 
 ### `char[]? load_temp(String filename)`
 Load the entire file into a buffer allocated using the temporary allocator.
@@ -532,7 +523,7 @@ Load the entire file into a buffer allocated using the temporary allocator.
 ### `void? File.flush(&self) @dynamic`
 Flush a file, based on the libc function.
 
-## `std::collections::list({ Type })`
+## `std::collections::list{ Type }`
 
 Generic list module, elements are of `Type`.
 
@@ -548,48 +539,48 @@ list.push(123);
 list.free();
 ```
 
-### `List.push(List *list, Type element)`, `append(...)`
+### `List.push(&self, Type element)`, `append(...)`
 Append a single value to the list.
 
-### `Type List.pop(List* list)`
+### `Type List.pop(&self)`
 Removes and returns the last entry in the list.
 
-### `Type List.pop_first(List *list)`
+### `Type List.pop_first(&self)`
 Removes the first entry in the list.
 
-### `void List.remove_at(List *list, usz index)`
+### `void List.remove_at(&self, usz index)`
 Removes the entry at `index`.
 
-### `void List.insert_at(List *list, usz index, Type type)`
+### `void List.insert_at(&self, usz index, Type type)`
 Inserts a value at `index`.
 
-### `void List.push_front(List *list, Type type)`
+### `void List.push_front(&self, Type type)`
 Inserts a value to the front of the list.
 
-### `void List.remove_last(List* list)`
+### `void? List.remove_last(&self)`
 Remove the last value of the list.
 
-### `void List.remove_first(List *list)`
+### `void? List.remove_first(List *list)`
 Remove the first element in the list.
 
-### `Type* List.first(List* list)`
+### `Type? List.first(&self)`
 Return the first element in the list if available.
 
-### `Type* List.last(List *list)`
+### `Type? List.last(&self)`
 Return the last element in the list if available.
 
-### `List.is_empty(List *list)`
+### `List.is_empty(&self)`
 Return `true` if the list is empty.
 
-### `usz List.len(List *list)`
+### `usz List.len(&self)`
 Return the number of elements in the list.
 
-### `Type List.get(List *list, usz index)`
+### `Type List.get(&self, usz index)`
 Return the value at `index`.
 
-### `void List.free(List *list)`
+### `void List.free(&self)`
 Free all memory associated with this list.
 
-### `void List.swap(List *list, usz i, usz j)`
+### `void List.swap(&self, usz i, usz j)`
 Swap two elements in the list.
 
