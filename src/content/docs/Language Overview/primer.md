@@ -478,7 +478,7 @@ There exists a simplified form for a bitstruct containing only booleans,
 it is the same except the ranges are left out:
 
 ```c3
-struct Flags : char
+bitstruct Flags : char
 {
     bool has_hyperdrive;
     bool has_tractorbeam;
