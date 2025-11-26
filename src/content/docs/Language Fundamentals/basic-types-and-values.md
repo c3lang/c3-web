@@ -193,7 +193,12 @@ int[<2>] c = { 7, 2 };
 int[<2>] d = b * c;    // d is { 21, 16 }
 ```
 
-Vector initialization and literals work the same way as arrays, using `{ ... }`
+Vector initialization and literals work the same way as arrays, using `{ ... }`, however, it's also possible to use
+swizzling arguments to designated initialization:
+
+```c3
+int[<3>] v = { .xy = 3, .z = 100 }; // Same as { 3, 3, 100 }
+```
 
 ## String literals
 
