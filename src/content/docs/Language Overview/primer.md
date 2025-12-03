@@ -371,7 +371,7 @@ free(foo);
 return false;
 
 // C3, using defer:
-Foo* foo = malloc(Foo);
+Foo* foo = malloc(Foo.sizeof);
 defer free(foo);
 
 if (tryFoo(foo)) return false;
