@@ -159,7 +159,7 @@ Named macro vaargs were incorrectly handled prior to 0.7.7, but the change in 0.
 
 ## Stdlib changes
 
-The MacOS bindings in std::os::macos nicely got a bunch of additions contributed by Glenn Kirk, and printing typeids now prints the actual underlying id as well. Printing BigInts was optimized and printf now has caching which makes printing on Win32 faster.
+The MacOS bindings in `std::os::macos` nicely got a bunch of additions contributed by Glenn Kirk, and printing typeids now prints the actual underlying id as well. Printing BigInts was optimized and printf now has caching which makes printing on Win32 faster.
 
 ## Looking Forward
 
