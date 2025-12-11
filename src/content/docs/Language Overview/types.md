@@ -413,16 +413,13 @@ any some_int = any_make(some_ptr, int.typeid);
 // Same as any_make(some_int.ptr, uint.type)
 any some_uint = some_int.retype_to(uint.typeid);   
 
-struct SomeStruct
-{
-    inline int a;
-}
+typedef SomeType = int;
 
-SomeStruct s = { 3 };
-any any_struct = &s;
+SomeType s = 3;
+any any_val = &s;
 
 // Result is same as (any)&s.a
-any some_inner_int = any_struct.as_inner();
+any some_inner_int = any_val.as_inner();
 ```
 
 ## Array types
