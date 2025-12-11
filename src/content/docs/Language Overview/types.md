@@ -327,8 +327,8 @@ However, at runtime only a few are available:
 ## The `any` type
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
-While it is possible to cast the `any` pointer to any pointer type,
-it is recommended to use the `anycast` macro or checking the type explicitly first.
+While it is possible to cast the `any` pointer to any pointer type, it is recommended to use the `anycast` macro or checking the type explicitly first. With the `anycast` macro, the return will be
+an optional, which is empty if there is a mismatch.
 
 ```c3
 fn void main()
@@ -341,6 +341,10 @@ fn void main()
     if (y.type == int.typeid)
     {
         // Do something if y contains an int*
+    }
+    if (try v = anycast(y, int))
+    {
+        // same as above, but v holds the unwrapped int*
     }
 }
 ```
