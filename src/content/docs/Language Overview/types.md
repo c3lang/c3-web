@@ -397,16 +397,16 @@ At runtime, `any` gives you access to two fields:
 The standard library has several helper macros to manipulate `any` types:
 
 1. `anycast(some_any, Type)` returns a pointer to `Type*` or `TYPE_MISMATCH` if types don't match.
-2. `anymake(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
+2. `any_make(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
 3. `some_any.retype_to(some_typeid)` changes the type of an `any` to the given typeid.
 4. `some_any.as_inner()` retypes the type of the `any` to the "inner" (see the `inner` type property) of the current type.
 
 ```c3
 void* some_ptr = foo();
 // Essentially (any)(int*)(some_ptr)
-any some_int = anymake(some_ptr, int.typeid); 
+any some_int = any_make(some_ptr, int.typeid);
 
-// Same as anymake(some_int.ptr, uint.type)
+// Same as any_make(some_int.ptr, uint.type)
 any some_uint = some_int.retype_to(uint.typeid);   
 
 struct SomeStruct
