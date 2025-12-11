@@ -337,7 +337,7 @@ fn void main()
     any y = &x;
     int* w = (int*)y;                // Returns the pointer to x
     double* z_bad = (double*)y;      // Don't do this!
-    double! z = anycast(y, double);  // The safe way to get a value
+    double? z = anycast(y, double);  // The safe way to get a value
     if (y.type == int.typeid)
     {
         // Do something if y contains an int*
