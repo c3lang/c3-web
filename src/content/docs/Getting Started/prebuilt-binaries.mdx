@@ -82,3 +82,22 @@ git clone https://aur.archlinux.org/c3c-git.git
 cd c3c-git
 makepkg -si
 ```
+
+## Troubleshooting
+
+**Note:** If you get an error like `No module named 'std::io' could be found`, you may need to set the `C3C_LIB` environment variable to point to the standard library location:
+
+**Bash/Zsh:**
+```bash
+export C3C_LIB=/path/to/c3c/lib
+```
+
+**Fish:**
+```fish
+set -gx C3C_LIB /path/to/c3c/lib
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:C3C_LIB = "C:\path\to\c3c\lib"
+```
