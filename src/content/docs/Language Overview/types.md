@@ -483,8 +483,8 @@ Callback callback = &test; // Ok
 
 fn void main()
 {
-    callback(); // Works, same as test(0);
-    test(); // Works, same as test(1);
+    callback(); // Works, same as test(1);
+    test(); // Works, same as test(0);
     callback(value: 3); // Works, same as test(3)
     test(a: 4); // Works, same as test(4)
     // callback(a: 3); // ERROR!
@@ -562,17 +562,22 @@ In addition to the normal properties, typedef also supports:
 ```c3
 import generic_list; // Contains the generic MyList
 
-struct Foo {
+struct Foo 
+{
     int x;
 }
 
 // ✅ alias for each type used with a generic module.
-alias IntMyList = MyList {Foo};
+alias MyListFoo = MyList {Foo};
 MyListFoo working_example;
 
-// ❌ An inline type definition will give an error.
-// Only allowed in a type definition or macro
-MyList {Foo} failing_example = MyList {Foo};
+fn void main()
+{
+    // ❌ A nested inline type definition in a function context
+    // will yield an error, it's only available on the top 
+    // level or in macros. Prefer aliases.
+    MyList {MyList {int}} failing_example;
+}
 ```
 Find out more about [generic types](/generic-programming/generics).
 
