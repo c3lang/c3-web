@@ -5,9 +5,7 @@ sidebar:
     order: 999
 ---
 
-*THIS SPECIFICATION IS OUT OF DATE*
-
-Please refer to the new repository at https://github.com/c3lang/c3-spec
+# C3 Specification
 
 ## Notation
 
@@ -34,29 +32,27 @@ Productions are expressions constructed from terms and the following operators, 
 *  repetition (0 to n times)
 ```
 
-Uppercase production names are used to identify lexical tokens. Non-terminals are in lower case. Lexical tokens are
-enclosed in single quotes ''.
+Uppercase production names are used to identify lexical tokens. Non-terminals are in lower case. Lexical tokens are enclosed in single quotes ''.
 
 The form `a..b` represents the set of characters from a through b as alternatives.
 
 ## Source code representation
 
-A program consists of one or more _translation units_ stored in files written in the Unicode character set,
-stored as a sequence of bytes using the UTF-8 encoding. Except for comments and the contents of character and string
-literals, all input elements are formed only from the ASCII subset (U+0000 to U+007F) of Unicode.
+A program consists of one or more _translation units_ stored in files written in the Unicode character set, stored as a sequence of bytes using the UTF-8 encoding. Except for comments and the contents of character and string literals, all input elements are formed only from the ASCII subset (U+0000 to U+007F) of Unicode.
 
-A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. Doc
-comments may optionally be discarded as well. The resulting input elements form the tokens that are the terminal symbols
-of the syntactic grammar.
+#### Carriage return
+
+The carriage return (U+000D) is usually treated as white space, but may be stripped from the source code prior to lexical translation.
+
+#### Bidirectional markers
+
+Unbalanced bidirectional markers (such as U+202D and U+202E) is not legal.
 
 ### Lexical Translations
 
-A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. Doc
-comments may optionally be discarded as well. The resulting input elements form the tokens that are the terminal symbols
-of the syntactic grammar.
+A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. The resulting input elements form the tokens that are the terminal symbols of the syntactic grammar.
 
-The longest possible translation is used at each step, even if the result does not ultimately make a correct program
-while another lexical translation would.
+The longest possible translation is used at each step, even if the result does not ultimately make a correct program while another lexical translation would.
 
 > Example: `a--b` is translated as `a`, `--`, `b`, which does not form a grammatically correct expression, even though the tokenization `a`, `-`, `-`, `b` could form a grammatically correct expression.
 
@@ -64,48 +60,26 @@ while another lexical translation would.
 
 The C3 compiler divides the sequence of input bytes into lines by recognizing *line terminators*
 
-Lines are terminated by the ASCII LF character (U+000A), also known as "newline". A line termination specifies the
-termination of the // form of a comment.
+Lines are terminated by the ASCII LF character (U+000A), also known as "newline". A line termination specifies the termination of the // form of a comment.
 
-### Input Elements and Tokens
+### Comments
 
-An input element may be:
+There are two types of regular comments:
 
-1. White space
-2. Comment
-3. Doc Contract
-4. Token
-
-A token may be:
-
-1. Identifier
-2. Keyword
-3. Literal
-4. Separator
-5. Operator
-
-A Doc Contract consists of:
-
-1. A stream of descriptive text
-2. A list of directive Tokens
-
-Those input elements that are not white space or comments are tokens. The tokens are the terminal symbols of the
-syntactic grammar. Whitespace and comments can serve to separate tokens that might be tokenized in another manner. For
-example the characters `+` and `=` may form the operator token `+=` only if there is no intervening white space or
-comment.
+1. `// text` a line comment. The text between `//` and line end is ignored.
+2. `/* text */` block comments. The text between `/*` and `*/` is ignored. It has nesting behaviour, so for every `/*` discovered between the first `/*` and the last `*/` a corresponding `*/` must be found.
 
 ### White Space
 
-White space is defined as the ASCII horizontal tab character (U+0009), form feed character (U+000A), vertical tab (
-U+000B), carriage return (U+000D), space character (U+0020) and the line terminator character (U+000D).
+White space is defined as the ASCII horizontal tab character (U+0009), carriage return (U+000D), space character (U+0020) and the line terminator character (U+000D).
 
-```
-WHITESPACE      ::= [ \t\f\v\r\n]
+```text
+WHITESPACE      ::= [ \t\r\n]
 ```
 
 ### Letters and digits
 
-```
+```text
 UC_LETTER       ::= [A-Z]
 LC_LETTER       ::= [a-z]
 LETTER          ::= UC_LETTER | LC_LETTER
@@ -113,193 +87,93 @@ DIGIT           ::= [0-9]
 HEX_DIGIT       ::= [0-9a-fA-F]
 BINARY_DIGIT    ::= [01]
 OCTAL_DIGIT     ::= [0-7]
-LC_LETTER_US    ::= LC_LETTER | "_"
-UC_LETTER_US    ::= UC_LETTER | "_"
+LC_LETTER_      ::= LC_LETTER | "_"
+UC_LETTER_      ::= UC_LETTER | "_"
 ALPHANUM        ::= LETTER | DIGIT
-ALPHANUM_US     ::= ALPHANUM | "_"
-UC_ALPHANUM_US  ::= UC_LETTER_US | DIGIT
-LC_ALPHANUM_US  ::= LC_LETTER_US | DIGIT
+ALPHANUM_       ::= ALPHANUM | "_"
+UC_ALPHANUM_    ::= UC_LETTER_ | DIGIT
+LC_ALPHANUM_    ::= LC_LETTER_ | DIGIT
 ```
-
-### Comments
-
-There are three types of regular comments:
-
-1. `// text` a line comment. The text between `//` and line end is ignored.
-2. `/* text */` block comments. The text between `/*` and `*/` is ignored. It has nesting behaviour, so for every `/*`
-   discovered between the first `/*` and the last `*/` a corresponding `*/` must be found.
-3. `#!` the shebang comment. It behaves as a line comment but is only allowed as the two first characters in a file.
-
-### Doc contract
-
-1. `<* text *>` doc block comment. The text between `<*` and `*>` is optionally parsed using the doc comment
-   syntactic grammar. A compiler may choose to read `<* text *>` as a regular comment.
 
 ### Identifiers
 
-Identifiers name program entities such as variables and types. An identifier is a sequence of one or more letters and
-digits.
-The first character in an identifier must be a letter or underscore.
+Identifiers name program entities such as variables and types. An identifier is a sequence of one or more letters and digits. The first character in an identifier must be a letter or underscore.
 
-C3 has three types of identifiers: const identifiers - containing only underscore and upper-case letters,
-type identifiers - starting with an upper case letter followed by at least one underscore letter and regular
-identifiers, starting with a lower case letter.
+C3 has three groups of identifiers: const identifiers - containing only underscore and upper-case letters, type identifiers - starting with an upper case letter followed by at least one underscore letter and regular identifiers, starting with a lower case letter.
 
-```
-IDENTIFIER      ::=  "_"* LC_LETTER ALPHANUM_US*
-CONST_IDENT     ::=  "_"* UC_LETTER UC_ALPHANUM_US*
-TYPE_IDENT      ::=  "_"* UC_LETTER UC_ALPHANUM_US* LC_LETTER ALPHANUM_US*
-CT_IDENT        ::=  "$" IDENTIFIER
-CT_CONST_IDENT  ::=  "$" CONST_IDENT
-CT_TYPE_IDENT   ::=  "$" TYPE_IDENT
-AT_TYPE_IDENT   ::=  "@" TYPE_IDENT
-PATH_SEGMENT    ::= "_"* LC_LETTER LC_ALPHANUM_US*
+```text
+IDENTIFIER       ::= "_"* LC_LETTER ALPHANUM_*
+CONST_IDENT      ::= "_"* UC_LETTER UC_ALPHANUM_*
+TYPE_IDENT       ::= "_"* UC_LETTER UC_ALPHANUM_* LC_LETTER ALPHANUM_*
+CT_IDENT         ::= "$" IDENTIFIER
+CT_BUILTIN_CONST ::= "$$" CONST_IDENT
+CT_BUILTIN_FN    ::= "$$" IDENTIFIER
+CT_TYPE_IDENT    ::= "$" TYPE_IDENT
+AT_IDENT         ::= "@" IDENT
+AT_TYPE_IDENT    ::= "@" TYPE_IDENT
+HASH_IDENT       ::= "#" IDENT
+PATH_SEGMENT     ::= "_"* LC_LETTER LC_ALPHANUM_*
 ```
 
 ### Keywords
 
 The following keywords are reserved and may not be used as identifiers:
 
-```
-asm         any         fault
-assert      attribute   break
-case        catch       const
-continue    default     defer
-alias         do          else
-enum        extern      false
-while       fn          if
-import      inline      macro
-module      nextcase    null
-public      return      struct
-switch      true        try
-typeid      var         void
+```text
+any        bfloat      bool
+char       double      fault
+float      float128    float16
+ichar      int         int128
+iptr       isz         long
+short      typeid      uint
+uint128    ulong       uptr
+ushort     usz         void
 
+alias      assert      asm
+attrdef    bitstruct   break
+case       catch       const
+continue   default     defer
+do         else        enum
+extern     false       faultdef
+for        foreach     foreach_r
+fn         tlocal      if
+inline     import      macro
+module     nextcase    null
+interface  return      static
+struct     switch      true
+try        typedef     union
+var        while
 
-bool        int128      double
-float       long        ulong
-int         uint        byte
-short       ushort      char
-isz         usz         float16
-float128    uint128     bfloat16
-
-$assert     $case       $default
-$echo       $else       $error
-$endfor     $endforeach $endif
-$endswitch  $for        $foreach
-$if         $switch     $typef
-$vaarg      $vaconst    $vacount
-$vaexpr     $vatype
-
+$alignof   $assert     $assignable
+$case      $default    $defined
+$echo      $else       $embed
+$endfor    $endforeach $endif
+$endswitch $eval       $error     
+$exec      $extnameof  $feature
+$for       $foreach    $if
+$include   $is_const   $nameof
+$offsetof  $qnameof    $sizeof
+$stringify $switch     $typefrom
+$typeof    $vacount    $vatype
+$vaconst   $vaarg      $vaexpr
+$vasplat
 ```
 
 ### Operators and punctuation
 
 The following character sequences represent operators and punctuation.
 
-```
+```text
 &       @       ~       |       ^       :
-,       /       $       .       ;       )
+,       /       $       .       ;       =
 >       <       #       {       }       -
 (       )       *       [       ]       %
 >=      <=      +       +=      -=      !
 ?       ?:      &&      ??      &=      |=
-^=      /=      ..      ==      ({      })
-[<      >]      ++      --      %=      !=
-||      ::      <<      >>      !!      ...
-<<=     >>=
-```
-
-### Integer literals
-
-An integer literal is a sequence of digits representing an integer constant.
-An optional prefix sets a non-decimal base: 0b or 0B for binary,
-0o, or 0O for octal, and 0x or 0X for hexadecimal.
-A single 0 is considered a decimal zero.
-In hexadecimal literals, letters a through f and A through F represent values 10 through 15.
-
-For readability, an underscore character _ may appear after a base prefix
-or between successive digits; such underscores do not change the literal's value.
-
-```
-INTEGER         ::= DECIMAL_LIT | BINARY_LIT | OCTAL_LIT | HEX_LIT
-DECIMAL_LIT     ::= '0' | [1-9] ('_'* DECIMAL_DIGITS)?
-BINARY_LIT      ::= '0' [bB] '_'* BINARY_DIGITS
-OCTAL_LIT       ::= '0' [oO] '_'* OCTAL_DIGITS
-HEX_LIT         ::= '0' [xX] '_'* HEX_DIGITS
-
-BINARY_DIGIT    ::= [01]
-HEX_DIGIT       ::= [0-9a-fA-F]
-
-DECIMAL_DIGITS  ::= DIGIT ('_'* DIGIT)*
-BINARY_DIGITS   ::= BINARY_DIGIT ('_'* BINARY_DIGIT)*
-OCTAL_DIGITS    ::= OCTAL_DIGIT ('_'* OCTAL_DIGIT)*
-HEX_DIGITS      ::= HEX_DIGIT ('_'* HEX_DIGIT)*
-```
-
-```
-42
-4_2
-0_600
-0o600
-0O600           // second character is capital letter 'O'
-0xBadFace
-0xBad_Face
-0x_67_7a_2f_cc_40_c6
-170141183460469231731687303715884105727
-170_141183_460469_231731_687303_715884_105727
-
-0600            // Invalid, non zero decimal number may not start with 0
-_42             // an identifier, not an integer literal
-42_             // invalid: _ must separate successive digits
-0_xBadFace      // invalid: _ must separate successive digits
-```
-
-### Floating point literals
-
-A floating-point literal is a decimal or hexadecimal representation of a floating-point constant.
-
-A decimal floating-point literal consists of an integer part (decimal digits), a decimal point,
-a fractional part (decimal digits), and an exponent part (e or E followed by an optional
-sign and decimal digits). One of the integer part or the fractional part may be elided;
-one of the decimal point or the exponent part may be elided. An exponent value exp scales
-the mantissa (integer and fractional part) by powers of 10.
-
-A hexadecimal floating-point literal consists of a 0x or 0X prefix, an integer part
-(hexadecimal digits), a radix point, a fractional part (hexadecimal digits),
-and an exponent part (p or P followed by an optional sign and decimal digits).
-One of the integer part or the fractional part may be elided; the radix point
-may be elided as well, but the exponent part is required.
-An exponent value exp scales the mantissa (integer and fractional part) by powers of 2.
-
-For readability, an underscore character _ may appear after a base prefix or between successive digits;
-such underscores do not change the literal value.
-
-```
-FLOAT_LIT       ::= DEC_FLOAT_LIT | HEX_FLOAT_LIT
-DEC_FLOAT_LIT   ::= DECIMAL_DIGITS '.' DECIMAL_DIGITS? DEC_EXPONENT?
-                    | DECIMAL_DIGITS DEC_EXPONENT
-                    | '.' DECIMAL_DIGITS DEC_EXPONENT?
-DEC_EXPONENT    ::= [eE] [+-]? DECIMAL_DIGITS
-HEX_FLOAT_LIT   ::= '0' [xX] HEX_MANTISSA HEX_EXPONENT
-HEX_MANTISSA    ::= HEX_DIGITS '.' HEX_DIGITS?
-                    | HEX_DIGITS
-                    | '.' HEX_DIGITS
-HEX_EXPONENT    ::= [pP] [+-] DECIMAL_DIGITS
-```
-
-### Characters
-
-Characters are the fundamental components of strings and character literals.
-
-```
-CHAR_ELEMENT    ::= [\x20-\x26] | [\x28-\x5B] | [\x5D-\x7F]
-CHAR_LIT_BYTE   ::= CHAR_ELEMENT | \x5C CHAR_ESCAPE
-CHAR_ESCAPE     ::= [abefnrtv\'\"\\]
-                    | 'x' HEX_DIGIT HEX_DIGIT
-UNICODE_CHAR    ::= unicode_char
-                    | 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-                    | 'U' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
-                          HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+^=      /=      ..      ==      [<      >]      
+++      --      %=      !=      ||      ::      
+<<      >>      !!      ->      =>      ...
+<<=     >>=     +++     &&&    |||      ???
 ```
 
 ### Backslash escapes
@@ -324,61 +198,38 @@ The following backslash escapes are available for characters and string literals
 \U      Escapes a four byte unicode hex value
 ```
 
-### String literals
-
-A string literal represents a string constant obtained from concatenating a sequence of characters.
-String literals are character sequences between double quotes, as in "bar". Within the quotes,
-any character may appear except newline and unescaped double quote. The text between the
-quotes forms the value of the literal, with backslash escapes interpreted as they are in
-rune literals, with the same restrictions. The two-digit hexadecimal (\xnn) escapes represent
-individual bytes of the resulting string; all other escapes represent the (possibly multibyte)
-UTF-8 encoding of individual characters. Thus inside a string literal `\xFF` represent a single
-byte of value `0xFF` = 255, while `ÿ`, `\u00FF`, `\U000000FF` and `\xc3\xbf` represent the two bytes
-`0xc3 0xbf` of the UTF-8 encoding of character `U+00FF`.
-
-```
-STRING_LIT      ::= \x22 (CHAR_LIT_BYTE | UNICODE_CHAR)* \x22
-```
-
-#### Compile time string concatenation
-
-Strings will concatenate if declared in sequence.
-
-Example:
-
-```c3
-String s = "abc" "def" "ghi";
-// This is equivalent to:
-String s = "abcdefghi";
-```
-
-### Raw string literals
-
-Raw string literals are enclosed between \`\` and consist of the raw UTF8 in the source
-code between the "\`". A sequence of two "\`" will be interpreted as a single escaped "\`" that does
-not terminate the literal.
-
-#### Compile time concatenation
-
-Raw strings will concatenate with other regular strings and raw strings (
-see [string literal compile time concatenation](#compile-time-string-concatenation)).
-
-#### Source code pre-filtering
-
-The source code will pre-filter `\r` (`0x0D`) from the source code. This means that it is also implicitly
-filtered out of raw strings.
-
-### Character literals
-
-A character literal is enclosed in `'` and may either consist of 1, 2, 4, 8, 16 bytes.
-
-```
-CHARACTER_LIT   ::= "'" (CHAR_LIT_BYTE+) | UNICODE_CHAR "'"
-```
+## Constants
+TODO
+### Extern constants
+TODO
+### Untyped constants
+TODO
+### Constant literals
+TODO
+## Variables
+TODO
+### Global variables
+TODO
+#### Extern global variables
+TODO
+#### Thread local globals
+TODO
+### Local variables
+TODO
+#### Static locals
+TODO
+#### Thread local locals
+TODO
+#### Copying declarations
+TODO
+##### Macro copying
+TODO
+##### Defer copying
+TODO
 
 ## Types
 
-Types consist of built-in types and user-defined types (enums, structs, unions, bitstructs, fault and typedef).
+Types consist of built-in types and user-defined types (enums, structs, unions, bitstructs and typedef).
 
 ### Boolean types
 
@@ -416,26 +267,26 @@ isz       signed pointer offset  / object size
 Built-in floating point types:
 
 ```
-float16   IEEE 16-bit*
-bfloat16  Brainfloat*
-float     IEEE 32-bit
-double    IEEE 64-bit
-float128  IEEE 128-bit*
+float16      IEEE 16-bit*
+bfloat16     Brainfloat*
+float        IEEE 32-bit
+double       IEEE 64-bit
+float128     IEEE 128-bit*
 ```
 
-(* optionally supported)
+(\* optionally supported)
 
 ### Vector types
 
 A vector lowers to the platform's vector types where available. A vector has a base type and a width.
 
 ```
-vector_type        ::= type "[<" length ">]"
+vector_type        ::= base-type "[<" length ">]"
 ```
 
 #### Vector base type
 
-The base type of a vector must be boolean, an integer or a floating point type.
+The base type of a vector must be of boolean, pointer, enum, integer or floating point type, or a distinct type wrapping one of those types.
 
 #### Min width
 
@@ -445,14 +296,31 @@ The vector width must be at least 1.
 
 Vector elements are accessed using `[]`. It is possible to take the address of a single element.
 
+#### Field access syntax
+
+It is possible to access the index 0-3 with field access syntax. 'x', 'y', 'z', 'w' corresponds to
+indices 0-3. Alternatively 'r', 'g', 'b', 'a' may be used.
+
+#### Swizzling
+
+It is possible to form new vectors by combining field access names of individual elements. For example
+`foo.xz` constructs a new vector with the fields from the elements with index 0 and 2 from the vector "foo". There is
+no restriction on ordering, and the same field may be repeated. The width of the vector is the same as the number of
+elements in the swizzle. Example: `foo.xxxzzzyyy` would be a vector of width 9.
+
+Mixing the "rgba" and "xyzw" access name sets is an error. Consequently `foo.rgz` would be invalid as "rg" is from the "rgba" set and "z" is from the "xyzw" set.
+
+#### Swizzling assignment
+
+A swizzled vector may be a lvalue if there is no repeat of an index. Example: `foo.zy` is a valid lvalue, but `foo.xxy` is not.
+
 #### Alignment
 
-Alignment of vectors are platform dependent, but is at least the alignment of its element type.
+Alignment of vectors have the same alignment as arrays of the same size and type.
 
 #### Vector operations
 
-Vectors support the same arithmetics as its underlying type, and will perform the operation
-element-wise.
+Vectors support the same arithmetics and bit operations as its underlying type, and will perform the operation element-wise. Vector operations ignore overloads on the underlying type.
 
 Example:
 
@@ -465,6 +333,31 @@ int[<2>] c = a * b;
 int[<2>] c = { a[0] * b[0], a[1] * b[1] };
 ```
 
+Vectors support `++` and `--` operators, which will be applied to each element. For example, given the `int` vector `int[<2>] x = { 1, 2 }`, the expression `x++` will return the vector `{ 1, 2 }` and update the vector `x` to `{ 2, 3 }`
+
+#### Enum vector "ordinal"
+
+Enum vectors support `.ordinal`, which will return the ordinal of all elements. Note that the `.from_ordinal` method of enums may take a vector and then return an enum vector.
+
+#### Vector limits
+
+Vectors may have a compiler defined maximum bit width. This will be at least as big as the largest supported SIMD vector. A typical value is 4096 bits. For the purpose of calculating max with, boolean vectors are considered to be 8 bits wide per element.
+### Simd vectors
+
+TODO
+
+#### Alignment
+
+TODO
+
+#### Size
+
+TODO
+
+#### Elements
+
+TODO
+
 ### Array types
 
 An array has the alignment of its elements. An array must have at least one element.
@@ -475,7 +368,7 @@ The slice consist of a pointer, followed by an usz length, having the alignment 
 
 ### Pointer types
 
-A pointer is the address to memory.
+A pointer is an address to memory.
 
 ```text
 pointer_type       ::= type "*"
@@ -483,7 +376,20 @@ pointer_type       ::= type "*"
 
 #### Pointee type
 
-The type of the memory pointed to is the **pointee type**. It may be any runtime type.
+The type of the memory pointed to is the **pointee type**. It may be any runtime type. In the case of a `void*` the pointee type is unknown.
+
+#### Deref
+
+Dereferencing a pointer will return the value in the memory location interpreted as the **pointee type**.
+
+### Pointer arithmetics
+
+An `usz` or `isz` offset may be added to a pointer resulting in a new pointer of the same type. This will offset the underlying address by the offset times the pointee size. An example: the size of a `long` is 8 bytes. Adding `3` to a pointer to a long consequently increases the address by 24 (3 * 8).
+
+#### Subscripting
+
+Subscripting a pointer is equal to performing pointer arithmetics by adding the index, followed by a deref.
+Subscripts on pointers may be negative and will never do bounds checks.
 
 #### `iptr` and `uptr`
 
@@ -491,26 +397,13 @@ A pointer may be losslessly cast to an `iptr` or `uptr`. An `iptr` or `uptr` may
 
 #### The wildcard pointer `void*`
 
-The `void*` may implicitly cast into any other pointer type. The `void*`
-[implicitly casts into any other pointer.
+The `void*` may implicitly cast into any other pointer type. The `void*` pointer implicitly casts into any other pointer.
 
-A void* pointer may never be dereferenced.
+A void* pointer may never be directly dereferenced or subscripted, it must first be cast to non-void pointer type.
 
 #### Pointer arithmetic on `void*`
 
-Performing pointer arithmetics on void* will assume that the element size is 1. This includes
-pointer arithmetics using subscripting.
-
-#### Subscripting
-
-Subscripting a pointer is equal to performing pointer arithmetics using the index, followed by a deref.
-Subscripts on pointers may be negative and will never do bounds checks.
-
-#### Deref
-
-Dereferencing a pointer will return the value in the memory location interpreted as the **pointee type**.
-
-####
+Performing pointer arithmetics on void* will assume that the element size is 1.
 
 ### Struct types
 
@@ -518,8 +411,22 @@ A struct may not have zero members.
 
 #### Alignment
 
-A non-packed struct has the alignment of the member that has the highest alignment. A packed struct
-has alignment 1. See [align attribute](#attributes) for details on changing the alignment.
+A non-packed struct has the alignment of the member that has the highest alignment. A packed struct has alignment 1. See [align attribute](#attributes) for details on changing the alignment.
+
+#### Flexible array member
+
+The last member of a struct may be a flexible array member. This is a placeholder for an unknown length array. A struct must have at least one other member other than the flexible array member.
+
+The syntax of the flexible array member is the same as arrays of inferred length: `Type[*]`. The member will contribute to alignment as if it was a one element array.
+
+#### Struct memory layout and size
+
+The members of a struct is laid out in memory in order of declaration. Each member will be placed at the first offset aligned to the type of the member. This may cause padding to occur between members.
+
+Finally, the end of the struct will be padded so that the size is a multiple of its alignment.
+
+#### Inline
+TODO
 
 ### Union types
 
@@ -527,301 +434,79 @@ A union may not have zero members.
 
 #### Alignment
 
-A union has the alignment of the member that has the highest alignment. See [align attribute](#attributes) for
-details on changing the alignment.
+A union has the alignment of the member that has the highest alignment. See [align attribute](#attributes) for details on changing the alignment.
 
-### Fault types
+#### Union size
 
-A `fault` is a constant which can be used to create an Excuse for an empty [optional](/language-common/optionals-essential/#what-is-an-optional).
+The size of a union is the size of its largest member, padded so that the size is a multiple of its alignment.
 
+### Fault type
+TODO
 #### Alignment
+TODO
+#### Size
+TODO
+#### Representation
+TODO
 
-A `fault` type has the same alignment as a pointer. See [align attribute](#attributes) for details on changing the
-alignment.
+### Enum type
+TODO
+### Associated values
+TODO
+### Ordinal
+TODO
+### Inline
 
-### Enum types
+### Const enum type
+TODO
+### Value
+TODO
+### Inline
+TODO
 
-### Function types
+### Typedef
+TODO
+### Underlying type
+TODO
+### Inline
+TODO
 
-### Typeid type
+### Alias
+TODO
 
-The typeid is a pointer sized value which uniquely identifies a type.
 
-### Any type
+## Declarations
 
-The `any` is a fat pointer (2 pointers wide) holding a pointer to a value and its corresponding [typeid](#typeid-type).
-It cannot be dereferenced.
-
-#### Fields
-
-`.ptr` returns a `void*` pointer to the underlying value `.type` returns the [typeid](#typeid-type)
-of the underlying value.
-
-#### Switching over `any`
-
-Switching over an `any` value creates an [any switch](#any-switch).
-
-### Anyfault type
-
-## Declarations and scope
+TODO
 
 ## Expressions
+
+TOTO 
 
 ### Assignment expression
 
 ```
-assignment_expr    ::= ct_type_assign | unary_expr assignment_op expr
-ct_type_assign     ::= ct_type_ident "=" type
+assignment_expr    ::= unary_expr assignment_op expr
 assignment_op      ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "<<=" | ">>=" | "&=" | "^=" | "|="
 ```
 
-#### Type assign
-
-This assigns a new type to a compile time type variable. The value of the expression is the type assigned.
-
-#### Combined assign
-
-All assignment operations except for `=` are combined assign operation. They first perform the operation indicated
-by the leftmost character(s) in the operator (e.g `+` for `+=`, `<<` for `<<=` etc) with the lhs and the rhs.
-The result is then assigned to the left hand side. The result of the operation is the new value of the left
-hand side.
-
-#### Implicit conversion
-
-If the left hand side is a pointer and the operation is `+=` or `-=` an attempt to implicitly convert to
-`isz`/`usz` will be tried.
-
-For all other types and operations, **an implicit conversion** of rhs to the type of lhs will be tried.
-
-### Ternary, elvis and or-else expressions
-
-```
-ternary_group_expr ::= suffix_group_expr | ternary_expr | elvis_expr | orelse_expr
-ternary_expr       ::= or_expr "?" expr ":" ternary_group_expr
-elvis_expr         ::= suffix_expr "?:" ternary_group_expr
-orelse_expr        ::= suffix_expr "??" ternary_group_expr
-```
-
-#### Ternary evaluation
-
-The most left-hand expression is evaluated to a boolean. If it is true, the value of the middle
-expression is returned, otherwise the last expression is returned.
-
-Only the most left-hand expression and the returned expressions are evaluated.
-
-The middle and last expression are implicitly converted to their **unified type**.
-
-The resulting type is the **unified type**.
-
-#### Elvis evaluation
-
-Lhs and rhs are implicitly converted to their **unified type**.
-
-The lhs is evaluated, it is then converted to a boolean, if the result it true, return the lhs value
-before its boolean conversion. Otherwise return the right hand side.
-
-The right hand side is only evaluated if the lhs evaluates to false.
-
-The resulting type is the **unified type**.
-
-#### Orelse evaluation
-
-The lhs must be optional. The non-optional type for lhs and rhs are calculated.
-The **unified type** of the result is calculated. Lhs are converted to the unified type
-preserving their optionality.
-
-At runtime, lhs is evaluated. If it evaluates to an optional, rhs is returned instead.
-
-Rhs is only evaluated if lhs evaluates to an optional.
-
-The resulting type of the orelse is the post conversion type of the rhs.
-
-### Suffix expression
-
-Suffix expressions convert a `fault` to an optional.
-
-```
-suffix_group_exp   ::= or_group_expr | suffix_expr
-suffix_expr        ::= or_group_expr "?" "!"?
-```
-
-#### Effect of `?`
-
-The `?` will convert the expression into an optional. The left hand side must be a `fault` type.
-If an optional `!` follows, this optional is immediately returned, as if by a `return <expr>?` statement.
-
-#### Type of the expression
-
-The type is a **wildcard optional**. If `!` is added, it is a **wildcard** type.
-
-### Rethrow expression
-
-If the expression is optional, implicitly return with the optional value.
-
-```
-rethrow_expr       ::= expr "!"
-```
-
-#### The expression to rethrow
-
-The expression must have an optional type, otherwise this is a compile time error.
-
-#### Type
-
-The type of "rethrow" is the inner expr type without optional.
-
-### Relational expression
-
-```
-rel_group_expr     ::= add_group_expr | relational_expr
-relational_expr    ::= rel_group_expr relational_op add_group_expr
-relational_op      ::= "<" | ">" | "<=" | ">="
-```
-
-TODO
-
-### And expression
-
-This binary expression evaluates the lhs, and if the result is `true` evaluates the rhs. The
-result is true if both lhs and rhs are true.
-
-```
-and_group_expr     ::= rel_group_expr | and_expr
-and_expr           ::= and_group_expr "&&" rel_group_expr
-```
-
-#### Type
-
-The type of the and-expression is `bool`.
-
-### Or expression
-
-This binary expression evaluates the lhs, and if the result is `false` evaluates the rhs. The
-result is true if lhs or rhs is true.
-
-```
-or_group_expr      ::= and_group_expr | or_expr
-or_expr            ::= or_group_expr "||" and_group_expr
-```
-
-#### Constant folded arithmetics
-
-Constant folding will happen for constant integers and floating. Vectors operations will
-not be constant-folded.
-
-Constant folded operations are: multiplication, division, addition, subtraction,
-bit shifts, bit negation, bitwise and, or and xor, comparison, logical and/or,
-and negation.
-
-#### Type
-
-The type of the or-expression is `bool`.
-
-### Casts
-
-### Pointer casts
-
-#### Integer to pointer cast
-
-Any integer of pointer size or larger may be explicitly cast to a pointer. An integer to pointer cast is considered
-non-constant, except in the special case where the integer == 0. In that case, the result is constant `null`.
-
-Example:
-
-```
-byte a = 1;
-int* b = (int*)a; // Invalid, pointer type is > 8 bits.
-int* c = (int*)1; // Valid, but runtime value.
-int* d = (int*)0; // Valid and constant value.
-```
-
-#### Pointer to integer cast
-
-A pointer may be cast to any integer, truncating the pointer value if the size of the pointer is larger than the pointer
-size. A pointer to integer cast is considered non-constant, except in the special case of a null pointer, where it is
-equal to the integer value 0.
-
-Example:
-
-```
-fn void test() { ... }
-alias VoidFunc = fn void test();
-
-VoidFunc a = &test;
-int b = (int)null;
-int c = (int)a; // Invalid, not constant
-int d = (int)((int*)1); // Invalid, not constant
-```
-
-### Subscript operator
-
-The subscript operator may take as its left side a pointer, array or slice. The index may be of any integer
-type. TODO
-*NOTE* The subscript operator is not symmetrical as in C. For example in C3 `array[n] = 33` is allowed, but
-not `n[array] = 33`. This is a change from C.
-
-### Operands
-
-### Compound Literals
-
-Compound literals have the format
-
-```
-compound_literal   ::= (type) initializer_list
-initializer_list   ::= '{' (initializer_param (',' initializer_param)* ','?)? '}'
-initializer_param  ::= expression | designator '=' expression
-designator         ::= array_designator | range_designator | field_designator
-array_designator   ::= '[' expression ']'
-range_designator   ::= '[' range_expression ']'
-field_designator   ::= IDENTIFIER
-range_expression   ::= (range_index)? '..' (range_index)?
-range_index        ::= expression | '^' expression
-```
-
-Taking the address of a compound literal will yield a pointer to stack allocated temporary.
-
-### Function calls
-
-#### Function argument resolution
-
-Call slots are in order: regular slots, vaarg slot, name-only slots.
-
-No regular slots may appear after the vaarg slot, however there may be named parameters with default values
-after the vaarg slot if it's not a raw vaarg.
-
-These "name-only" slots need to have a parameter name and a default value, and may only be called as named
-arguments.
-
-Named arguments may never be *splat* expressions.
-
-1. Step through all the arguments, resolve the named arguments and determine if there are any regular arguments.
-2. If there are regular arguments, then named arguments may only be in name-only slots, otherwise it is an error.
-3. If there are named arguments in the regular slots, all slots not provided arguments must have default values.
-4. Proceed with evaluation of arguments from left to right in call invocation order.
-6. Regular arguments are placed in the regular slots from left to right.
-7. If a regular argument is a *splat* expression, evaluate it *without inference* and determine if it is an array, vector, untyped list or slice with a known size, otherwise it is an error.
-8. A regular argument *splat* will be expanded into as many slots as its length, this may expand into vaarg arguments.
-9. In the vaarg slot, *splatting* a slice will *forward* it.
-10. In the vaarg slot, *splatting* an array, vector or untyped list will expand its elements as if they were provided as arguments.
-11. A named argument may never appear more than once.
-12. The vaarg slot may never be accessed using named arguments.
-
-#### Vaargs
-
-For vaargs, a `bool` or *any integer* smaller than what the C ABI specifies for the c `int` type is cast to `int`. Any
-float smaller than a double is cast to `double`. Compile time floats will be cast to double. Compile time integers will
-be cast to c `int` type.
-
 ## Statements
 
+TODO
 ```
-stmt               ::= compound_stmt | non_compound_stmt
-non_compound_stmt  ::= assert_stmt | if_stmt | while_stmt | do_stmt | foreach_stmt | foreach_r_stmt
+stmt                ::= compound_stmt | non_compound_stmt
+non_compound_stmt   ::= assert_stmt | if_stmt | while_stmt | do_stmt | foreach_stmt | foreach_r_stmt
                        | for_stmt | return_stmt | break_stmt | continue_stmt | var_stmt
                        | declaration_stmt | defer_stmt | nextcase_stmt | asm_block_stmt
                        | ct_echo_stmt | ct_error_stmt | ct_assert_stmt | ct_if_stmt | ct_switch_stmt
-                       | ct_for_stmt | ct_foreach_stmt | expr_stmt
+                       | ct_for_stmt | ct_foreach_stmt | expr_stmt | ct_assign_stmt
 ```
+
+### Compile time assign statements
+
+#### Type assign statement
+
+This assigns a new type to a compile time type variable. The value of the expression is the type assigned.
 
 ### Asm block statement
 
@@ -1684,6 +1369,7 @@ This must have an integer return type.
 
 `@dynamic` may be used on methods for any type except `any` and interfaces.
 
+## Built-in functions
 
 ## Modules
 
@@ -1710,3 +1396,9 @@ will implicitly have the `@benchmark` attribute.
 
 If the `@test` attribute is applied to the **module section** then all function declarations
 will implicitly have the `@test` attribute.
+
+## Program initialization
+TODO
+
+## Optionals and faults
+TODO
