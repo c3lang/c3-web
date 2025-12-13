@@ -474,6 +474,14 @@ TODO
 ### Alias
 TODO
 
+### Interface
+TODO
+#### Inheritance
+TODO
+#### Implementing interface
+TODO
+#### Method lookup
+TODO
 
 ## Declarations
 
