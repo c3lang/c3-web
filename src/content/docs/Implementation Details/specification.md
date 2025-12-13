@@ -440,6 +440,9 @@ A union has the alignment of the member that has the highest alignment. See [ali
 
 The size of a union is the size of its largest member, padded so that the size is a multiple of its alignment.
 
+### Bitstruct type
+TODO
+
 ### Fault type
 TODO
 #### Alignment
