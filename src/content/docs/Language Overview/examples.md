@@ -521,7 +521,7 @@ fn int printme(int a)
 
 fn int test2()
 {
-    return @foo2(printme(2)); // Returns 2 and prints "2" twice.
+    return @foo2(printme(2)); // Returns 4 and prints "2" twice.
 }
 ```
 
