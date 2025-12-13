@@ -1259,6 +1259,9 @@ time variables will follow the compile time scopes which are delimited by scopin
 statements (`$if`, `$switch`,
 `$foreach` and `$for`).
 
+## Macros
+TODO
+
 ## Attributes
 
 Attributes are modifiers attached to modules, variables, type declarations etc.
@@ -1407,6 +1410,9 @@ will implicitly have the `@benchmark` attribute.
 
 If the `@test` attribute is applied to the **module section** then all function declarations
 will implicitly have the `@test` attribute.
+
+## Generic modules
+TODO
 
 ## Program initialization
 TODO
