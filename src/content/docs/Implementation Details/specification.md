@@ -441,16 +441,31 @@ A union has the alignment of the member that has the highest alignment. See [ali
 The size of a union is the size of its largest member, padded so that the size is a multiple of its alignment.
 
 ### Bitstruct type
-TODO
+
+#### Container type
+The container type is restricted to integer types and char arrays, or typedefs based on such types.
+
+
 
 ### Fault type
-TODO
+
 #### Alignment
-TODO
+Alignment is the same as that of the `uptr` type.
+
 #### Size
-TODO
+Size is the same as that of the `uptr` type.
+
 #### Representation
-TODO
+In underlying representation, the fault matches that of an `uptr`.
+
+#### Faultdef
+`faultdef` will create unique instances of the `fault` type.
+
+#### Zero value
+The zero fault type can be created implicitly casting from `null` or `{}`.
+
+#### Assigning a zero value fault
+An optional empty constructed from a zero value fault, will behave as if it was a result with an undefined value. Performing operations on an undefined value will in itself give an undefined value.
 
 ### Enum type
 TODO
