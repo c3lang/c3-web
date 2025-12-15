@@ -64,8 +64,8 @@ different from how C++ does things.
 
 ## Rust
 
-Rust is a safe systems-programming language. While not quite as complex as C++,
-it is still a feature-rich programming language with semantic macros, traits and
+Rust is a safe systems programming language. While not quite as complex as C++,
+it is still a feature rich programming language with semantic macros, traits and
 pattern matching to mention a few.
 
 Error handling is handled using `Result` and `Optional`, which is similar to how C3 works.
@@ -123,7 +123,7 @@ missing from Zig)
 - Operator overloading
 - C ABI compatibility by default
 - First-class lambdas\*
-- Macros with Lazy parameters and/or trailing bodies.
+- Macros with lazy parameters and/or trailing bodies.
 - Gradual contracts
 - Dynamic interfaces
 - Familiar C syntax and behaviour

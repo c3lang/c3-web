@@ -133,7 +133,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 17. Simple bitstructs (only containing booleans) may be manipulated using bit operations `& ^ | ~` and assignment.
 18. Structs may implicitly convert to their `inline` member if they have one.
 19. Pointers to arrays may implicitly convert to slices.
-20. Any pointer may implicitly convert to an `any` with type being the pointee.
+20. Any pointer may implicitly convert to an `any` containing the type of the pointee.
 21. An optional values will implicitly invoke “flatmap” on an expression it is a subexpression of.
 22. Swizzling for arrays and vectors. For example, to reverse a 3-element vector `vec` via swizzling you can use `vec.xyz = vec.zyx;`.
 
