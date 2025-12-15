@@ -29,12 +29,12 @@ This affects generated C headers, but little else.
 
 Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
-Instead of `volatile`, volatile loads and stores are used using `@volatile_load` and `@volatile_store`.
+Instead of `volatile`, volatile loads and stores are implemented using `@volatile_load` and `@volatile_store`.
 Restrictions on function parameter usage are implemented though parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-C's `typedef` has a slightly different syntax and renamed `alias`.
+C3's equivalent of C's `typedef` has a slightly different syntax in C3 and is renamed `alias`. In contrast, in C3 a *distinct* type is created when using C3's `typedef` keyword. As such, take care to not confuse C3's `alias` and `typedef` keywords relative to C.
 
-C3 also requires all function pointers to be used with a `alias`, for example:
+C3 also requires all function pointers to be used with an `alias`. For example:
 
 ```c3
 alias Callback = fn void();
@@ -66,13 +66,15 @@ are common to all C3 runtime types:
 
 # Basic types
 
-Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
+Basic types are divided into floating point types and integer types. 
+
+Integer types are either signed or unsigned.
 
 ## Integer types
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
-| `bool`\*    | 1        | no     |
+| `bool`&dagger;    | 1        | no     |
 | `ichar`     | 8        | yes    |
 | `char`      | 8        | no     |
 | `short`     | 16       | yes    |
@@ -83,24 +85,25 @@ Basic types are divided into floating point types, and integer types. Integer ty
 | `ulong`     | 64       | no     |
 | `int128`    | 128      | yes    |
 | `uint128`   | 128      | no     |
-| `iptr`\*\*  | varies   | yes    |
-| `uptr`\*\*  | varies   | no     |
-| `isz`\*\*   | varies   | yes    |
-| `usz`\*\*   | varies   | no     |
+| `iptr`&Dagger;  | varies   | yes    |
+| `uptr`&Dagger;  | varies   | no     |
+| `isz`&Dagger;   | varies   | yes    |
+| `usz`&Dagger;   | varies   | no     |
 
-\* `bool` will be stored as a byte.
-\*\* size, pointer and pointer sized types depend on platform.
+&dagger;: `bool` will be stored as a byte.
+
+&Dagger;: Size, pointer and pointer-sized types depend on the target platform.
 
 ### Integer type properties
 
-Integer types, except for `bool` also has the following type properties:
+Integer types (except for `bool`) also have the following type properties:
 
 1. `max` The maximum value for the type.
 2. `min` The minimum value for the type.
 
 ### Integer arithmetics
 
-All signed integer arithmetics uses 2's complement.
+All signed integer arithmetic uses 2's complement.
 
 ## Integer constants
 
@@ -118,14 +121,14 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 ### Integer literal suffix and type
 
-Integer literals follow C rules:
+Integer literals follow C's rules:
 
 1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
 2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
 3. Binary, octal and hexadecimal will implicitly be unsigned.
 4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
 5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
-6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
+6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
 
 ```c3
 $typeof(1);              // int
@@ -179,13 +182,13 @@ String bar = "\"Say `hello`\"";
 
 | Name        | bit size |
 |-------------| --------:|
-| `bfloat16`* | 16       |
-| `float16`*  | 16       |
+| `bfloat16`&dagger; | 16       |
+| `float16`&dagger;  | 16       |
 | `float`     | 32       |
 | `double`    | 64       |
-| `float128`* | 128      |
+| `float128`&dagger; | 128      |
 
-*support is still incomplete.
+&dagger;: Support is still incomplete and not all systems have native support.
 
 ### Floating point type properties
 
@@ -443,7 +446,7 @@ Array and vector types also support:
 
 ## Type aliases (C's typedef)
 
-Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
+C3 has a construct that behaves essentially the same as C's "typedef", an `alias`, and it is declared using the syntax `alias <new_name> = <old_name>`. For example:
 
 ```c3
 alias Int32 = int;
