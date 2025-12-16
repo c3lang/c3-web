@@ -32,23 +32,23 @@ This is a description of the configuration options in `project.json`:
   // "c-include-dirs: [ "csource/include" ],
   // Output location, relative to project file.
   "output": "../build",
-  // Architecture and OS target.
-  // You can use 'c3c --list-targets' to list all valid targets,
-  // "target": "windows-x64",
-  // Current Target options:
-  //    android-aarch64 
-  //    elf-aarch64 elf-riscv32 elf-riscv64 elf-x86 elf-x64 elf-xtensa
-  //    mcu-x86 mingw-x64 netbsd-x86 netbsd-x64 openbsd-x86 openbsd-x64
-  //    freebsd-x86 freebsd-x64 ios-aarch64 
-  //    linux-aarch64 linux-riscv32 linux-riscv64 linux-x86 linux-x64 
-  //    macos-aarch64 macos-x64 
-  //    wasm32 wasm64 
-  //    windows-aarch64 windows-x64 
   "targets": {
-    "linux-x64": {
+    "my_app": {
       // Executable or library.
       "type": "executable",
-      // Additional libraries, sources
+	  // Architecture and OS target.
+	  // You can use 'c3c --list-targets' to list all valid targets,
+	  // "target": "linux-x64",
+	  // Current Target options:
+	  //    android-aarch64 
+	  //    elf-aarch64 elf-riscv32 elf-riscv64 elf-x86 elf-x64 elf-xtensa
+	  //    mcu-x86 mingw-x64 netbsd-x86 netbsd-x64 openbsd-x86 openbsd-x64
+	  //    freebsd-x86 freebsd-x64 ios-aarch64 
+	  //    linux-aarch64 linux-riscv32 linux-riscv64 linux-x86 linux-x64 
+	  //    macos-aarch64 macos-x64 
+	  //    wasm32 wasm64 
+	  //    windows-aarch64 windows-x64 
+	  // Additional libraries, sources
       // and overrides of global settings here.
     },
   },
