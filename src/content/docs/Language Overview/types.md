@@ -166,16 +166,21 @@ char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 
 ## String literals, and raw strings
 
-Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
+Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers another type of literal: *raw strings*.
 
-Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
+Raw strings uses text between \` \`. Inside of a raw string, no escapes are available, and it can span across multiple lines. To write a \` double the character:
 
 ```c3
 String foo = `C:\foo\bar.dll`;
 ZString bar = `"Say ``hello``"`;
+String baz =
+`pushq %rax;
+addq $1, %rax;
+popq %rax;`;
 // Same as
 String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
+String baz = "pushq %rax;\naddq $1, %rax;\npopq %rax;";
 ```
 
 ## Floating point types
