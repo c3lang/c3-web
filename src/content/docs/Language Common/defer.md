@@ -164,7 +164,7 @@ fn void? function_throws()
 
 fn String? test()
 {
-    char[] data = mem::new_array(char, 12)!;
+    char[] data = mem::new_array(char, 12);
 
     // ❌ Before the defer catch declaration
     // memory was NOT freed
@@ -173,7 +173,7 @@ fn String? test()
     defer (catch err)
     {
         io::printn("freeing memory");
-        (void)free(data);
+        free(data);
     }
 
     // ✅ After the defer catch declaration
