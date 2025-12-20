@@ -135,16 +135,19 @@ import std::core::mem;
 
 fn char[]? test()
 {
-    char[] data = mem::new_array(char, 12)!;
-
+    char[] data = mem::new_array(char, 12);
+    
     defer (catch err)
     {
-        io::printfn("Excuse found: %s", err)
-        (void)free(data);
+        io::printfn("Excuse found: %s", err);
+        free(data);
     }
 
     // Returns Excuse, memory gets freed
-    return io::FILE_NOT_FOUND?;
+    if (!test_something(data)) return io::FILE_NOT_FOUND?;
+
+    // Returns data, defer catch doesn't run.
+    return data;
 }
 ```
 
