@@ -9,7 +9,7 @@ C3 introduces fairly rigid naming rules to reduce ambiguity and make the languag
 
 As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
 
-### Structs, unions, enums and faults
+### Structs, unions and enums
 
 All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
 
@@ -31,8 +31,6 @@ enum Baz
     VALUE_1,
     VALUE_2
 }
-
-faultdef OOPS, LOTS_OF_OOPS;
 ```
 
 ### Variables and parameters
