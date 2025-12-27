@@ -10,11 +10,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.34.3",
-    "@tailwindcss/vite": "^4.1.7",
-    "astro": "^5.8.0",
-    "astro-expressive-code": "^0.41.2",
+    "@astrojs/starlight": "0.35.2",
+    "@tailwindcss/vite": "4.1.12",
+    "astro": "5.13.4",
+    "astro-expressive-code": "0.41.3",
     "boxicons": "^2.1.4",
-    "tailwindcss": "^4.1.7"
-  }
+    "sharp": "^0.34.3",
+    "tailwindcss": "4.1.12"
+  },
+  "packageManager": "pnpm@10.15.0"
 }
