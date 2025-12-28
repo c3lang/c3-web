@@ -219,16 +219,16 @@ fn void test()
 Function return values may be *Optionals* – denoted by `<type>?` indicating that this
 function might either return an Optional with a result, or an Optional with an Excuse.
 
-For example this function might return an Excuse of type `SomeError` or `OtherResult`.
+For example, this function might return `BAD_JOSS_ERROR` or `BAD_LUCK_ERROR` if it fails to produce a valid value.
 
 ```c3
-faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
+faultdef BAD_LUCK_ERROR, BAD_JOSS_ERROR;
 
 fn double? test_error()
 {
     double val = random_value();
-    if (val >= 0.2) return BAD_JOSS_ERROR?;
     if (val > 0.5) return BAD_LUCK_ERROR?;
+    if (val >= 0.2) return BAD_JOSS_ERROR?;
     return val;
 }
 ```
