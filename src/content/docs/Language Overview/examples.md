@@ -636,13 +636,14 @@ fn void main()
 
 Read more about operator overloading [here](/generic-programming/operator-overloading/).
 
-## Generic Modules
+## Generics
 
-Generic modules implements a generic system.
+Declarations may be generic.
 
 ```c3
-module stack {Type};
-struct Stack
+module stack;
+
+struct Stack @generic(Type)
 {
     usz capacity;
     usz size;
@@ -675,7 +676,7 @@ fn bool Stack.empty(Stack* this)
 Testing it out:
 
 ```c3
-alias IntStack = Stack {int};
+alias IntStack = Stack{int};
 
 fn void test()
 {
@@ -696,7 +697,7 @@ fn void test()
 }
 ```
 
-Read more about generic modules [here](/generic-programming/generics/)
+Read more about generics [here](/generic-programming/generics/)
 
 ## Dynamic Calls
 
