@@ -116,7 +116,7 @@ One of the interfaces available in the standard library is Printable, which cont
 If we implemented it for our struct above it might look like this:
 
 ```c3
-fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
+fn String Baz.to_new_string(Baz* baz, Allocator allocator) @dynamic
 {
     return string::printf("Baz(%d)", baz.x, allocator: allocator);
 }
@@ -145,10 +145,10 @@ implement the interface completely may implicitly be cast to the interface.
 So for example:
 
 ```c3
-Bob b = { 1 };
+Baz b = { 1 };
 double d = 0.5;
 int i = 3;
-MyName a = &b;          // Valid, Bob implements MyName.
+MyName a = &b;          // Valid, Baz implements MyName.
 // MyName c = &d;       // Error, double does not implement MyName.
 MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
 // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
@@ -201,14 +201,14 @@ fn void main()
 {
     int i;
     double d;
-    Bob bob;
+    Baz baz;
 
     any a = &i;
     whoareyou2(a); // Prints "I am int!"
     a = &d;
     whoareyou2(a); // Prints "I don't know who I am."
-    a = &bob;
-    whoareyou2(a); // Prints "I am Bob!"
+    a = &baz;
+    whoareyou2(a); // Prints "I am Baz!"
 }
 ```
 
@@ -217,6 +217,21 @@ fn void main()
 A `struct` with an "inline" member or a `typedef` which is declared with "inline", will 
 inherit dynamic methods from its inline "parent". This inheritance is not
 available for "inline" enums.
+
+```c3
+struct BazParent
+{
+    inline Baz b;
+    int x;
+}
+
+fn void main()
+{
+    BazParent bp;
+    any a = &bp;
+    whoareyou2(a); // Prints "I am Baz!"
+}
+```
 
 ### Reflection invocation
 *This functionality is not yet implemented and may see syntax changes*
