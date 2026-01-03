@@ -170,6 +170,11 @@ fn void whoareyou(MyName a)
 If we have an optional method we should first check that it is implemented:
 
 ```c3
+interface VeryOptional
+{
+    fn void do_something(int x, void* ptr) @optional;
+}
+
 fn void do_something(VeryOptional z)
 {
     if (&z.do_something)
