@@ -219,7 +219,7 @@ inherit dynamic methods from its inline "parent". This inheritance is not
 available for "inline" enums.
 
 ```c3
-struct BazParent
+struct BazChild
 {
     inline Baz b;
     int x;
@@ -227,7 +227,7 @@ struct BazParent
 
 fn void main()
 {
-    BazParent bp;
+    BazChild bp;
     any a = &bp;
     whoareyou2(a); // Prints "I am Baz!"
 }
