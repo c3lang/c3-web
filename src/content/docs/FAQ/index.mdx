@@ -379,6 +379,54 @@ int a = @test() {} + @test() {};
 
 C3 strives for a simple grammar, and so the trade-off of having to use `;` was a fairly low price to pay for this feature.
 
+**Q:** Why does C3 choose to call Optional "Optional" and not "Result"?
+
+**A:** C3's optional has properties both from the traditional "Maybe" and "Result". While it carries two possible values,
+like a Result, it is trivially composable in the way optionals are. In the "Result" case, we cannot implicitly combine
+`Result<int, MyError>` and `Result<int, YourError>`, which also often reflected in the support for them.
+
+For the "Maybe" it is trivial, so we see how languages do things like "Optional Chaining". C3 even goes beyond that, and
+implements implicit "flat map" for operations with its Optional.
+
+For Result or multiple returns, it's also not guaranteed how big the error value can be. For C3 the size is defined to be pointer-sized to minimize overhead.
+
+This means that using an Optional is not heavier than using a "Maybe" or even a boolean return in some other language.
+
+For these reasons, the Optional leans more towards "Maybe" usage than "Result", and the name was chosen to nudge towards the
+correct use.
+
+**Q:** Why doesn't C3 have a tagged union?
+
+**A:** Tagged unions are great, but there is still discussion what it should look like if it was included in C3.
+
+See this issue: https://github.com/c3lang/c3c/issues/829
+
+**Q:** Why is the declaration of arrays swapped compared to C?
+
+**A:** The way C3 types are declared is the most inside one is to the left, the outermost to the right.
+Indexing or dereferencing will peel off the rightmost part.
+
+C uses a different way to do this: we place `*` and `[]` not on the type but on the variable, in the order it must be unpacked.
+So given `int (*foo) x[4]` we first dereference it (from inside) int[4], then index from the right.
+If we wanted to extract a standalone type from this, we'd have `int(*)[4]` for a pointer to an array of 4 integers.
+For "left is innermost", the declaration would instead be `int[4]*`. If left-is-innermost we can easily describe a pointer
+to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that be "int*(*)[4]",
+which is generally regarded as less easy to read, not the least because you need to think of which of * or [] has priority.
+
+In C3, we can have a variable `List{int}[3] x`, which is an array of 3 `List{int}`. If we do `x[1]` we will get an element of
+`List{int}`, from the middle element in the array. If we then further index this with [5], like `x[1][5]` we will get
+the 5th element of that list.
+
+**Q:** Why does C3 use `::` use to separate namespaces and not `.`?
+
+**A:** `.` is nice to type and read, but there are challenges. In particular, C3's "path shortening", where you're allowed to write
+`file::open("foo.txt")` rather than having to use the full `std::io::file::open("foo.txt")` is only made possible because
+the namespace is distinct at the grammar level. If we play with changing the syntax because it isn't as elegant as
+`file.open("foo.txt")`, we'd have to pay by actually writing `std.io.file.open("foo.txt")` or change to a flat module system.
+
+One can also note that if `.`is used, then something like `file.open("foo.txt")` would be ambiguous if there was both a module `file`
+and a variable `file` in the scope.
+
 ## Choices in tooling
 
 **Q:** Why does C3 have comments in the default `project.json`?
