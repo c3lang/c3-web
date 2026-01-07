@@ -17,7 +17,7 @@ a result from an Optional, return [default values for optionals `??`](/language-
 
 ## What is an Optional?
 
-Optionals are a safer alternative to returning `-1` or `null` from
+The Optional is a safer alternative to returning `-1` or `null` from
 a function, when a valid value can't be returned. An Optional
 has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
