@@ -751,15 +751,14 @@ Const enums *cannot* have associated values and do not have the `nameof` propert
 ### Enum type properties
 
 Enum types have the following additional properties in addition to the usual properties for 
-user defined types:
+user-defined types:
 
 1. `associated` returns an untyped list of types for the associated values.
 2. `inner` returns the type of the ordinal as a `typeid`.
-3. `lookup(value)` lookup an enum by inlined value.
-4. `lookup_field(field_name, value)` lookup an enum by associated value.
-5. `names` returns a list containing the names of all enums.
-6. `from_ordinal(value)` convert an integer to an enum.
-7. `values` return a list containing all the enum values of an enum.
+3. `lookup_field(field_name, value)` lookup an enum by associated value.
+4. `names` returns a list containing the names of all enums.
+5. `from_ordinal(value)` convert an integer to an enum.
+6. `values` return a list containing all the enum values of an enum.
 
 ## Struct types
 
@@ -878,7 +877,7 @@ union Integral
 }
 ```
 
-As usual unions are used to hold one of many possible values:
+As usual, unions are used to hold one of many possible values:
 
 ```c3
 fn void test()
@@ -927,10 +926,10 @@ which returns a list of struct members.
 
 ## Bitstructs
 
-Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
+Bitstructs allow storing fields in a specific bit layout. A bitstruct may only contain
 integer types and booleans, in most other respects it works like a struct.
 
-The main differences is that the bitstruct has a *backing type* and each field
+The main difference is that the bitstruct has a *backing type* and each field
 has a specific bit range. In addition, it's not possible *to take the address* of a
 bitstruct field.
 
@@ -983,8 +982,8 @@ fn void test()
 }
 ```
 
-It is however possible to pick a different endianness, in which case the entire representation
-will internally assume big endian layout:
+It is, however, possible to pick a different endianness, in which case the entire representation
+will internally assume big-endian layout:
 
 ```c3
 bitstruct Test : uint @bigendian

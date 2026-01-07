@@ -285,8 +285,8 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with the type name and is (usually)
-invoked using dot syntax:
+Methods look exactly like functions, but are prefixed with a type name and is (usually)
+invoked using dot syntax, on an instance of the type.
 
 ```c3
 struct Point
@@ -331,6 +331,21 @@ fn bool State.may_open(State state)
 }
 ```
 
+You can add methods to all runtime types, including built-in types:
+
+```c3
+fn int int.add(int i, int other)
+{
+    return i + other;
+}
+
+fn void test()
+{
+    int i = 3;
+    int j = i.add(4);
+}
+```
+
 ### Implicit first parameters
 
 Because the type of the first argument is known, it may be left out. To indicate a pointer `&` is used.
@@ -349,7 +364,7 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 ### Restrictions on methods
 
 - Methods on a struct/union may not have the same name as a member.
-- Methods only work on `typedef`, `struct`, `union` and `enum` types.
+- Methods on enums may not have the same name as an associated value.
 - When taking a function pointer of a method, use the full name.
 - Using subtypes, overlapping function names will be shadowed.
 

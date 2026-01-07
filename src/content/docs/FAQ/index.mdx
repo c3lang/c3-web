@@ -379,6 +379,31 @@ int a = @test() {} + @test() {};
 
 C3 strives for a simple grammar, and so the trade-off of having to use `;` was a fairly low price to pay for this feature.
 
+## Choices in tooling
+
+**Q:** Why does C3 have comments in the default `project.json`?
+
+**A:** This was done as a way for users to understand what the various fields were used for. While this would more properly be
+a `.json5` file, many json parsers could ignore comments anyway. As tooling improves, comments will be phased out. Already it's
+possible to manipulate the project file from the command line.
+
+**Q:** Why does C3 use JSON for `project.json`, why not YAML, TOML or something else?
+
+**A:** JSON is a format with a parser in almost any language, plus it is straightforward to write a parser for.
+
+Originally C3 used TOML, which is great for manual configs. However, we moved away from this exactly because the project files
+should be easily generated and manipulated by tools, with no strict requirement that formatting remains the same.
+
+If tools manipulated hand-written TOML, there would be an expectation to retain formatting and comments in the same style, which
+would put a burden on tool writers.
+
+**Q:** Will C3 have a package manager?
+
+**A:** There will be some standard API for uploading and downloading C3 libraries. However, it will not be a full dependency manager.
+In an attempt to limit over-use of dependencies, each dependency will need to be downloaded separately, rather than automatically.
+
+See for example the discussion here: https://github.com/c3lang/c3c/issues/2077
+
 ## Cross-compiling To Windows From Linux
 **Q:** How do I cross-compile my C3 program for Windows on Linux?
 
