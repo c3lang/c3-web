@@ -262,7 +262,8 @@ fn void test()
     int[4] arr = { };
     foreach (idx, &item : arr)
     {
-        *item = 7 + idx; // Mutates the array element
+        *item = 7 + (int)idx; // Mutates the array element
+        // index is long when not specified, requiring explicit cast.
     }
 
     // Or equivalently, writing the types
