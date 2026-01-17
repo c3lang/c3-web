@@ -65,9 +65,11 @@ and is a no-op on 64-bit Windows.
 
 *Used for: struct, union*
 
-When placed on a struct or union, it allows the value to be compared
-using `==` and `!=`. The restriction is that it may not have any
-padding, as if it had the `@nopadding` attribute.
+Emits a compile time error if the struct or union has padding, as if it had the `@nopadding` attribute.
+Its use is deprecated for comparison since `0.7.5`. Old behaviour can be enabled using --use-old-compact-eq.
+When placed on a struct or union, it allowed the value to be compared
+using `==` and `!=`. You can replicate this behaviour by implementing `==` like this:
+`fn bool Foo.eq(&self, Foo other) @operator(==) => self.value == other.value;`.
 
 ### `@const`
 
