@@ -262,7 +262,9 @@ fn void test()
     int[4] arr = { };
     foreach (idx, &item : arr)
     {
-        *item = 7 + idx; // Mutates the array element
+        *item = 7 + (int)idx; // Mutates the array element
+        // index is usz when not specified, requiring an explicit
+        // cast on platforms where usz is larger than int.
     }
 
     // Or equivalently, writing the types
