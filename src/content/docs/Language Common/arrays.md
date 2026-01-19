@@ -263,7 +263,7 @@ fn void test()
     foreach (idx, &item : arr)
     {
         *item = 7 + (int)idx; // Mutates the array element
-        // index is usz when not specified, requiring and explicit
+        // index is usz when not specified, requiring an explicit
         // cast on platforms where usz is larger than int.
     }
 
