@@ -65,9 +65,7 @@ and is a no-op on 64-bit Windows.
 
 *Used for: struct, union*
 
-When placed on a struct or union, it allows the value to be compared
-using `==` and `!=`. The restriction is that it may not have any
-padding, as if it had the `@nopadding` attribute.
+This attribute works like @nopadding, but is applied recursively for any sub-elements, ensuring that there is no padding anywhere in the struct.
 
 ### `@const`
 
