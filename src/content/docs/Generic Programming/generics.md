@@ -5,17 +5,15 @@ sidebar:
     order: 82
 ---
 
-**NOTE** This section is updated for 0.7.9 and later. If you use a method before 0.7.9, use generic modules instead, which offers the same functionality but less granularity. Syntax is still under discussion.
+**NOTE** This section is updated for 0.7.9 and later. If you use a method before 0.7.9, use generic modules instead, which offers the same functionality but less granularity.
 
 Generics allow you to create code that works with arbitrary types.
-
-Typically an entire module section is declared using the `@generic` attribute:
 
 ```c3
 // If the module section is generic,
 // then all its declarations are as well
 // Note that previous to 0.7.9, this would be written "module my_module {Type};"
-module my_module @generic(Type);
+module my_module <Type>;
 
 // Parameterized struct
 struct MyStruct
@@ -35,12 +33,12 @@ We can rewrite this with individual generic declarations (note that this is not 
 ```c3
 module my_module;
 
-struct MyStruct @generic(Type)
+struct MyStruct <Type>
 {
     Type a, b;
 }
 
-fn Type square(Type t) @generic(Type)
+fn Type square(Type t) <Type>
 {
     return t * t;
 }
@@ -52,12 +50,12 @@ Generic parameters may be types or int, bool and enum constants. In the case of 
 
 ```c3
 // TypeA, TypeB, TypeC are generic parameters.
-module vector @generic(TypeA, TypeB, TypeC);
+module vector <TypeA, TypeB, TypeC>;
 ```
 
 An example parameterized by a constant as well as a type:
 ```c3
-module custom_type @generic(Type, VALUE);
+module custom_type <Type, VALUE>;
 
 struct Example
 {
@@ -70,7 +68,7 @@ struct Example
 The code in a generic declaration uses the parameters as if they were types / constant aliases in the scope:
 
 ```c3
-module foo_test @generic(Type1, MY_CONST);
+module foo_test <Type1, MY_CONST>;
 
 struct Foo
 {
@@ -109,7 +107,7 @@ foo_test::test{int, double} (1.0, &g);
 All generics that are defined in the same parameterized module section are instantiated together, but so are any other generics in the same module that has identical parameters:
 
 ```c3
-module abc @generic(Test);
+module abc <Test>;
 // Belongs to generic 1
 fn Test test1(Test a)
 {
@@ -119,19 +117,19 @@ fn Test test1(Test a)
 module efg;
 
 // Belongs to generic 1
-struct Foo @generic(Test)
+struct Foo <Test>
 {
     Test a;
 }
 
 // Belongs to generic 1
-fn Foo test2(Test b) @generic(Test)
+fn Foo test2(Test b) <Test>
 {
     return (Foo) { .a = b };
 }
 
 // Different parameter name, defines a new generic 2
-fn Test2 test3(Test2 a) @generic(Test2)
+fn Test2 test3(Test2 a) <Test2>
 {
     return a * a;
 }
@@ -153,7 +151,7 @@ Just like for macros, optional constraints may be added to improve compile error
  @require $assignable(1, TypeB) && $assignable(1, TypeC)
  @require $assignable((TypeB)1, TypeA) && $assignable((TypeC)1, TypeA)
 *>
-module vector @generic(TypeA, TypeB, TypeC);
+module vector <TypeA, TypeB, TypeC>;
 
 /* .. code  .. */
 ```
@@ -172,13 +170,13 @@ In general, contracts placed on types and identifiers will combine. However, con
 module foo;
 
 <* @require Test.kindof == INTEGER *>
-struct Foo @generic(Test)
+struct Foo <Test>
 {
     Test a;
 }
 
 <* @require Test.sizeof < 4 *>
-fn Test testme(Test t) @generic(Test)
+fn Test testme(Test t) <Test>
 {
     return t * 2;
 }
@@ -200,7 +198,7 @@ Adding methods to a generic type extends it with the method for all generic, all
 ```c3
 module foo;
 
-struct Foo @generic(Type)
+struct Foo <Type>
 {
     Type a;
 }
@@ -223,7 +221,7 @@ We can also extend a particular instance, but in that case we do not access the 
 
 ```c3
 module foo;
-struct Foo @generic(Type) { Type a; }
+struct Foo <Type> { Type a; }
 
 module bar;
 import foo, std::io;
