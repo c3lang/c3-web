@@ -643,7 +643,7 @@ Declarations may be generic.
 ```c3
 module stack;
 
-struct Stack @generic(Type)
+struct Stack <Type>
 {
     usz capacity;
     usz size;
