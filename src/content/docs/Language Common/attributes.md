@@ -5,7 +5,7 @@ sidebar:
     order: 69
 ---
 
-Attributes are compile-time annotations on functions, types, global constants and variables. Similar to Java annotations, a decoration may also take arguments. A attribute can also represent a bundle of attributes.
+Attributes are compile-time annotations on functions, types, global constants and variables. Similar to Java annotations, an attribute may also take arguments. An attribute can also represent a bundle of attributes.
 
 ## Built in attributes
 
@@ -371,7 +371,7 @@ An attribute may also take parameters:
 ```c3
 attrdef @MyAttr(val) = @tag("foo", val);
 
-struct Test 
+struct Test
 {
     int foo @MyAttr("test");
 }
