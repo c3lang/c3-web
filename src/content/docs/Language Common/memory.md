@@ -64,7 +64,7 @@ The downside is that we must make sure that we release the memory back when we'r
 
 ```c3
 fn void test()
-{   
+{
     int[] array = create_array(3);
     do_things(array);
     free(array);                   // Release memory back to the OS
@@ -72,7 +72,7 @@ fn void test()
 ```
 
 :::note
-There are convenience functions in the standard library to allocate arrays on the heap. Use `mem::new_array(int, n)` - zero initialized - or `mem::alloc_array(int, n)` - not initialized - rather than `malloc` directly.  
+There are convenience functions in the standard library to allocate arrays on the heap. Use `mem::new_array(int, n)` - zero initialized - or `mem::alloc_array(int, n)` - not initialized - rather than `malloc` directly.
 :::
 
 ### Temporary allocations
@@ -81,7 +81,7 @@ Having to clean up heap allocations is not always convenient. For example, what 
 
 ```c3
 fn void test_leak()
-{   
+{
     do_things(create_array(3)); // What about releasing the memory?
 }
 ```
@@ -96,8 +96,8 @@ fn void some_function()
     @pool()
     {
         do_calculations();
-    }; 
-    // All temporary allocations inside of do_calculations 
+    };
+    // All temporary allocations inside of do_calculations
     // and deeper down is freed when exiting the `@pool` scope.
 }
 ```
@@ -117,7 +117,7 @@ fn int[] create_temp_array(int n)
 }
 
 fn void test_temp()
-{   
+{
     do_things(create_temp_array(3)); // Creates a temporary array
 }
 
@@ -158,7 +158,7 @@ fn void nested()
             *b = *a;
             // Both 'b' and 'a' are valid
         };
-        // 'b' is relased, only 'a' is valid
+        // 'b' is released, only 'a' is valid
         io::printn(*a);
     };
     // 'a' is released
@@ -194,7 +194,7 @@ String s = string::format(mem, "Hello %s", "World");
 // The string "s" is allocated on the heap
 io::printn(s);
 // Prints "Hello World"
-free(s);                                  
+free(s);
 // Frees the string
 ```
 
@@ -208,8 +208,8 @@ On the other hand, if you use the temp allocator, you only need to make sure it'
    list.push(1);
    list.push(42);
    io::printn(list);
-   
-   String s = string::format(tmem, "Hello %s", "World"); 
+
+   String s = string::format(tmem, "Hello %s", "World");
    io::printn(s);
 }; // s and list are freed here, because they used temp memory
 ```
@@ -223,14 +223,14 @@ Because of the usefulness of the temp allocator idiom, there are often temp allo
    list.tinit();                                          // Use the temp allocator
    list.push(1);
    list.push(42);
-   
+
    String s = string::tformat("Hello %s", "World"); // Use the temp allocator
 };
 ```
 
 ### Implicit initialization
 
-Some types, such as `List`, `HashMap` and `DString` will use the temp allocator by default if they are not initialized. 
+Some types, such as `List`, `HashMap` and `DString` will use the temp allocator by default if they are not initialized.
 
 ```c3
 @pool()
@@ -238,11 +238,11 @@ Some types, such as `List`, `HashMap` and `DString` will use the temp allocator 
    List{int} list;
    list.push(1);   // Implicitly initialize with the temp allocator
    list.push(42);
-   
+
    DString str;                      // DString is a dynamic string
    str.appendf("Hello %s", "World");
    // The "appendf" implicitly initializes "str" with the temp allocator
-   str.insert_at(5, ",");            
+   str.insert_at(5, ",");
    str.append("!");
    io::printn(str);                  // Prints Hello, World!
 }; // list and str is freed here
@@ -256,7 +256,7 @@ allows you to statically initialize globals to use the heap allocator:
 List {int} l = list::ONHEAP {int};
 fn void main()
 {
-    l.push(1); // Implicitly allocates on the heap, not the temp allcator.
+    l.push(1); // Implicitly allocates on the heap, not the temp allocator.
 }
 ```
 
@@ -266,7 +266,7 @@ In C, memory is allocated with plain `malloc` (uninitialized memory) and `calloc
 
 #### `new` and `alloc` macros
 
-The `new` and `alloc` macros takes a type and allocates just enough memory for that value. This is often more convenient and clear than `Foo* f = malloc(Foo.sizeof)`.
+The `new` and `alloc` macros take a type and allocate just enough memory for that value. This is often more convenient and clearer than `Foo* f = malloc(Foo.sizeof)`.
 
 ```c3
 Foo* f = mem::new(Foo);    // Returns a zero initialized pointer for a type
@@ -289,11 +289,11 @@ There are also more specialized functions such as `new_with_padding` and `new_al
 
 ```c3
 // Returns a pointer to a Foo[3] array, zero initialized
-Foo[] arr = mem::new_array(Foo, 3);  
+Foo[] arr = mem::new_array(Foo, 3);
 // Same but memory is unitialized
-Foo[] a2 = mem::alloc_array(Foo, 3); 
+Foo[] a2 = mem::alloc_array(Foo, 3);
 // Same as new_array, but using the temp allocator
-Foo[] tarr = mem::temp_array(Foo, 3); 
+Foo[] tarr = mem::temp_array(Foo, 3);
 ```
 
 #### `@clone`
@@ -302,12 +302,12 @@ Foo[] tarr = mem::temp_array(Foo, 3);
 
 ```c3
 // Creates an int pointer, initialized to 33
-int* x = @clone(33);        
+int* x = @clone(33);
 // Same as @clone but using the temp allocator
-int* y = @tclone(33);       
+int* y = @tclone(33);
 int[] z = { 1, 2 };
 // This clones the elements of a slice or array, in this case "z"
-int[] a = @clone_slice(z);  
+int[] a = @clone_slice(z);
 // Same as @clone_slice, but using the temp allocator
 int[] t = @tclone_slice(z);
 ```

@@ -32,7 +32,7 @@ fn void main() {}
 :::note
 The function named `main` is a bit special, as it is where the program starts, or the entry point of the program.
 
-For Unix-like OSes there are a few different variants, for example we might declare it as `fn void main(String[] args)`. In that case the parameter "args" contains a [slice](/language-common/arrays/#slice) of strings, of the program's command line arguments, starting with the name of the program, itself.
+For Unix-like OSes there are a few different variants, for example we might declare it as `fn void main(String[] args)`. In that case the parameter "args" contains a [slice](/language-common/arrays/#slice) of strings, of the program's command line arguments, starting with the name of the program itself.
 :::
 
 
