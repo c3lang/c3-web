@@ -471,4 +471,4 @@ Check out the [documentation](/getting-started) or [download it and try it out](
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
 
-Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=46833493).
+Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=46833493) or [Reddit](https://www.reddit.com/r/programming/comments/1qsexe1/c3_programming_language_079_migrating_away_from/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
