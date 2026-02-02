@@ -77,7 +77,7 @@ fn void? test()
     if (catch excuse = foo)
     {
         // Return the excuse with `~` operator
-        return excuse?;
+        return excuse~;
     }
     // Because the compiler knows 'foo' cannot
     // be empty here, it is unwrapped to non-Optional
@@ -106,7 +106,7 @@ fn void? test()
     int bar = maybe_function()!;
     // ✅ The above is equivalent to:
     // int? temp = maybe_function();
-    // if (catch excuse = temp) return excuse?
+    // if (catch excuse = temp) return excuse~
 
     // Now temp is unwrapped to a non-Optional
     int bar = temp; // ✅ This is OK

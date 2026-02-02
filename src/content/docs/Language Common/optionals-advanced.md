@@ -57,7 +57,7 @@ fn void? test_read()
     {
         io::printfn("Excuse found: %s", excuse);
         // Returning Excuse using the `~` suffix
-        return excuse?;
+        return excuse~;
     }
 
     // `read_buffer` behaves like a normal variable here
