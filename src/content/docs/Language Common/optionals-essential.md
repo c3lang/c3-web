@@ -23,7 +23,7 @@ has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
 
 - For example trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
-- Optionals are declared by adding `?` after the type.
+- Optionals are declared by adding `~` after the type.
 - An `Excuse` is of type `fault`.
 ```c3
 int? a = 1; // Set the Optional to a result
