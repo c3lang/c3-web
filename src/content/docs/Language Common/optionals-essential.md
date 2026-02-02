@@ -28,10 +28,10 @@ is empty it has an `Excuse` explaining what happened.
 ```c3
 int? a = 1; // Set the Optional to a result
 ```
-The Optional Excuse is set with `?` after the value.
+The Optional Excuse is set with `~` after the value.
 ```c3
 // Set the Optional to empty with a specific Excuse.
-int? b = io::FILE_NOT_FOUND?;
+int? b = io::FILE_NOT_FOUND~;
 ```
 
 ## 🎁 Unwrapping an Optional
@@ -50,8 +50,8 @@ import std::io;
 
 fn void? test()
 {
-    // Return an Excuse by adding '?' after the fault.
-    return io::FILE_NOT_FOUND?;
+    // Return an Excuse by adding '~' after the fault.
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void main(String[] args)
@@ -76,7 +76,7 @@ fn void? test()
     int? foo = unreliable_function();
     if (catch excuse = foo)
     {
-        // Return the excuse with `?` operator
+        // Return the excuse with `~` operator
         return excuse?;
     }
     // Because the compiler knows 'foo' cannot
@@ -170,7 +170,7 @@ fn int test(int input, int input2)
 
 fn void main(String[] args)
 {
-    int? first_optional = io::FILE_NOT_FOUND?;
+    int? first_optional = io::FILE_NOT_FOUND~;
     int? second_optional = 7;
 
     // Return first excuse we find

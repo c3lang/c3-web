@@ -96,7 +96,7 @@ fn void? test()
 {
     defer try io::printn("❌ defer try not run");
     // Returned an Optional Excuse
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void main(String[] args)
@@ -144,7 +144,7 @@ fn char[]? test()
     }
 
     // Returns Excuse, memory gets freed
-    if (!test_something(data)) return io::FILE_NOT_FOUND?;
+    if (!test_something(data)) return io::FILE_NOT_FOUND~;
 
     // Returns data, defer catch doesn't run.
     return data;
@@ -159,7 +159,7 @@ This helps to avoid unwanted memory leaks or unwanted resource usage from other 
 ```c3
 fn void? function_throws()
 {
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fn String? test()

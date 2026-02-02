@@ -247,7 +247,7 @@ property. It returns the type of the object pointed to as a `typeid`.
 
 ## Optional
 
-An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `~`.
 An Optional type behaves like a tagged union, containing either the
 Result or an Empty, which also carries a [fault](#the-fault-type) type.
 
@@ -258,7 +258,7 @@ faultdef MISSING;   // define a fault
 
 int? i;
 i = 5;              // Assigning a real value to i.
-i = io::EOF?;       // Assigning an optional result to i.
+i = io::EOF~;       // Assigning an optional result to i.
 fault b = MISSING;  // Assign a fault to b
 b = @catch(i);      // Assign the Excuse in i to b (EOF)
 ```
@@ -284,12 +284,12 @@ If you want a more regular "optional" value, to store in structs, then you can u
 ## The `fault` type 
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault have the special property that together with the `?` suffix it creates an Empty value:
+normal value. A fault have the special property that together with the `~` suffix it creates an Empty value:
 
 ```c3
-int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
+int? x = IO_ERROR~; // 'IO_ERROR~' is an Optional Empty.
 fault y = IO_ERROR; // Here IO_ERROR is just a regular
-                    // value, since it isn't followed by '?'
+                    // value, since it isn't followed by '~'
 ```
 
 A new `fault` value can only be defined using the `faultdef` statement:

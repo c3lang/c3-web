@@ -227,8 +227,8 @@ faultdef BAD_LUCK_ERROR, BAD_JOSS_ERROR;
 fn double? test_error()
 {
     double val = random_value();
-    if (val > 0.5) return BAD_LUCK_ERROR?;
-    if (val >= 0.2) return BAD_JOSS_ERROR?;
+    if (val > 0.5) return BAD_LUCK_ERROR~;
+    if (val >= 0.2) return BAD_JOSS_ERROR~;
     return val;
 }
 ```
