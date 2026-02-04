@@ -192,14 +192,15 @@ for methods on an `any`:
 ```c3
 fn void whoareyou2(any a)
 {
+    MyName b = (MyName)a;
     // Query if the function exists
-    if (!&a.myname)
+    if (!&b.myname)
     {
         io::printn("I don't know who I am.");
         return;
     }
     // Dynamically call the function
-    io::printn(((MyName)a).myname());
+    io::printn(b.myname());
 }
 
 fn void main()
