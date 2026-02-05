@@ -468,7 +468,7 @@ their properties will query the properties of its aliased type.
 
 ## Function pointer types
 
-Function pointers are always used through a `alias`:
+Function pointers are always used through an `alias`:
 
 ```c3
 alias Callback = fn void(int value);
