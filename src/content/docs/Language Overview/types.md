@@ -725,6 +725,7 @@ fn void main()
     int a = (int) KeyCode.SPACE; // assigns 32 to a
     KeyCode b = 2; // const enums behave like typedef and will not enforce that every value has been declared beforehand
     KeyCode key = get_key_code(); // can safely interact with a C function that returns the same enum
+    KeyCode conv = (KeyCode)a; // Use as cast to convert from the underlying type.
 }
 ```
 
