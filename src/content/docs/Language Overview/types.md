@@ -606,6 +606,7 @@ State current_state = WAITING; // or '= State.WAITING'
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
+Standard enums are always backed by an ordinal running from zero and up, without any gaps. For enums for non-consecutive values, see [const enums](#const-enums). To create enums that implement a bit-mask, you can also consider using [bitstructs](#bitstructs-as-bit-masks).
 
 ### Enum associated values
 
@@ -951,8 +952,18 @@ fn void test()
     io::printfn("%d", (char)f); // prints 18
     f.c = true;
     io::printfn("%d", (char)f); // prints 146
+    
+    // Normal designated initializers are supported
+    f = { .a = 1, .b = 3, .c = false };
+    
+    // As a special case, boolean fields may drop
+    // the initializer value, this implicitly sets them
+    // to true. Below the '.c' is the same as '.c = true'
+    f = { .a = 2, .b = 4, .c };
 }
 ```
+
+### Bitstruct endianness
 
 The bitstruct will follow the endianness of the underlying type:
 
@@ -982,8 +993,7 @@ fn void test()
 }
 ```
 
-It is, however, possible to pick a different endianness, in which case the entire representation
-will internally assume big-endian layout:
+It is, however, possible to pick a different endianness, in which case the entire representation will internally assume big-endian layout:
 
 ```c3
 bitstruct Test : uint @bigendian
@@ -994,6 +1004,8 @@ bitstruct Test : uint @bigendian
 ```
 
 In this case the same example yields `CDAB9A78` and `789AABCD` respectively.
+
+### Bitstruct backing types
 
 Bitstruct backing types may be integers or char arrays. The difference in layout is somewhat subtle:
 
@@ -1034,7 +1046,9 @@ fn void test()
 }
 ```
 
-Bitstructs can be made to have overlapping bit fields. This is useful when modelling
+### Bitstructs with overlapping fields
+
+Bitstructs can be made to have overlapping bit fields. This is useful when modeling
 a layout which has multiple different layouts depending on flag bits:
 
 ```c3
@@ -1043,6 +1057,63 @@ bitstruct Foo : char @overlap
     int a : 2..5;
     // "b" is valid due to the @overlap attribute
     int b : 1..3;
+}
+```
+
+### Boolean-only bitstructs
+
+When a boolean consists of only bool fields, the bit position may be dropped, and the bit position is inferred:
+
+```c3
+// The following produce exactly the same layout:
+bitstruct Explicit : int
+{
+    bool a : 0;
+    bool b : 1;
+    bool c : 2;
+}
+bitstruct Implicit : int
+{
+    bool a;
+    bool b;
+    bool c;
+}
+```
+
+### Bitstructs as bit masks
+
+It is possible to use bitstructs to implement bitmasks without using the explicit masking values, see the following example:
+
+```c3
+enum BitMaskEnum : const uint
+{
+    ABC = 1 << 0,
+    DEF = 1 << 1,
+    ACTIVE = 1 << 5,
+}
+
+bitstruct BitMask : uint
+{
+    bool abc : 0;
+    bool def : 1;
+    bool active: 5;
+}
+
+fn void test()
+{
+    // Classic bit mask:
+    BitMaskEnum foo = BitMaskEnum.ABC | BitMaskEnum.DEF;
+    BitMaskEnum bar = BitMaskEnum.ACTIVE | BitMaskEnum.ABC;
+    BitMaskEnum baz = foo & bar;
+    if (baz & BitMaskEnum.ACTIVE) { ... }
+    
+    // Using a bitstruct
+    BitMask a = { .abc, .def }; // Just .abc is the same as .abc = true
+    BitMask b = { .active, .abc };
+    BitMask c = a & b;
+    if (c.active) { ... }
+    
+    assert((uint)b == (uint)bar, "Layout is the same");
 }
 ```
 
