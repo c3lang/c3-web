@@ -1342,6 +1342,8 @@ arguments than usual.
 `@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv`
 is applied to a function or call, the last one takes precedence.
 
+By default, the call convention is cdecl.
+
 ### User defined attributes
 
 User defined attributes group a list of attributes.
