@@ -17,12 +17,12 @@ a result from an Optional, return [default values for optionals `??`](/language-
 
 ## What is an Optional?
 
-The Optional is a safer alternative to returning `-1` or `null` from
-a function, when a valid value can't be returned. An Optional
+An Optional is a safer alternative to returning `-1` or `null` from
+a function when a valid value can't be returned. An Optional
 has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
 
-- For example trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
+- For example, trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
 - Optionals are declared by adding `~` after the type.
 - An `Excuse` is of type `fault`.
 ```c3
@@ -116,7 +116,7 @@ fn void? test()
 ## ⚠️ Optionals affect types and control flow
 
 ### Optionals in expressions produce Optionals
-Use an Optional anywhere in an expression the resulting
+If you use an Optional anywhere in an expression, the resulting
 expression will be an Optional too.
 ```c3
 import std::io;
@@ -154,7 +154,7 @@ fn void main(String[] args)
 
 ### Functions conditionally run when called with Optional arguments
 
-When calling a function with an Optionals as arguments,
+When calling a function with Optionals as arguments,
 the result will be the first Excuse found looking left-to-right.
 The function is only executed if all Optional arguments
 have a result.
