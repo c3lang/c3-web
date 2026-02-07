@@ -235,7 +235,7 @@ fn void? test(int x)
     defer try io::print("X");
     defer catch io::print("B");
     defer (catch err) io::printf("%s", err);
-    if (x == 1) return NOT_FOUND?;
+    if (x == 1) return NOT_FOUND~;
     io::print("!");
 }
 
@@ -321,7 +321,7 @@ fn void example_cb()
 
 ## Error Handling
 
-Errors are handled using optional results, denoted with a '?' suffix. A variable of an optional
+Errors are handled using optional results, denoted with a '~' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
 
 ```c3
@@ -331,7 +331,7 @@ fn double? divide(int a, int b)
 {
     // We return an optional result of type DIVISION_BY_ZERO
     // when b is zero.
-    if (b == 0) return DIVISION_BY_ZERO?;
+    if (b == 0) return DIVISION_BY_ZERO~;
     return (double)a / (double)b;
 }
 

@@ -7,13 +7,19 @@ sidebar:
 
 Contracts are optional pre- and post-condition checks that the compiler may 
 use for static analysis, runtime checks and optimization. Note that 
-_conforming C3 compilers are not obliged to use pre- and post-conditions at all_. 
+_conforming C3 compilers are not obliged to use contracts_. 
 
 However, violating either pre- or post-conditions is unspecified behaviour, 
 and a compiler may optimize code as if they are always true – even if 
 a potential bug may cause them to be violated.
 
 In safe mode, pre- and post-conditions are checked using runtime asserts.
+
+#### Why is contract analysis optional for compilers?
+
+A frequent question is: "why are contracts opt-in rather than mandatory"? The answer to this is that it allows C3 compilers to be built for resource-constrained environments where it is challenging to fit static analysis. It also makes it simpler to build simple C3 compilers for learning purposes.
+
+Conversely, it should be easy for advanced compilers to have enough information to do advanced static analysis as part of the regular compilation step, so it is important that the constraints are explicit and available. 
 
 # Pre-conditions
 
@@ -47,8 +53,8 @@ are often only caught at runtime.
 
 # Post conditions
 
-Post conditions are evaluated to make checks on the resulting state after passing through the function.
-The post condition uses the `@ensure` annotation. Where `return` is used to represent the return value from the function.
+Post-conditions are evaluated to make checks on the resulting state after passing through the function.
+The post-condition uses the `@ensure` annotation. Where `return` is used to represent the return value from the function.
 
 ```c3
 <*
@@ -79,20 +85,16 @@ and is checked for `null`.
 | `out`         |    No     |    Yes    |      No      |      Yes      |        No       |
 | `inout`       |    Yes    |    Yes    |     Yes      |      Yes      |       Yes       |
 
-However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, but will behave strangely:
+However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, even though it's strictly incorrect.
 
 ```c3
-fn void bad_func(int* i)
-{
-    *i = 2;
-}
-
 <*
  @param [&in] i
 *>
 fn void lying_func(int* i)
 {
-    bad_func(i); // The compiler might not check this!
+    int* b = i;
+    *b = 1; // Circumvent checks!
 }
 
 fn void test()
@@ -103,7 +105,7 @@ fn void test()
 }
 ```
 
-However, compilers will usually detect this:
+However, compilers detect this(\*)
 
 ```c3
 <*
@@ -114,6 +116,8 @@ fn void bad_func(int* i)
     *i = 2; // <- Compiler error: cannot write to "in" parameter
 }
 ```
+
+\* *The spec allows a barebones compiler to completely ignore contracts. Using such a compiler even this check might be ignored.*
 
 ### Pure in detail
 

@@ -114,7 +114,7 @@ fn Test test1(Test a)
     return a + 1;
 }
 
-module efg;
+module abc;
 
 // Belongs to generic 1
 struct Foo <Test>

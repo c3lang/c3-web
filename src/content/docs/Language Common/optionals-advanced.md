@@ -56,8 +56,8 @@ fn void? test_read()
     if (catch excuse = read_buffer)
     {
         io::printfn("Excuse found: %s", excuse);
-        // Returning Excuse using the `?` suffix
-        return excuse?;
+        // Returning Excuse using the `~` suffix
+        return excuse~;
     }
 
     // `read_buffer` behaves like a normal variable here
@@ -120,7 +120,7 @@ faultdef DOG_ATE_HOMEWORK, TEXTBOOK_ON_FIRE;
 
 fn int? test()
 {
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void? examples()
@@ -131,13 +131,13 @@ fn void? examples()
     // We can tell these apart by default assigning our own unique
     // Excuse. Our custom Excuse is assigned only if an
     // empty Optional is returned.
-    int? c = test() ?? DOG_ATE_HOMEWORK?;
-    int? d = test() ?? TEXTBOOK_ON_FIRE?;
+    int? c = test() ?? DOG_ATE_HOMEWORK~;
+    int? d = test() ?? TEXTBOOK_ON_FIRE~;
 
     // If you want to immediately return with an Excuse,
-    // use the "?" and "!" operators together, see the code below:
-    int e = test() ?? DOG_ATE_HOMEWORK?!;
-    int f = test() ?? TEXTBOOK_ON_FIRE?!;
+    // use the "~" and "!" operators together, see the code below:
+    int e = test() ?? DOG_ATE_HOMEWORK~!;
+    int f = test() ?? TEXTBOOK_ON_FIRE~!;
 }
 ```
 
@@ -165,7 +165,7 @@ fn void find_file_and_test()
 import std::io;
 fn void test()
 {
-    int? optional_value = io::FILE_NOT_FOUND?;
+    int? optional_value = io::FILE_NOT_FOUND~;
 
     // Find empty Optional, then handle inside scope
     if (catch optional_value)
@@ -265,7 +265,7 @@ Unlike `if (catch)` this will never cause automatic [unwrapping](/language-commo
 ```c3
 fn void main(String[] args)
 {
-    int? optional_value = io::FILE_NOT_FOUND?;
+    int? optional_value = io::FILE_NOT_FOUND~;
 
     fault excuse = @catch(optional_value);
     if (excuse)
@@ -306,7 +306,7 @@ use the [`@catch`](#getting-the-excuse) macro to convert the Optional to a `faul
 ```c3
 fn void? test()
 {
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fault excuse = @catch(test());

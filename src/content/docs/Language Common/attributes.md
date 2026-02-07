@@ -53,7 +53,8 @@ Should be used sparingly.
 *Used for: function*
 
 Sets the calling convention, which may be ignored if the convention is not supported on the target.
-Valid arguments are `veccall`, `cdecl`, `stdcall`.
+Valid arguments are `"veccall"`, `"cdecl"`, `"stdcall"`. Any function without an explicit `@callconv` will use
+`"cdecl"` which is the normal C calling convention.
 
 :::caution
 On Windows, many calls are tagged `stdcall` in the C

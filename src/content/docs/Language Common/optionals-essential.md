@@ -23,15 +23,15 @@ has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
 
 - For example, trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
-- Optionals are declared by adding `?` after the type.
+- Optionals are declared by adding `~` after the type.
 - An `Excuse` is of type `fault`.
 ```c3
 int? a = 1; // Set the Optional to a result
 ```
-The Optional Excuse is set with `?` after the value.
+The Optional Excuse is set with `~` after the value.
 ```c3
 // Set the Optional to empty with a specific Excuse.
-int? b = io::FILE_NOT_FOUND?;
+int? b = io::FILE_NOT_FOUND~;
 ```
 
 ## 🎁 Unwrapping an Optional
@@ -50,8 +50,8 @@ import std::io;
 
 fn void? test()
 {
-    // Return an Excuse by adding '?' after the fault.
-    return io::FILE_NOT_FOUND?;
+    // Return an Excuse by adding '~' after the fault.
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void main(String[] args)
@@ -76,8 +76,8 @@ fn void? test()
     int? foo = unreliable_function();
     if (catch excuse = foo)
     {
-        // Return the excuse with `?` operator
-        return excuse?;
+        // Return the excuse with `~` operator
+        return excuse~;
     }
     // Because the compiler knows 'foo' cannot
     // be empty here, it is unwrapped to non-Optional
@@ -106,7 +106,7 @@ fn void? test()
     int bar = maybe_function()!;
     // ✅ The above is equivalent to:
     // int? temp = maybe_function();
-    // if (catch excuse = temp) return excuse?
+    // if (catch excuse = temp) return excuse~
 
     // Now temp is unwrapped to a non-Optional
     int bar = temp; // ✅ This is OK
@@ -170,7 +170,7 @@ fn int test(int input, int input2)
 
 fn void main(String[] args)
 {
-    int? first_optional = io::FILE_NOT_FOUND?;
+    int? first_optional = io::FILE_NOT_FOUND~;
     int? second_optional = 7;
 
     // Return first excuse we find
