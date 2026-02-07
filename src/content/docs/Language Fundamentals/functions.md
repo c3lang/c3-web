@@ -348,16 +348,19 @@ fn void test()
 
 ### Implicit first parameters
 
-Because the type of the first argument is known, it may be left out. To indicate a pointer `&` is used.
+Because the type of the first argument is known, it may be left out. To indicate a non-null pointer, `&` is used.
 
 ```c3
 fn int Foo.test(&self) { /* ... */ }
-// equivalent to
+// (almost) equivalent to
 fn int Foo.test(Foo* self) { /* ... */ }
+
 fn int Bar.test(self) { /* ... */ }
 // equivalent to
 fn int Bar.test(Bar self) { /* ... */ }
 ```
+
+This means that in order to express a nullable first parameter, one must use the explicit form (e.g. `Foo* self`) rather than the untyped `&self` form.
 
 It is customary to use `self` as the name of the first parameter, but it is not required.
 
