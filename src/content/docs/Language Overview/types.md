@@ -15,7 +15,7 @@ This naming requirement ensures that the language *is easy to parse for tools*.
 It is possible to use attributes to change the *external* name of a type:
 
 ```c3
-struct Stat @extern("stat")
+struct Stat @cname("stat")
 {
     // ...
 }
@@ -29,12 +29,12 @@ This affects generated C headers, but little else.
 
 Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
-Instead of `volatile`, volatile loads and stores are used using `@volatile_load` and `@volatile_store`.
+Instead of `volatile`, volatile loads and stores are implemented using `@volatile_load` and `@volatile_store`.
 Restrictions on function parameter usage are implemented though parameter [preconditions](/language-common/contracts/#pre-conditions).
 
-C's `typedef` has a slightly different syntax and renamed `alias`.
+C3's equivalent of C's `typedef` has a slightly different syntax in C3 and is renamed `alias`. In contrast, in C3 a *distinct* type is created when using C3's `typedef` keyword. As such, take care to not confuse C3's `alias` and `typedef` keywords relative to C.
 
-C3 also requires all function pointers to be used with a `alias`, for example:
+C3 also requires all function pointers to be used with an `alias`. For example:
 
 ```c3
 alias Callback = fn void();
@@ -66,13 +66,15 @@ are common to all C3 runtime types:
 
 # Basic types
 
-Basic types are divided into floating point types, and integer types. Integer types being either signed or unsigned.
+Basic types are divided into floating point types and integer types. 
+
+Integer types are either signed or unsigned.
 
 ## Integer types
 
 | Name        | bit size | signed |
 |:------------| --------:|:------:|
-| `bool`\*    | 1        | no     |
+| `bool`&dagger;    | 1        | no     |
 | `ichar`     | 8        | yes    |
 | `char`      | 8        | no     |
 | `short`     | 16       | yes    |
@@ -83,24 +85,25 @@ Basic types are divided into floating point types, and integer types. Integer ty
 | `ulong`     | 64       | no     |
 | `int128`    | 128      | yes    |
 | `uint128`   | 128      | no     |
-| `iptr`\*\*  | varies   | yes    |
-| `uptr`\*\*  | varies   | no     |
-| `isz`\*\*   | varies   | yes    |
-| `usz`\*\*   | varies   | no     |
+| `iptr`&Dagger;  | varies   | yes    |
+| `uptr`&Dagger;  | varies   | no     |
+| `isz`&Dagger;   | varies   | yes    |
+| `usz`&Dagger;   | varies   | no     |
 
-\* `bool` will be stored as a byte.
-\*\* size, pointer and pointer sized types depend on platform.
+&dagger;: `bool` will be stored as a byte.
+
+&Dagger;: Size, pointer and pointer-sized types depend on the target platform.
 
 ### Integer type properties
 
-Integer types, except for `bool` also has the following type properties:
+Integer types (except for `bool`) also have the following type properties:
 
 1. `max` The maximum value for the type.
 2. `min` The minimum value for the type.
 
 ### Integer arithmetics
 
-All signed integer arithmetics uses 2's complement.
+All signed integer arithmetic uses 2's complement.
 
 ## Integer constants
 
@@ -118,14 +121,14 @@ Furthermore, underscore `_` may be used to add space between digits to improve r
 
 ### Integer literal suffix and type
 
-Integer literals follow C rules:
+Integer literals follow C's rules:
 
 1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
 2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
 3. Binary, octal and hexadecimal will implicitly be unsigned.
 4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
 5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
-6. If a binary, octal or hexadecimal starts with zeros, infer type size from the number of bits would be needed if all digits were the maximum for the base.
+6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
 
 ```c3
 $typeof(1);              // int
@@ -163,29 +166,34 @@ char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 
 ## String literals, and raw strings
 
-Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers two other types of literals: *multi-line strings* and *raw strings*.
+Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers another type of literal: *raw strings*.
 
-Raw strings uses text between \` \`. Inside of a raw string, no escapes are available. To write a \` double the character:
+Raw strings uses text between \` \`. Inside of a raw string, no escapes are available, and it can span across multiple lines. To write a \` double the character:
 
 ```c3
 String foo = `C:\foo\bar.dll`;
 ZString bar = `"Say ``hello``"`;
+String baz =
+`pushq %rax;
+addq $1, %rax;
+popq %rax;`;
 // Same as
 String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
+String baz = "pushq %rax;\naddq $1, %rax;\npopq %rax;";
 ```
 
 ## Floating point types
 
 | Name        | bit size |
 |-------------| --------:|
-| `bfloat16`* | 16       |
-| `float16`*  | 16       |
+| `bfloat16`&dagger; | 16       |
+| `float16`&dagger;  | 16       |
 | `float`     | 32       |
 | `double`    | 64       |
-| `float128`* | 128      |
+| `float128`&dagger; | 128      |
 
-*support is still incomplete.
+&dagger;: Support is still incomplete and not all systems have native support.
 
 ### Floating point type properties
 
@@ -235,11 +243,11 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 ### Pointer type properties
 
 In addition to the standard properties, pointers also have the `inner` 
-property. It returns the type of the object pointed to.
+property. It returns the type of the object pointed to as a `typeid`.
 
 ## Optional
 
-An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `?`.
+An [Optional type](/language-common/optionals-essential/#what-is-an-optional) is created by taking a type and appending `~`.
 An Optional type behaves like a tagged union, containing either the
 Result or an Empty, which also carries a [fault](#the-fault-type) type.
 
@@ -250,7 +258,7 @@ faultdef MISSING;   // define a fault
 
 int? i;
 i = 5;              // Assigning a real value to i.
-i = io::EOF?;       // Assigning an optional result to i.
+i = io::EOF~;       // Assigning an optional result to i.
 fault b = MISSING;  // Assign a fault to b
 b = @catch(i);      // Assign the Excuse in i to b (EOF)
 ```
@@ -276,12 +284,12 @@ If you want a more regular "optional" value, to store in structs, then you can u
 ## The `fault` type 
 
 When an [Optional](/language-common/optionals-essential/#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault have the special property that together with the `?` suffix it creates an Empty value:
+normal value. A fault have the special property that together with the `~` suffix it creates an Empty value:
 
 ```c3
-int? x = IO_ERROR?; // 'IO_ERROR?' is an Optional Empty.
+int? x = IO_ERROR~; // 'IO_ERROR~' is an Optional Empty.
 fault y = IO_ERROR; // Here IO_ERROR is just a regular
-                    // value, since it isn't followed by '?'
+                    // value, since it isn't followed by '~'
 ```
 
 A new `fault` value can only be defined using the `faultdef` statement:
@@ -327,8 +335,8 @@ However, at runtime only a few are available:
 ## The `any` type
 
 C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
-While it is possible to cast the `any` pointer to any pointer type,
-it is recommended to use the `anycast` macro or checking the type explicitly first.
+While it is possible to cast the `any` pointer to any pointer type, it is recommended to use the `anycast` macro or checking the type explicitly first. With the `anycast` macro, the return will be
+an optional, which is empty if there is a mismatch.
 
 ```c3
 fn void main()
@@ -337,10 +345,14 @@ fn void main()
     any y = &x;
     int* w = (int*)y;                // Returns the pointer to x
     double* z_bad = (double*)y;      // Don't do this!
-    double! z = anycast(y, double);  // The safe way to get a value
+    double*? z = anycast(y, double); // The safe way to get a value
     if (y.type == int.typeid)
     {
         // Do something if y contains an int*
+    }
+    if (try v = anycast(y, int))
+    {
+        // same as above, but v holds the unwrapped int*
     }
 }
 ```
@@ -397,28 +409,25 @@ At runtime, `any` gives you access to two fields:
 The standard library has several helper macros to manipulate `any` types:
 
 1. `anycast(some_any, Type)` returns a pointer to `Type*` or `TYPE_MISMATCH` if types don't match.
-2. `anymake(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
+2. `any_make(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
 3. `some_any.retype_to(some_typeid)` changes the type of an `any` to the given typeid.
 4. `some_any.as_inner()` retypes the type of the `any` to the "inner" (see the `inner` type property) of the current type.
 
 ```c3
 void* some_ptr = foo();
 // Essentially (any)(int*)(some_ptr)
-any some_int = anymake(some_ptr, int.typeid); 
+any some_int = any_make(some_ptr, int.typeid);
 
-// Same as anymake(some_int.ptr, uint.type)
+// Same as any_make(some_int.ptr, uint.type)
 any some_uint = some_int.retype_to(uint.typeid);   
 
-struct SomeStruct
-{
-    inline int a;
-}
+typedef SomeType = int;
 
-SomeStruct s = { 3 };
-any any_struct = &s;
+SomeType s = 3;
+any any_val = &s;
 
 // Result is same as (any)&s.a
-any some_inner_int = any_struct.as_inner();
+any some_inner_int = any_val.as_inner();
 ```
 
 ## Array types
@@ -442,7 +451,7 @@ Array and vector types also support:
 
 ## Type aliases (C's typedef)
 
-Like in C, C3 has a "typedef" construct, `alias <typename> = <type>`
+C3 has a construct that behaves essentially the same as C's "typedef", an `alias`, and it is declared using the syntax `alias <new_name> = <old_name>`. For example:
 
 ```c3
 alias Int32 = int;
@@ -459,7 +468,7 @@ their properties will query the properties of its aliased type.
 
 ## Function pointer types
 
-Function pointers are always used through a `alias`:
+Function pointers are always used through an `alias`:
 
 ```c3
 alias Callback = fn void(int value);
@@ -482,8 +491,8 @@ Callback callback = &test; // Ok
 
 fn void main()
 {
-    callback(); // Works, same as test(0);
-    test(); // Works, same as test(1);
+    callback(); // Works, same as test(1);
+    test(); // Works, same as test(0);
     callback(value: 3); // Works, same as test(3)
     test(a: 4); // Works, same as test(4)
     // callback(a: 3); // ERROR!
@@ -542,28 +551,41 @@ fn void test()
 }
 ```
 
+### Aligned typedefs
+
+It's possible to use `typedef` to create underaligned types. For example, typically an `int` will be 4 byte aligned, but we can create a 2-byte aligned type using `typedef IntAlign2 = int @align(2);`.
+
+### Storage SIMD types
+
+Vectors are normally stored and passed as arrays to prevent SIMD alignment overhead. However, it's possible to define types that exactly match the SIMD types in C and other languages for storage and argument passing. These types are defined with `typedef` and the `@simd` attribute, similar to aligned typedefs: `typedef Float4 = float[<4>] @simd`
+
 ### Typedef type properties
 
 In addition to the normal properties, typedef also supports:
 
-1. `inner` - Returns the type this is based on.
+1. `inner` - Returns the type this is based on as a `typeid`.
 2. `parentof` - If this is an inline typedef, return the same as `inner`.
 
 ## Generic types
 ```c3
 import generic_list; // Contains the generic MyList
 
-struct Foo {
+struct Foo 
+{
     int x;
 }
 
 // ✅ alias for each type used with a generic module.
-alias IntMyList = MyList {Foo};
+alias MyListFoo = MyList {Foo};
 MyListFoo working_example;
 
-// ❌ An inline type definition will give an error.
-// Only allowed in a type definition or macro
-MyList {Foo} failing_example = MyList {Foo};
+fn void main()
+{
+    // ❌ A nested inline type definition in a function context
+    // will yield an error, it's only available on the top 
+    // level or in macros. Prefer aliases.
+    MyList {MyList {int}} failing_example;
+}
 ```
 Find out more about [generic types](/generic-programming/generics).
 
@@ -584,6 +606,7 @@ State current_state = WAITING; // or '= State.WAITING'
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
+Standard enums are always backed by an ordinal running from zero and up, without any gaps. For enums for non-consecutive values, see [const enums](#const-enums). To create enums that implement a bit-mask, you can also consider using [bitstructs](#bitstructs-as-bit-masks).
 
 ### Enum associated values
 
@@ -700,8 +723,9 @@ enum KeyCode : const CInt
 fn void main()
 {
     int a = (int) KeyCode.SPACE; // assigns 32 to a
-    KeyCode b = 2; // const enums behave like typedef and will not enforce that every value has been declared beforehand
+    KeyCode b = (KeyCode)2; // const enums behave like typedef and will not enforce that every value has been declared beforehand
     KeyCode key = get_key_code(); // can safely interact with a C function that returns the same enum
+    KeyCode conv = (KeyCode)a; // Use as cast to convert from the underlying type.
 }
 ```
 
@@ -729,15 +753,14 @@ Const enums *cannot* have associated values and do not have the `nameof` propert
 ### Enum type properties
 
 Enum types have the following additional properties in addition to the usual properties for 
-user defined types:
+user-defined types:
 
 1. `associated` returns an untyped list of types for the associated values.
-2. `inner` returns the type of the ordinal.
-3. `lookup(value)` lookup an enum by inlined value.
-4. `lookup_field(field_name, value)` lookup an enum by associated value.
-5. `names` returns a list containing the names of all enums.
-6. `from_ordinal(value)` convert an integer to an enum.
-7. `values` return a list containing all the enum values of an enum.
+2. `inner` returns the type of the ordinal as a `typeid`.
+3. `lookup_field(field_name, value)` lookup an enum by associated value.
+4. `names` returns a list containing the names of all enums.
+5. `from_ordinal(value)` convert an integer to an enum.
+6. `values` return a list containing all the enum values of an enum.
 
 ## Struct types
 
@@ -771,6 +794,47 @@ fn void test()
 (One might wonder whether it's possible to take a `Person**` and use dot access. – It's not allowed, only one level of dereference is done.)
 
 To change alignment and packing, [attributes](/language-common/attributes/) such as `@packed` may be used.
+
+### Initializing structs
+
+Structs are typically initialized with an initializer list, which is a list of arguments inside of `{ }`. For example, we can initialize our `Person` struct above like this:
+
+```c3
+Person p = { 21, "John Doe" };
+```
+
+But we can also use so-called designated initialization, where the explicit names of the members are assigned to, with a leading `.`:
+
+```c3
+Person p = { .age = 21, .name = "John Doe" };
+```
+
+With designated initializers we do not need to initialize all fields. The rest of the fields will automatically be zeroed out:
+
+```c3
+Person p = { .name = "John Doe" }; // p.age is 0
+```
+
+If a type contains members which in turn are structs or unions or arrays, then their members may be initialized using repeated `.name` syntax:
+
+```c3
+struct Test
+{
+    Person owner;
+    Person subscriber;
+}
+
+Test t = { .owner = { 21, "John Doe" }, .subscriber.age = 42, .subscriber.name = "Test Person" };
+```
+
+### Struct initializer splatting
+
+It's possible to use the `...` operator together with designated initializers to provide defaults that are overwritten by later assignments:
+
+```c3
+Person p = { 21, "John Doe" };
+Person p_new = { ...p, .age = 22 };  // Same as { 22, "John Doe" }
+```
 
 ### Struct subtyping
 
@@ -815,7 +879,7 @@ union Integral
 }
 ```
 
-As usual unions are used to hold one of many possible values:
+As usual, unions are used to hold one of many possible values:
 
 ```c3
 fn void test()
@@ -864,10 +928,10 @@ which returns a list of struct members.
 
 ## Bitstructs
 
-Bitstructs allows storing fields in a specific bit layout. A bitstruct may only contain
+Bitstructs allow storing fields in a specific bit layout. A bitstruct may only contain
 integer types and booleans, in most other respects it works like a struct.
 
-The main differences is that the bitstruct has a *backing type* and each field
+The main difference is that the bitstruct has a *backing type* and each field
 has a specific bit range. In addition, it's not possible *to take the address* of a
 bitstruct field.
 
@@ -889,8 +953,18 @@ fn void test()
     io::printfn("%d", (char)f); // prints 18
     f.c = true;
     io::printfn("%d", (char)f); // prints 146
+    
+    // Normal designated initializers are supported
+    f = { .a = 1, .b = 3, .c = false };
+    
+    // As a special case, boolean fields may drop
+    // the initializer value, this implicitly sets them
+    // to true. Below the '.c' is the same as '.c = true'
+    f = { .a = 2, .b = 4, .c };
 }
 ```
+
+### Bitstruct endianness
 
 The bitstruct will follow the endianness of the underlying type:
 
@@ -920,8 +994,7 @@ fn void test()
 }
 ```
 
-It is however possible to pick a different endianness, in which case the entire representation
-will internally assume big endian layout:
+It is, however, possible to pick a different endianness, in which case the entire representation will internally assume big-endian layout:
 
 ```c3
 bitstruct Test : uint @bigendian
@@ -932,6 +1005,8 @@ bitstruct Test : uint @bigendian
 ```
 
 In this case the same example yields `CDAB9A78` and `789AABCD` respectively.
+
+### Bitstruct backing types
 
 Bitstruct backing types may be integers or char arrays. The difference in layout is somewhat subtle:
 
@@ -972,7 +1047,9 @@ fn void test()
 }
 ```
 
-Bitstructs can be made to have overlapping bit fields. This is useful when modelling
+### Bitstructs with overlapping fields
+
+Bitstructs can be made to have overlapping bit fields. This is useful when modeling
 a layout which has multiple different layouts depending on flag bits:
 
 ```c3
@@ -981,6 +1058,63 @@ bitstruct Foo : char @overlap
     int a : 2..5;
     // "b" is valid due to the @overlap attribute
     int b : 1..3;
+}
+```
+
+### Boolean-only bitstructs
+
+When a boolean consists of only bool fields, the bit position may be dropped, and the bit position is inferred:
+
+```c3
+// The following produce exactly the same layout:
+bitstruct Explicit : int
+{
+    bool a : 0;
+    bool b : 1;
+    bool c : 2;
+}
+bitstruct Implicit : int
+{
+    bool a;
+    bool b;
+    bool c;
+}
+```
+
+### Bitstructs as bit masks
+
+It is possible to use bitstructs to implement bitmasks without using the explicit masking values, see the following example:
+
+```c3
+enum BitMaskEnum : const uint
+{
+    ABC = 1 << 0,
+    DEF = 1 << 1,
+    ACTIVE = 1 << 5,
+}
+
+bitstruct BitMask : uint
+{
+    bool abc : 0;
+    bool def : 1;
+    bool active: 5;
+}
+
+fn void test()
+{
+    // Classic bit mask:
+    BitMaskEnum foo = BitMaskEnum.ABC | BitMaskEnum.DEF;
+    BitMaskEnum bar = BitMaskEnum.ACTIVE | BitMaskEnum.ABC;
+    BitMaskEnum baz = foo & bar;
+    if (baz & BitMaskEnum.ACTIVE) { ... }
+    
+    // Using a bitstruct
+    BitMask a = { .abc, .def }; // Just .abc is the same as .abc = true
+    BitMask b = { .active, .abc };
+    BitMask c = a & b;
+    if (c.active) { ... }
+    
+    assert((uint)b == (uint)bar, "Layout is the same");
 }
 ```
 

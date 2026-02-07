@@ -2,7 +2,7 @@
 title: Project Configuration
 description: Project Configuration
 sidebar:
-    order: 241
+  order: 241
 ---
 # Customizing A Project
 
@@ -32,23 +32,23 @@ This is a description of the configuration options in `project.json`:
   // "c-include-dirs: [ "csource/include" ],
   // Output location, relative to project file.
   "output": "../build",
-  // Architecture and OS target.
-  // You can use 'c3c --list-targets' to list all valid targets,
-  // "target": "windows-x64",
-  // Current Target options:
-  //    android-aarch64 
-  //    elf-aarch64 elf-riscv32 elf-riscv64 elf-x86 elf-x64 elf-xtensa
-  //    mcu-x86 mingw-x64 netbsd-x86 netbsd-x64 openbsd-x86 openbsd-x64
-  //    freebsd-x86 freebsd-x64 ios-aarch64 
-  //    linux-aarch64 linux-riscv32 linux-riscv64 linux-x86 linux-x64 
-  //    macos-aarch64 macos-x64 
-  //    wasm32 wasm64 
-  //    windows-aarch64 windows-x64 
   "targets": {
-    "linux-x64": {
+    "my_app": {
       // Executable or library.
       "type": "executable",
-      // Additional libraries, sources
+	  // Architecture and OS target.
+	  // You can use 'c3c --list-targets' to list all valid targets,
+	  // "target": "linux-x64",
+	  // Current Target options:
+	  //    android-aarch64 
+	  //    elf-aarch64 elf-riscv32 elf-riscv64 elf-x86 elf-x64 elf-xtensa
+	  //    mcu-x86 mingw-x64 netbsd-x86 netbsd-x64 openbsd-x86 openbsd-x64
+	  //    freebsd-x86 freebsd-x64 ios-aarch64 
+	  //    linux-aarch64 linux-riscv32 linux-riscv64 linux-x86 linux-x64 
+	  //    macos-aarch64 macos-x64 
+	  //    wasm32 wasm64 
+	  //    windows-aarch64 windows-x64 
+	  // Additional libraries, sources
       // and overrides of global settings here.
     },
   },
@@ -102,13 +102,11 @@ This is a description of the configuration options in `project.json`:
 By default, an executable is assumed, but changing the type to `"static-lib"` or `"dynamic-lib"` 
 creates static library and dynamic library targets respectively.
 
-*This part will be updated, stay tuned* 
-
 ## Compilation options
 
-The project file contains common settings at the top level, that can be overridden by each
-target, by simply assigning that particular key. So if the top level defines `target` to be `macos-x64`
-and the actual target defines it to be `windows-x64`, then the `windows-x64` will be used for compilation.
+The project file contains common settings at the top level that can be overridden by each
+target by simply assigning that particular key. So if the top level defines `target` 
+to be `macos-x64` and the actual target defines it to be `windows-x64`, then the `windows-x64` target will be used for compilation.
 
 Similarly, compiler command line parameters can be used in turn to override the target setting.
 
@@ -122,7 +120,11 @@ List of C3 libraries (".c3l") to use when compiling the target.
 
 #### `sources`
 
-List of source files to compile and for tests which will run.
+List of source files to compile.
+
+#### `test-sources`
+
+List of additional source files to compile when running tests.
 
 #### `cc`
 
@@ -139,27 +141,31 @@ This adds paths for the linker to search, when linking normal C libraries.
 #### `linked-libraries`
 
 This is a list of C libraries to link to. The names need to follow the normal
-naming standard for how libraries are provided to the system linker,
-so for example on Linux, libraries have names like `libfoo.a` but when
+naming standard for how libraries are provided to the system linker. 
+So, for example, on Linux libraries have names like `libfoo.a` but when
 presented to the linker the name is `foo`. As an example `"linked-libraries": ["curl"]`
 would on Linux look for the library `libcurl.a` and `libcurl.so` in the 
 paths given by "linker-search-paths".
 
 #### `version`
 
-*Not handled yet*
+*Not handled yet.*
 
-Version for library, will also be provided as a compile time constant.
+Version for the library. Will also be provided as a compile time constant.
 
 #### `authors`
 
-*Not handled yet*
+List of authors who are credited with creating and/or working on the project.
 
-List of authors to add for library compilation.
+These can be accessed as lists using env::AUTHORS, which gives a list of names,
+and env::AUTHOR_EMAILS, which gives a list of their e-mails (where available).
+
+The formatting is expected to be in the format "first last <optional email>",
+e.g. `John Doe <john.doe@example.com>`.
 
 #### `langrev`
 
-*Not handled yet*
+*Not handled yet.*
 
 The language revision to use. 
 
@@ -170,7 +176,7 @@ in the source code using `$feature(NAME_OF_FEATURE)`.
 
 #### `warnings`
 
-*Not completely supported yet*
+*Not completely supported yet.*
 
 List of warnings to enable during compilation.
 
@@ -182,14 +188,20 @@ Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
 
 #### `type`
 
-This mandatory option should be one of "executable", "dynamic-lib" and "static-lib".
+This mandatory option should be one of:
 
-*More types will be added*
+1. "executable" – a normal executable application.
+2. "dynamic-lib" - a dynamic library.
+3. "static-lib" - static library.
+4. "benchmark" - target that only runs benchmarks.
+5. "test" - target that only runs tests.
+6. "object-files" - compile to object files, but does not perform any linking.
+7. "prepare" - target that does not perform any compilation, but may do things like invoking other scripts using "exec".
 
 ## Using environment variables
 
-*Not supported yet*
+*Not supported yet.*
 
-In addition to constants any values starting with "$" will be assumed to be environment variables.
+In addition to constants, any values starting with `$` will be assumed to be environment variables.
 
-For example `"$HOME"` would on unix systems return the home directory. For strings that start with $ but *should not* be interpreted as an environment variable. For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
+For example `"$HOME"` would on Unix-like systems (e.g. Linux, the BSDs, Mac) return the home directory. For strings that start with `$` but *should not* be interpreted as an environment variable you need to escape it with a backslash (`\`). For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.

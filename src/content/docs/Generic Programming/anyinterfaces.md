@@ -64,14 +64,14 @@ values passed in this manner. Doing so would very likely break user expectations
 
 ## Interfaces
 
-Most statically typed object-oriented languages implements extensibility using vtables. In C, and by extension
-C3, this is possible to emulate by passing around structs containing list of function pointers in addition to the data.
+Most statically typed object-oriented languages implement extensibility using virtual pointer tables (vtables). In C, and by extension
+C3, this is possible to emulate by passing around structs containing a pointer to a list of function pointers in addition to the data.
 
 While this is efficient and often the best solution, it puts certain assumptions on the code and makes interfaces
 more challenging to evolve over time.
 
 As an alternative there are languages (such as Objective-C) which instead use message passing to dynamically typed
-objects, where the availability of a certain functionality may be queried at runtime.
+objects, where the availability of functionality may be queried at runtime.
 
 C3 provides this latter functionality over the `any` type using *interfaces*.
 
@@ -86,8 +86,8 @@ interface MyName
 }
 ```
 
-While `myname` will behave as a method, we declare it without type. Note here that unlike normal methods we leave
-out the first "self", argument.
+While `myname` will behave as a method, we declare it without a type. Note here that unlike normal methods we leave
+out the first "self" argument.
 
 ### Implementing the interface
 
@@ -106,8 +106,8 @@ fn String Baz.myname(Baz* self) @dynamic
 }
 ```
 
-If a type declares an interface but does not implement its methods, then that is compile time error.
-A type may implement multiple interfaces, by placing them all inside of `()` e.g. `struct Foo (VeryOptional, MyName) { ... }`
+If a type declares an interface but does not implement its methods then that is a compile time error.
+A type may implement multiple interfaces by placing them all inside of `()`, e.g. `struct Foo (VeryOptional, MyName) { ... }`.
 
 A limitation is that only user-defined types may declare they are implementing interfaces. To make existing types
 implement interfaces is possible but does not provide compile time checks.
@@ -116,7 +116,7 @@ One of the interfaces available in the standard library is Printable, which cont
 If we implemented it for our struct above it might look like this:
 
 ```c3
-fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
+fn String Baz.to_new_string(Baz* baz, Allocator allocator) @dynamic
 {
     return string::printf("Baz(%d)", baz.x, allocator: allocator);
 }
@@ -124,8 +124,7 @@ fn String Baz.to_new_string(Baz baz, Allocator allocator) @dynamic
 
 ### `@dynamic` methods
 
-A method must be declared `@dynamic` to implement an interface, but a method may also be declared `@dynamic` *without*
-the type declaring it implements a particular interface. For example, this allows us to write:
+A method must be declared `@dynamic` to implement an interface, but a method may also be declared `@dynamic` *without* the type declaring it implementing a particular interface. For example, this allows us to write:
 
 ```c3
 // This will make "int" satisfy the MyName interface
@@ -140,16 +139,16 @@ from the `any` type.
 
 ### Referring to an interface by pointer
 
-An interface e.g. `MyName`, can be cast back and forth to `any`, but only types which
+An interface, e.g. `MyName`, can be cast back and forth to `any`, but only types which
 implement the interface completely may implicitly be cast to the interface.
 
 So for example:
 
 ```c3
-Bob b = { 1 };
+Baz b = { 1 };
 double d = 0.5;
 int i = 3;
-MyName a = &b;          // Valid, Bob implements MyName.
+MyName a = &b;          // Valid, Baz implements MyName.
 // MyName c = &d;       // Error, double does not implement MyName.
 MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
 // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
@@ -171,6 +170,11 @@ fn void whoareyou(MyName a)
 If we have an optional method we should first check that it is implemented:
 
 ```c3
+interface VeryOptional
+{
+    fn void do_something(int x, void* ptr) @optional;
+}
+
 fn void do_something(VeryOptional z)
 {
     if (&z.do_something)
@@ -188,28 +192,50 @@ for methods on an `any`:
 ```c3
 fn void whoareyou2(any a)
 {
+    MyName b = (MyName)a;
     // Query if the function exists
-    if (!&a.myname)
+    if (!&b.myname)
     {
         io::printn("I don't know who I am.");
         return;
     }
     // Dynamically call the function
-    io::printn(((MyName)a).myname());
+    io::printn(b.myname());
 }
 
 fn void main()
 {
     int i;
     double d;
-    Bob bob;
+    Baz baz;
 
     any a = &i;
     whoareyou2(a); // Prints "I am int!"
     a = &d;
     whoareyou2(a); // Prints "I don't know who I am."
-    a = &bob;
-    whoareyou2(a); // Prints "I am Bob!"
+    a = &baz;
+    whoareyou2(a); // Prints "I am Baz!"
+}
+```
+
+### Subtype inheritance
+
+A `struct` with an "inline" member or a `typedef` which is declared with "inline", will 
+inherit dynamic methods from its inline "parent". This inheritance is not
+available for "inline" enums.
+
+```c3
+struct BazChild
+{
+    inline Baz b;
+    int x;
+}
+
+fn void main()
+{
+    BazChild bp;
+    any a = &bp;
+    whoareyou2(a); // Prints "I am Baz!"
 }
 ```
 

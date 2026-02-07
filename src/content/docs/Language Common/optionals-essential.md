@@ -2,7 +2,7 @@
 title: Essential Error Handling
 description: Essential Error Handling
 sidebar:
-    order: 64
+    order: 65
 ---
 
 In this section we will go over the *essential* information about Optionals and safe methods for working with them, for example
@@ -17,21 +17,21 @@ a result from an Optional, return [default values for optionals `??`](/language-
 
 ## What is an Optional?
 
-Optionals are a safer alternative to returning `-1` or `null` from
-a function, when a valid value can't be returned. An Optional
+An Optional is a safer alternative to returning `-1` or `null` from
+a function when a valid value can't be returned. An Optional
 has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
 
-- For example trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
-- Optionals are declared by adding `?` after the type.
+- For example, trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
+- Optionals are declared by adding `~` after the type.
 - An `Excuse` is of type `fault`.
 ```c3
 int? a = 1; // Set the Optional to a result
 ```
-The Optional Excuse is set with `?` after the value.
+The Optional Excuse is set with `~` after the value.
 ```c3
 // Set the Optional to empty with a specific Excuse.
-int? b = io::FILE_NOT_FOUND?;
+int? b = io::FILE_NOT_FOUND~;
 ```
 
 ## 🎁 Unwrapping an Optional
@@ -50,8 +50,8 @@ import std::io;
 
 fn void? test()
 {
-    // Return an Excuse by adding '?' after the fault.
-    return io::FILE_NOT_FOUND?;
+    // Return an Excuse by adding '~' after the fault.
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void main(String[] args)
@@ -76,8 +76,8 @@ fn void? test()
     int? foo = unreliable_function();
     if (catch excuse = foo)
     {
-        // Return the excuse with `?` operator
-        return excuse?;
+        // Return the excuse with `~` operator
+        return excuse~;
     }
     // Because the compiler knows 'foo' cannot
     // be empty here, it is unwrapped to non-Optional
@@ -94,7 +94,7 @@ fn void? test()
 import std::io;
 
 // Function returning an Optional
-fn int? maybe_func() { /* ... */ }
+fn int? maybe_function() { /* ... */ }
 
 fn void? test()
 {
@@ -106,7 +106,7 @@ fn void? test()
     int bar = maybe_function()!;
     // ✅ The above is equivalent to:
     // int? temp = maybe_function();
-    // if (catch excuse = temp) return excuse?
+    // if (catch excuse = temp) return excuse~
 
     // Now temp is unwrapped to a non-Optional
     int bar = temp; // ✅ This is OK
@@ -116,7 +116,7 @@ fn void? test()
 ## ⚠️ Optionals affect types and control flow
 
 ### Optionals in expressions produce Optionals
-Use an Optional anywhere in an expression the resulting
+If you use an Optional anywhere in an expression, the resulting
 expression will be an Optional too.
 ```c3
 import std::io;
@@ -154,7 +154,7 @@ fn void main(String[] args)
 
 ### Functions conditionally run when called with Optional arguments
 
-When calling a function with an Optionals as arguments,
+When calling a function with Optionals as arguments,
 the result will be the first Excuse found looking left-to-right.
 The function is only executed if all Optional arguments
 have a result.
@@ -170,7 +170,7 @@ fn int test(int input, int input2)
 
 fn void main(String[] args)
 {
-    int? first_optional = io::FILE_NOT_FOUND?;
+    int? first_optional = io::FILE_NOT_FOUND~;
     int? second_optional = 7;
 
     // Return first excuse we find

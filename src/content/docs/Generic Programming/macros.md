@@ -151,16 +151,18 @@ macro usz @offset($Type, #field)
 
 ### Declaration attributes
 
+Consider these two examples comparing declaration attribute syntax in C vs C3:
+
 ```c
 // C Macro
-#define PURE_INLINE __attribute__((pure)) __attribute__((always_inline))
-int foo(int x) PURE_INLINE { ... }
+#define DEPRECATED_INLINE __attribute__((deprecated)) __attribute__((always_inline))
+int foo(int x) DEPRECATED_INLINE { ... }
 ```
 
 ```c3
 // C3 Macro
-attrdef @NoDiscardInline = { @nodiscard @inline };
-fn int foo(int) @NoDiscardInline { ... }
+attrdef @DeprecatedInline = @deprecated, @inline;
+fn int foo(int) @DeprecatedInline { ... }
 ```
 
 ### Declaration macros
@@ -192,22 +194,29 @@ macro @check(#expr)
 
 ## Top level evaluation
 
-Script languages, and also upcoming languages like *Jai*,
-usually have unbounded top level evaluation.
-The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
+Scripting languages usually have unbounded top level evaluation. The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
 
-In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or
-disable declarations. This makes the code easier to read, but at the cost of expressive power.
+In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or disable declarations and a handful of other somewhat limited compile time evaluation features (e.g. `$assert`, etc). This makes the code easier to read, but comes at the cost of expressive power. However, C3 makes this tradeoff for a reason:
+
+Preventing top level compile time evaluation helps prevent lots of declarations from popping into existence seemingly by magic, which is a common source of codebase intelligibility degrading over time in C and C++. By restricting the system to only either including or removing those declarations that are or aren't applicable, via `@if`, C3 makes it so that you still get conditional compilation and macros but with much less bewildering "magic". This also allows IDE's to effectively work with C3 source code despite its extensive macro system.
+
+In effect, top level declarations become always *visible* in C3, regardless of whether they are included or removed, whereas in C and C++ unbounded invisible declarations may occur, causing code to become increasingly opaque and riddled with seemingly indecipherable "magic" and numerous variables and constants seemingly coming from nowhere.
+
+Local function scopes in contrast have the full range of [C3's compile time evaulation features](/generic-programming/compiletime/) available though, which are arguably often more expressive and pleasant to use than C and C++'s equivalents for many use cases.
 
 ## Macro declarations
 
-A macro is defined using `macro <name>(<parameters>)`. All user defined macros use the @ symbol if they use the `$` or `#` parameters.
+A macro is defined using the syntax `macro <return_type> <name>(<parameters>)`. Specifying the return type of a macro is optional and if omitted the return type is inferred but must always be well defined (hence different paths cannot return different types, etc). 
 
-The parameters have different sigils:
-`$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated,
-but is bound to where it was defined. `@` is required on macros that use `#` parameters or trailing macro bodies.
+The parameters have different sigils that must prefix their names where applicable: `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, but is bound to where it was defined.
 
-A basic swap:
+Macros that use any expression parameters (`#`) or trailing macro bodies (`@body(...)`) must have a name that begins with `@`. The reason is that macros which *don't* use such features can be thought of as being essentially function-like, without any surprising behavior such as lazily implementing expressions or (as is the case of macros with trailing bodies) essentially creating a new type of statement. 
+
+The `@` warns the reader of a macro call of the possibility that the call may be doing more "magic" or may be more prone to bugs than if the macro lacked the `@`. Thus, unlike most languages, C3 enables the programmer to choose between more safe or more expressive macros and to make that choice immediately clear to the reader.
+
+Note that `$` parameters (unlike `#` and `@body` parameters) do *not* cause a macro to need a `@` prefix.
+
+For example, here's a basic swap written as a macro instead of using pointers, which makes it potentially more efficient by avoiding pointer indirection overhead:
 
 ```c3
 <*
@@ -338,7 +347,7 @@ fn void test()
 
 ## Macros returning values
 
-A macro may return a value, it is then considered an expression rather than a statement:
+A macro may return a value, in which case it is then considered an expression rather than a statement:
 
 ```c3
 macro square(x)
@@ -375,7 +384,7 @@ The maximum recursion depth is limited to the `macro-recursion-depth` build sett
 ## Macro vaargs
 
 Macros support the typed vaargs used by C3 functions: `macro void foo(int... args)` and `macro void bar(args...)`
-but it also supports a unique set of macro vaargs that look like C style vaargs: `macro void baz(...)`
+but also support a unique set of macro vaargs that look like C-style vaargs: `macro void baz(...)`.
 
 To access the arguments there is a family of $va-* built-in functions to retrieve
 the arguments:
@@ -396,7 +405,7 @@ $endif
 
 ### `$vacount`
 
-Returns the number of arguments.
+Returns the number of arguments passed into the macro's vaarg list.
 
 ### `$vaarg`
 
@@ -412,21 +421,21 @@ e.g. `$foo = $vaconst[1]`. This corresponds to `$` parameters.
 ### `$vaexpr`
 
 Returns the argument as an unevaluated expression. Multiple uses will
-evaluate the expression multiple times, this corresponds to `#` parameters.
+evaluate the expression multiple times. This corresponds to `#` parameters.
 
 ### `$vatype`
 
 Returns the argument as a type. This corresponds to `$Type` style parameters,
-e.g. `$vatype(2) a = 2`
+e.g. `$vatype[2] a = 2`.
 
 ### `$vasplat`
 
 `$vasplat` allows you to paste the vaargs in the call into another call. For example,
-if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`.
-You can even extract provide a range as the argument: `$vasplat[2..4]` (in this case, this would paste in
-arguments 2, 3 and 4).
+if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`. 
 
-Nor is it limited to function arguments, you can also use it with initializers:
+You can even extract a range of arguments from the splat: `$vasplat[2..4]`. In this case, doing so would paste in arguments 2, 3 and 4.
+
+Nor is `$vasplat` limited to function arguments. You can also use `$vasplat` within initializers. For example:
 
 ```c3
 int[*] a = { 5, $vasplat[2..], 77 };

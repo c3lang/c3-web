@@ -129,9 +129,7 @@ fn void main()
 
 (see [Vectors](/language-common/vectors) for more info.)
 
-**A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`, the element type may also only
-be of integer, float, bool or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetics
-available on the element type is available on the vector and is done element wise:
+**A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`. The element type may also only be of integer, floating point, `bool` or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetic operators available on the element type are also available on the vector as a whole and are performed element-wise, thus enabling more convenient vector math. For example:
 
 ```c3
 int[<2>] pos = { 1, 3 };
@@ -139,7 +137,7 @@ int[<2>] speed = { 5, 7 };
 pos += speed;              // pos is now { 6, 10 }
 ```
 
-Swizzling is also supported:
+Swizzling (shorthand for rearranging vector components, which is commonly used in graphics and game programming) is also supported:
 
 ```c3
 int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
@@ -186,10 +184,7 @@ Regardless of how they are allocated, they can be freed using `free()`
 
 **Q:** How does the temporary allocator work?
 
-**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to
-`malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are free when pool of temporary
-objects are released. You use the `@pool()` macro to create a temporary allocation scope. When execution exits
-this scope, the temporary objects are all freed:
+**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to `malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are freed when the entire pool (a.k.a. arena) of temporary objects is released all at once (making it both very easy to use and extremely performant). You use the `@pool()` macro to create a temporary allocation scope. When execution exits this scope, the temporary objects within it are all freed automatically. For example:
 
 ```c3
 @pool()
@@ -230,23 +225,22 @@ Allocator temp = tmem;
 
 **Q:** How do I call a C function from C3?
 
-**A:** Just copy the C function definition and prefix it with `extern` (and don't forget the `fn` as well).
+**A:** Just copy the C function declaration and prefix it with `extern` (and don’t forget the `fn` as well).
 
 Imagine for example that you have the function `double test(int a, void* b)`. To call it from C3 just declare
 `extern fn double test(CInt a, void* b)` in the C3 code.
 
-**Q:** My C function / global has a name that doesn't conform to the C3 name requirements, just `extern fn` doesn't
-work.
+**Q:** My C function / global has a name that doesn't conform to the C3 name requirements. Just `extern fn` doesn't work.
 
-**A:** In this case you need to give the function a C3-compatible name and then use the `@extern` attribute to
+**A:** In this case you need to give the function a C3-compatible name and then use the `@cname` attribute to
 indicate its actual external name. For example, the function `int *ABC(void *x)` could be declared in the C3 code as
-`extern fn int* abc(void* x) @extern("ABC")`.
+`extern fn int* abc(void* x) @cname("ABC")`.
 
 There are many examples of this in the `std::os` modules.
 
 ## Patterns
 
-**Q:** When do I put functionality in method and when is it a free function?
+**Q:** When should I put functionality in a method versus a free function?
 
 **A:** In the C3 standard library, free functions are preferred unless the function is only acting on the particular
 type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s", name)` over
@@ -290,9 +284,7 @@ macro void Obj.func(&self, ...)
 }
 ```
 
-The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`.
-(The use of `&&&` is the same as `&&` except the right hand side is *lazily* evaluated,
-in this case, it only is checked if $vacount is `1`)
+The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`. (The use of `&&&` is the same as `&&` except that the right hand side is lazily evaluated. In this case, it only is checked if `$vacount` is `1`.)
 
 ## Platform support
 
@@ -313,7 +305,7 @@ This should yield an `out.wasm` file, but there is no CI running on the WASM cod
 and no one is really using it yet, so the quality is low.
 
 We do want WASM to be working really well, so if you're interested in
-writing something in WASM - please reach out to the developer team and we'll
+writing something in WASM please reach out to the C3 development team and we'll
 help you get things working.
 
 
@@ -342,10 +334,10 @@ fn int test()
 
 **Q:** Why does C3 require that types start with upper case but functions with lower case?
 
-**A:** C grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
+**A:** C's grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
 exist as well, such as delayed parsing. It is also possible to make it unambiguous using infinite lookahead.
 
-However, all of those methods makes it much harder for tools to search the source code accurately. By making
+However, all of those methods make it much harder for tools to search the source code accurately. By making
 the naming convention part of the grammar, C3 is straightforward to parse with a single token lookahead.
 
 **Q:** Why are there no closures and only non-capturing lambdas?
@@ -361,9 +353,7 @@ while C3 isn't the best, no real better alternative has come along.
 
 **Q:** Why are there no static methods?
 
-**A:** Static methods creates a tension between free functions in modules and functions namespaced by the type.
-Java for example, resolves this by not having free functions at all. C3 solves it by not having static methods (nor
-static variables). Consequently more functions becomes part of the module rather than the type.
+**A:** Static methods create a tension between free functions in modules and functions namespaced by the type. Java for example, resolves this by not having free functions at all. C3 resolves it by not having static methods (nor static variables). Consequently more functions become part of the module rather than the type.
 
 **Q:** Why do macros with trailing bodies require `;` at the end?
 
@@ -387,18 +377,90 @@ int a = @test() {} + @test() {};
 *b = 123;
 ```
 
-C3 strives for a simple grammar, and so the trade-off having to use `;` was a fairly
-low prices to pay for this feature.
+C3 strives for a simple grammar, and so the trade-off of having to use `;` was a fairly low price to pay for this feature.
+
+**Q:** Why does C3 choose to call Optional "Optional" and not "Result"?
+
+**A:** C3's optional has properties both from the traditional "Maybe" and "Result". While it carries two possible values,
+like a Result, it is trivially composable in the way optionals are. In the "Result" case, we cannot implicitly combine
+`Result<int, MyError>` and `Result<int, YourError>`, which also often reflected in the support for them.
+
+For the "Maybe" it is trivial, so we see how languages do things like "Optional Chaining". C3 even goes beyond that, and
+implements implicit "flat map" for operations with its Optional.
+
+For Result or multiple returns, it's also not guaranteed how big the error value can be. For C3 the size is defined to be pointer-sized to minimize overhead.
+
+This means that using an Optional is not heavier than using a "Maybe" or even a boolean return in some other language.
+
+For these reasons, the Optional leans more towards "Maybe" usage than "Result", and the name was chosen to nudge towards the
+correct use.
+
+**Q:** Why doesn't C3 have a tagged union?
+
+**A:** Tagged unions are great, but there is still discussion what it should look like if it was included in C3.
+
+See this issue: https://github.com/c3lang/c3c/issues/829
+
+**Q:** Why is the declaration of arrays swapped compared to C?
+
+**A:** The way C3 types are declared is the most inside one is to the left, the outermost to the right.
+Indexing or dereferencing will peel off the rightmost part.
+
+C uses a different way to do this: we place `*` and `[]` not on the type but on the variable, in the order it must be unpacked.
+So given `int (*foo) x[4]` we first dereference it (from inside) int[4], then index from the right.
+If we wanted to extract a standalone type from this, we'd have `int(*)[4]` for a pointer to an array of 4 integers.
+For "left is innermost", the declaration would instead be `int[4]*`. If left-is-innermost we can easily describe a pointer
+to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that be "int*(*)[4]",
+which is generally regarded as less easy to read, not the least because you need to think of which of * or [] has priority.
+
+In C3, we can have a variable `List{int}[3] x`, which is an array of 3 `List{int}`. If we do `x[1]` we will get an element of
+`List{int}`, from the middle element in the array. If we then further index this with [5], like `x[1][5]` we will get
+the 5th element of that list.
+
+**Q:** Why does C3 use `::` use to separate namespaces and not `.`?
+
+**A:** `.` is nice to type and read, but there are challenges. In particular, C3's "path shortening", where you're allowed to write
+`file::open("foo.txt")` rather than having to use the full `std::io::file::open("foo.txt")` is only made possible because
+the namespace is distinct at the grammar level. If we play with changing the syntax because it isn't as elegant as
+`file.open("foo.txt")`, we'd have to pay by actually writing `std.io.file.open("foo.txt")` or change to a flat module system.
+
+One can also note that if `.`is used, then something like `file.open("foo.txt")` would be ambiguous if there was both a module `file`
+and a variable `file` in the scope.
+
+## Choices in tooling
+
+**Q:** Why does C3 have comments in the default `project.json`?
+
+**A:** This was done as a way for users to understand what the various fields were used for. While this would more properly be
+a `.json5` file, many json parsers could ignore comments anyway. As tooling improves, comments will be phased out. Already it's
+possible to manipulate the project file from the command line.
+
+**Q:** Why does C3 use JSON for `project.json`, why not YAML, TOML or something else?
+
+**A:** JSON is a format with a parser in almost any language, plus it is straightforward to write a parser for.
+
+Originally C3 used TOML, which is great for manual configs. However, we moved away from this exactly because the project files
+should be easily generated and manipulated by tools, with no strict requirement that formatting remains the same.
+
+If tools manipulated hand-written TOML, there would be an expectation to retain formatting and comments in the same style, which
+would put a burden on tool writers.
+
+**Q:** Will C3 have a package manager?
+
+**A:** There will be some standard API for uploading and downloading C3 libraries. However, it will not be a full dependency manager.
+In an attempt to limit over-use of dependencies, each dependency will need to be downloaded separately, rather than automatically.
+
+See for example the discussion here: https://github.com/c3lang/c3c/issues/2077
 
 ## Cross-compiling To Windows From Linux
-**Q:** How do I cross-compile my C3 program For Windows On Linux?
+**Q:** How do I cross-compile my C3 program for Windows on Linux?
 
 **A:** With the C3 compiler you can specify which target you would like to cross-compile to.
 For Windows the following target would be needed:
 
 `c3c compile main.c3 --target windows-x64`
 
-*You need the MSVC SDK Files, which includes the Windows SDK to be able to cross-compile to Windows.*
+*You need the MSVC SDK Files, which includes the Windows SDK, to be able to cross-compile to Windows.*
 
 To get the MSVC SDK Files, head to your C3 directory and run the following command:
 
@@ -406,7 +468,7 @@ To get the MSVC SDK Files, head to your C3 directory and run the following comma
 
 Running this command should generate a msvc_sdk directory in your main C3 directory.
 
-If running this command returns an error, your Linux distribution is more than likely missing the requried packages needed for generating this msvc folder
+If running this command returns an error, your Linux distribution is more than likely missing the required packages needed for generating this MSVC folder.
 
 Run the following command depending on your distro:
 - **Ubuntu:** `sudo apt install msitools`

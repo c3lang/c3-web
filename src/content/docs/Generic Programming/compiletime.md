@@ -11,11 +11,9 @@ it is possible to perform limited compile time execution.
 ### Compile time values
 
 During compilation, global constants are considered compile time values, as are any
-derived constant values, such as type names and sizes, variable alignments etc.
+derived constant values, such as type names and sizes, variable alignments, etc.
 
-Inside of a macro or a function, it is possible to define mutable compile time variables. Such
-local variables are prefixed with `$` (e.g. `$foo`). It is also possible to define local *type* variables,
-that are also prefixed using `$` (e.g. `$MyType` `$ParamType`).
+Inside of a macro or a function, it is possible to define mutable compile time variables. Such local variables are prefixed with `$` (e.g. `$foo`). It is also possible to define local *type* variables, which are also prefixed using `$` (e.g. `$MyType`, `$ParamType`, etc).
 
 Mutable compile time variables are *not* allowed in the global scope.
 
@@ -60,7 +58,7 @@ $endif
 
 ### `$if` and `$switch`
 
-`$if <const expr>:` takes a compile time constant value and evaluates it to true or false.
+`$if <const expr>:` takes a compile time constant value and evaluates it to see if it is true or false. If it is true, then the code in the "then" branch is retained and semantically checked, while the `$else` branch – if present – is discarded. And conversely, if the result is false, then the "then" branch is discarded and the `$else` branch is retained. Here are some basic usage examples:
 
 ```c3
 macro @foo($x, #y)
@@ -102,7 +100,7 @@ macro @foo($x, #y)
 }
 ```
 
-Switching without argument is also allowed, which works like an if-else chain:
+Switching without passing a value argument to `$switch` itself is also allowed (much like [normal `switch`](/language-fundamentals/statements/#switch-cases-with-runtime-evaluation)), which works like an if-else chain in that it permits arbitrary conditional expressions per case instead of only allowing a specific constant per case:
 
 ```c3
 macro @foo($x, #y)
@@ -174,8 +172,7 @@ It's not possible to compile partial statements.
 
 ### Compile time macro execution
 
-If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate
-any other statements than returns, then the macro will be completely compile time executed.
+If a macro only takes compile time parameters, that is only `$`-prefixed parameters, and then does not generate any other statements than returns, then the macro will be completely compile time executed.
 
 ```c3
 macro @test($abc)
@@ -186,8 +183,7 @@ macro @test($abc)
 const int MY_CONST = @test(2); // Will fold to "4"
 ```
 
-This constant evaluation allows us to write some limited compile time code. For example, this
-macro will compute Fibonacci at compile time:
+This constant evaluation allows us to write some limited compile time code. For example, this macro will compute Fibonacci numbers at compile time:
 
 ```c3
 macro long @fib(long $n)
@@ -200,13 +196,11 @@ macro long @fib(long $n)
 }
 ```
 
-It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1`
-is not be considered to be a constant expression, even if the actual argument to the macro was a constant.
-This limitation is deliberate, to offer control over what is compiled out and what isn't.
+It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1` is not considered to be a constant expression, even if the actual argument to the macro was a constant. This limitation is deliberate, to offer control over what is compiled out and what isn't.
 
 ### Conditional compilation at the top level using `@if`
 
-At the top level, conditional compilation is controlled using with `@if` attributes on declarations
+At the top level (where globals are declared; such as functions, variables, etc), conditional compilation is controlled by appending `@if` attributes onto declarations:
 
 ```c3
 fn void foo_win32() @if(env::WIN32)
@@ -221,15 +215,34 @@ struct Foo
 }
 ```
 
-The argument to `@if` must be possible to resolve to a constant at compile time. This means that argument
-may also be a compile time evaluated macro:
+The argument to `@if` must be resolvable to a constant at compile time. This means that the argument may also be a compile time evaluated macro:
 
 ```c3
 macro bool @foo($x) => $x > 2;
 
-int x @if(@foo(5)); // Will be included
-int y @if(@foo(0)); // Will not be included
+int x @if(@foo(5));  // Will be included
+int y @if(@foo(0));  // Will not be included
 ```
+
+In contrast though, attempts to use more general-purpose compile-time features such as `$if` at the top level will cause compilation failure. Compare:
+
+```c3
+// Compiles:
+fn void func_a() @if(true) 
+{ 
+	//...
+}
+
+// Doesn't compile:
+$if true:
+fn void func_b()
+{ 
+	//...
+}
+$endif
+```
+
+For more information about the motivation and rationale behind this design choice to use `@if` (and a limited subset of other compile-time constructs such as `$assert`) at the top level for declarations instead of allowing arbitrary compile-time evaluation, see the related discussion about why in [the part of the macro page that covers top level `@if`](/generic-programming/macros#top-level-evaluation).
 
 #### Evaluation order of top level conditional compilation
 
@@ -258,7 +271,7 @@ To read more about all the fields available at compile time, see the page on [re
 
 ## Compile time functions
 
-A set of compile time functions are available at compile time:
+The following is a list of functions available at compile time:
 
 ### `$alignof`
 
@@ -273,24 +286,12 @@ Check a condition at compile time.
 $assert($arg > 3);
 ```
 
-### `$assignable`
-
-Check if an expression is assignable to the given type, e.g. `Type x = expr;` would be valid.
-
-```c3
-fn void main()
-{
-    int x;
-    $assert($assignable(x, long));
-    $assert($assignable(3, char));      // Allowed even though the type of 3 is int
-    $assert(!$assignable(x, void*));    // int -> void* not implicitly available
-    $assert(!$assignable(x + x, long)); // Ambiguous widening
-}
-```
-
 ### `$defined`
 
-Returns true if a type or identifier is defined.
+This highly versatile compile time function returns true if a type or identifier is defined. It can also be used on an expression, returning "true" if the outermost expression is valid. Similarly, it can be used with a declaration, e.g. `$defined(int a = foo)` to verify that it's valid to declare a variable with the given argument.
+
+However, be aware that `$defined` is for handling well-defined expressions, not arbitrary syntax. Invalid code placed inside `$defined` will cause compilation to fail, not return false.
+
 See [reflection](/generic-programming/reflection/#defined).
 
 ### `$echo`
@@ -300,7 +301,24 @@ Print a message to stdout when compiling the code.
 ### `$embed`
 
 Embed binary data from a file.
-See [expressions](/language-fundamentals/expressions/#including-binary-data).
+See [the "including binary data" secton of the expressions page](/language-fundamentals/expressions/#including-binary-data) to see a few different usage examples.
+
+This is useful for bundling any necessary data inside the executable or library itself so that there is no need for managing separate files when the program is redistributed to users. Such embedded data is fixed at compile time though, and so `$embed` shouldn't be used for files that need to persist changes *between invocations* of the program (e.g. work documents, saved games, etc). However, once loaded, `$embed` data is just arbitrary run-time data and thus you can still create and modify whatever other data you want based on it during each program run.
+
+For example:
+
+```
+char[*] img_data = $embed("some_image.png");
+
+import std::io;
+
+fn void main()
+{
+    io::printn(img_data);
+    // Prints an image's raw data
+    // as an array of unsigned bytes.
+}
+```
 
 ### `$error`
 
@@ -323,8 +341,6 @@ fn void main()
 
 ### `$evaltype`
 
-Converts a compile time string to the corresponding type.
-See [reflection](/generic-programming/reflection/#evaltype).
 
 ### `$exec`
 
@@ -336,22 +352,40 @@ Execute a script at compile time and include the result in the source code.
 Get the external name of a symbol.
 See [reflection](/generic-programming/reflection/#extnameof).
 
+External names are the names written into the symbol table of the executable or library binary, which subsequently may later be used by other programs to call into the binary by linking to those names, such as via foreign function interfaces (FFI) from another language or via direct use of the binary interface (such as enabled by the ABI and library compatibility of C and C3). 
+
+The external name of a symbol in the built binary can be set by attaching an `@export("<intended_symbol_name>")` attribute.
+
+On Linux, the `nm` shell command can be used to view the symbol table of a binary directly, thus enabling determination of what names a foreign program would see when looking at the binary. For example, try running `nm path/to/binary &> nm_out.txt` then viewing the `nm_out.txt` file. The `&>` combines both normal (`stdout`) and error (`stderrr`) output into the file, whereas just `>` would redirect only normal (`stdout`) output. 
+
+On Windows, you can try `dumpbin /SYMBOLS` for debug builds, `dumpbin /EXPORTS` for libraries, or `dumpbin /IMPORTS` for executables, but it may not help as much since large parts of the symbol table may be missing and hence misleading. There may also be tools available only in Visual Studio or associated with it, since Microsoft designs it that way intentionally to encourage programs to be built the way Microsoft wants.
+
+On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before may help.
+
 ### `$feature`
 
-Check if a given feature is enabled.
+Check if a given feature is enabled. Features are passed using `-D <FEATURE_NAME>` on the command line.
 
 ### `$is_const`
 
-Check if the expression is constant at compile time.
+Check if the expression is constant at compile time. This is typically used in specialized macros when testing expression parameters like `#foo`.
 
 ### `$include`
 
-Includes a file into the current file at the top level.
+Includes a file into the current file at the top level as raw text, resulting in that file's text being compiled as if directly written into the location of the `$include`.
+
+As an important limitation, the text may not include a `module` statement.
+
+Note that if pure data inclusion is what you want then `$embed` may be more helpful than `$include`, and if you want dynamic data, `$exec` may be better.
 
 ### `$nameof`
 
 Get the local name of a symbol.
 See [reflection](/generic-programming/reflection/#nameof-1).
+
+Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
+
+For example, `$nameof(io::printn)` is `printn`.
 
 ### `$offsetof`
 
@@ -362,6 +396,10 @@ See [reflection](/generic-programming/reflection/#offsetof).
 
 Get the qualified name of a symbol.
 See [reflection](/generic-programming/reflection/#qnameof).
+
+Qualified names are the full ("absolute") namespace paths needed to reach a symbol.
+
+For example, `$qnameof(io::printn)` is `std::io::printn`.
 
 ### `$vacount`
 
@@ -379,7 +417,9 @@ Return a vaarg as an `#expr` parameter.
 
 ### `$vasplat`
 
-Expand the vaargs in an initializer list or function call.
+Expand the vaargs into an initializer list or function call, thus providing a way of passing part or all of the vaarg list's arguments onward.
+
+To expand only part of a vaarg list rather than all of it, use `$vasplat[<min>..<max>]` with the intended indices instead of just `$vasplat`. See the section on [slicing arrays](/language-common/arrays/#slicing-arrays) to learn more about the wide variety of ways that such index ranges can be formed.
 
 ### `$vatype`
 
@@ -391,12 +431,53 @@ Return the size of an expression.
 
 ### `$stringify`
 
-Turn an expression into a string. Typically used with `#foo` parameters.
+Turn an expression into a string. This is typically used with expression parameters (`#` prefixed parameters) in macros.
+
+Such stringification is very useful for debug printing and code generation, among other things. For example, just to illustrate why:
+
+```c3
+import std::io;
+
+macro @show(#expr)
+{
+    io::printfn("%s == %s", $stringify(#expr), #expr);
+}
+macro @announce(#expr)
+{
+    io::printn($stringify(#expr));
+    #expr;
+}
+
+fn void main()
+{
+    int num = 0;
+    @show(num);
+    @announce(num += 5);
+    @show(num);
+}
+```
+
+This elminates redundancy when print debugging. This code could be refined to be better, such as by making `@show` handle [Optionals](/language-common/optionals-essential/#what-is-an-optional) correctly, but the simple version above is less distracting. However, as you can see, code can be annoted for temporary print debugging very easily by using `$stringify` based expression macros. 
 
 ### `$typeof`
 
-Get the type of an expression (without evaluating it).
+Get the type of an expression at compile time, without ever evaluating it at run time and thus without causing side effects.
+
+For example, the following C3 test passes:
+
+```
+fn void typeof_has_no_side_effects() @test
+{
+    int minutes_left = 20;
+    $assert($typeof(minutes_left += 10).nameof == "int");
+    assert(minutes_left == 20);
+    
+    // The state of `minutes_left` above never changes.
+}
+```
 
 ### `$typefrom`
 
-Get a type from a compile time constant `typeid`.
+Get a type from a compile time constant `typeid`. It can also convert a compile-time string to the corresponding type.
+
+See [reflection](/generic-programming/reflection/#typefrom).

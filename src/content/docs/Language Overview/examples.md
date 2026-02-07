@@ -235,7 +235,7 @@ fn void? test(int x)
     defer try io::print("X");
     defer catch io::print("B");
     defer (catch err) io::printf("%s", err);
-    if (x == 1) return NOT_FOUND?;
+    if (x == 1) return NOT_FOUND~;
     io::print("!");
 }
 
@@ -321,7 +321,7 @@ fn void example_cb()
 
 ## Error Handling
 
-Errors are handled using optional results, denoted with a '?' suffix. A variable of an optional
+Errors are handled using optional results, denoted with a '~' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` enum value.
 
 ```c3
@@ -331,7 +331,7 @@ fn double? divide(int a, int b)
 {
     // We return an optional result of type DIVISION_BY_ZERO
     // when b is zero.
-    if (b == 0) return DIVISION_BY_ZERO?;
+    if (b == 0) return DIVISION_BY_ZERO~;
     return (double)a / (double)b;
 }
 
@@ -521,7 +521,7 @@ fn int printme(int a)
 
 fn int test2()
 {
-    return @foo2(printme(2)); // Returns 2 and prints "2" twice.
+    return @foo2(printme(2)); // Returns 4 and prints "2" twice.
 }
 ```
 
@@ -634,15 +634,16 @@ fn void main()
 }
 ```
 
-Read more about operator overloading [here](generic-programming/operator-overloading/).
+Read more about operator overloading [here](/generic-programming/operator-overloading/).
 
-## Generic Modules
+## Generics
 
-Generic modules implements a generic system.
+Declarations may be generic.
 
 ```c3
-module stack {Type};
-struct Stack
+module stack;
+
+struct Stack <Type>
 {
     usz capacity;
     usz size;
@@ -675,7 +676,7 @@ fn bool Stack.empty(Stack* this)
 Testing it out:
 
 ```c3
-alias IntStack = Stack {int};
+alias IntStack = Stack{int};
 
 fn void test()
 {
@@ -696,7 +697,7 @@ fn void test()
 }
 ```
 
-Read more about generic modules [here](/generic-programming/generics/)
+Read more about generics [here](/generic-programming/generics/)
 
 ## Dynamic Calls
 

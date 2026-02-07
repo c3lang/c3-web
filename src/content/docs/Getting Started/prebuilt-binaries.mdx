@@ -67,8 +67,6 @@ c3c compile ./hello.c3
 ## Installing on Arch Linux
 There is an AUR package for the c3c compiler : [c3c-git](https://aur.archlinux.org/packages/c3c-git).
 
-Due to some issues with the LLVM packaged for Arch Linux, the AUR package will download and use LLVM 16 from Ubuntu-23.04 to compile the c3c compiler.
-
 You can use your AUR package manager:
 ```bash
 paru -S c3c-git
@@ -83,12 +81,33 @@ cd c3c-git
 makepkg -si
 ```
 
-## Install a linker
-You will also need a *linker*, which is a program that C3 uses to join its compiled outputs into one file.
-It is likely you already have one. If you get linker errors, you should install a C compiler, which will typically include a linker.
-A C compiler is also useful because some C3 packages depend on C code and will need a C compiler.
+## Troubleshooting
 
-Linux users should generally install GCC or Clang, according to their distribution's documentation. For example, if you use Ubuntu, you can install the `gcc` package:
+**Note:** If you get an error like `No module named 'std::io' could be found`, you may need to set the `C3C_LIB` environment variable to point to the standard library location:
+
+**Bash/Zsh:**
+```bash
+export C3C_LIB=/path/to/c3c/lib
+```
+
+**Fish:**
+```fish
+set -gx C3C_LIB /path/to/c3c/lib
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:C3C_LIB = "C:\path\to\c3c\lib"
+```
+
+### "cc: not found"
+On Linux and MacOS, C3 uses the available C compiler to link with the correct libraries. While C3 contains a built-in linker, 
+it is likely that your system will lack a complete environment with unless a C compiler is available.
+
+Linux users should generally install GCC or Clang, according to their distribution's documentation. 
+For example, if you use Ubuntu, you can install the `gcc` package:
 ```bash
 sudo apt-get install gcc
 ```
+
+On MacOS you can either install XCode or download the stand-alone command-line tools: https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/

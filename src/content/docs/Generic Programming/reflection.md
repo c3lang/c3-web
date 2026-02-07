@@ -7,15 +7,30 @@ sidebar:
 
 C3 allows both compile time and runtime reflection.
 
-During compile time the type information may be directly used as compile time constants, the same data is then available dynamically at runtime.
+During compile time, some type information is available in the form of compile time constants associated with each type.
+
+Runtime type information is also available by retrieving a `typeid` from a runtime object (such as from an object of type `any` via `<runtime_obj>.type` most commonly) and then comparing the properties of the returned runtime `typeid` against the corresponding properties (if any) of the compile time equivalent `<type>.typeid`. Note however that run time `typeid`s currently have [a much smaller set of available properties](/language-overview/types/#typeid-fields). 
+
+See [the documentation about the `any` type](/language-overview/types/#the-any-type) for more information if you want or need runtime reflection. Such runtime info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`) to implement runtime polymorphism.
 
 ## Compile time reflection
 
-During compile time there are a number of compile time fields that may be accessed directly.
+During compile time there are many compile time fields that may be accessed using "dot notation" of the form `<type>.<property>`. That works for types, but in contrast when you want to retrieve type information about *values* or other expressions then try [the `$` functions](/generic-programming/reflection/#compile-time-functions) instead.
+
+For example, notice that `<type>.sizeof` and `$sizeof(<value>)` do not operate on the same kinds of entities. The former is for types whereas the later is for values.
+
+They can nonetheless be used to achieve similar effects though. For example, the following assertions all pass:
+
+```c3
+$assert(short.sizeof == $sizeof((short)0));
+
+short sh = 0;
+$assert($sizeof(sh) == $typeof(sh).sizeof);
+```
 
 ### Type properties
 
-It is possible to access properties on the type itself:
+Here are the property-like ("dot notation") constants associated with each type:
 
 - `alignof`
 - `associated`
@@ -39,6 +54,8 @@ It is possible to access properties on the type itself:
 - `sizeof`
 - `typeid`
 - `values`
+
+Many of these properties are very useful for writing generics macros and contracts. 
 
 #### `alignof`
 
@@ -297,6 +314,8 @@ $endif
 ```
 
 The full list of what `$defined` can check:
+- `SomeType a = <expr>` - checks if `<expr>` can be used to initialize a variable of type `SomeType`
+- `var $a = <expr>` - checks if `<expr>` can be compile-time evaluated.
 - `*<expr>` - checks if `<expr>` can be dereferenced, `<expr>` must already be valid
 - `<expr>[<index>]` - checks if indexing is valid, `<expr>` and `<index>` must
     already be valid, and when possible to check at compile-time if `<index>`
@@ -311,7 +330,7 @@ The full list of what `$defined` can check:
 - `&<expr>` - check if you can take the address of `<expr>`, `<expr>` must
     already be valid
 - `&&<expr>` - check if you can take the
-    [temp address](https://c3-lang.org/language-fundamentals/expressions/#_top)
+    [temporary address](/language-fundamentals/expressions/#_top)
     of `<expr>`, `<expr>` must already be valid
 - `$eval(<expr>)` - check if the [`$eval`](#eval) evaluates to something valid,
     `<expr>` must already be valid
@@ -423,13 +442,29 @@ $typeof(a)* x = allocate_bytes($sizeof(a));
 
 #### `$stringify`
 
-Returns the expression as a string. It has a special behaviour for macro expression parameters,
-where `$stringify(#foo)` will return the expression contained in `#foo` rather than simply return
-"#foo"
+Returns the expression as a string. `$stringify` has a special behaviour for handling macro expression parameters, where `$stringify(#foo)` will return the expression contained in `#foo` as a string, exactly as written in the macro call's arguments, rather than simply return `"#foo"`.
+
+Thus, for example:
+
+```c3
+import std::io;
+
+macro @describe(#expr)
+{
+	io::printfn("The value of `%s` is `%s`.", $stringify(#expr), #expr);
+}
+
+fn void main()
+{
+	@describe(isz.sizeof);
+  //Prints:
+  //  The value of `isz.sizeof` is `8`.
+}
+```
 
 #### `$typeof`
 
-Returns the type of an expression or variable as a type itself.
+Returns the type of an expression or variable.
 
 ```c3
 Foo f;

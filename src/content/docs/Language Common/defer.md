@@ -2,7 +2,7 @@
 title: Defer and Cleanup
 description: Defer and Cleanup
 sidebar:
-    order: 66
+    order: 67
 ---
 
 # Defer
@@ -96,7 +96,7 @@ fn void? test()
 {
     defer try io::printn("❌ defer try not run");
     // Returned an Optional Excuse
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fn void main(String[] args)
@@ -135,16 +135,19 @@ import std::core::mem;
 
 fn char[]? test()
 {
-    char[] data = mem::new_array(char, 12)!;
-
+    char[] data = mem::new_array(char, 12);
+    
     defer (catch err)
     {
-        io::printfn("Excuse found: %s", err)
-        (void)free(data);
+        io::printfn("Excuse found: %s", err);
+        free(data);
     }
 
     // Returns Excuse, memory gets freed
-    return io::FILE_NOT_FOUND?;
+    if (!test_something(data)) return io::FILE_NOT_FOUND~;
+
+    // Returns data, defer catch doesn't run.
+    return data;
 }
 ```
 
@@ -156,12 +159,12 @@ This helps to avoid unwanted memory leaks or unwanted resource usage from other 
 ```c3
 fn void? function_throws()
 {
-    return io::FILE_NOT_FOUND?;
+    return io::FILE_NOT_FOUND~;
 }
 
 fn String? test()
 {
-    char[] data = mem::new_array(char, 12)!;
+    char[] data = mem::new_array(char, 12);
 
     // ❌ Before the defer catch declaration
     // memory was NOT freed
@@ -170,7 +173,7 @@ fn String? test()
     defer (catch err)
     {
         io::printn("freeing memory");
-        (void)free(data);
+        free(data);
     }
 
     // ✅ After the defer catch declaration

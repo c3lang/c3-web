@@ -107,14 +107,14 @@ fn void va_singletyped(int... args)
     /* args has type int[] */
 }
 
-fn void va_variants_explicit(any*... args)
+fn void va_variants_explicit(any... args)
 {
-    /* args has type any*[] */
+    /* args has type any[] */
 }
 
 fn void va_variants_implicit(args...)
 {
-    /* args has type any*[] */
+    /* args has type any[] */
 }
 
 extern fn void va_untyped(...); // only used for extern C functions
@@ -124,7 +124,7 @@ fn void test()
     va_singletyped(1, 2, 3);
 
     int x = 1;
-    any* v = &x;
+    any v = &x;
     va_variants_explicit(&&1, &x, v); // pass references for non-any arguments
 
     va_variants_implicit(1, x, "foo"); // arguments are implicitly converted to anys
@@ -219,16 +219,16 @@ fn void test()
 Function return values may be *Optionals* – denoted by `<type>?` indicating that this
 function might either return an Optional with a result, or an Optional with an Excuse.
 
-For example this function might return an Excuse of type `SomeError` or `OtherResult`.
+For example, this function might return `BAD_JOSS_ERROR` or `BAD_LUCK_ERROR` if it fails to produce a valid value.
 
 ```c3
-faultdef BAD_LUCK_ERROR, BAD_JOSS_EROR;
+faultdef BAD_LUCK_ERROR, BAD_JOSS_ERROR;
 
 fn double? test_error()
 {
     double val = random_value();
-    if (val >= 0.2) return BAD_JOSS_ERROR?;
-    if (val > 0.5) return BAD_LUCK_ERROR?;
+    if (val > 0.5) return BAD_LUCK_ERROR~;
+    if (val >= 0.2) return BAD_JOSS_ERROR~;
     return val;
 }
 ```
@@ -285,8 +285,8 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with the type name and is (usually)
-invoked using dot syntax:
+Methods look exactly like functions, but are prefixed with a type name and is (usually)
+invoked using dot syntax, on an instance of the type.
 
 ```c3
 struct Point
@@ -331,6 +331,21 @@ fn bool State.may_open(State state)
 }
 ```
 
+You can add methods to all runtime types, including built-in types:
+
+```c3
+fn int int.add(int i, int other)
+{
+    return i + other;
+}
+
+fn void test()
+{
+    int i = 3;
+    int j = i.add(4);
+}
+```
+
 ### Implicit first parameters
 
 Because the type of the first argument is known, it may be left out. To indicate a pointer `&` is used.
@@ -349,14 +364,14 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 ### Restrictions on methods
 
 - Methods on a struct/union may not have the same name as a member.
-- Methods only work on `typedef`, `struct`, `union` and `enum` types.
+- Methods on enums may not have the same name as an associated value.
 - When taking a function pointer of a method, use the full name.
 - Using subtypes, overlapping function names will be shadowed.
 
 ### Guidelines on method use
 
 Methods are customary associated with Object-Oriented programming.
-In this style one will often encounter code like `some_object.run_everythin()`.
+In this style one will often encounter code like `some_object.run_everything()`.
 C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
 Both the standard library and the design of the language instead follows
 the principle that functions are used whenever the system is mutating
@@ -504,3 +519,30 @@ fn void start_hello() @init(2000)
     io::print("Hello ");
 }
 ```
+
+
+### Implementing parameter access constraints
+
+```c3
+<*
+ A read-only function
+ @param [in] value
+*>
+fn void read(int* value)
+{
+    io::printf("%d",*value);
+    // (*value)++; <- Error: 'in' parameters may not be assigned to.
+}
+
+<*
+ A write-only function
+ @param [out] buffer
+*>
+fn void write(int* buffer)
+{
+    (*buffer)++;
+    // int test = *buffer; <- Error: 'out' parameters may not be read.
+}
+```
+
+See the [contracts](https://c3-lang.org/faq/allfeatures/#contracts) for more details. 

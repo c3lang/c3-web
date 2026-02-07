@@ -26,7 +26,7 @@ fn double Foo.get(&self, usz i) @operator([])
 }
 ```
 
-It's possible to use any type as argument, such as a string:
+It's possible to use any type as the argument, such as a string:
 
 ```c3
 fn double Bar.get(&self, String str) @operator([])
@@ -39,7 +39,7 @@ Only a single `[]` overload is allowed.
 
 ### "Element ref" operator `&[]`
 
-Similar to `[]`, the operator returns a value for `&my_type[<value>]`, which may
+Similar to `[]`, the `&[]` operator returns a value for `&my_type[<value>]`, which may
 be retrieved in a different way. If this overload isn't defined, then `&my_type[<value>]` would
 be a syntax error.
 
@@ -52,7 +52,7 @@ fn double* Foo.get_ref(&self, usz i) @operator(&[])
 
 ### "Element set" operator `[]=`
 
-The counterpart of `[]` allows setting an element using `my_type[<index>] = <value>`.
+This operator, the assignment counterpart of `[]`, allows setting an element using `my_type[<index>] = <value>`.
 
 ```c3
 fn void Foo.set(&self, usz i, double new_val) @operator([]=)
@@ -69,9 +69,9 @@ to get the last element assuming the indexing uses integers.
 
 ### Enabling `foreach`
 
-In order to use a type with foreach, e.g. `foreach(d : foo)`, at a minimum methods 
+In order to use a type with foreach, e.g. `foreach(d : foo)`, at a minimum, methods 
 with overloads for `[]` (`@operator([])`) and `len` (`@operator(len)`) need to be added. 
-If `&[]` is implemented, foreach by reference is enabled (e.g. `foreach(double* &d : foo)`)
+If `&[]` is implemented, `foreach` by reference will be enabled (e.g. `foreach(double* &d : foo)`).
 
 ```c3
 fn double Foo.get(&self, usz i) @operator([])
@@ -104,7 +104,7 @@ numerical types. These overloads are limited to user-defined types.
 For numerical types, `@operator_s` (defining a symmetric operator)
 and `@operator_r` (defining a reverse operator) are available.
 
-These are only available when matching different types, for example
+These are only available when matching different types. For example,
 defining `+` between a Complex number and a double can look like this:
 
 ```c3
@@ -116,11 +116,10 @@ macro Complex Complex.add_double(self, double d) @operator_s(+)
 
 The above would match both "Complex + double" and "double + Complex",
 with the actual evaluation order of the arguments happening in 
-the expected order (Something like `get_double() + get_complex()`
-would always evaluate the arguments from left to right)
+the expected order, meaning something like `get_double() + get_complex()`
+would always evaluate the arguments from left to right.
 
-For the `@operator_r`, this is useful in the case when the evaluation
-isn't symmetric:
+As for `@operator_r`, it is useful in the case where the evaluation isn't symmetric:
 
 ```c3
 macro Complex Complex.double_sub_this(self, double d) @operator_r(-)
@@ -171,7 +170,7 @@ defined on bitstructs.
 
 ### Combined assignment operators
 
-If `+` is defined for a type, then `+=` is defined as well, and similar for the
+If `+` is defined for a type, then `+=` is defined as well, and similarly for the
 other operators. However, it is also possible to explicitly override the combined assignment
 operators to optimize those cases.
 
@@ -197,23 +196,21 @@ fn void main()
 }
 ```
 
-## Operator overloading for == and !=
+## Operator overloading for `==` and `!=`
 
-Overloading == and != is, like for arithmetics, only allowed on user defined types.
-If one is defined, the other is also implicitly defined.
+Overloading `==` and `!=` is, like overloading arithmetic operators, only allowed on user-defined types. If one of `==` or `!=` is defined, the other is also implicitly defined.
 
 :::note
 
 **Some words of caution**
 
 Operator overloading should always be written to behave in the same manner
-as with builtin types. `+` should be used for addition, not concatenation. 
-`<<` should be used for left bitshift, not to append values to an array 
-or print things to stdout.
+as the operators behave when used with builtin types. For example: `+` should be used for addition, not concatenation. `<<` should be used for left bitshift, not to append values to an array or print things to `stdout`.
 
 Violating the expected behaviour of operators is why operator overloading
 is often frowned upon despite its usefulness. Operator overloading that
-follows expectation can make the code clearer and easier to read. Violating
+follows expectations can make the code clearer and easier to read. Violating
 expectations on the other hand obfuscates the code and makes it harder to
-share. It is bad style and poor taste.
+read and understand and hence also harder to safely share and reuse. It is 
+bad style and poor taste.
 :::

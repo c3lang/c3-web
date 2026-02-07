@@ -43,8 +43,8 @@ $vaarg      $vaexpr     $vasplat
 The following attributes are built in:
 ```
 @align        @benchmark  @bigendian  @builtin
-@cdecl        @deprecated @dynamic    @export
-@extern       @extname    @inline     @interface
+@cdecl        @cname      @deprecated @dynamic    
+@export       @extname    @inline     @interface
 @littleendian @local      @maydiscard @naked
 @nodiscard    @noinit     @noinline   @noreturn
 @nostrip      @obfuscate  @operator   @overlap
@@ -403,14 +403,14 @@ or_stmt_expr
 
 or_expr_with_suffix
 	: or_expr
-	| or_expr '?'
-	| or_expr '?' '!'
+	| or_expr '~'
+	| or_expr '~' '!'
 	;
 
 or_stmt_expr_with_suffix
 	: or_stmt_expr
-	| or_stmt_expr '?'
-	| or_stmt_expr '?' '!'
+	| or_stmt_expr '~'
+	| or_stmt_expr '~' '!'
 	;
 
 ternary_expr

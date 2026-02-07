@@ -22,8 +22,8 @@ C3 uses two's complement arithmetic for all integer math.
 
 :::note 
 These abbreviations are used in the text below:
-- "lhs" meaning "left hand side".
-- "rhs" meaning "right hand side".
+- "lhs" means "left hand side".
+- "rhs" means "right hand side".
 :::
 
 ### Target type
@@ -34,8 +34,8 @@ The left hand side of an assignment, or the parameter type in a call is known as
 
 Like C, C3 uses implicit arithmetic promotion of integer and floating point variables before arithmetic operations:
 
-1. For any floating point type with a bitwidth smaller than 32 bits, widen to `float`. E.g. `f16 -> float`
-2. For an integer type smaller than the *minimum arithmetic width* promote the value to a same signed integer of the *minimum arithmetic width* (this usually corresponds to a c int/uint). E.g. `ushort -> uint`
+1. For any floating point type with a bitwidth smaller than 32 bits, widen to `float`. For example, in C3 `float16` converts to `float` before arithmetic is performed.
+2. For an integer type smaller than the *minimum arithmetic width*, promote the value to a same-signed integer of the *minimum arithmetic width*. This usually corresponds to a C `int` or `unsigned int`. For example, in C3 `ushort` converts to `uint` before arithmetic is performed.
 
 ### Implicit narrowing
 
@@ -64,10 +64,10 @@ short y = -3;
 int z = 0xFFFFF;
 ulong w = -0xFFFFFFF;
 
-x = x + x; // => calculated as x = (char)((int)x + (int)x);
-x = y + x; // => Error, narrowing not allowed as y > char
-h = x * h; // => calculated as h = (float16)((float)x * (float)h);
-h = f + x; // => Error, narrowing not allowed since f > f16
+x = x + x;  // => Calculated as `x = (char)((int)x + (int)x);`.
+x = y + x;  // => Error. Narrowing is not allowed because short y is wider than char x.
+h = x * h;  // => Calculated as `h = (float16)((float)x * (float)h);`.
+h = f + x;  // => Error. Narrowing is not allowed because float f is wider than float16 h.
 ```
 
 ### Implicit widening
@@ -87,7 +87,7 @@ int f = (int)(d + ~b); // Valid
 long g = a + b; // Valid
 ```
 
-As a rule of thumb, if there are more than one possible conversion an explicit cast is needed.
+As a rule of thumb, if there are more than one possible conversion, then an explicit cast is needed.
 
 Example:
 
@@ -239,7 +239,7 @@ These operations are only valid for integers.
 1. Resolve the inner operand.
 2. If the type inner type is not a number this is an error.
 3. If the inner type is an unsigned integer, cast it to the same signed type.
-4. The type is the type of the result from (3)
+4. The type is the type of the result from (3).
 
 #### 4. `&` and `&&`
 

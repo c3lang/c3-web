@@ -94,73 +94,73 @@ fn TimeSpec Time.to_timespec(self) @inline
 ```
 ### `libc @if(!env::LIBC)`
 ```c3
-fn void longjmp(JmpBuf* buffer, CInt value) @weak @extern("longjmp") @nostrip
+fn void longjmp(JmpBuf* buffer, CInt value) @weak @cname("longjmp") @nostrip
 ```
 ```c3
-fn CInt setjmp(JmpBuf* buffer) @weak @extern("setjmp") @nostrip
+fn CInt setjmp(JmpBuf* buffer) @weak @cname("setjmp") @nostrip
 ```
 ```c3
-fn void* malloc(usz size) @weak @extern("malloc") @nostrip
+fn void* malloc(usz size) @weak @cname("malloc") @nostrip
 ```
 ```c3
-fn void* calloc(usz count, usz size) @weak @extern("calloc") @nostrip
+fn void* calloc(usz count, usz size) @weak @cname("calloc") @nostrip
 ```
 ```c3
-fn void* free(void*) @weak @extern("free")
+fn void* free(void*) @weak @cname("free")
 ```
 ```c3
-fn void* realloc(void* ptr, usz size) @weak @extern("realloc") @nostrip
+fn void* realloc(void* ptr, usz size) @weak @cname("realloc") @nostrip
 ```
 ```c3
-fn void* memcpy(void* dest, void* src, usz n) @weak @extern("memcpy") @nostrip
+fn void* memcpy(void* dest, void* src, usz n) @weak @cname("memcpy") @nostrip
 ```
 ```c3
-fn void* memmove(void* dest, void* src, usz n) @weak @extern("memmove") @nostrip
+fn void* memmove(void* dest, void* src, usz n) @weak @cname("memmove") @nostrip
 ```
 ```c3
-fn void* memset(void* dest, CInt value, usz n) @weak @extern("memset") @nostrip
+fn void* memset(void* dest, CInt value, usz n) @weak @cname("memset") @nostrip
 ```
 ```c3
-fn int fseek(CFile stream, SeekIndex offset, int whence) @weak @extern("fseek") @nostrip
+fn int fseek(CFile stream, SeekIndex offset, int whence) @weak @cname("fseek") @nostrip
 ```
 ```c3
-fn CFile fopen(ZString filename, ZString mode) @weak @extern("fopen") @nostrip
+fn CFile fopen(ZString filename, ZString mode) @weak @cname("fopen") @nostrip
 ```
 ```c3
-fn CFile freopen(ZString filename, ZString mode, CFile stream) @weak @extern("fopen") @nostrip
+fn CFile freopen(ZString filename, ZString mode, CFile stream) @weak @cname("fopen") @nostrip
 ```
 ```c3
-fn usz fwrite(void* ptr, usz size, usz nmemb, CFile stream) @weak @extern("fwrite") @nostrip
+fn usz fwrite(void* ptr, usz size, usz nmemb, CFile stream) @weak @cname("fwrite") @nostrip
 ```
 ```c3
-fn usz fread(void* ptr, usz size, usz nmemb, CFile stream) @weak @extern("fread") @nostrip
+fn usz fread(void* ptr, usz size, usz nmemb, CFile stream) @weak @cname("fread") @nostrip
 ```
 ```c3
-fn CFile fclose(CFile) @weak @extern("fclose") @nostrip
+fn CFile fclose(CFile) @weak @cname("fclose") @nostrip
 ```
 ```c3
-fn int fflush(CFile stream) @weak @extern("fflush") @nostrip
+fn int fflush(CFile stream) @weak @cname("fflush") @nostrip
 ```
 ```c3
-fn int fputc(int c, CFile stream) @weak @extern("fputc") @nostrip
+fn int fputc(int c, CFile stream) @weak @cname("fputc") @nostrip
 ```
 ```c3
-fn char* fgets(ZString str, int n, CFile stream) @weak @extern("fgets") @nostrip
+fn char* fgets(ZString str, int n, CFile stream) @weak @cname("fgets") @nostrip
 ```
 ```c3
-fn int fgetc(CFile stream) @weak @extern("fgetc") @nostrip
+fn int fgetc(CFile stream) @weak @cname("fgetc") @nostrip
 ```
 ```c3
-fn int feof(CFile stream) @weak @extern("feof") @nostrip
+fn int feof(CFile stream) @weak @cname("feof") @nostrip
 ```
 ```c3
-fn int putc(int c, CFile stream) @weak @extern("putc") @nostrip
+fn int putc(int c, CFile stream) @weak @cname("putc") @nostrip
 ```
 ```c3
-fn int putchar(int c) @weak @extern("putchar") @nostrip
+fn int putchar(int c) @weak @cname("putchar") @nostrip
 ```
 ```c3
-fn int puts(ZString str) @weak @extern("puts") @nostrip
+fn int puts(ZString str) @weak @cname("puts") @nostrip
 ```
 ### `libc @if(env::ANDROID)`
 ```c3
@@ -229,7 +229,7 @@ alias Ino_t = ulong
 struct Stat
 ```
 ```c3
-extern fn int stat(ZString str, Stat* stat) @extern("stat64")
+extern fn int stat(ZString str, Stat* stat) @cname("stat64")
 ```
 ### `libc @if(env::FREEBSD)`
 ```c3
@@ -379,7 +379,7 @@ alias mktime = _mktime64
 extern fn CFile __acrt_iob_func(CInt c)
 ```
 ```c3
-extern fn CInt get_system_info(SystemInfo*) @extern("GetSystemInfo")
+extern fn CInt get_system_info(SystemInfo*) @cname("GetSystemInfo")
 ```
 ### `libc::errno`
 ### `libc::errno @if(!env::WIN32 && !env::DARWIN)`
@@ -3496,7 +3496,7 @@ macro int @main_to_void_main_args(#m, int argc, char** argv)
 ```
 ### `std::core::main_stub @if(env::WIN32)`
 ```c3
-extern fn Char16** _win_command_line_to_argv_w(ushort* cmd_line, int* argc_ptr) @extern("CommandLineToArgvW")
+extern fn Char16** _win_command_line_to_argv_w(ushort* cmd_line, int* argc_ptr) @cname("CommandLineToArgvW")
 ```
 ```c3
 macro int @win_to_err_main_noargs(#m, void* handle, void* prev_handle, Char16* cmd_line, int show_cmd)
@@ -7763,7 +7763,7 @@ macro double scalbn(double x, int n)
 extern fn double _atan(double x) @MathLibc("atan")
 ```
 ```c3
-fn void _sincosf(float a, float* s, float* c) @extern("sincosf") @if(env::WIN32)
+fn void _sincosf(float a, float* s, float* c) @cname("sincosf") @if(env::WIN32)
 ```
 ```c3
 extern fn double _tan(double x) @MathLibc("tan")
@@ -8202,64 +8202,64 @@ fn float elastic_inout(float t, float b, float c, float d) @inline
 ```
 ### `std::math::math_rt`
 ```c3
-fn int128 __divti3(int128 a, int128 b) @extern("__divti3") @weak @nostrip
+fn int128 __divti3(int128 a, int128 b) @cname("__divti3") @weak @nostrip
 ```
 ```c3
 macro uint128 @__udivmodti4(uint128 a, uint128 b, bool $return_rem)
 ```
 ```c3
-fn uint128 __umodti3(uint128 n, uint128 d) @extern("__umodti3") @weak @nostrip
+fn uint128 __umodti3(uint128 n, uint128 d) @cname("__umodti3") @weak @nostrip
 ```
 ```c3
-fn uint128 __udivti3(uint128 n, uint128 d) @extern("__udivti3") @weak @nostrip
+fn uint128 __udivti3(uint128 n, uint128 d) @cname("__udivti3") @weak @nostrip
 ```
 ```c3
-fn int128 __modti3(int128 a, int128 b) @extern("__modti3") @weak @nostrip
+fn int128 __modti3(int128 a, int128 b) @cname("__modti3") @weak @nostrip
 ```
 ```c3
-fn uint128 __lshrti3(uint128 a, uint b) @extern("__lshrti3") @weak @nostrip
+fn uint128 __lshrti3(uint128 a, uint b) @cname("__lshrti3") @weak @nostrip
 ```
 ```c3
-fn int128 __ashrti3(int128 a, uint b) @extern("__ashrti3") @weak @nostrip
+fn int128 __ashrti3(int128 a, uint b) @cname("__ashrti3") @weak @nostrip
 ```
 ```c3
-fn int128 __ashlti3(int128 a, uint b) @extern("__ashlti3") @weak @nostrip
+fn int128 __ashlti3(int128 a, uint b) @cname("__ashlti3") @weak @nostrip
 ```
 ```c3
-fn int128 __multi3(int128 a, int128 b) @extern("__multi3") @weak @nostrip
+fn int128 __multi3(int128 a, int128 b) @cname("__multi3") @weak @nostrip
 ```
 ```c3
-fn float __floattisf(int128 a) @extern("__floattisf") @weak @nostrip
+fn float __floattisf(int128 a) @cname("__floattisf") @weak @nostrip
 ```
 ```c3
-fn double __floattidf(int128 a) @extern("__floattidf") @weak @nostrip
+fn double __floattidf(int128 a) @cname("__floattidf") @weak @nostrip
 ```
 ```c3
-fn float __floatuntisf(uint128 a) @extern("__floatuntisf") @weak @nostrip
+fn float __floatuntisf(uint128 a) @cname("__floatuntisf") @weak @nostrip
 ```
 ```c3
-fn double __floatuntidf(uint128 a) @extern("__floatuntidf") @weak @nostrip
+fn double __floatuntidf(uint128 a) @cname("__floatuntidf") @weak @nostrip
 ```
 ```c3
-fn uint128 __fixunsdfti(double a) @weak @extern("__fixunsdfti") @nostrip
+fn uint128 __fixunsdfti(double a) @weak @cname("__fixunsdfti") @nostrip
 ```
 ```c3
-fn uint128 __fixunssfti(float a) @weak @extern("__fixunssfti") @nostrip
+fn uint128 __fixunssfti(float a) @weak @cname("__fixunssfti") @nostrip
 ```
 ```c3
-fn int128 __fixdfti(double a) @weak @extern("__fixdfti") @nostrip
+fn int128 __fixdfti(double a) @weak @cname("__fixdfti") @nostrip
 ```
 ```c3
-fn int128 __fixsfti(float a) @weak @extern("__fixsfti") @nostrip
+fn int128 __fixsfti(float a) @weak @cname("__fixsfti") @nostrip
 ```
 ```c3
-fn float __roundevenf(float f) @extern("roundevenf") @weak @nostrip
+fn float __roundevenf(float f) @cname("roundevenf") @weak @nostrip
 ```
 ```c3
-fn double __roundeven(double d) @extern("roundeven") @weak @nostrip
+fn double __roundeven(double d) @cname("roundeven") @weak @nostrip
 ```
 ```c3
-fn double __powidf2(double a, int b) @extern("__powidf2") @weak @nostrip
+fn double __powidf2(double a, int b) @cname("__powidf2") @weak @nostrip
 ```
 ### `std::math::matrix {Real}`
 ```c3
@@ -8423,118 +8423,118 @@ fn Matrix4x4 perspective(Real fov, Real aspect_ratio, Real near, Real far)
 ```
 ### `std::math::nolibc @if(env::NO_LIBC || $feature(C3_MATH))`
 ```c3
-fn double __cos(double x, double y) @extern("__cos") @weak @nostrip
+fn double __cos(double x, double y) @cname("__cos") @weak @nostrip
 ```
 ```c3
-fn float __cosdf(double x) @extern("__cosdf") @weak @nostrip
+fn float __cosdf(double x) @cname("__cosdf") @weak @nostrip
 ```
 ```c3
-fn double fmod(double x, double y) @extern("fmod") @weak @nostrip
+fn double fmod(double x, double y) @cname("fmod") @weak @nostrip
 ```
 ```c3
-fn float fmodf(float x, float y) @extern("fmodf") @weak @nostrip
+fn float fmodf(float x, float y) @cname("fmodf") @weak @nostrip
 ```
 ```c3
-fn double __sin(double x, double y, int iy) @extern("__sin") @weak @nostrip
+fn double __sin(double x, double y, int iy) @cname("__sin") @weak @nostrip
 ```
 ```c3
-fn float __sindf(double x) @extern("__sindf") @weak @nostrip
+fn float __sindf(double x) @cname("__sindf") @weak @nostrip
 ```
 ```c3
-fn double __tan(double x, double y, int odd) @extern("__tan") @weak @nostrip
+fn double __tan(double x, double y, int odd) @cname("__tan") @weak @nostrip
 ```
 ```c3
-fn float __tandf(double x, int odd) @extern("__tandf") @weak @nostrip
+fn float __tandf(double x, int odd) @cname("__tandf") @weak @nostrip
 ```
 ```c3
-fn double _acos(double x) @weak @extern("acos") @nostrip
+fn double _acos(double x) @weak @cname("acos") @nostrip
 ```
 ```c3
-fn float _acosf(float x) @weak @extern("acosf") @nostrip
+fn float _acosf(float x) @weak @cname("acosf") @nostrip
 ```
 ```c3
-fn double _asin(double x) @weak @extern("asin") @nostrip
+fn double _asin(double x) @weak @cname("asin") @nostrip
 ```
 ```c3
-fn float _asinf(float x) @weak @extern("asinf") @nostrip
+fn float _asinf(float x) @weak @cname("asinf") @nostrip
 ```
 ```c3
-fn double _atan(double x) @weak @extern("atan") @nostrip
+fn double _atan(double x) @weak @cname("atan") @nostrip
 ```
 ```c3
-fn float _atanf(float x) @weak @extern("atanf") @nostrip
+fn float _atanf(float x) @weak @cname("atanf") @nostrip
 ```
 ```c3
-fn double _atan2(double y, double x) @weak @extern("atan2") @nostrip
+fn double _atan2(double y, double x) @weak @cname("atan2") @nostrip
 ```
 ```c3
-fn float _atan2f(float y, float x) @weak @extern("atan2f") @nostrip
+fn float _atan2f(float y, float x) @weak @cname("atan2f") @nostrip
 ```
 ```c3
-fn double _atanh(double x) @weak @extern("atanh") @nostrip
+fn double _atanh(double x) @weak @cname("atanh") @nostrip
 ```
 ```c3
-fn float _atanhf(float x) @weak @extern("atanhf") @nostrip
+fn float _atanhf(float x) @weak @cname("atanhf") @nostrip
 ```
 ```c3
-fn double _ceil(double x) @weak @extern("ceil") @nostrip
+fn double _ceil(double x) @weak @cname("ceil") @nostrip
 ```
 ```c3
-fn float _ceilf(float x) @weak @extern("ceilf") @nostrip
+fn float _ceilf(float x) @weak @cname("ceilf") @nostrip
 ```
 ```c3
-fn float _cosf(float x) @extern("cosf") @weak @nostrip
+fn float _cosf(float x) @cname("cosf") @weak @nostrip
 ```
 ```c3
-fn double _cos(double x) @extern("cos")  @weak @nostrip
+fn double _cos(double x) @cname("cos")  @weak @nostrip
 ```
 ```c3
-fn double exp(double x) @extern("exp")
+fn double exp(double x) @cname("exp")
 ```
 ```c3
-fn float expf(float x) @extern("expf")
+fn float expf(float x) @cname("expf")
 ```
 ```c3
-fn float _exp2f(float x) @extern("exp2f") @weak @nostrip
+fn float _exp2f(float x) @cname("exp2f") @weak @nostrip
 ```
 ```c3
-fn double _exp2(double x) @extern("exp2") @weak @nostrip
+fn double _exp2(double x) @cname("exp2") @weak @nostrip
 ```
 ```c3
-fn double _fabs(double x) @weak @extern("fabs") @nostrip
+fn double _fabs(double x) @weak @cname("fabs") @nostrip
 ```
 ```c3
-fn float _fabsf(float x) @weak @extern("fabsf") @nostrip
+fn float _fabsf(float x) @weak @cname("fabsf") @nostrip
 ```
 ```c3
-fn double _floor(double x) @weak @extern("floor") @nostrip
+fn double _floor(double x) @weak @cname("floor") @nostrip
 ```
 ```c3
-fn float _floorf(float x) @weak @extern("floorf") @nostrip
+fn float _floorf(float x) @weak @cname("floorf") @nostrip
 ```
 ```c3
-fn double frexp(double x, int* exp) @extern("frexp")
+fn double frexp(double x, int* exp) @cname("frexp")
 ```
 ```c3
-fn float frexpf(float x, int* exp) @extern("frexpf")
+fn float frexpf(float x, int* exp) @cname("frexpf")
 ```
 ```c3
-fn double ldexp(double x, int exp) @extern("ldexp")
+fn double ldexp(double x, int exp) @cname("ldexp")
 ```
 ```c3
-fn float ldexpf(float x, int exp) @extern("ldexpf")
+fn float ldexpf(float x, int exp) @cname("ldexpf")
 ```
 ```c3
-fn double log(double x) @extern("log")
+fn double log(double x) @cname("log")
 ```
 ```c3
-fn float logf(float x) @extern("logf")
+fn float logf(float x) @cname("logf")
 ```
 ```c3
-fn double _log1p(double x) @weak @extern("log1p") @nostrip
+fn double _log1p(double x) @weak @cname("log1p") @nostrip
 ```
 ```c3
-fn float _log1pf(float x) @weak @extern("log1pf") @nostrip
+fn float _log1pf(float x) @weak @cname("log1pf") @nostrip
 ```
 ```c3
 macro float __math_uflowf(uint sign)
@@ -8555,10 +8555,10 @@ macro __math_xflow(sign, v)
 macro force_eval_add(x, v)
 ```
 ```c3
-fn double pow(double x, double y) @extern("pow")
+fn double pow(double x, double y) @cname("pow")
 ```
 ```c3
-fn float powf(float x, float y) @extern("powf")
+fn float powf(float x, float y) @cname("powf")
 ```
 ```c3
 fn int __rem_pio2f(float x, double *y)
@@ -8570,40 +8570,40 @@ fn int __rem_pio2_large(double* x, double* y, int e0, int nx, int prec)
 fn int __rem_pio2(double x, double *y)
 ```
 ```c3
-fn double _round(double x) @extern("round") @weak @nostrip
+fn double _round(double x) @cname("round") @weak @nostrip
 ```
 ```c3
-fn float _roundf(float x) @extern("roundf") @weak @nostrip
+fn float _roundf(float x) @cname("roundf") @weak @nostrip
 ```
 ```c3
-fn double _scalbn(double x, int n) @weak @extern("scalbn") @nostrip
+fn double _scalbn(double x, int n) @weak @cname("scalbn") @nostrip
 ```
 ```c3
-fn float _sinf(float x) @weak @extern("sinf") @nostrip
+fn float _sinf(float x) @weak @cname("sinf") @nostrip
 ```
 ```c3
-fn double sin(double x) @extern("sin") @weak @nostrip
+fn double sin(double x) @cname("sin") @weak @nostrip
 ```
 ```c3
-fn void sincosf(float x, float *sin, float *cos) @extern("__sincosf") @weak @nostrip
+fn void sincosf(float x, float *sin, float *cos) @cname("__sincosf") @weak @nostrip
 ```
 ```c3
-fn void sincos(double x, double *sin, double *cos) @extern("__sincos") @weak @nostrip
+fn void sincos(double x, double *sin, double *cos) @cname("__sincos") @weak @nostrip
 ```
 ```c3
-fn double tan(double x) @extern("tan") @weak @nostrip
+fn double tan(double x) @cname("tan") @weak @nostrip
 ```
 ```c3
-fn float tanf(float x) @extern("tanf") @weak @nostrip
+fn float tanf(float x) @cname("tanf") @weak @nostrip
 ```
 ```c3
-fn double sincos_broken(double x) @extern("sincos") @weak @nostrip
+fn double sincos_broken(double x) @cname("sincos") @weak @nostrip
 ```
 ```c3
-fn double _trunc(double x) @weak @extern("trunc") @nostrip
+fn double _trunc(double x) @weak @cname("trunc") @nostrip
 ```
 ```c3
-fn float _truncf(float x) @weak @extern("truncf") @nostrip
+fn float _truncf(float x) @weak @cname("truncf") @nostrip
 ```
 ### `std::math::quaternion {Real}`
 ```c3
@@ -9795,10 +9795,10 @@ enum LogId : (CInt val)
 struct LogMessage @packed
 ```
 ```c3
-extern fn CInt log_write(LogPriority prio, ZString tag, ZString text) @extern("__android_log_write")
+extern fn CInt log_write(LogPriority prio, ZString tag, ZString text) @cname("__android_log_write")
 ```
 ```c3
-extern fn CInt log_buf_write(CInt bufID, CInt prio, ZString tag, ZString text) @extern("__android_log_buf_write")
+extern fn CInt log_buf_write(CInt bufID, CInt prio, ZString tag, ZString text) @cname("__android_log_buf_write")
 ```
 ### `std::os::backtrace`
 ```c3
@@ -9871,7 +9871,7 @@ extern fn usz malloc_size(void* ptr)
 ```
 ### `std::os::darwin::cocoa @if(env::OS_TYPE == MACOS) @link("Cocoa.framework")`
 ```c3
-extern fn int nsApplicationMain(int argc, char **argv) @extern("NSApplicationMain")
+extern fn int nsApplicationMain(int argc, char **argv) @cname("NSApplicationMain")
 ```
 ### `std::os::env`
 ```c3
@@ -9971,7 +9971,7 @@ macro usz CFAllocatorRef.get_preferred_size(CFAllocatorRef allocator, usz req_si
 macro void CFAllocatorRef.set_default(CFAllocatorRef allocator)
 ```
 ```c3
-extern fn CFAllocatorRef macos_CFAllocatorCreate(CFAllocatorRef allocator, CFAllocatorContextRef context) @extern("CFAllocatorCreate") @builtin
+extern fn CFAllocatorRef macos_CFAllocatorCreate(CFAllocatorRef allocator, CFAllocatorContextRef context) @cname("CFAllocatorCreate") @builtin
 ```
 ```c3
 typedef CFArrayRef = void*
@@ -9983,7 +9983,7 @@ typedef CFArrayCallBacksRef = void*
 typedef CFMutableArrayRef = void*
 ```
 ```c3
-extern fn CFArrayRef macos_CFArrayCreate(CFAllocatorRef allocator, void** values, CFIndex num_values, CFArrayCallBacksRef callBacks) @extern("CFArrayCreate") @builtin
+extern fn CFArrayRef macos_CFArrayCreate(CFAllocatorRef allocator, void** values, CFIndex num_values, CFArrayCallBacksRef callBacks) @cname("CFArrayCreate") @builtin
 ```
 ```c3
 typedef CFTypeRef = void*
@@ -9995,7 +9995,7 @@ alias CFIndex = isz
 struct CFRange
 ```
 ```c3
-extern fn CFTypeRef macos_CFRetain(CFTypeRef cf) @extern("CFRetain") @builtin
+extern fn CFTypeRef macos_CFRetain(CFTypeRef cf) @cname("CFRetain") @builtin
 ```
 ### `std::os::macos::objc @if(env::DARWIN) @link(env::DARWIN, "CoreFoundation.framework")`
 ```c3
@@ -10050,10 +10050,10 @@ macro ObjcClass? class_by_name(ZString c)
 macro ObjcClass[] class_get_list(Allocator allocator)
 ```
 ```c3
-extern fn void msgSend(...) @extern("objc_msgSend") @builtin
+extern fn void msgSend(...) @cname("objc_msgSend") @builtin
 ```
 ```c3
-extern fn ObjcClass getClass(ZString name) @extern("objc_getClass")
+extern fn ObjcClass getClass(ZString name) @cname("objc_getClass")
 ```
 ```c3
 enum ApplicationActivationPolicy : (int val)
@@ -10875,7 +10875,7 @@ alias Win32_LPMODULEINFO = Win32_MODULEINFO*
 ```
 ### `std::os::win32 @if(env::WIN32)`
 ```c3
-extern fn void getSystemTimeAsFileTime(Win32_FILETIME* time) @extern("GetSystemTimeAsFileTime")
+extern fn void getSystemTimeAsFileTime(Win32_FILETIME* time) @cname("GetSystemTimeAsFileTime")
 ```
 ```c3
 enum Win32_GET_FILEEX_INFO_LEVELS
@@ -10890,13 +10890,13 @@ struct Win32_WIN32_FIND_DATAW
 alias Win32_LPWIN32_FIND_DATAW = Win32_WIN32_FIND_DATAW*
 ```
 ```c3
-extern fn Win32_BOOL closeHandle(Win32_HANDLE) @extern("CloseHandle")
+extern fn Win32_BOOL closeHandle(Win32_HANDLE) @cname("CloseHandle")
 ```
 ```c3
-extern fn Win32_HBRUSH createSolidBrush(Win32_COLORREF) @extern("CreateSolidBrush")
+extern fn Win32_HBRUSH createSolidBrush(Win32_COLORREF) @cname("CreateSolidBrush")
 ```
 ```c3
-extern fn Win32_DWORD getLastError() @extern("GetLastError")
+extern fn Win32_DWORD getLastError() @cname("GetLastError")
 ```
 ```c3
 extern fn void* _aligned_malloc(usz size, usz alignment)
@@ -10911,13 +10911,13 @@ enum Win32_Protect : const Win32_DWORD
 enum Win32_FreeType : const Win32_DWORD
 ```
 ```c3
-extern fn Win32_LPVOID virtualAlloc(Win32_LPVOID lpAddres, Win32_SIZE_T dwSize, Win32_AllocationType flAllocationType, Win32_Protect flProtect) @extern("VirtualAlloc")
+extern fn Win32_LPVOID virtualAlloc(Win32_LPVOID lpAddres, Win32_SIZE_T dwSize, Win32_AllocationType flAllocationType, Win32_Protect flProtect) @cname("VirtualAlloc")
 ```
 ```c3
 alias Win32_INIT_ONCE_FN = fn Win32_BOOL(Win32_INIT_ONCE* initOnce, void* parameter, void** context)
 ```
 ```c3
-extern fn void initializeCriticalSection(Win32_CRITICAL_SECTION* section) @extern("InitializeCriticalSection")
+extern fn void initializeCriticalSection(Win32_CRITICAL_SECTION* section) @cname("InitializeCriticalSection")
 ```
 ```c3
 struct Symbol
@@ -11064,7 +11064,7 @@ alias Win32_NPMSG = Win32_MSG*
 alias Win32_ATOM = ushort
 ```
 ```c3
-extern fn Win32_HDC beginPaint(Win32_HWND, Win32_LPPAINTSTRUCT) @extern("BeginPaint")
+extern fn Win32_HDC beginPaint(Win32_HWND, Win32_LPPAINTSTRUCT) @cname("BeginPaint")
 ```
 ```c3
 macro setWindowLongPtr(Win32_HWND hWnd, CInt nIndex, dwNewLong)
@@ -11177,7 +11177,7 @@ alias Win32_LPFn_ACCEPTEX = fn bool(
 )
 ```
 ```c3
-extern fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT timeout) @extern("WSAPoll")
+extern fn CInt wsaPoll(Win32_LPWSAPOLLFD fdArray, Win32_ULONG fds, Win32_INT timeout) @cname("WSAPoll")
 ```
 ### `std::sort`
 ```c3

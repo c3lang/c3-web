@@ -138,10 +138,10 @@ In order to link with other libraries, you need to explicitly tell
 the compiler to link them.
 
 If you want to use a different identifier inside of your C3 code compared to
-the function or variable's external name, use the `@extern` attribute:
+the function or variable's external name, use the `@cname` attribute:
 
 ```c3
-extern fn int _puts(char* message) @extern("puts");
+extern fn int _puts(char* message) @cname("puts");
 ...
 _puts("Hello world"); // <- calls the puts function in libc
 ```
@@ -314,8 +314,9 @@ The `/* */` comments are nesting
 /* This /* will all */ be commented out */
 ```
 
-Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are
-_not_ considered a regular comment. Find out more about [contracts](/language-common/contracts/).
+Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are _not_ considered a regular comment. Find out more about [contracts](/language-common/contracts/).
+
+C3 also treats `#!` on the first line as a line comment `//`.
 
 ## Type Qualifiers
 
@@ -370,7 +371,7 @@ free(foo);
 return false;
 
 // C3, using defer:
-Foo* foo = malloc(Foo);
+Foo* foo = malloc(Foo.sizeof);
 defer free(foo);
 
 if (tryFoo(foo)) return false;
@@ -477,7 +478,7 @@ There exists a simplified form for a bitstruct containing only booleans,
 it is the same except the ranges are left out:
 
 ```c3
-struct Flags : char
+bitstruct Flags : char
 {
     bool has_hyperdrive;
     bool has_tractorbeam;

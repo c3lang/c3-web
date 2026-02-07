@@ -2,10 +2,10 @@
 title: Attributes
 description: Attributes
 sidebar:
-    order: 68
+    order: 69
 ---
 
-Attributes are compile-time annotations on functions, types, global constants and variables. Similar to Java annotations, a decoration may also take arguments. A attribute can also represent a bundle of attributes.
+Attributes are compile-time annotations on functions, types, global constants and variables. Similar to Java annotations, an attribute may also take arguments. An attribute can also represent a bundle of attributes.
 
 ## Built in attributes
 
@@ -53,7 +53,8 @@ Should be used sparingly.
 *Used for: function*
 
 Sets the calling convention, which may be ignored if the convention is not supported on the target.
-Valid arguments are `veccall`, `cdecl`, `stdcall`.
+Valid arguments are `"veccall"`, `"cdecl"`, `"stdcall"`. Any function without an explicit `@callconv` will use
+`"cdecl"` which is the normal C calling convention.
 
 :::caution
 On Windows, many calls are tagged `stdcall` in the C
@@ -65,9 +66,7 @@ and is a no-op on 64-bit Windows.
 
 *Used for: struct, union*
 
-When placed on a struct or union, it allows the value to be compared
-using `==` and `!=`. The restriction is that it may not have any
-padding, as if it had the `@nopadding` attribute.
+This attribute works like @nopadding, but is applied recursively for any sub-elements, ensuring that there is no padding anywhere in the struct.
 
 ### `@const`
 
@@ -95,10 +94,10 @@ to be invoked through interfaces.
 *Used for: function, global, const, enum, union, struct, faultdef*
 
 Marks this declaration as an export, this ensures it is never removed and exposes it as public when linking.
-The attribute takes an optional string value, which is the external name. This acts as if `@extern` had been
+The attribute takes an optional string value, which is the external name. This acts as if `@cname` had been
 added with that name.
 
-### `@extern`
+### `@cname`
 
 *Used for: function, global, const, enum, union, struct, faultdef*
 
@@ -334,7 +333,7 @@ Marks a parameter, value etc. as must being used.
 
 This attribute may take 0, 1 or 2 arguments. With 0 or 1 arguments
 it behaves identical to [`@export`](#export) if it is non-extern. For extern
-symbols it behaves like [`@extern`](#extern).
+symbols it behaves like [`@cname`](#cname).
 
 When used with 2 arguments, the first argument is the wasm module,
 and the second is the name. It can only be used for `extern` symbols.
@@ -362,13 +361,26 @@ User defined attributes are intended for conditional application of built-in att
 
 ```c3
 attrdef @MyAttribute = @noreturn, @inline;
-
+attrdef @MyCname(x) = @cname(x);
 // The following two are equivalent:
 fn void foo() @MyAttribute { /* */ }
 fn void foo() @noreturn @inline { /* */ }
 ```
 
-A user defined attribute may also be completely empty:
+An attribute may also take parameters:
+
+```c3
+attrdef @MyAttr(val) = @tag("foo", val);
+
+struct Test
+{
+    int foo @MyAttr("test");
+}
+
+$echo Test.foo.tagof("foo"); // Will echo "test" at compile time
+```
+
+The attribute may also be completely empty:
 
 ```c3
 attrdef @MyAttributeEmpty;
