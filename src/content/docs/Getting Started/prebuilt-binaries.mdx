@@ -99,3 +99,15 @@ set -gx C3C_LIB /path/to/c3c/lib
 ```powershell
 $env:C3C_LIB = "C:\path\to\c3c\lib"
 ```
+
+### "cc: not found"
+On Linux and MacOS, C3 uses the available C compiler to link with the correct libraries. While C3 contains a built-in linker, 
+it is likely that your system will lack a complete environment with unless a C compiler is available.
+
+Linux users should generally install GCC or Clang, according to their distribution's documentation. 
+For example, if you use Ubuntu, you can install the `gcc` package:
+```bash
+sudo apt-get install gcc
+```
+
+On MacOS you can either install XCode or download the stand-alone command-line tools: https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/
