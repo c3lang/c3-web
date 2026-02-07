@@ -521,23 +521,25 @@ fn void start_hello() @init(2000)
 ```
 
 
-### Implementing parameter variability constraints
+### Implementing parameter access constraints
 
 ```c3
 <*
-    A read-only function
-    @param [in] value
+ A read-only function
+ @param [in] value
 *>
-fn void read(int* value){
+fn void read(int* value)
+{
     io::printf("%d",*value);
     // (*value)++; <- Error: 'in' parameters may not be assigned to.
 }
 
 <*
-    A write-only function
-    @param [out] buffer
+ A write-only function
+ @param [out] buffer
 *>
-fn void write(int* buffer){
+fn void write(int* buffer)
+{
     (*buffer)++;
     // int test = *buffer; <- Error: 'out' parameters may not be read.
 }
