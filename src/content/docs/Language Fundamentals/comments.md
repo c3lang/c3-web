@@ -25,9 +25,9 @@ For example:
  @param num_foo `The number of foos.`
  @require num_foo > 4
  @deprecated
- @mycustom 2
+ @mycustom "2"
 *>
-void bar(int num_foo)
+fn void bar(int num_foo)
 {
     io::printfn("%d", num_foo);
 }
