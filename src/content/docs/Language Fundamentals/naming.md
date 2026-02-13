@@ -55,9 +55,9 @@ Global constants must start with A-Z after any optional initial `_`. `_FOO2`, `B
 const int A_VALUE = 12;
 ```
 
-### Enum / Fault members
+### Enum members / Faults
 
-`enum` and `faultdef` members follow the same naming standard as global constants.
+`enum` members and faults defined with `faultdef` follow the same naming standard as global constants.
 
 ```c3
 enum Baz
