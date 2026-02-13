@@ -9,9 +9,9 @@ C3 introduces fairly rigid naming rules to reduce ambiguity and make the languag
 
 As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
 
-### Structs, unions and enums
+### Structs, unions, enums, typedefs and aliasses
 
-All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "extern".
+All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "cname".
 
 ```c3
 struct Foo @cname("foo")
@@ -55,9 +55,9 @@ Global constants must start with A-Z after any optional initial `_`. `_FOO2`, `B
 const int A_VALUE = 12;
 ```
 
-### Enum / Fault definitions
+### Enum / Fault members
 
-`enum` and `faultdef` definitions follow the same naming standard as global constants.
+`enum` and `faultdef` members follow the same naming standard as global constants.
 
 ```c3
 enum Baz
@@ -102,7 +102,7 @@ While C3 doesn't mandate a particular style of naming, the standard library none
 
 ```c3
 alias MyInt = int;    // Types use PascalCase
-struct SomeStructType 
+struct SomeStructType
 {
     int a_field;      // Members use snake_case
     double foo_baz;
@@ -125,7 +125,7 @@ macro @some_macro(a)
 const MY_FOO = 123; // Constants use SCREAMING_SNAKE_CASE
 ```
 
-So in short: 
+So in short:
 1. Types use `PascalCase`
 2. Constants use `SCREAMING_SNAKE_CASE`
 3. Everything else uses `snake_case`
@@ -156,7 +156,7 @@ fn int k_and_r(int foo)
     } else {
         foo *= foo;
     }
-    return foo;    
+    return foo;
 }
 ```
 
