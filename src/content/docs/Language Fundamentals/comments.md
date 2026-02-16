@@ -22,9 +22,9 @@ For example:
 ```c3
 <*
  Here are some docs.
- @param num_foo `The number of foos.`
+ @param num_foo : `The number of foos.`
  @require num_foo > 4
- @deprecated
+ @require num_foo <= 100 : "Prevent too many foos."
  @mycustom "2"
 *>
 fn void bar(int num_foo)
@@ -38,7 +38,7 @@ The following was extracted:
 - The function description: *"Here are some docs."*
 - The `num_foo` parameter has the description: *"The number of foos"*.
 - A [Contract](/language-common/contracts/) annotation for the compiler: `@require num_foo > 4` which tells the compiler and a user of the function that a precondition is that `num_foo` must be greater than 4.
-- A function [Attribute](/language-common/attributes/) marking it as `@deprecated`, which displays warnings.
+- A second contract annotation with the description: *"Prevent too many foos"*.
 - A custom function [Attribute](/language-common/attributes/) `@mycustom`. The compiler is free to silently ignore custom Attributes, they can be used to optionally emit warnings, but are otherwise ignored.
 
 ### Available annotations
@@ -47,10 +47,10 @@ The following was extracted:
 |---------------|----------------------------------------------------:|
 | `@param     ` |         `@param [<ref>] <param> [ : <description>]` |
 | `@return    ` |                             `@return <description>` |
-| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [<description>]]` |
+| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]` |
+| `@require   ` |   `@require <expr1>, <expr2>, ..., [: <description>]` |
+| `@ensure    ` |   `@ensure <expre1>, <expr2>, ..., [: <description>]` |
 | `@deprecated` |                       `@deprecated [<description>]` |
-| `@require   ` |   `@require <expr1>, <expr2>, ..., [<description>]` |
-| `@ensure    ` |   `@ensure <expre1>, <expr2>, ..., [<description>]` |
 | `@pure      ` |                                             `@pure` |
 
 ### Fault inheritance
@@ -68,7 +68,7 @@ fn TriangleKind? get_triangle_kind(Triangle* triangle)
 }
 ```
 
-See [Contracts](/language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
+See [Contracts](/language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`.
 
 \*`[<ref>]` is an optional mutability description e.g. `[&in]`
 \*`[<description>]` denotes that a description is optional.
