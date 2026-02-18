@@ -17,31 +17,19 @@ import Link from "../../../components/link.astro"
 ## Installing on Windows
 1. <Link os="windows" extension="zip" /> 
 2. Unzip it into a folder
-3. Either Visual Studio 17 or follow the next two steps.
-4. Run the `msvc_build_libraries.py` Python script which will download the necessary files to compile on Windows.
-
-:::note[Running the Python script]
-
-If you don't have Python installed, you can download it from [the Python Website](https://www.python.org/downloads/).
-or get it from the [the Microsoft Store](https://www.microsoft.com/en-us/p/python-39/9p7qfqmjrfp7)
-
-Afterwards you can double click the `msvc_build_libraries.py` file and pick "python" from the list of programs in the "Select an app to open this .py file" window.
-![Python](./windows_setup.png)
-
-:::
 
 ### Optional: set c3c as a global environment variable
 
-5. copy the folder
-6. navigate to `C:\Program Files`
-7. paste the folder here
-8. navigate inside the folder you've pasted
-9. copy the path of the folder
-10. search for "edit the system environment variables" on your computer
-11. click on the "environment variables" button on the bottom right
-12. under "user variables" double click on "path"
-13. click on "new" and paste the path to the folder
-14. run `c3c` on anywhere in your computer!
+3. copy the folder
+4. navigate to `C:\Program Files`
+5. paste the folder here
+6. navigate inside the folder you've pasted
+7. copy the path of the folder
+8. search for "edit the system environment variables" on your computer
+9. click on the "environment variables" button on the bottom right
+10. under "user variables" double click on "path"
+11. click on "new" and paste the path to the folder
+12. run `c3c` on anywhere in your computer!
 ```bash
 c3c compile ./hello.c3
 ```
