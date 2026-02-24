@@ -47,11 +47,26 @@ The following was extracted:
 |---------------|----------------------------------------------------:|
 | `@param     ` |         `@param [<ref>] <param> [ : <description>]` |
 | `@return    ` |                             `@return <description>` |
-| `@return?   ` | `@return? <fault1>, <fault2>, ..., [<description>]` |
+| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [<description>]]` |
 | `@deprecated` |                       `@deprecated [<description>]` |
 | `@require   ` |   `@require <expr1>, <expr2>, ..., [<description>]` |
 | `@ensure    ` |   `@ensure <expre1>, <expr2>, ..., [<description>]` |
 | `@pure      ` |                                             `@pure` |
+
+### Fault inheritance
+
+It is possible to reference the faults of another function or macro by using the syntax `@return? some_func!`. This will include all faults returned by `some_func`. This can be combined with other faults.
+
+```c3
+<*
+ @return? check_triangle!, io::EOF
+*>
+fn TriangleKind? get_triangle_kind(Triangle* triangle)
+{
+    check_triangle(triangle)!;
+    // ...
+}
+```
 
 See [Contracts](/language-common/contracts/) for information regarding `@require`, `@ensure`, `@const`, `@pure`, `@checked`.
 
