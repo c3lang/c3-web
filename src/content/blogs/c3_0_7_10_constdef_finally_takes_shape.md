@@ -378,7 +378,7 @@ fn void Foo.test2(&self) @if($defined(Foo.test))
 
 While it's important to detect these kinds of circular dependencies, 0.7.9 would also end up disallowing well-ordered used of `$defined` with methods.
 
-0.7.10 changes this. Rather than checking if the method resolution is complete before `$defined` is invoked, the compiler will "tag" a type as having its methods checked when it's used in a `$defined`. If later a method is added to the type, the presence of the tag will yield an error.
+This changes in 0.7.10. Rather than checking if the method resolution is complete before `$defined` is invoked, the compiler will "tag" the parent type when its methods are referenced in a `$defined`. If a method is later added to the parent type, a warning will be issued.
 
 So the check is now tied to whether there is legitimate ambiguity to the `$defined`, rather than assuming it is wrong if it's invoked out of order.
 
