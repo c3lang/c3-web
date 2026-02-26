@@ -53,7 +53,7 @@ enum Foo
 
 Because now the enum would have a gap, missing the ordinals 1 and 2.
 
-The 1:1 mapping between C3 enums and integers allows C3 enums to be have name lookups and support associated values:
+The 1:1 mapping between C3 enums and integers allows C3 enums to support name lookups and associated values without overhead:
 
 ```c3
 enum Greet : int (String fmt, String country)
