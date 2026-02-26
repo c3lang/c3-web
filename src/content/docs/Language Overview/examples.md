@@ -800,9 +800,9 @@ import std::io, std::math::random;
 
 enum Action : (String abbrev, String full)
 {
-    ROCK = { "r", "Rock" },
-    PAPER = { "p", "Paper" },
-    SCISSORS = { "s", "Scissors" },
+    ROCK { "r", "Rock" },
+    PAPER { "p", "Paper" },
+    SCISSORS { "s", "Scissors" },
 }
 
 const ROUNDS = 3;
