@@ -599,3 +599,5 @@ This release wouldn't have been possible without the C3 community. I'd like to e
 Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
+
+Discuss this article on [Reddit](https://www.reddit.com/r/ProgrammingLanguages/comments/1rfh2ha/c3_0710_constdef_finally_takes_shape/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
