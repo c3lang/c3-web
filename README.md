@@ -6,7 +6,11 @@ The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://ta
 
 <h1 style="font-size: 24px;">Get Started</h1>
 
-After cloning the repository with `git clone`, you can run `npm run dev` and that's it!
+1. Clone the repository with `git clone https://github.com/c3lang/c3-web`, move into the `c3-web` directory, and make sure you have [Node.js](https://nodejs.org/en/download) installed.
+2. Enable pnpm with `corepack enable pnpm`.
+3. Install the website's dependencies with `pnpm i`, then run `pnpm run astro build` to package the site for offline use.
+4. To view the site in your web browser, run `pnpx http-server dist` and click the link (defaults to http://127.0.0.1:8080).
+* Or, if you want to contribute to the site, run `pnpm run astro dev` and click the link (defaults to http://localhost:4321). Then create a pull request on Github with your changes.
 
 <h1 style="display: flex; align-items: center; font-size: 24px;">Project Structure</h1>
   
