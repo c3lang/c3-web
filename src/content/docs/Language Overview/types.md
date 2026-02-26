@@ -642,9 +642,9 @@ struct Position
 
 enum State : int (String desc, bool active, Position pos)
 {
-    WAITING    = { "waiting", false, { 1, 2} },
-    RUNNING    = { "running", true,  {12,22} },
-    TERMINATED = { "ended",   false, { 0, 0} },
+    WAITING    { "waiting", false, { 1, 2} },
+    RUNNING    { "running", true,  {12,22} },
+    TERMINATED { "ended",   false, { 0, 0} },
 }
 
 fn void main()
