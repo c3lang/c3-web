@@ -600,4 +600,4 @@ Check out the [documentation](/getting-started) or [download it and try it out](
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
 
-Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1rfpxxi/a_modern_c_language_update_you_mightve_missed_c3/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button).
+Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1rfpxxi/a_modern_c_language_update_you_mightve_missed_c3/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) or [Hacker News](https://news.ycombinator.com/item?id=47173749).
