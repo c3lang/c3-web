@@ -445,7 +445,7 @@ fn int Foo.do_something(self)
 
 **Android Termux support:** has been improved and should now work properly.
 
-**Library support:** `c3c init` for libraries now provide helpful examples exported functions.
+**Library support:** `c3c init` for libraries now provides helpful examples of exported functions.
 
 **Improved Vendor Fetch:** `c3c vendor-fetch` now helpfully lists all packages available from vendor.
 
@@ -492,7 +492,7 @@ As part of this, `InStream.seek` is replaced by `set_cursor` and `cursor`.
 - `--cpu-flags` didn't work if the first item was an exclusion.
 - Reallocating overaligned memory with the LibcAllocator was unsafe.
 - `std::io::Formatter` would print incorrect values for values exceeding `int128.max`.
-- `--safe=no` disabled compile-time errors on compile-time known runtime @require checks
+- `--safe=no` would accidentally disable compile-time error reporting on compile-time known runtime `@require` checks.
 - Member access on a struct returned by an assignment expression, e.g. `(foo = bar()).a` would cause a crash.
 
 ## Looking Forward
