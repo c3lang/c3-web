@@ -267,8 +267,7 @@ So the 0.7.10 version of the example becomes
 // C3 constdef
 module raylib;
 
-// "const" creates a const enum
-constdef ConfigFlags : const int
+constdef ConfigFlags : int
 {
     VSYNC_HINT         = 0x00000040, 
     FULLSCREEN_MODE    = 0x00000002, 
