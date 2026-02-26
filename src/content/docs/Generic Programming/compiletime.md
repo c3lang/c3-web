@@ -105,7 +105,7 @@ Switching without passing a value argument to `$switch` itself is also allowed (
 ```c3
 macro @foo($x, #y)
 {
-    $switch
+    $switch:
         $case $x > 10:
             #y += $x * $x;
         $case $x < 0:
