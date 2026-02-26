@@ -532,6 +532,7 @@ This release wouldn't have been possible without the C3 community. I'd like to e
 	</summary>
 
 ### Changes / improvements
+- C3 is now using its own LLVM libraries when building releases.
 - Method resolution and `$defined` now works together well unless definitions are out of order for real.
 - Improve error message when using functions as values #2856
 - Improve support for Android with Termux.
@@ -550,6 +551,8 @@ This release wouldn't have been possible without the C3 community. I'd like to e
 - Properly support `@deprecated` as contract.
 - Support deprecating enum values.
 - Improve error when trying to use an extern const as a compile time constant. #2969
+- `vendor-fetch` command now lists all available packages by default. #2976
+- Typekind enums are changed CONST_ENUM -> CONSTDEF, DISTINCT -> TYPEDEF.
 
 ### Stdlib changes
 - Summarize sort macros as generic function wrappers to reduce the amount of generated code. #2831
@@ -588,6 +591,7 @@ This release wouldn't have been possible without the C3 community. I'd like to e
 - Trying to slice an indexable type leads to misleading error message #2958
 - Warn on use of visibility modifiers on methods. #2962
 - Compiler crash using `??` with a `void?` macro #2973
+- Fix issue when extending a generic type with a method in another module.
 
 </details>
 
