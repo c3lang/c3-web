@@ -508,20 +508,28 @@ Function pointer types also support:
 
 ## Typedef - Distinct type definitions
 
-`typedef` creates a new type, that has the same properties as the original type
-but is distinct from it. It cannot implicitly convert into the other type using the syntax
+`typedef` creates a new type, that has the same properties as the original type but is distinct from it. It cannot implicitly convert into the other type using the syntax
 `typedef <name> = <type>`
 
 ```c3
 typedef MyId = int;
+typedef MyId2 @constinit = int;
 fn void* get_by_id(MyId id) { ... }
+fn void* get_by_id2(MyId2 id) { ... }
 
 fn void test(MyId id)
 {
     void* val = get_by_id(id); // Ok
-    void* val2 = get_by_id(1); // Literals convert implicitly
-    int a = 1;
+    
+    // void* val2 = get_by_id(1); // ERROR expected a MyId
+    // Use `@constinit` to allow implicit conversion from 
+    // literals
+    Error: void* val2 = get_by_id2(1); 
+     
+    int a = 1;        
     // void* val3 = get_by_id(a); // ERROR expected a MyId
+    // `@constinit` doesn't work on non-literals
+    // void* val3 = get_by_id2(a); // ERROR expected a MyId2
     void* val4 = get_by_id((MyId)a); // Works
     // a = id; // ERROR can't assign 'MyId' to 'int'
 }
@@ -529,12 +537,11 @@ fn void test(MyId id)
 
 ### Inline typedef
 
-Using `inline` in the `typedef` declaration allows a newly created `typedef` type to
-implicitly convert to its underlying type:
+Using `inline` in the `typedef` declaration allows a newly created `typedef` type to implicitly convert to its underlying type:
 
 ```c3
-typedef Abc = int;
-typedef Bcd = inline int;
+typedef Abc @constinit = int;
+typedef Bcd @constinit = inline int;
 
 fn void test()
 {
@@ -735,13 +742,19 @@ constdef KeyCode
 fn void main()
 {
     int a = (int)KeyCode.SPACE; // assigns 32 to a
-    KeyCode b = (KeyCode)2; // constdef behave like typedef and will not enforce that every value has been declared beforehand
-    KeyCode key = get_key_code(); // can safely interact with a C function that returns the same enum
-    KeyCode conv = (KeyCode)a; // Use as cast to convert from the underlying type.
+    // constdef behave like typedef and will not enforce 
+    // that every value has been declared beforehand
+    KeyCode b = (KeyCode)2; 
+    // can safely interact with a C function that returns the same enum
+    KeyCode key = get_key_code();
+    // Use as cast to convert from the underlying type. 
+    KeyCode conv = (KeyCode)a; 
 }
 ```
 
-If you need a constdef to be converted to its assigned value without using a cast, `inline` can be used:
+### Inline constdef and @constinit
+
+If you need a `constdef` to be converted to its assigned value without using a cast, `inline` can be used:
 ```c3
 constdef ConstInline : inline String
 {
@@ -751,14 +764,29 @@ constdef ConstInline : inline String
 
 fn void main()
 {
-    String a = ConstInline.A; // implicitly converted to string due to inline
+    // implicitly converted to string due to inline
+    String a = ConstInline.A; 
     ConstInline b = B;
     String b_str = b;
 
     io::printfn("%s, %s!", a, b_str); // Prints "Hello, World!"
 }
-
 ```
+We can use `@constinit` to allow it to implicitly convert from a literal:
+```c3
+constdef ConstInline2 : String @constinit
+{
+    A = "Hello",
+    B = "World",
+}
+
+fn void main()
+{
+    // 
+    ConstInline2 a = "Bye";
+}
+```
+The rules are the same as for `typedef`.
 
 ## Struct types
 
