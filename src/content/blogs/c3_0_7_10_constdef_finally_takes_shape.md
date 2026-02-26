@@ -120,7 +120,7 @@ typedef enum
 Mask start = MASK_ABC | MASK_GHI;
 ```
 
-In this case there is no intention to go back and forth from value to enum, since values do not map to a single value. Our `MASK_ABC | MASK_GHI` has the value `6`, which doesn't match any of the defined enum values.
+In this case there is no intention to go back and forth from value to enum, since values do not map to a single value. Our `MASK_ABC | MASK_GHI` has the value `5`, which doesn't match any of the defined enum values.
 
 The C usage is fine, but enums defined in this way can certainly not have an array or switch lookup to find the name, because there is not even a single name to match on!
 
