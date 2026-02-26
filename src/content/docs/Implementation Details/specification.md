@@ -101,6 +101,8 @@ Identifiers name program entities such as variables and types. An identifier is 
 
 C3 has three groups of identifiers: const identifiers - containing only underscore and upper-case letters, type identifiers - starting with an upper case letter followed by at least one underscore letter and regular identifiers, starting with a lower case letter.
 
+Identifiers are limited to 127 characters.
+
 ```text
 IDENTIFIER       ::= "_"* LC_LETTER ALPHANUM_*
 CONST_IDENT      ::= "_"* UC_LETTER UC_ALPHANUM_*

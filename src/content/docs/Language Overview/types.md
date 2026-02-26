@@ -606,7 +606,7 @@ State current_state = WAITING; // or '= State.WAITING'
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
-Standard enums are always backed by an ordinal running from zero and up, without any gaps. For enums for non-consecutive values, see [const enums](#const-enums). To create enums that implement a bit-mask, you can also consider using [bitstructs](#bitstructs-as-bit-masks).
+Standard enums are always backed by an ordinal running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](#bitstructs-as-bit-masks).
 
 ### Enum associated values
 
@@ -699,15 +699,27 @@ fn State read_enum()
 }
 ```
 
-### Const enums
+### Enum type properties
 
-When interfacing with C code, you may encounter enums that are not sequential.
-For situations like this, you can use a const enum:
+Enum types have the following additional properties in addition to the usual properties for 
+user-defined types:
+
+1. `associated` returns an untyped list of types for the associated values.
+2. `inner` returns the type of the ordinal as a `typeid`.
+3. `lookup_field(field_name, value)` lookup an enum by associated value.
+4. `names` returns a list containing the names of all enums.
+5. `from_ordinal(value)` convert an integer to an enum.
+6. `values` return a list containing all the enum values of an enum.
+
+
+## Constdef
+
+When interfacing with C code, you may encounter enums that are not sequential. For situations like this, you can use a constdef in C3:
 
 ```c3
 extern fn KeyCode get_key_code();
 
-enum KeyCode : const CInt
+constdef KeyCode
 {
     UNKNOWN = 0,
     RETURN = 13,
@@ -722,16 +734,16 @@ enum KeyCode : const CInt
 
 fn void main()
 {
-    int a = (int) KeyCode.SPACE; // assigns 32 to a
-    KeyCode b = (KeyCode)2; // const enums behave like typedef and will not enforce that every value has been declared beforehand
+    int a = (int)KeyCode.SPACE; // assigns 32 to a
+    KeyCode b = (KeyCode)2; // constdef behave like typedef and will not enforce that every value has been declared beforehand
     KeyCode key = get_key_code(); // can safely interact with a C function that returns the same enum
     KeyCode conv = (KeyCode)a; // Use as cast to convert from the underlying type.
 }
 ```
 
-If you need a const enum to be converted to its assigned value without using a cast, `inline` can be used:
+If you need a constdef to be converted to its assigned value without using a cast, `inline` can be used:
 ```c3
-enum ConstInline : const inline String
+constdef ConstInline : inline String
 {
     A = "Hello",
     B = "World",
@@ -747,20 +759,6 @@ fn void main()
 }
 
 ```
-
-Const enums *cannot* have associated values and do not have the `nameof` property at runtime.
-
-### Enum type properties
-
-Enum types have the following additional properties in addition to the usual properties for 
-user-defined types:
-
-1. `associated` returns an untyped list of types for the associated values.
-2. `inner` returns the type of the ordinal as a `typeid`.
-3. `lookup_field(field_name, value)` lookup an enum by associated value.
-4. `names` returns a list containing the names of all enums.
-5. `from_ordinal(value)` convert an integer to an enum.
-6. `values` return a list containing all the enum values of an enum.
 
 ## Struct types
 

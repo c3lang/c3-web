@@ -380,6 +380,67 @@ if (modifyFoo(foo)) return false;
 return true;
 ```
 
+## Changes To `enum` and introducing `constdef`
+
+C3 enums gives new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constdef` instead:
+
+```c
+// C 
+enum Foo
+{
+    ABC,
+    DEF,
+    GHI
+};
+enum Bar
+{
+    OOPS = 4,
+    HELLO,
+    TESTME = 10
+};       
+
+void test(enum Bar b, enum Foo f)
+{
+    printf("%d %d\n", b, f);
+}
+
+void testme()
+{
+    // prints "4 1"
+    test(OOPS, DEF);
+}
+```
+
+```c3
+// C3
+import std::io;
+enum Foo
+{
+    ABC,
+    DEF,
+    GHI
+}
+constdef Bar
+{
+    OOPS = 4,
+    HELLO,
+    TESTME = 10
+}
+
+fn void test(Bar b, Foo f)
+{
+    io::printfn("%s %s", b, f);
+}
+
+fn void testme()
+{
+    // prints "4 DEF"
+    test(OOPS, DEF);
+}
+```
+
+Read more about enums [here](/language-overview/enum).
+
 ## Changes To `switch`
 
 - `case` statements automatically break.
