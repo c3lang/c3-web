@@ -468,7 +468,7 @@ fn void old_test() @deprecated("use new_test")
  Call this old function
  @deprecated "use new_test"
 *>   
-fn void old_test() @deprecated("use new_test")
+fn void old_test()
 { ... }
 ```
 
