@@ -986,7 +986,7 @@ fn void test()
     // As a special case, boolean fields may drop
     // the initializer value, this implicitly sets them
     // to true. Below the '.c' is the same as '.c = true'
-    f = { .a = 2, .b = 4, .c };
+    f = { .a = 2, .b = 2, .c };
 }
 ```
 
