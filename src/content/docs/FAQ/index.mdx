@@ -460,17 +460,4 @@ For Windows the following target would be needed:
 
 `c3c compile main.c3 --target windows-x64`
 
-*You need the MSVC SDK Files, which includes the Windows SDK, to be able to cross-compile to Windows.*
-
-To get the MSVC SDK Files, head to your C3 directory and run the following command:
-
-`python3 msvc_build_libraries.py`
-
-Running this command should generate a msvc_sdk directory in your main C3 directory.
-
-If running this command returns an error, your Linux distribution is more than likely missing the required packages needed for generating this MSVC folder.
-
-Run the following command depending on your distro:
-- **Ubuntu:** `sudo apt install msitools`
-- **Arch Linux:** `pacman -S msitools`
-- **Fedora:** `dnf install msitools`
+*This requires the MSVC SDK components, which c3c automatically downloads and configures, including the Windows SDK files needed to enable cross-compilation to Windows.*

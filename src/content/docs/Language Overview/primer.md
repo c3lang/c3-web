@@ -244,7 +244,7 @@ fn void get_by_id(MyId id)
     return;
 }
 
-fn test()
+fn void test()
 {
     MyId valid = 7;
     int invalid = 7;
