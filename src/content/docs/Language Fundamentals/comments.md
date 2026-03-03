@@ -25,6 +25,7 @@ For example:
  @param num_foo : `The number of foos.`
  @require num_foo > 4
  @require num_foo <= 100 : "Prevent too many foos."
+ @deprecated
  @mycustom "2"
 *>
 fn void bar(int num_foo)
@@ -39,6 +40,7 @@ The following was extracted:
 - The `num_foo` parameter has the description: *"The number of foos"*.
 - A [Contract](/language-common/contracts/) annotation for the compiler: `@require num_foo > 4` which tells the compiler and a user of the function that a precondition is that `num_foo` must be greater than 4.
 - A second contract annotation with the description: *"Prevent too many foos"*.
+- A function [Attribute](/language-common/attributes/) marking it as `@deprecated`, which displays warnings.
 - A custom function [Attribute](/language-common/attributes/) `@mycustom`. The compiler is free to silently ignore custom Attributes, they can be used to optionally emit warnings, but are otherwise ignored.
 
 ### Available annotations
