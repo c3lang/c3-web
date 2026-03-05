@@ -322,7 +322,7 @@ fn void example_cb()
 ## Error Handling
 
 Errors are handled using optional results, denoted with a '~' suffix. A variable of an optional
-result type may either contain the regular value or a `fault` enum value.
+result type may either contain the regular value or a `fault` value.
 
 ```c3
 faultdef DIVISION_BY_ZERO;
