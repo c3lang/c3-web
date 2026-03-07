@@ -93,9 +93,15 @@ On Linux and MacOS, C3 uses the available C compiler to link with the correct li
 it is likely that your system will lack a complete environment with unless a C compiler is available.
 
 Linux users should generally install GCC or Clang, according to their distribution's documentation. 
-For example, if you use Ubuntu, you can install the `gcc` package:
-```bash
-sudo apt-get install gcc
-```
+Below is a list of officially tested distributions and the minimum packages required to compile and link C3 programs:
+
+| Distribution | Required Packages | Command |
+|--------------|-------------------|---------|
+| **Ubuntu / Debian** | `gcc`, `libc6-dev` | `sudo apt-get install gcc libc6-dev` |
+| **Fedora / Rocky** | `gcc` | `sudo dnf install gcc` |
+| **Arch Linux** | `gcc` | `sudo pacman -S gcc` |
+| **openSUSE** | `gcc`, `glibc-devel` | `sudo zypper install gcc glibc-devel` |
+| **Alpine Linux** | `gcc`, `musl-dev` | `sudo apk add gcc musl-dev` |
+| **Void Linux** | `gcc` | `sudo xbps-install -S gcc` |
 
 On MacOS you can either install XCode or download the stand-alone command-line tools: https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/
