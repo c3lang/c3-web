@@ -9844,6 +9844,9 @@ alias symbolize_backtrace @if(env::OPENBSD)	= openbsd::symbolize_backtrace
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace) @if(!env::NATIVE_STACKTRACE)
 ```
+```c3
+fn String? get(Allocator allocator)
+```
 ### `std::os::darwin @if(env::DARWIN)`
 ```c3
 extern fn CInt sysctl(CInt *name, CUInt namelen, void *oldp, usz *oldlenp, void *newp, usz newlen)
