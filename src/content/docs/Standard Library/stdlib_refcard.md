@@ -9841,11 +9841,9 @@ alias symbolize_backtrace @if(env::DARWIN) 	= darwin::symbolize_backtrace
 ```c3
 alias symbolize_backtrace @if(env::OPENBSD)	= openbsd::symbolize_backtrace
 ```
+
 ```c3
 fn BacktraceList? symbolize_backtrace(Allocator allocator, void*[] backtrace) @if(!env::NATIVE_STACKTRACE)
-```
-```c3
-fn String? get(Allocator allocator)
 ```
 ### `std::os::darwin @if(env::DARWIN)`
 ```c3

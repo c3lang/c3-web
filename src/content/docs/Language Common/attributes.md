@@ -353,6 +353,12 @@ It is only valid for the `main` function.
 
 *Used for: function, const, global*
 
+Like @weaklink, but if the same definition occurs in the same compilation, the non-weak one is preferred.
+
+### `@weaklink`
+
+*Used for: function, const, global*
+
 Emits a weak symbol rather than a global.
 
 ## User defined attributes
