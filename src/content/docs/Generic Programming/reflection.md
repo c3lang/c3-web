@@ -113,7 +113,7 @@ TypeKind kind = int.kindof; // TypeKind.SIGNED_INT
 
 #### `len`
 
-Returns the length of the array.
+Returns the length of the array. For enums and constdefs, it will return the number of constants.
 
 ```c3
 usz len = int[4].len; // 4
