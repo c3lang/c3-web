@@ -12,6 +12,11 @@ Here is an extremely brief (and not yet complete) overview.
 As C3 is an evolution of C, the languages are quite similar.
 C3 adds features, but also removes a few.
 
+##### In C but not in C3
+
+- Qualified types (`const`, `volatile` etc)
+- Unsafe implicit conversions
+
 ##### In C3 but not in C
 
 - Module system
@@ -28,11 +33,6 @@ C3 adds features, but also removes a few.
 - Built-in slices
 - Foreach for iteration over arrays and types
 - Dynamic calls and types
-
-##### In C but not in C3
-
-- Qualified types (`const`, `volatile` etc)
-- Unsafe implicit conversions
 
 ## C++
 
