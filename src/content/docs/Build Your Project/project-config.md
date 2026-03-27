@@ -7,6 +7,8 @@ sidebar:
 # Customizing A Project
 
 This is a description of the configuration options in `project.json`:
+<br/>
+(you can see the full list executing `c3c --list-project-properties`)
 
 
 ```json5
@@ -56,6 +58,10 @@ This is a description of the configuration options in `project.json`:
   // C compiler if the project also compiles C sources
   // defaults to 'cc'.
   "cc": "cc",
+  // C compiler flags
+  "cflags": "",
+  // Set the include directories for C sources.
+  "c-include-dirs": "",
   // CPU name, used for optimizations in the LLVM backend.
   "cpu": "generic",
   // Debug information, may be "none", "full" and "line-tables".
@@ -95,6 +101,10 @@ This is a description of the configuration options in `project.json`:
   "x86cpu": "native",
   // Set max type of vector use: "none", "mmx", "sse", "avx", "avx512", "native".
   "x86vec": "sse",
+  // Enable sanitizer: none, address, memory, thread.
+  "sanitize": "none",
+  // Features enabled for all targets.
+  "features": "",
 }
 ```
         

@@ -621,9 +621,9 @@ It is possible to associate each enum value with one or more a static values.
 ```c3
 enum State : int (String description)
 {
-    WAITING = "waiting",
-    RUNNING = "running",
-    TERMINATED = "ended",
+    WAITING    { "waiting" },
+    RUNNING    { "running" },
+    TERMINATED { "ended" },
 }
 
 fn void main()
@@ -1112,7 +1112,7 @@ bitstruct Implicit : int
 It is possible to use bitstructs to implement bitmasks without using the explicit masking values, see the following example:
 
 ```c3
-enum BitMaskEnum : const uint
+constdef BitMaskEnum : uint
 {
     ABC = 1 << 0,
     DEF = 1 << 1,
