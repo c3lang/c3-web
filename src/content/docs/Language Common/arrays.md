@@ -229,7 +229,7 @@ struct SliceRaw
 
 ### Dynamically allocated slices
 
-Standart library provides utilities for allocating multiple elements into a slice:
+Standard library provides utilities for allocating multiple elements into a slice:
 
 ```c3
 // uses calloc under the hood (memory is zeroed out)
