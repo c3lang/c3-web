@@ -227,6 +227,20 @@ struct SliceRaw
 }
 ```
 
+### Dynamically allocated slices
+
+Standard library provides utilities for allocating multiple elements into a slice:
+
+```c3
+// uses calloc under the hood (memory is zeroed out)
+int[] arr1 = mem::new_array(int, 10);
+defer mem::free(arr1);
+
+// uses malloc under the hood (memory is undefined)
+int[] arr2 = mem::alloc_array(int, 10);
+defer mem::free(arr2);
+```
+
 ## Iteration Over Arrays
 
 ### `foreach` element by copy
@@ -369,10 +383,10 @@ fn void test()
 
 ## Fixed Size Multi-Dimensional Arrays
 
-To declare two dimensional fixed arrays as `<type>[<x-size>, <y-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
+To declare two dimensional fixed arrays as `<type>[<inner-size>, <outer-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
 ```c
 // C
-// Uses: name[<rows>][<columns>]
+// Uses: name[<outer-size>][<inner-size>]
 int array_in_c[4][2] = {
     {1, 2},
     {3, 4},
@@ -381,7 +395,7 @@ int array_in_c[4][2] = {
 };
 
 // C3
-// Uses: <type>[<x-size>][<y-size>]
+// Uses: <type>[<inner-size>][<outer-size>]
 // C3 declares the dimensions, inner-most to outer-most
 int[4][2] array = {
     {1, 2, 3, 4},
@@ -409,7 +423,7 @@ int[][4] array = {
 Accessing the multi-dimensional fixed array has inverted array index order to when the array was declared.
 
 ```c3
-// Uses: <type>[<x-size>][<y-size>]
+// Uses: <type>[<inner-size>][<outer-size>]
 int[2][4] array = {
     {1, 2},
     {3, 4},
@@ -417,7 +431,7 @@ int[2][4] array = {
     {7, 8},
 };
 
-// Access fixed array using: array[<row>][<column>]
+// Access fixed array using: array[<outer-index>][<inner-index>]
 int value = array[3][1]; // 8
 ```
 :::
