@@ -1,5 +1,5 @@
 ---
-title: "C3 0.7.11 - The last of the 0.7
+title: "C3 0.7.11 - The last of the 0.7"
 date: 2026-04-06
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
