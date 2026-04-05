@@ -150,7 +150,7 @@ $alignof   $assert     $assignable
 $case      $default    $defined
 $echo      $else       $embed
 $endfor    $endforeach $endif
-$endswitch $eval       $error     
+$endswitch $eval       $error
 $exec      $extnameof  $feature
 $for       $foreach    $if
 $include   $is_const   $nameof
@@ -172,8 +172,8 @@ The following character sequences represent operators and punctuation.
 (       )       *       [       ]       %
 >=      <=      +       +=      -=      !
 ?       ?:      &&      ??      &=      |=
-^=      /=      ..      ==      [<      >]      
-++      --      %=      !=      ||      ::      
+^=      /=      ..      ==      [<      >]
+++      --      %=      !=      ||      ::
 <<      >>      !!      ->      =>      ...
 <<=     >>=     +++     &&&    |||      ???
 ```
@@ -509,7 +509,7 @@ TODO
 
 ## Expressions
 
-TOTO 
+TOTO
 
 ### Assignment expression
 
@@ -763,6 +763,10 @@ If no init expression is provided, the variable is **zero initialized**.
 #### Opt-out of zero initialization
 
 Using the @noinit attribute opts out of **zero initialization**.
+
+#### Prevent opt-out of zero initialization
+
+Using the @mustinit attribute disables the use of the @noinit attribute.
 
 #### Self referencing initialization
 
@@ -1300,9 +1304,10 @@ Attributes are modifiers attached to modules, variables, type declarations etc.
 | `@littleendian` | bitstruct only                                                                    |
 | `@local`        | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
 | `@maydiscard`   | fn, macro                                                                         |
+| `@mustinit`     | variables                                                                         |
 | `@naked`        | fn                                                                                |
 | `@nodiscard`    | fn, macro                                                                         |
-| `@noinit`       | variables                                                                         |
+| `@noinit`       | user-defined types
 | `@noinline`     | fn, call                                                                          |
 | `@noreturn`     | fn, macro                                                                         |
 | `@nostrip`      | fn, globals, constants, struct, union, enum, faultdef                             |
