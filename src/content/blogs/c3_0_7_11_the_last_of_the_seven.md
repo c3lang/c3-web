@@ -187,6 +187,7 @@ Manu Linares, Mehdi Chinoune, Sisyphus1813, Zack Puhl
 	>
 		Click for full change log
 	</summary>
+
 ### Changes / improvements
 - Removed support for LLVM 17, 18.
 - Detect large temporaries when creating slices on the stack #2665
@@ -303,6 +304,7 @@ Manu Linares, Mehdi Chinoune, Sisyphus1813, Zack Puhl
 - Lambdas as default arguments were tagged with the wrong module, leading to linking issues.
 - An initializer list with an optional field was incorrectly considered constant.
 - Fix in ringbuffer for the case of popping at position 0.
+
 </details>
 
 ### Want To Dive Into C3?
