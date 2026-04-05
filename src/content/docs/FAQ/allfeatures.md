@@ -183,7 +183,7 @@ groups certain attributes. Empty attribute groups are permitted.
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 `@callconv`, `@deprecated`, `@dynamic`, `@export`,
 `@cname`, `@if`, `@inline`, `@interface`,
-`@littleendian`, `@local`, `@maydiscard`, `@naked`,
+`@littleendian`, `@local`, `@maydiscard`, `@mustinit`, `@naked`,
 `@nodiscard`, `@noinit`, `@noreturn`, `@nostrip`,
 `@obfuscate`, `@operator`, `@overlap`, `@priority`,
 `@private`, `@public`, `@pure`, `@reflect`,
@@ -302,7 +302,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ## Features provided by builtins
 
-Some features are [provided by "builtins" in the standard library](/standard-library/stdlib_refcard/#stdcorebuiltin), 
+Some features are [provided by "builtins" in the standard library](/standard-library/stdlib_refcard/#stdcorebuiltin),
 and appear like normal functions and macros in the standard library, but nonetheless provided unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.

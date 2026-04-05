@@ -170,6 +170,12 @@ Sets the visibility to "local", which means it's only visible in the current mod
 Allows the return value of the function or macro to be discarded even if it is an optional. Should be
 used sparingly.
 
+### `@mustinit`
+
+*Used for: user-defined types*
+
+Prevents the use of the `@noinit` tag on a variable of the specified type.
+
 ### `@naked`
 
 *Used for: function*
