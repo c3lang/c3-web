@@ -32,7 +32,7 @@ f = Foo.AUDIO | Foo.VIDEO; // Ok
 // f = AUDIO | VIDEO - this is an error
 ```
 
-From 0.7.11 and onwards, the inference works:
+From 0.7.11 onwards, the inference works:
 ```c3
 f = Foo.AUDIO | Foo.VIDEO; // Ok
 f = AUDIO | VIDEO; // Also ok in 0.7.11
@@ -86,7 +86,7 @@ C3 now also detects large temporaries when creating slices on the stack.
 
 ### Updated Matrix library
 
-The big change is the updated Matrix library. The new matrix type is column major, aligning it with most graphics and math libraries. It's also gotten quite the overhaul with methods and functions updated and fixed. The default aliases are now based on floats rather than doubles, which fits with common usage.
+The big change is the updated Matrix library. The new matrix type is column major, aligning it with most graphics and math libraries. It has also undergone quite an overhaul, with methods and functions updated and fixed. The default aliases are now based on floats rather than doubles, which fits with common usage.
 
 The predefined aliases are:
 
@@ -131,7 +131,7 @@ The matrix perspective and ortho, project and unproject functions are now right-
 - The backtrace has been cleaned up on Linux.
 - ZString now has a hash method.
 - Simple member-wise struct comparison using `member_eq`.
-- `always_assert` macro.
+- `always_assert` macro, which asserts even in unsafe mode.
 - `file::last_modified` was added.
 - `SubProcess` was renamed `Process` and refreshed with new, more streamlined, functions.
 - Use methods `short_name()` and `@short_name()` to get the unqualified fault name, e.g. `io::EOF` becomes `EOF`.
@@ -150,7 +150,7 @@ With 0.7.11, MUSL-based builds of the compiler are available on Linux.
 
 ### Unified SDK fetching with Android support
 
-0.7.10 brought automatic download of the MSVC SDK without needing external scripts. In 0.7.11, this is extended to support Android, with the goal to bring in more targets, such as the MacOS SDK for effortless cross-compilation.
+0.7.10 brought automatic download of the MSVC SDK without needing external scripts. In 0.7.11, this is extended to support Android, with the goal of bringing in more targets, such as the MacOS SDK for effortless cross-compilation.
 
 ## Bug fixes
 
