@@ -128,11 +128,18 @@ fn void test_math() @test {
 ## Assertions and Unreachable
 
 ### `assert`
-Used for runtime checks that should always be true. In **Safe Mode**, a failed assertion triggers a panic with a backtrace. In **Fast Mode**, assertions are removed.
+Used for runtime checks that should always be true.
+
+- **Safe Mode**: triggers a panic with backtrace if the condition fails
+- **Fast Mode**: is assumed to always be `true`, generating an LLVM `unreachable` instruction, becoming an **optimization hint** telling the compiler this path is impossible.
 
 ```c3
 assert(divisor != 0, "Cannot divide by zero!");
 ```
+
+:::note
+Use `@assert_always` as drop-in replacement if the assertion should also happen in **Fast Mode**
+:::
 
 ### `unreachable`
 Marks a code path that logically should never be hit.
