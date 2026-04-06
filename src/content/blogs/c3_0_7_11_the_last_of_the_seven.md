@@ -66,7 +66,7 @@ fn void foo() @weak
 }
 ```
 
-### $$builtin use outside of the library
+### Warning on $$builtin use
 
 Builtins (functions prefixed with `$$`, such as `$$unreachable`) are intended to be accessed through standard library macros, not used directly. They are considered internal and may change without warning.
 
