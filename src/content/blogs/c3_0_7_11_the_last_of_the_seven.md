@@ -312,3 +312,5 @@ Manu Linares, Mehdi Chinoune, Sisyphus1813, Zack Puhl
 Check out the [documentation](/getting-started) or [download it and try it out](/getting-started/prebuilt-binaries).
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
+
+Discuss this article on [Reddit](https://www.reddit.com/r/programming/comments/1set2gu/c3_closes_out_its_07_era_focusing_on_simplicity/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button) or [Hacker News](https://news.ycombinator.com/item?id=47673495).
