@@ -131,21 +131,21 @@ fn void test_math() @test {
 Used for runtime checks that should always be true.
 
 - **Safe Mode**: triggers a panic with backtrace if the condition fails
-- **Fast Mode**: is assumed to always be `true`, generating an LLVM `unreachable` instruction, becoming an **optimization hint** telling the compiler this path is impossible.
+- **Unchecked Mode**: is assumed to always be `true`, generating an LLVM `unreachable` instruction, becoming an **optimization hint** telling the compiler this path is impossible.
 
 ```c3
 assert(divisor != 0, "Cannot divide by zero!");
 ```
 
 :::note
-Use `@assert_always` as drop-in replacement if the assertion should also happen in **Fast Mode**
+Use `@assert_always` as drop-in replacement if the assertion should also happen in **Unchecked Mode**
 :::
 
 ### `unreachable`
 Marks a code path that logically should never be hit.
 
 - **Safe Mode**: Triggers a panic with the provided message and a backtrace.
-- **Fast Mode**: Generates an LLVM `unreachable` instruction. This is an **optimization hint** telling the compiler this path is impossible. If the path is actually reached, the program will have **undefined behavior** (which often manifests as a crash or very strange execution state).
+- **Unchecked Mode**: Generates an LLVM `unreachable` instruction. This is an **optimization hint** telling the compiler this path is impossible. If the path is actually reached, the program will have **undefined behavior** (which often manifests as a crash or very strange execution state).
 
 ```c3
 switch (state) {
@@ -174,11 +174,11 @@ fn float divide(float a, float b)
 
 If a contract is violated in safe mode, the program panics with a descriptive message and a backtrace.
 
-## Safe vs. Fast Mode
+## Safe vs. Unchecked Mode
 
 Understanding the difference between modes is crucial for debugging:
 
-| Feature | Safe Mode (-O0, -O1) | Fast Mode (-O2+) |
+| Feature | Safe Mode (-O0, -O1) | Unchecked Mode (-O2+) |
 | :--- | :--- | :--- |
 | **Bounds Checking** | Enabled | Disabled |
 | **Null Checks** | Enabled | Disabled |
@@ -186,4 +186,4 @@ Understanding the difference between modes is crucial for debugging:
 | **Backtraces** | Generated | Optional/None |
 | **Zero-Init** | Guaranteed | Guaranteed |
 
-Always perform your primary development and testing in **Safe Mode**. Switch to Fast Mode only for final releases or performance profiling once the logic is verified.
+Always perform your primary development and testing in **Safe Mode**. Switch to Unchecked Mode only for final releases or performance profiling once the logic is verified.
