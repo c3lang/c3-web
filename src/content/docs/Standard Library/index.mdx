@@ -2,7 +2,10 @@
 title: Standard Library
 description: Standard Library
 sidebar:
-    order: 128
+  order: 128
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 4
 ---
 
 The standard library is currently in development, so frequent changes will occur. Note that all std::core modules and
@@ -17,9 +20,11 @@ This page is missing many new parts of the standard library, see the [Standard L
 All functions and macros in this library can be used without path qualifiers.
 
 ### `void panic(String message, String file, String function, uint line)`
+
 Default function called when the asserts fails.
 
 ### `void @swap(#a, #b)`
+
 Swap values in `a` and `b`.
 
 ```c
@@ -61,15 +66,19 @@ On safe mode this will throw a runtime panic when reached. For release mode the
 compiler will assume this case never happens.
 
 ### `bitcast(value, $Type)`
+
 Do a bitcast of a value to `$Type`, requires that the types are of the same memory size.
+
 ```c
 float x = 1.0;
 int y = bitcast(x, int); // y = 0x3f800000
 ```
 
 ### `enum_by_name($Type, enum_name)`
+
 Optionally returns the enum value with the given name. `$Type` must be an enum. Returns `SearchResult.MISSING`
 on failure.
+
 ```c
 enum Foo { ABC, CDE, EFG }
 
@@ -98,6 +107,7 @@ io::printfn("a = %d", a, b);
 ```
 
 ### `less`, `greater`, `less_eq`, `greater_eq`, `equals`
+
 All macros take two values and compare them. Any type implementing `Type.less`
 or `Type.compare_to` may be compared (or if the type implements `<`). Types
 implementing `Type.equals` may use `equals` even if neither `less` nor `compare_to`
@@ -106,6 +116,7 @@ are implemented.
 ## `std::core::env`
 
 ### Constants
+
 - `OS_TYPE` the OS type compiled for.
 - `COMPILER_OPT_LEVEL` the optimization level used.
 - `I128_SUPPORT` true if int128 support is available.
@@ -168,7 +179,7 @@ pointers created using `calloc_aligned` or `alloc_aligned`.
 
 ### `free`, `free_aligned`
 
-Frees memory allocated using `malloc` or `calloc`. Any memory allocated using "_aligned" variants
+Frees memory allocated using `malloc` or `calloc`. Any memory allocated using "\_aligned" variants
 must be freed using `free_aligned`.
 
 ### `@scoped(Allocator allocator; @body())`
@@ -218,7 +229,6 @@ Opens a temporary memory scope.
 };
 ```
 
-
 ### `@volatile_load(#x)`
 
 Returns the value in `#x` using a volatile load.
@@ -229,7 +239,6 @@ int y = @volatile_load(my_global);
 y = @volatile_load(my_global);
 ```
 
-
 ### `@volatile_store(#x, y)`
 
 Store the value `y` in `#x` using a volatile store.
@@ -239,6 +248,7 @@ Store the value `y` in `#x` using a volatile store.
 @volatile_store(y, 1);
 @volatile_store(y, 1);
 ```
+
 ### `usz aligned_offset(usz offset, usz alignment)`
 
 Returns an aligned size based on the current offset. The alignment
@@ -300,6 +310,7 @@ Return `true` if the value can be compared using the `equals` macro.
 Return `true` if the value can be compared using the comparison macros.
 
 ### `kind_is_int(TypeKind kind)`
+
 ### `any_to_int(any v, $Type)`
 
 Returns an optional value of `$Type` if the any value losslessly
@@ -314,16 +325,19 @@ ichar z = any_to_int(v, ichar)!!; // Panics VALUE_OUT_OF_RANGE
 ## `std::core::str::conv`
 
 ### `usz? char32_to_utf8(Char32 c, char[] output)`
+
 Convert a UTF32 codepoint to an UTF8 buffer. It returns the number of bytes used, or
 `string::CONVERSION_FAILED` if the buffer is too small.
 
 ### `void char32_to_utf16_unsafe(Char32 c, Char16** output)`
+
 Convert a UTF32 codepoint to an UTF16 buffer without bounds checking,
 moving the output pointer 1 or 2 steps.
 
 ## `std::io`
 
 ### `String? readline(Allocator allocator, stream = io::stdin())`
+
 Read a `String?` from a file stream, which is standard input (stdin) by default, reads to the next newline character `\n` or to the end of stream.
 `readline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string.
 
@@ -347,6 +361,7 @@ fn void? hello_name()
 :::
 
 ### `String? treadline(stream = io::stdin())`
+
 Read a `String?` from a file stream which is standard input (stdin) by default, Reads to the next newline character `\n` or to the end of stream. `Treadline` returns an [Optional](/language-common/optionals-essential/#what-is-an-optional) string. The temporary allocator is used by `treadline`, in contrast the `readline` can be used with any allocator.
 
 ```c
@@ -400,12 +415,14 @@ fn void main()
 ```
 
 ### `void eprint(x)`, `void eprintn(x)`
+
 Print any value to stderr.
 The `eprintn` variant appends a newline.
 
 See `print` for usage.
 
 ### `usz? printf(String format, args...) @maydiscard`
+
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` `%p`, `%h`, and `%c` are supported.
 Will also print enums and vectors. Prints to stdout.
 
@@ -436,6 +453,7 @@ fn void main()
 Also available as `printfn` which appends a newline.
 
 ### `usz? eprintf(String format, args...) @maydiscard`
+
 Regular printf functionality: `%s`, `%x`, `%d`, `%f` and `%p` are supported.
 Will also print enums and vectors. Prints to stderr.
 
@@ -444,15 +462,18 @@ Also available as `eprintfn` which appends a newline.
 See `printf` for usage
 
 ### `char[]? bprintf(char[] buffer, String format, args...) @maydiscard`
+
 Prints using a 'printf'-style formatting string, to a string buffer.
 
 Returns a slice of the `buffer` argument with the resulting length.
 
 ### `usz? fprint(out, x)`, `usz? fprintn(out, x = "")`
+
 Print a value to a stream. `out` must implement `OutStream`.
 The `fprintn` variant appends a newline.
 
 ### `usz? fprintf(OutStream out, String format, args...)`
+
 Prints to the specified OutStream using a 'printf'-style formatting string.
 
 Returns the number of characters printed.
@@ -460,67 +481,87 @@ Returns the number of characters printed.
 `fprintfn` appends a newline.
 
 ### `void putchar(char c) @inline`
+
 Libc `putchar`, prints a single character to stdout.
 
 ### `usz? DString.appendf(&self, String format, args...) @maydiscard`
+
 Same as printf but on dynamic strings.
 
 ### `File* stdout()`, `File* stdin()`, `File* stderr()`
+
 Return stdout, stdin and stderr respectively.
 
 ## `std::io::file`
 
 ### `File? open(String filename, String mode)`
+
 Open a file with the given file name with the given mode (r, w etc)
 
 ### `File? open_path(Path path, String mode)`
+
 Open a file pointed to by a Path struct, with the given mode.
 
 ### `bool is_file(String path)`
+
 See whether the given path is a file.
 
 ### `usz? get_size(String path)`
+
 Get the size of a file.
 
 ### `void? delete(String filename)`
+
 Delete a file.
 
 ### `void? File.reopen(&self, String filename, String mode)`
+
 Reopen a file with a new filename and mode.
 
 ### `usz? File.seek(&self, isz offset, Seek seek_mode = Seek.SET)`
+
 Seek in a file. Based on the libc function.
 
 ### `void? File.write_byte(&self, char c) @dynamic`
+
 Write a single byte to a file.
 
 ### `void? File.close(&self) @inline @dynamic`
+
 Close a file, based on the libc function.
 
 ### `bool File.eof(&self) @inline`
+
 True if EOF has been reached. Based on the libc function.
 
 ### `usz? File.read(&self, char[] buffer)`
+
 Read into a buffer, based on the libc function.
 
 ### `usz? File.write(&self, char[] buffer)`
+
 Write to a buffer, based on the libc function.
 
 ### `char? File.read_byte(&self) @dynamic`
+
 Read a single byte from a file.
 
 ### `char[]? load_buffer(String filename, char[] buffer)`
+
 Load up to buffer.len characters into the buffer.
 
 Returns `io::OVERFLOW` if the file is longer than the buffer.
 
 ### `char[]? load(Allocator allocator, String filename)`
+
 Load the entire file into a new buffer using the given allocator.
 
 ### `char[]? load_temp(String filename)`
+
 Load the entire file into a buffer allocated using the temporary allocator.
 
 ### `void? File.flush(&self) @dynamic`
+
 Flush a file, based on the libc function.
 
 ## `std::collections::list{ Type }`
@@ -540,47 +581,346 @@ list.free();
 ```
 
 ### `List.push(&self, Type element)`, `append(...)`
+
 Append a single value to the list.
 
 ### `Type List.pop(&self)`
+
 Removes and returns the last entry in the list.
 
 ### `Type List.pop_first(&self)`
+
 Removes the first entry in the list.
 
 ### `void List.remove_at(&self, usz index)`
+
 Removes the entry at `index`.
 
 ### `void List.insert_at(&self, usz index, Type type)`
+
 Inserts a value at `index`.
 
 ### `void List.push_front(&self, Type type)`
+
 Inserts a value to the front of the list.
 
 ### `void? List.remove_last(&self)`
+
 Remove the last value of the list.
 
 ### `void? List.remove_first(List *list)`
+
 Remove the first element in the list.
 
 ### `Type? List.first(&self)`
+
 Return the first element in the list if available.
 
 ### `Type? List.last(&self)`
+
 Return the last element in the list if available.
 
 ### `List.is_empty(&self)`
+
 Return `true` if the list is empty.
 
 ### `usz List.len(&self)`
+
 Return the number of elements in the list.
 
 ### `Type List.get(&self, usz index)`
+
 Return the value at `index`.
 
 ### `void List.free(&self)`
+
 Free all memory associated with this list.
 
 ### `void List.swap(&self, usz i, usz j)`
+
 Swap two elements in the list.
 
+## `std::collections::orderedmap{Key, Value}`
+
+`OrderedMap` is a map for cases where key order matters. Unlike a hash map, iteration is sorted by key, which makes it useful for indexes, interval tables, ranked values, and any workload where you want to ask for "the next key", "the previous key", or "everything between A and B".
+
+Internally it is implemented as a skip list. In everyday use, the important part is the behavior:
+
+- lookup by key
+- iteration in key order
+- access to neighboring keys
+- range iteration without sorting a separate list first
+
+By default `OrderedMap` uses the built-in ordering for `Key`, so the key type must support ordered comparison. If you want a different order, for example descending or case-insensitive, initialize it with a custom comparator.
+
+### When To Use It
+
+Use `OrderedMap` when you need both mapping and ordering.
+
+- Use `std::collections::map` when fast key lookup matters but key order does not.
+- Use `OrderedMap` when iteration order should follow the keys.
+- Use `OrderedMap` when you need nearest-match queries such as floor, ceiling, lower, or higher.
+- Use `OrderedMap` when you want to iterate only part of the key space.
+
+### Basic Usage
+
+```c3
+import std::collections::orderedmap;
+import std::io;
+
+alias IntToStringMap = OrderedMap{int, String};
+
+fn void main()
+{
+    IntToStringMap map;
+    map.init(mem);
+    defer map.free();
+
+    map[10] = "ten";
+    map[3] = "three";
+    map[7] = "seven";
+
+    foreach (entry : map.iter())
+    {
+        io::printfn("%s -> %s", entry.key, entry.value);
+    }
+}
+```
+
+The output is ordered by key:
+
+```text
+3 -> three
+7 -> seven
+10 -> ten
+```
+
+Even though the values were inserted in the order `10`, `3`, `7`, iteration follows the key order.
+
+### Common Operations
+
+```c3
+if (try name = map[7])
+{
+    io::printfn("found: %s", name);
+}
+
+bool updated = map.set(7, "SEVEN");
+bool exists = map.has_key(3);
+bool removed = map.remove(10);
+```
+
+The main operations are:
+
+- `map[key]` returns `NOT_FOUND` if the key is absent.
+- `map[key] = value` inserts or updates.
+- `set` returns `true` when an existing key was updated, and `false` when a new entry was created.
+- `get_ref` is useful when you want to mutate the stored value in place.
+- `@get_or_set` is useful for lazy initialization.
+
+Example:
+
+```c3
+alias CounterMap = OrderedMap{String, int};
+
+CounterMap map;
+map.init(mem);
+defer map.free();
+
+int* count = map.get_ref("warnings") ?? {
+    map["warnings"] = 0;
+    return map.get_ref("warnings")!!;
+};
+(*count)++;
+```
+
+### Nearest-Key Queries
+
+One of the main reasons to use `OrderedMap` over a hash map is the support for neighbor queries:
+
+- `floor_key(k)` gives the greatest key less than or equal to `k`
+- `ceiling_key(k)` gives the least key greater than or equal to `k`
+- `lower_key(k)` gives the greatest key strictly less than `k`
+- `higher_key(k)` gives the least key strictly greater than `k`
+
+This is useful for table lookup and range navigation:
+
+```c3
+alias PriceTable = OrderedMap{int, String};
+
+PriceTable prices;
+prices.init(mem);
+defer prices.free();
+
+prices[10] = "basic";
+prices[25] = "pro";
+prices[100] = "enterprise";
+
+if (try tier_key = prices.floor_key(30))
+{
+    io::printfn("matched tier: %s", prices[tier_key]!!);
+}
+```
+
+### Range Iteration
+
+If you only want part of the map, you do not need to iterate everything.
+
+- `iter()` walks the whole map in key order
+- `iter_from(k)` starts at the first key greater than or equal to `k`
+- `iter_range(a, b)` walks the half-open range `[a, b)`
+
+```c3
+foreach (entry : map.iter_range(10, 20))
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```
+
+This makes `OrderedMap` a practical choice for paged output, time windows, or prefix-like numeric ranges.
+
+### Custom Ordering
+
+To change iteration order, pass a comparator to `init_with_cmp`. The comparator should return `true` when the first argument should come before the second.
+
+```c3
+fn bool descending(int a, int b)
+{
+    return a > b;
+}
+
+OrderedMap{int, String} map;
+map.init_with_cmp(mem, descending);
+defer map.free();
+
+map[1] = "one";
+map[3] = "three";
+map[2] = "two";
+
+foreach (entry : map.iter())
+{
+    io::printfn("%s", entry.key);
+}
+```
+
+This prints `3`, `2`, `1`.
+
+### Lifecycle
+
+Initialize the map with `init`, `tinit`, `init_with_cmp`, or `tinit_with_cmp`.
+
+- `clear()` removes all entries but keeps the map allocated.
+- `free()` releases all memory owned by the map.
+- `clone()` and `tclone()` create a copy of the map.
+- `merge()` inserts all entries from another ordered map and overwrites on key collision.
+- `first_key()`, `last_key()`, `pop_first()`, and `pop_last()` are useful when treating the map as a sorted work queue.
+
+### API Summary
+
+- `init` / `tinit`: create a map with default ordering
+- `init_with_cmp` / `tinit_with_cmp`: create a map with custom ordering
+- `get`, `get_ref`, `set`, `has_key`, `remove`: basic map operations
+- `first_key`, `last_key`, `floor_key`, `ceiling_key`, `lower_key`, `higher_key`: ordered navigation
+- `iter`, `iter_from`, `iter_range`: ordered traversal
+- `len`, `is_empty`, `clear`, `free`: container management
+- `clone`, `tclone`, `merge`: copying and combining maps
+
+### API Reference
+
+#### `OrderedMap.init(&self, Allocator allocator)`, `tinit(...)`
+
+Initialize the map using the provided allocator or the temporary allocator.
+
+#### `OrderedMap.init_with_cmp(&self, Allocator allocator, CmpFn cmp_fn)`, `tinit_with_cmp(...)`
+
+Initialize the map with a custom comparator. The comparator should return `true` when the first key should come before the second key.
+
+#### `bool OrderedMap.set(&self, Key key, Value value)`, `map[key] = value`
+
+Insert or update an entry. Returns `true` if an existing key was updated, `false` if a new entry was inserted.
+
+#### `Value? OrderedMap.get(&self, Key key)`, `map[key]`
+
+Get the value for a key, or `NOT_FOUND` if the key does not exist.
+
+#### `Value*? OrderedMap.get_ref(&self, Key key)`, `map&[key]`
+
+Get a pointer to the stored value for in-place updates.
+
+#### `Value OrderedMap.@get_or_set(&self, Key key, #default_value)`
+
+Return the current value for `key`, or insert and return `#default_value` if the key is missing.
+
+#### `bool OrderedMap.has_key(&self, Key key)`
+
+Return `true` if the key exists.
+
+#### `bool OrderedMap.remove(&self, Key key)`
+
+Remove a key and return whether it was present.
+
+#### `Key? OrderedMap.first_key(&self)`, `last_key(&self)`
+
+Return the first or last key in sorted order.
+
+#### `Entry? OrderedMap.pop_first(&self)`, `pop_last(&self)`
+
+Remove and return the first or last entry in sorted order.
+
+#### `Key? OrderedMap.floor_key(&self, Key key)`
+
+Return the greatest key less than or equal to `key`.
+
+#### `Key? OrderedMap.ceiling_key(&self, Key key)`
+
+Return the least key greater than or equal to `key`.
+
+#### `Key? OrderedMap.lower_key(&self, Key key)`
+
+Return the greatest key strictly less than `key`.
+
+#### `Key? OrderedMap.higher_key(&self, Key key)`
+
+Return the least key strictly greater than `key`.
+
+#### `sz OrderedMap.len(&self)`, `bool OrderedMap.is_empty(&self)`
+
+Return the number of entries or whether the map is empty.
+
+#### `void OrderedMap.clear(&self)`, `free(&self)`
+
+Remove all entries, or release all memory owned by the map.
+
+#### `OrderedMap OrderedMap.clone(&self, Allocator allocator)`, `tclone(&self)`
+
+Clone the map into a new map. The clone keeps the same comparator.
+
+#### `void OrderedMap.merge(&self, OrderedMap* other)`
+
+Insert all entries from `other`, overwriting existing values on key collisions.
+
+#### `OrderedMapIterator OrderedMap.iter(&self)`
+
+Iterate over all entries in sorted order.
+
+```c3
+foreach (entry : map.iter())
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```
+
+#### `OrderedMapRangeIterator OrderedMap.iter_from(&self, Key from_key)`
+
+Iterate from the first key greater than or equal to `from_key`.
+
+#### `OrderedMapRangeIterator OrderedMap.iter_range(&self, Key from_key, Key to_key)`
+
+Iterate over keys in the half-open range `[from_key, to_key)`.
+
+```c3
+foreach (entry : map.iter_range(10, 20))
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```

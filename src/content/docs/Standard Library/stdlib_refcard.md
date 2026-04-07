@@ -2082,6 +2082,124 @@ fn usz LinkedHashMapKeyIterator.len(self) @operator(len)
 ```c3
 fn usz LinkedHashMapIterator.len(self) @operator(len)
 ```
+### `std::collections::orderedmap{Key, Value}`
+```c3
+alias CmpFn = fn bool(Key, Key)
+```
+```c3
+struct Entry
+```
+```c3
+struct OrderedMap (Printable) @mustinit
+```
+```c3
+struct OrderedMapIterator
+```
+```c3
+struct OrderedMapRangeIterator
+```
+```c3
+fn OrderedMap* OrderedMap.init(&self, Allocator allocator)
+```
+```c3
+fn OrderedMap* OrderedMap.tinit(&self)
+```
+```c3
+fn OrderedMap* OrderedMap.init_with_cmp(&self, Allocator allocator, CmpFn cmp_fn)
+```
+```c3
+fn OrderedMap* OrderedMap.tinit_with_cmp(&self, CmpFn cmp_fn)
+```
+```c3
+fn bool OrderedMap.is_initialized(&self)
+```
+```c3
+fn bool OrderedMap.set(&self, Key key, Value value) @operator([]=)
+```
+```c3
+fn Value? OrderedMap.get(&self, Key key) @operator([])
+```
+```c3
+fn Value*? OrderedMap.get_ref(&self, Key key) @operator(&[])
+```
+```c3
+macro Value OrderedMap.@get_or_set(&self, Key key, Value #default_value)
+```
+```c3
+fn bool OrderedMap.has_key(&self, Key key)
+```
+```c3
+fn bool OrderedMap.remove(&self, Key key)
+```
+```c3
+fn Key? OrderedMap.first_key(&self)
+```
+```c3
+fn Key? OrderedMap.last_key(&self)
+```
+```c3
+fn Entry? OrderedMap.pop_first(&self)
+```
+```c3
+fn Entry? OrderedMap.pop_last(&self)
+```
+```c3
+fn Key? OrderedMap.floor_key(&self, Key key)
+```
+```c3
+fn Key? OrderedMap.ceiling_key(&self, Key key)
+```
+```c3
+fn Key? OrderedMap.lower_key(&self, Key key)
+```
+```c3
+fn Key? OrderedMap.higher_key(&self, Key key)
+```
+```c3
+fn usz OrderedMap.len(&self) @inline
+```
+```c3
+fn bool OrderedMap.is_empty(&self) @inline
+```
+```c3
+fn void OrderedMap.clear(&self)
+```
+```c3
+fn void OrderedMap.free(&self)
+```
+```c3
+fn usz? OrderedMap.to_format(&self, Formatter* f) @dynamic
+```
+```c3
+fn OrderedMap OrderedMap.clone(&self, Allocator allocator)
+```
+```c3
+fn OrderedMap OrderedMap.tclone(&self)
+```
+```c3
+fn void OrderedMap.merge(&self, OrderedMap* other)
+```
+```c3
+fn OrderedMapIterator OrderedMap.iter(&self)
+```
+```c3
+fn OrderedMapRangeIterator OrderedMap.iter_from(&self, Key from_key)
+```
+```c3
+fn OrderedMapRangeIterator OrderedMap.iter_range(&self, Key from_key, Key to_key)
+```
+```c3
+fn Entry OrderedMapIterator.get(&self, usz idx) @operator([])
+```
+```c3
+fn usz OrderedMapIterator.len(&self) @operator(len)
+```
+```c3
+fn Entry OrderedMapRangeIterator.get(&self, usz idx) @operator([])
+```
+```c3
+fn usz OrderedMapRangeIterator.len(&self) @operator(len)
+```
 ### `std::collections::maybe{Type}`
 ```c3
 struct Maybe (Printable)
