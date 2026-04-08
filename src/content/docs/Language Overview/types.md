@@ -711,7 +711,7 @@ fn State read_enum()
 Enum types have the following additional properties in addition to the usual properties for 
 user-defined types:
 
-1. `associated` returns an untyped list of types for the associated values.
+1. `membersof` returns a list of member references, similar to struct's `membersof`.
 2. `inner` returns the type of the ordinal as a `typeid`.
 3. `lookup_field(field_name, value)` lookup an enum by associated value.
 4. `names` returns a list containing the names of all enums.

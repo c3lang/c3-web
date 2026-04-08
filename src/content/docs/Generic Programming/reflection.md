@@ -190,7 +190,7 @@ String[] x = FooEnum.names; // ["BAR", "BAZ"]
 #### `paramsof`
 
 *Only available for function pointer types.*
-Returns a ReflectParam struct for all function pointer parameters.
+Returns a ReflectedParam struct for all function pointer parameters.
 
 ```c3
 alias TestFunc = fn int(int x, double f);
