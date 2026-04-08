@@ -675,7 +675,7 @@ alias CounterMap = OrderedMap{String, int};
 CounterMap map;
 map.init(mem);
 defer map.free();
-
+// Adding a default value to the map if it does not exist, then returning a pointer to it
 int* count = map.get_ref("warnings") ?? {
     map["warnings"] = 0;
     return map.get_ref("warnings")!!;
