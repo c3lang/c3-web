@@ -262,10 +262,17 @@ At compile time, full type information is available. This allows for creation of
 like serialization.
 
 ```c3
-usz foo_alignment = Foo.alignof;
+usz foo_alignment = Foo.alignof; 
 usz foo_member_count = Foo.membersof.len;
 String foo_name = Foo.nameof;
+// Note: In 0.8+ use:
+// sz foo_alignment = Foo::alignof; 
+// sz foo_member_count = Foo::members.len;
+// String foo_name = Foo::name;
 ```
+
+
+
 
 To read more about all the fields available at compile time, see the page on [reflection](/generic-programming/reflection).
 
@@ -277,6 +284,8 @@ The following is a list of functions available at compile time:
 
 Get the alignment of something.
 See [reflection](/generic-programming/reflection/#alignof).
+
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
 
 ### `$assert`
 
@@ -339,9 +348,6 @@ fn void main()
 }
 ```
 
-### `$evaltype`
-
-
 ### `$exec`
 
 Execute a script at compile time and include the result in the source code.
@@ -350,6 +356,9 @@ Execute a script at compile time and include the result in the source code.
 ### `$extnameof`, `$qnameof` and `$nameof`
 
 Get the external name of a symbol.
+
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
+
 See [reflection](/generic-programming/reflection/#extnameof).
 
 External names are the names written into the symbol table of the executable or library binary, which subsequently may later be used by other programs to call into the binary by linking to those names, such as via foreign function interfaces (FFI) from another language or via direct use of the binary interface (such as enabled by the ABI and library compatibility of C and C3). 
@@ -366,10 +375,6 @@ On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before 
 
 Check if a given feature is enabled. Features are passed using `-D <FEATURE_NAME>` on the command line.
 
-### `$is_const`
-
-Check if the expression is constant at compile time. This is typically used in specialized macros when testing expression parameters like `#foo`.
-
 ### `$include`
 
 Includes a file into the current file at the top level as raw text, resulting in that file's text being compiled as if directly written into the location of the `$include`.
@@ -383,6 +388,8 @@ Note that if pure data inclusion is what you want then `$embed` may be more help
 Get the local name of a symbol.
 See [reflection](/generic-programming/reflection/#nameof-1).
 
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
+
 Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
 
 For example, `$nameof(io::printn)` is `printn`.
@@ -392,6 +399,8 @@ For example, `$nameof(io::printn)` is `printn`.
 Get the offset of a member.
 See [reflection](/generic-programming/reflection/#offsetof).
 
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
+
 ### `$qnameof`
 
 Get the qualified name of a symbol.
@@ -400,6 +409,8 @@ See [reflection](/generic-programming/reflection/#qnameof).
 Qualified names are the full ("absolute") namespace paths needed to reach a symbol.
 
 For example, `$qnameof(io::printn)` is `std::io::printn`.
+
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
 
 ### `$vacount`
 
@@ -428,6 +439,8 @@ Get a vaarg as a `$Type` parameter.
 ### `$sizeof`
 
 Return the size of an expression.
+
+\**Note: this function is removed in 0.8+, use `$reflect` instead.*
 
 ### `$stringify`
 

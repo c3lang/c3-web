@@ -36,6 +36,8 @@ between two pointers. For each signed integer type there is a corresponding unsi
 On 64-bit machines `iptr`/`uptr` and `isz`/`usz` are usually 64-bits, like `long`/`ulong`.
 On 32-bit machines on the other hand they are generally `int`/`uint`.
 
+*Note: from 0.8.0 and onward, `isz` is renamed `sz` and is used as the default.*
+
 ### Integer constants
 
 Numeric constants typically use decimal, e.g. `234`, but may also use hexadecimal (base 16) numbers by prefixing

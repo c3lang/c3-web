@@ -94,6 +94,8 @@ Integer types are either signed or unsigned.
 
 &Dagger;: Size, pointer and pointer-sized types depend on the target platform.
 
+*Note that `isz` is renamed `sz` from 0.8.0 and onwards.*
+
 ### Integer type properties
 
 Integer types (except for `bool`) also have the following type properties:

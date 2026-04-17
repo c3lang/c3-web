@@ -214,7 +214,7 @@ int[] h = f[0..2];
 
 #### Internals
 
-Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; usz len; }`.
+Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; usz len; }`. Note that in 0.8+, the length is `sz`.
 
 There is a built-in struct `std::core::runtime::SliceRaw` which
 has the exact data layout of the fat array pointers. It is defined to be
@@ -279,6 +279,7 @@ fn void test()
         *item = 7 + (int)idx; // Mutates the array element
         // index is usz when not specified, requiring an explicit
         // cast on platforms where usz is larger than int.
+        // 0.8+, "sz" rather than usz is used.
     }
 
     // Or equivalently, writing the types

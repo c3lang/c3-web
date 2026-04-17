@@ -502,7 +502,7 @@ String x = FooEnum.values[1].description; // "BAR"
 ```
 
 
-### Compile time functions
+## Compile time functions
 
 There are several built-in functions to inspect the code during compile time.
 
