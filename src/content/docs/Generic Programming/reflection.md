@@ -394,6 +394,7 @@ This property returns the methods associated with a type as a constant array of 
 Methods are generally registered *after* types are registered, which means that the use of
 "methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
 It is always safe to use inside a function.
+::: 
 
 #### `nan` / `inf`
 
@@ -654,7 +655,7 @@ Foo f;
 $typeof(f) x = f;
 ```
 
-### 0.7.x only
+## 0.7.x only
 
 #### `$alignof`
 
