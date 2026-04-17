@@ -196,9 +196,15 @@ fn void main()
 }
 ```
 
-## Operator overloading for `==` and `!=`
+## Operator overloading for `==`
 
-Overloading `==` and `!=` is, like overloading arithmetic operators, only allowed on user-defined types. If one of `==` or `!=` is defined, the other is also implicitly defined.
+Overloading `==` is, like overloading arithmetic operators, only allowed on user-defined types.
+
+\* Please note that 0.8.x removes `!=`.
+
+## Operator overloading for `<` (0.8+) 
+
+Overloading `<` is supported for 0.8.0 and onwards. If `<` and `==` are implemented, then the type supports all ordering operations: `< <= == != >= >`.
 
 :::note
 

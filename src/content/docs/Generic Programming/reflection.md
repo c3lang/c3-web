@@ -13,7 +13,7 @@ Runtime type information is also available by retrieving a `typeid` from a runti
 
 See [the documentation about the `any` type](/language-overview/types/#the-any-type) for more information if you want or need runtime reflection. Such runtime info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`) to implement runtime polymorphism.
 
-## Compile time reflection
+## Compile time reflection in 0.7.x
 
 During compile time there are many compile time fields that may be accessed using "dot notation" of the form `<type>.<property>`. That works for types, but in contrast when you want to retrieve type information about *values* or other expressions then try [the `$` functions](/generic-programming/reflection/#compile-time-functions) instead.
 
@@ -55,7 +55,7 @@ Here are the property-like ("dot notation") constants associated with each type:
 - `typeid`
 - `values`
 
-Many of these properties are very useful for writing generics macros and contracts. 
+Many of these properties are very useful for writing generics macros and contracts.
 
 #### `alignof`
 
@@ -158,7 +158,7 @@ A `member_ref` has properties `alignof`, `kindof`, `membersof`, `nameof`, `offse
 
 This property returns the methods associated with a type as a constant array of strings.
 
-Methods are generally registered *after* types are registered, which means that the use of 
+Methods are generally registered *after* types are registered, which means that the use of
 "methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
 It is always safe to use inside a function.
 
@@ -256,41 +256,267 @@ enum FooEnum
 String x = FooEnum.values[1].nameof; // "BAR"
 ```
 
+## Compile time reflection in 0.8+
+
+Starting from 0.8.0, compile time information about types is accessed using `::`, e.g. `MyType::size`.
+
+For *values* use `$reflect(<value>)` to access the reflected properties for the underlying value.
+
+The exception is `$typeof(<value>)`, which creates a type from the type of the value. There are convenience macros like `@sizeof(<value>)`, `@kindof(<value>)` for immediately accessing reflection data without explicitly invoking `$reflect`.
+
+### Type properties & functions
+
+The following type properties and functions are available:
+
+- `alignment` (all runtime types)
+- `from_ordinal` (constdef and enum only)
+- `has_equals`
+- `is_ordered`
+- `is_substruct` (struct only)
+- `len` (array, vector, enum, constdef - runtime available)
+- `lookup_field` (enum)
+- `max` / `min` (int and float types)
+- `members` (struct, union, enum, bitstruct)
+- `methods` (all non-optional runtime types)
+- `nan` / `inf` (float types)
+- `inner` (runtime types except int, float, struct and union types)
+- `kind` (runtime available)
+- `name` / `qname` / `cname` (cname is limited to all user-defined types)
+- `params` (function types)
+- `parent` (constdef, struct, typedef - runtime available)
+- `returns` (function types)
+- `size` (runtime available)
+- `typeid` (all runtime types + untypedlist)
+- `get_tag` / `has_tag` (user-defined types)
+- `values` (constdef, enum)
+
+
+#### `alignment`
+
+Returns the alignment in bytes needed for the type.
+
+```c3
+struct Foo @align(8)
+{
+    int a;
+}
+
+uint a = Foo::alignment; // 8
+```
+
+#### `from_ordinal`
+
+*Only available for constdef and enum.*
+Converts an integer value to the enum/constdef of that ordinal. In the case of constdef
+it might be different from the actual value.
+
+#### `has_equals`
+
+Is `==` and `!=` supported.
+
+#### `is_ordered`
+
+Are all comparisons supported, either because the type has is built-in or added through operator overloading.
+
+#### `is_substruct`
+
+*Only available for structs.*
+
+True is a struct has an inline member.
+
+#### `len`
+
+Returns the length of the array or vector. For enums and constdefs, it will return the number of constants.
+
+```c3
+enum Foo
+{
+    BAR,
+    BAZ
+}
+usz len = int[4]::len; // 4
+int foo_values = Foo::len; // 2
+```
+
+#### `lookup_field`
+
+*Only available for enums.*
+
+Look up the enum value by matching the first associated value:
+
+```c3
+enum Foo : (int val)
+{
+    ABC { 3 },
+    LIFF { 42 }
+}
+...
+Foo? foo = Foo::lookup_field(val, 42); // Returns Foo.ABC
+```
+
+#### `max` / `min`
+
+*Only available for integer and floating point types.*
+
+Returns the maximum / minimum value of the type.
+
+```c3
+ushort max_ushort = ushort.max; // 65535
+ichar min_ichar = ichar.min; // -128
+```
+
+#### `members`
+
+*Only available for enum, bitstruct, struct and union types.*
+
+Returns a *compile time* list containing the fields in a bitstruct, struct or union. For enums it's the associated value declarations. The elements are of type `reflected_ref`, as if you had done `$reflect` on the element.
+
+*Note: As the list is an "untyped" list, you are limited to iterating and accessing it at
+compile time.*
+
+```c3
+struct Baz
+{
+    int x;
+    Foo* z;
+}
+String x = Baz::members[1].name; // "z"
+```
+
+#### `methods`
+
+This property returns the methods associated with a type as a constant array of strings.
+
+:::note
+
+**Warning!**
+
+Methods are generally registered *after* types are registered, which means that the use of
+"methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
+It is always safe to use inside a function.
+
+#### `nan` / `inf`
+
+*Only available for floating point types*
+
+Returns a representation of floating point "NaN" / "infinity".
+
+#### `inner`
+
+This returns a typeid to an "inner" type. What this means is different for each type:
+
+- Array -> the array base type.
+- Bitstruct -> underlying base type.
+- Distinct -> the underlying type.
+- Enum -> underlying enum base type.
+- Pointer -> the type being pointed to.
+- Vector -> the vector base type.
+
+It is not defined for other types.
+
+#### `kind`
+
+Returns the underlying `TypeKind` as defined in std::core::types.
+
+```c3
+TypeKind kind = int::kind; // TypeKind.SIGNED_INT
+```
+
+#### `name` / `qname` / `cname`
+
+Returns the name of the type: `qname` is the qualified name, so adds the module path before the name. `cname` returns the external name, and as such isn't available for built-in types.
+
+#### `params`
+
+*Only available for function pointer types.*
+Returns a ReflectedParam struct for all function pointer parameters.
+
+```c3
+alias TestFunc = fn int(int x, double f);
+String s = TestFunc::params[1].name; // "f"
+typeid t = TestFunc::params[1].type; // double.typeid
+```
+
+#### `parent`
+
+*Only available for typedef, constdef, bitstruct and struct types.*
+
+Returns the typeid of the inline field.
+
+```c3
+struct Foo
+{
+    int a;
+}
+
+struct Bar
+{
+    inline Foo f;
+}
+
+String x = Bar::parent.name; // "Foo"
+```
+
+#### `returns`
+
+*Only available for function types.*
+Returns the typeid of the return type.
+
+```c3
+alias TestFunc = fn int(int, double);
+String s = TestFunc::returns.name; // "int"
+```
+
+#### `size`
+
+Returns the size in bytes for the given type, like C `sizeof`.
+
+```c3
+usz x = Foo::size;
+```
+
+#### `get_tag` / `has_tag`
+
+`get_tag` retrieves the value of a `@tag` defined on the type, `has_tag` is used to check if the tag exists.
+
+#### `typeid`
+
+Returns the typeid for the given type. `alias`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
+
+```c3
+typeid x = Foo.typeid;
+```
+
+#### `values`
+
+Returns a slice containing the values of an enum or constdef.
+
+```c3
+enum FooEnum
+{
+    BAR,
+    BAZ
+}
+String x = FooEnum.values[1].description; // "BAR"
+```
+
+
 ### Compile time functions
 
 There are several built-in functions to inspect the code during compile time.
 
-- `$alignof`
+- `$alignof` 0.7.x only
 - `$defined`
 - `$eval`
 - `$evaltype`
-- `$extnameof`
-- `$nameof`
-- `$offsetof`
-- `$qnameof`
-- `$sizeof`
+- `$extnameof` 0.7.x only
+- `$nameof` 0.7.x only
+- `$offsetof` 0.7.x only
+- `$qnameof` 0.7.x only
+- `$sizeof` 0.7.x only
 - `$stringify`
 - `$typeof`
-
-#### `$alignof`
-
-Returns the alignment in bytes needed for the type or member.
-
-```c3
-module test::bar;
-
-struct Foo
-{
-    int x;
-    char[] y;
-}
-int g = 123;
-
-$alignof(Foo.x); // => returns 4
-$alignof(Foo.y); // => returns 8 on 64 bit
-$alignof(Foo);   // => returns 8 on 64 bit
-$alignof(g);     // => returns 4
-```
+- `$reflect` 0.8+
 
 #### `$defined`
 
@@ -391,6 +617,65 @@ Similar to `$eval` but for types:
 $evaltype("float") f = 12.0f;
 ```
 
+#### `$reflect`
+
+Returns a `reflection_ref` of the expression. It can be queried for properties such as name, size, offset, alignment etc.
+
+More information is forthcoming.
+
+#### `$stringify`
+
+Returns the expression as a string. `$stringify` has a special behaviour for handling macro expression parameters, where `$stringify(#foo)` will return the expression contained in `#foo` as a string, exactly as written in the macro call's arguments, rather than simply return `"#foo"`.
+
+Thus, for example:
+
+```c3
+import std::io;
+
+macro @describe(#expr)
+{
+	io::printfn("The value of `%s` is `%s`.", $stringify(#expr), #expr);
+}
+
+fn void main()
+{
+	@describe(isz.sizeof);
+  //Prints:
+  //  The value of `isz.sizeof` is `8`.
+}
+```
+
+#### `$typeof`
+
+Returns the type of an expression or variable.
+
+```c3
+Foo f;
+$typeof(f) x = f;
+```
+
+### 0.7.x only
+
+#### `$alignof`
+
+Returns the alignment in bytes needed for the type or member.
+
+```c3
+module test::bar;
+
+struct Foo
+{
+    int x;
+    char[] y;
+}
+int g = 123;
+
+$alignof(Foo.x); // => returns 4
+$alignof(Foo.y); // => returns 8 on 64 bit
+$alignof(Foo);   // => returns 8 on 64 bit
+$alignof(g);     // => returns 4
+```
+
 #### `$extnameof`
 
 Returns the external name of a type, variable or function. The external name is
@@ -444,35 +729,4 @@ to doing `$typeof(a).sizeof`. Note that this is only used on values and not on t
 ```c3
 $typeof(a)* x = allocate_bytes($sizeof(a));
 *x = a;
-```
-
-#### `$stringify`
-
-Returns the expression as a string. `$stringify` has a special behaviour for handling macro expression parameters, where `$stringify(#foo)` will return the expression contained in `#foo` as a string, exactly as written in the macro call's arguments, rather than simply return `"#foo"`.
-
-Thus, for example:
-
-```c3
-import std::io;
-
-macro @describe(#expr)
-{
-	io::printfn("The value of `%s` is `%s`.", $stringify(#expr), #expr);
-}
-
-fn void main()
-{
-	@describe(isz.sizeof);
-  //Prints:
-  //  The value of `isz.sizeof` is `8`.
-}
-```
-
-#### `$typeof`
-
-Returns the type of an expression or variable.
-
-```c3
-Foo f;
-$typeof(f) x = f;
 ```
