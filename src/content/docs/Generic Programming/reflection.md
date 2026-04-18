@@ -361,8 +361,8 @@ Foo? foo = Foo::lookup_field(val, 42); // Returns Foo.ABC
 Returns the maximum / minimum value of the type.
 
 ```c3
-ushort max_ushort = ushort.max; // 65535
-ichar min_ichar = ichar.min; // -128
+ushort max_ushort = ushort::max; // 65535
+ichar min_ichar = ichar::min; // -128
 ```
 
 #### `members`
