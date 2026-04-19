@@ -84,7 +84,7 @@ fn void example_while()
 
 ## Enum And Switch
 
-Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
+Switches have implicit break and scope. Use "nextcase" to explicitly fallthrough or use comma:
 
 ```c3
 enum Height : uint
