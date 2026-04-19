@@ -5,10 +5,12 @@ sidebar:
     order: 211
 ---
 
-Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3, listed from highest (1) to lowest (11):
+Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3, listed from highest (1) to lowest (11 in 0.7.x, 12 in 0.8+):
+
+### Version 0.7.x
 
 1. `()`, `[]`, `.`, `!!` postfix `!`, `++` and `--` 
-2. `@`, prefix `-`, `~`, prefix `*`, `&`, prefix `++` and `--`
+2. prefix `-`, `~`, prefix `*`, `&`, prefix `++` and `--`
 3. infix `*`, `/`, `%`
 4. `<<`, `>>`
 5. `^`, `|`, infix `&`
@@ -18,6 +20,21 @@ Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3,
 9. `||`, `|||`
 10. ternary `?:` `??`
 11. `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=`
+
+### Version 0.8+
+
+1. `()`, `[]`, `.`, `!!` postfix `!`, `!!`, `~`, `++` and `--`
+2. prefix `-`, `~`, `!`, `!!`, `*`, `&`, `++`, `--`
+3. infix `*`, `/`, `%`
+4. `<<`, `>>`
+5. `^`, `|`, infix `&`
+6. `?:`, `??`
+7. `+`, infix `-`, `+++`
+8. `==`, `!=`, `>=`, `<=`, `>`, `<`
+9. `&&`, `&&&`
+10. `||`, `|||`
+11. `?`
+12. `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=`
 
 
 The main difference is that bitwise operations and shift has higher precedence than addition/subtraction and multiplication/division in C3. Bitwise operations also have higher precedence than the relational operators. Also, there is no difference in precedence between the bitwise operators.
