@@ -14,8 +14,8 @@ C3 differs in some crucial respects when it comes to number conversions and prom
 - Widening `float` conversions are only conditionally allowed<sup>*</sup>.
 - Narrowing conversions require a cast<sup>*</sup>.
 - Widening `int` conversions are only conditionally allowed<sup>*</sup>.
-- Signed <-> unsigned conversions of the same type *do not* require a cast.
-- In conditionals `float` to `bool` *do not* require a cast, any non zero `float` value considered true.
+- Signed <-> unsigned conversions of the same type *do not* require a cast. Note: 0.8.0 it requires a cast.
+- In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value considered true.
 - Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `()` e.g. `bool x = (1.0)` or `if (1.0) { ... }`
 
 C3 uses two's complement arithmetic for all integer math.
@@ -87,7 +87,7 @@ int f = (int)(d + ~b); // Valid
 long g = a + b; // Valid
 ```
 
-As a rule of thumb, if there are more than one possible conversion, then an explicit cast is needed.
+As a rule of thumb, if there is more than one possible conversion, then an explicit cast is needed.
 
 Example:
 
@@ -115,8 +115,8 @@ the maximum type is the floating point type. E.g. `int + float -> float`.
 4. If both types are floating point types, the maximum type is the widest floating point type. E.g. `float + double -> double`.
 5. If both types are integer types with the same signedness, the 
 maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`.
-6. If both types are integer types with different signedness, the 
-maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`
+6. 0.7.0: If both types are integer types with different signedness, the 
+maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`. 0.8.0: Compare the two types to the list: ichar, char, short, ushort, int, uint, long, ulong, int128, uint128, the max type is the one furthermost to the right in the list. Consequently `ulong + int -> ulong`, `uint + int -> uint`.
 7. If at least one side is a struct or a pointer to a struct with an 
 `inline` directive on a member, check recursively check if the type of 
 the inline member can be used to find a maximum type (see below under sub struct conversions)
@@ -124,28 +124,28 @@ the inline member can be used to find a maximum type (see below under sub struct
  
 ### Substruct conversions
 
-Substructs may be used in place of its parent structs in many cases. The rule is as follows:
+Substructs may be used in place of its parent struct in many cases. The rule is as follows:
 
 1. A substruct pointer may implicitly convert to a parent struct.
-2. A substruct *value* may be implicitly assigned to a variable with the parent struct type, 
+2. A substruct *value* may be implicitly assigned to a variable with the parent struct type. 
 This will *truncate* the value, copying only the parent part of the substruct. However, a 
 substruct value cannot be assigned its parent struct.
-3. Substruct slices and arrays *can not* be cast (implicitly or explicitly) to an array of the parent struct type.
+3. Substruct slices and arrays *cannot* be cast (implicitly or explicitly) to an array of the parent struct type.
 
 ### Pointer conversions
 
-Pointer conversion between types usually need explicit casts. 
+Pointer conversion between types usually needs explicit casts. 
 The exception is `void*` which any type may implicitly convert *to* or *from*. 
 Conversion rules from and to arrays are detailed under [arrays](/language-common/arrays/)
 
 ### Vector conversions
 
-Conversion between underlying vector types need explicit conversions. They work
+Vector conversions always need to be explicit. They work
 as regular conversions with one notable exception: converting a `true` boolean
 vector value into an int will yield a value with all bits set. So `bool[<2>] { true, false }`
 converted to for example `char[<2>]` will yield `{ 255, 0 }`.
 
-Vectors can also be cast to the corresponding array type, for example: `char[<2>]` <=> `char[2]`.
+Vectors can also implicitly be cast to the corresponding array type, for example: `char[<2>]` <=> `char[2]`.
 
 ## Binary conversions
 
@@ -270,9 +270,7 @@ Dereferencing 0 is implementation defined.
 
 #### 2. Constants and literals
 
-1. If the constant is an integer, it is assumed to be the *arithmetic promotion width* and signed. 
-If the suffix `u` is added, it is assumed to be an unsigned number. If a suffix `ixx` or `uxx` 
-is given then it is considered a an integer of that type width and signedness. It cannot be implicitly narrowed. 
+1. If the constant is an integer, it is assumed to be the *arithmetic promotion width* and signed. Suffixes imply the following: 'u' - unsigned, 'ul' - unsigned 64-bit, 'ull' - unsigned 128-bit, 
+'l' - signed 64-bit, 'll' - signed 128-bit. If a constant does not fit in the *arithmetic promotion width*, the following rules apply: if decimal, promote to the smallest signed integer able to contain it, if hex, binary or octal, promot to the smallest signed or unsigned integer able to contain it.
 2. If the constant is a floating point value, it is assumed to be a `double` unless suffixed
- with `f` which is then assumed to be a `float`. If a bit width is given after `f`, 
- it is instead a floating point type of that width.
+ with `f` which is then assumed to be a `float`.
