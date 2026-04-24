@@ -784,7 +784,6 @@ constdef ConstInline2 : String @constinit
 
 fn void main()
 {
-    // 
     ConstInline2 a = "Bye";
 }
 ```
