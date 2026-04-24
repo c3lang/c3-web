@@ -526,7 +526,7 @@ fn void test(MyId id)
     // void* val2 = get_by_id(1); // ERROR expected a MyId
     // Use `@constinit` to allow implicit conversion from 
     // literals
-    Error: void* val2 = get_by_id2(1); 
+    void* val2 = get_by_id2(1); 
      
     int a = 1;        
     // void* val3 = get_by_id(a); // ERROR expected a MyId
