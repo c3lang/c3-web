@@ -9,8 +9,6 @@ sidebar:
     [Download C3](prebuilt-binaries.md), available on Mac, Windows and Linux.
 
 
-## C3 Programming Language
-
 C3 is an evolution of C and a minimalist systems programming language.
 
 ### 🦺 Ergonomics **and** Safety

@@ -46,14 +46,14 @@ The following was extracted:
 ### Available annotations
 
 | Name          |                                              format |
-|---------------|----------------------------------------------------:|
-| `@param     ` |         `@param [<ref>] <param> [ : <description>]` |
-| `@return    ` |                             `@return <description>` |
+|---------------|:----------------------------------------------------|
+| `@param     ` | `@param [<ref>] <param> [ : <description>]` |
+| `@return    ` | `@return <description>` |
 | `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]` |
-| `@require   ` |   `@require <expr1>, <expr2>, ..., [: <description>]` |
-| `@ensure    ` |   `@ensure <expre1>, <expr2>, ..., [: <description>]` |
-| `@deprecated` |                       `@deprecated [<description>]` |
-| `@pure      ` |                                             `@pure` |
+| `@require   ` | `@require <expr1>, <expr2>, ..., [: <description>]` |
+| `@ensure    ` | `@ensure <expre1>, <expr2>, ..., [: <description>]` |
+| `@deprecated` | `@deprecated [<description>]` |
+| `@pure      ` | `@pure` |
 
 ### Fault inheritance
 

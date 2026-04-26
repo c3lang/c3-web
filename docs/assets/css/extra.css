@@ -71,16 +71,116 @@
 }
 
 .lp-gradient-text {
-  background: linear-gradient(to left, #7c3aed, #2563eb);
+  background: linear-gradient(to top right, #0ea5e9, #7c3aed 85%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-weight: 900;
 }
 
+/* Logo morphing organic animation */
+@keyframes aura-morph {
+  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  33% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: translate(-45%, -55%) rotate(120deg) scale(1.1); }
+  66% { border-radius: 50% 50% 50% 50% / 30% 70% 70% 30%; transform: translate(-55%, -45%) rotate(240deg) scale(0.9); }
+  100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+
+.lp-logo-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22rem;
+  height: 18rem;
+  background: linear-gradient(135deg, var(--md-primary-fg-color), #7c3aed);
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: -1;
+  animation: aura-morph 15s linear infinite;
+  pointer-events: none;
+}
+
+[data-md-color-scheme="slate"] .lp-logo-aura {
+  opacity: 0.25;
+  filter: blur(60px);
+}
+
+/* Landing Page Grid Layouts */
+.lp-grid-2, .lp-grid-3, .lp-grid-4 {
+  display: grid;
+  gap: 2rem;
+}
+
+.lp-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.lp-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.lp-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media screen and (max-width: 75rem) {
+  .lp-grid-2, .lp-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 48rem) {
+  .lp-grid-2, .lp-grid-3, .lp-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tighten Get Started cards */
+.lp-card {
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.lp-card-icon, .lp-card-title, .lp-card-description {
+  margin: 0 !important;
+}
+
+/* Documentation Tables - Minimalist border-bottom style */
+.md-typeset table:not([class]) {
+  border: none !important;
+  border-collapse: collapse !important;
+  box-shadow: none !important;
+}
+
+.md-typeset thead {
+  border: none !important;
+}
+
+.md-typeset tr {
+  border: none !important;
+}
+
+.md-typeset th {
+  border: none !important;
+  border-bottom: 2px solid var(--md-default-fg-color--lightest) !important;
+  padding: 0.5rem 0.5rem 2px 0.5rem !important;
+  background-color: transparent !important;
+}
+
+.md-typeset td {
+  border: none !important;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest) !important;
+  padding: 0.4rem 0.5rem 1px 0.5rem !important;
+}
+
+.md-typeset tr:last-child td {
+  border-bottom: none !important;
+}
+
 .lp-hero-logo {
   transition: filter 0.2s ease-in-out;
   color: transparent;
+}
+
+/* Syntax Highlighting Overrides - Linking to your GitHub theme variables below */
+
+.highlight .kt, 
+.highlight .nc { 
+  color: var(--md-code-hl-type-color) !important; /* Maps to your new green color */
+}
+
+.highlight .nf { 
+  color: var(--md-code-hl-function-color) !important; /* Maps to your purple/function color */
 }
 
 .lp-hero-logo:hover {
@@ -377,6 +477,7 @@
   --md-code-hl-name-color: #c9d1d9;
   --md-code-hl-variable-color: #ffa657;
   --md-code-hl-function-color: #d2a8ff;
+  --md-code-hl-type-color: #7ee787;
   --md-code-hl-constant-color: #79c0ff;
   --md-code-hl-operator-color: #ff7b72;
   --md-code-hl-punctuation-color: #c9d1d9;
@@ -392,6 +493,7 @@
   --md-code-hl-name-color: #24292f;
   --md-code-hl-variable-color: #953800;
   --md-code-hl-function-color: #8250df;
+  --md-code-hl-type-color: #116329;
   --md-code-hl-constant-color: #0550ae;
   --md-code-hl-operator-color: #cf222e;
   --md-code-hl-punctuation-color: #24292f;
@@ -452,4 +554,75 @@
 
 .lp-code-content .md-code__button:hover {
   color: var(--md-default-fg-color);
+}
+
+/* General view of the documentation width */
+.md-grid {
+  max-width: 1680px; /* https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#content-area-width */
+}
+
+/* The markdown info note */
+.admonition.note {
+  width: 65%;
+  margin: 0 auto;
+}
+
+/* Just the general hue of the theme */
+[data-md-color-scheme="slate"] { /* https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#custom-color-schemes*/
+  --md-hue: 230;
+}
+
+/* Custom Header Links */
+.md-header__link {
+  color: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.2rem;
+  margin-left: 0.2rem;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.md-header__link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Hide header link on mobile/tablet to avoid crowding */
+@media screen and (max-width: 76.25em) {
+  .md-header__link {
+    display: none;
+  }
+}
+
+/* Glassmorphism Header */
+.md-header {
+  background-color: color-mix(in srgb, var(--md-primary-fg-color), transparent 10%) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-md-color-scheme="slate"] .md-header {
+  background-color: color-mix(in srgb, var(--md-header-bg-color), transparent 15%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Ensure the logo is visible on the indigo background (Light Mode Header & Mobile Menu) */
+[data-md-color-scheme="default"] .md-header__button.md-logo img,
+[data-md-color-scheme="default"] .md-header__button.md-logo svg,
+.md-nav__button.md-logo img,
+.md-nav__button.md-logo svg {
+  filter: brightness(0) invert(1);
+}
+/* Documentation Utilities */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media screen and (max-width: 48rem) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
 }

@@ -158,8 +158,9 @@ struct Flags
     bool has_hyperdrive : 1;
     bool has_tractorbeam : 1;
     bool has_plasmatorpedoes : 1;
-}    
-
+}
+```
+```c3
 // C3
 bitstruct Foo : short
 {  

@@ -68,7 +68,7 @@ like: `(ushort)345`, or use an integer suffix: `345u16`.
 The following integer suffixes are available:
 
 | suffix |    type |
-|--------|--------:|
+|--------|:--------|
 | i8     |   ichar |
 | i16    |   short |
 | i32    |     int |

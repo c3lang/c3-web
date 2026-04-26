@@ -30,14 +30,20 @@ class C3Lexer(RegexLexer):
                 'alias', 'assert', 'asm', 'attrdef', 'bitstruct', 'break',
                 'case', 'catch', 'const', 'continue', 'default', 'defer',
                 'do', 'else', 'enum', 'extern', 'false', 'faultdef', 'fn',
-                'tlocal', 'if', 'inline', 'import', 'macro', 'module',
+                'for', 'tlocal', 'if', 'inline', 'import', 'macro', 'module',
                 'nextcase', 'null', 'interface', 'return', 'static', 'struct',
                 'switch', 'true', 'try', 'typedef', 'union', 'var', 'while',
                 'foreach', 'foreach_r'
             ), suffix=r'\b'), Keyword),
 
-            # Built-ins and Compile-time
-            (r'\$[a-zA-Z_][a-zA-Z0-9_]*', Name.Builtin),
+            # Built-ins, Compile-time, and Allocation
+            (words((
+                'malloc', 'calloc', 'realloc', 'free',
+                'tmalloc', 'tcalloc', 'trealloc',
+                'malloc_aligned', 'free_aligned',
+                'new', 'alloc', 'new_array', 'alloc_array'
+            ), suffix=r'\b'), Name.Builtin),
+            (r'\${1,2}[a-zA-Z_][a-zA-Z0-9_]*', Name.Builtin),
             (r'@[a-zA-Z_][a-zA-Z0-9_]*', Name.Decorator),
 
             # Function calls

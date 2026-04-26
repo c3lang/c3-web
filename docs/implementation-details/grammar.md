@@ -9,7 +9,7 @@ sidebar:
 
 The following are reserved keywords used by C3:
 
-```
+```c3
 void        bool        char        double
 float       float16     int128      ichar
 int         iptr        isz         long
@@ -28,7 +28,7 @@ true        try         union       var
 while       attrdef
 ```
 
-```
+```c3
 $alignof    $assert     $case       $default
 $defined    $echo       $embed      $exec
 $else       $endfor     $endforeach $endif
@@ -41,7 +41,7 @@ $vaarg      $vaexpr     $vasplat
 ```
 
 The following attributes are built in:
-```
+```c3
 @align        @benchmark  @bigendian  @builtin
 @cdecl        @cname      @deprecated @dynamic
 @export       @extname    @inline     @interface
@@ -55,7 +55,7 @@ The following attributes are built in:
 ```
 
 The following constants are defined:
-```
+```c3
 $$BENCHMARK_FNS  $$BENCHMARK_NAMES $$DATE
 $$FILE           $$FILEPATH        $$FUNC
 $$FUNCTION       $$LINE            $$LINE_RAW

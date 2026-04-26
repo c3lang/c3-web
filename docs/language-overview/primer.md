@@ -27,7 +27,8 @@ typedef struct
         double x;
     } bar;
 } Foo;
-
+```
+```c3
 // C3
 struct Foo
 {
@@ -42,6 +43,8 @@ struct Foo
 Also, user defined types are used without a `struct`, `union` or `enum` keyword, as
 if the name was a C typedef.
 
+---
+
 ## Arrays
 
 Array sizes are written next to the type and arrays do not decay to pointers,
@@ -51,7 +54,8 @@ you need to do it manually:
 // C
 int x[2] = { 1, 2 };
 int *y = x;
-
+```
+```c3
 // C3
 int[2] x = { 1, 2 };
 int* y = &x;
@@ -68,7 +72,8 @@ sort_my_array(x, 100);
 sort_my_array(y, 30);
 // Sort part of the array!
 sort_my_array(z + 1, 10);
-
+```
+```c3
 // C3
 int[100] x = ...;
 int[30] y = ...;
@@ -82,7 +87,8 @@ Note that declaring an array of inferred size will look different in C3:
 ```c
 // C
 int x[] = { 1, 2, 3 }; // x is int[3]
-
+```
+```c3
 // C3
 int[*] x = { 1, 2, 3 }; // x is int[3]
 ```
@@ -94,7 +100,8 @@ Arrays are trivially copyable:
 int x[3] = ...;
 int y[3];
 for (int i = 0; i < 3; i++) y[i] = x[i];
-
+```
+```c3
 // C3
 int[3] x = ...;
 int[3] y = x;
@@ -102,10 +109,14 @@ int[3] y = x;
 
 Find out more about [arrays](../language-common/arrays.md).
 
+---
+
 ## Undefined Behaviour
 
 C3 has less undefined behaviour, in particular integers are defined as using 2s
 complement and signed overflow is wrapping. Find out more about [undefined behaviour](../language-rules/undefined-behaviour.md).
+
+---
 
 ## Functions
 
@@ -114,12 +125,15 @@ Functions are declared like C, but you need to put `fn` in front:
 ```c
 // C:
 int foo(Foo *b, int x, void *z) { ... }
-
+```
+```c3
 // C3
 fn int foo(Foo* b, int x, void* z) { ... }
 ```
 
 Find out more more about [functions](../language-fundamentals/functions.md), including named arguments and default arguments.
+
+---
 
 ## Calling C Functions
 
@@ -145,6 +159,8 @@ extern fn int _puts(char* message) @cname("puts");
 ...
 _puts("Hello world"); // <- calls the puts function in libc
 ```
+
+---
 
 ## Identifiers
 
@@ -172,6 +188,8 @@ enum Test
 }
 ```
 
+---
+
 ## Variable Declaration
 
 Multiple declarations together with initialization isn't allowed in C3:
@@ -179,7 +197,8 @@ Multiple declarations together with initialization isn't allowed in C3:
 ```c
 // C
 int a, b = 4; // Not allowed in C3
-
+```
+```c3
 // C3
 int a;
 int b = 4;
@@ -191,11 +210,14 @@ In C3, variables are always zero initialized, unless you explicitly opt out usin
 // C
 int a = 0;
 int b;
-
+```
+```c3
 // C3
 int a;
 int b @noinit;
 ```
+
+---
 
 ## C's `typedef` and `#define` become `alias`
 
@@ -204,7 +226,8 @@ C's `typedef` is replaced by `alias`:
 ```c
 // C
 typedef Foo* FooPtr;
-
+```
+```c3
 // C3
 alias FooPtr = Foo*;
 ```
@@ -219,7 +242,8 @@ alias FooPtr = Foo*;
 char *my_string = "Party on";
 ...
 println(my_excellent_string);
-
+```
+```c3
 // C3
 alias println = puts;
 alias my_excellent_string = my_string;
@@ -230,7 +254,6 @@ println(my_excellent_string);
 ```
 
 Find out more about [`alias`](../language-common/alias.md).
-
 
 ## `typedef` creates new types
 
@@ -253,6 +276,7 @@ fn void test()
 }
 ```
 
+--- 
 
 ## Basic Types
 
@@ -268,7 +292,8 @@ size_t e;
 ssize_t f;
 ptrdiff_t g;
 intptr_t h;
-
+```
+```c3
 // C3
 short a;    // Guaranteed 16 bits
 int b;      // Guaranteed 32 bits
@@ -283,6 +308,8 @@ uptr j;     // Same as uintptr_t depends on target
 ```
 
 Find out more about [types](../language-overview/types.md).
+
+---
 
 ## Modules And Import Instead Of `#include`
 
@@ -306,6 +333,8 @@ fn void myCheck()
 }
 ```
 
+---
+
 ## Comments
 
 The `/* */` comments are nesting
@@ -317,6 +346,8 @@ The `/* */` comments are nesting
 Note that doc contracts starting with `<*` and ending with `*>`, have special rules for parsing them, and are _not_ considered a regular comment. Find out more about [contracts](../language-common/contracts.md).
 
 C3 also treats `#!` on the first line as a line comment `//`.
+
+---
 
 ## Type Qualifiers
 
@@ -380,10 +411,15 @@ if (modifyFoo(foo)) return false;
 return true;
 ```
 
+---
+
 ## Changes To `enum` and introducing `constdef`
 
 C3 enums gives new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constdef` instead:
 
+<div class="lp-grid-2" style="gap: 1.5rem;" markdown="1">
+
+<div markdown="1">
 ```c
 // C 
 enum Foo
@@ -410,7 +446,9 @@ void testme()
     test(OOPS, DEF);
 }
 ```
+</div>
 
+<div markdown="1">
 ```c3
 // C3
 import std::io;
@@ -438,8 +476,13 @@ fn void testme()
     test(OOPS, DEF);
 }
 ```
+</div>
+
+</div>
 
 Read more about enums [here](types.md#enum).
+
+---
 
 ## Changes To `switch`
 
@@ -449,6 +492,9 @@ Read more about enums [here](types.md#enum).
 
 For example:
 
+<div class="lp-grid-2" style="gap: 1.5rem;" markdown="1">
+
+<div markdown="1">
 ```c
 // C
 switch (a)
@@ -467,7 +513,11 @@ switch (a)
     default:
         return false;
 }
+```
+</div>
 
+<div markdown="1">
+```c3
 // C3
 switch (a)
 {
@@ -486,10 +536,16 @@ switch (a)
         return false;
 }
 ```
+</div>
+
+</div>
 
 We can jump to an arbitrary switch-case label in C3:
 
-```c3
+<div class="lp-grid-2" style="gap: 1.5rem;" markdown="1">
+
+<div markdown="1">
+```c
 // C
 switch (a)
 {
@@ -505,7 +561,11 @@ switch (a)
     default:
         return false;
 }
+```
+</div>
 
+<div markdown="1">
+```c3
 // C3
 switch (a)
 {
@@ -521,6 +581,9 @@ switch (a)
         return false;
 }
 ```
+</div>
+
+</div>
 
 ## Bitfields Are Replaced By Explicit Bitstructs
 

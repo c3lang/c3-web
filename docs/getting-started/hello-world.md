@@ -44,10 +44,9 @@ the function to identify what module it belongs to.
 We could have used the original longer path: `std::io::printn`
 if we wanted, but we *can* shorten it to just the lowest level module like `io::printn`. This is the *convention* in C3 and is is known as "path-shortening", it avoids writing long import paths that can make code harder to read.
 
-```diff lang="cpp"
+```diff
 - std::io::printn("Hello, World!");
 + io::printn("Hello, World!");
-
 ```
 
 The `io::printn` function takes a single argument and prints it, followed by a newline, then the function ends and the program terminates.

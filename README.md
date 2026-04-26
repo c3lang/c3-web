@@ -40,8 +40,16 @@ To exclude a specific section, add `{ data-search-exclude }` after the heading (
 ## Setup
 
 ### 1. Using `uv`
+For standard editing:
 ```bash
 uv run mkdocs serve
+```
+
+For testing versioning/dropdown:
+```bash
+uv run mike deploy dev
+uv run mike set-default dev
+uv run mike serve
 ```
 
 
@@ -73,7 +81,17 @@ The output will be in the `site/` folder.
 
 
 * **Local access:** Open `site/index.html` with Firefox.
-* **Server deployment:** Upload the contents of the `site/` folder to your webserver's root directory.
+* **Server deployment:** The site is automatically deployed via GitHub Actions using `mike`.
+
+## Versioning
+
+This site uses [mike](https://github.com/jimporter/mike) to manage multiple versions of the documentation.
+
+### Automated Snapshots
+The CI pipeline is configured to handle versioning automatically:
+- **`dev`**: Updated on every push to the `main` branch. This is the default version shown to users.
+- **Release Snapshots**: The CI monitors the [c3lang/c3c](https://github.com/c3lang/c3c) repository. When a new version is detected, it automatically takes a "time-travel" snapshot of the documentation exactly as it was before the latest push, ensuring stable docs match the compiler release.
+
 
 ## Project Structure
 

@@ -12,27 +12,29 @@ Here is an extremely brief (and not yet complete) overview.
 As C3 is an evolution of C, the languages are quite similar.
 C3 adds features, but also removes a few.
 
-##### In C but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Qualified types (`const`, `volatile` etc)
-- Unsafe implicit conversions
+!!! info "In C but not in C3"
+    - Qualified types (`const`, `volatile` etc)
+    - Unsafe implicit conversions
 
-##### In C3 but not in C
+!!! tip "In C3 but not in C"
+    - Module system
+    - Operator overloading
+    - Generics
+    - Compile time execution and semantic macros
+    - Integrated build system
+    - Error handling
+    - Defer
+    - Value methods
+    - Associated enum data
+    - Distinct types and subtypes
+    - Gradual contracts
+    - Built-in slices
+    - Foreach for iteration over arrays and types
+    - Dynamic calls and types
 
-- Module system
-- Operator overloading
-- Generics
-- Compile time execution and semantic macros
-- Integrated build system
-- Error handling
-- Defer
-- Value methods
-- Associated enum data
-- Distinct types and subtypes
-- Gradual contracts
-- Built-in slices
-- Foreach for iteration over arrays and types
-- Dynamic calls and types
+</div>
 
 ## C++
 
@@ -45,22 +47,24 @@ but the semantic macro system and the generics close the gap in terms of writing
 reusable generic code. The C3 module system and error handling is also very
 different from how C++ does things.
 
-##### In C++ but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Objects and classes
-- RAII
-- Exceptions
+!!! info "In C++ but not in C3"
+    - Objects and classes
+    - RAII
+    - Exceptions
 
-##### In C3 but not in C++
+!!! tip "In C3 but not in C++"
+    - Module system (yet)
+    - Integrated build system
+    - Semantic macros
+    - Error handling
+    - Defer
+    - Associated enum data
+    - Built-in slices
+    - Dynamic calls
 
-- Module system (yet)
-- Integrated build system
-- Semantic macros
-- Error handling
-- Defer
-- Associated enum data
-- Built-in slices
-- Dynamic calls
+</div>
 
 ## Rust
 
@@ -74,21 +78,23 @@ C3 compares to Rust much like C, although the presence of built-in slices and
 strings reduces the places where C3 is unsafe. Rust provides arrays and strings,
 but they are not built in.
 
-##### In Rust but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- RAII
-- Memory safety
-- Safe union types with functions
-- Different syntax from C
-- Pattern matching
-- Async built in
+!!! info "In Rust but not in C3"
+    - RAII
+    - Memory safety
+    - Safe union types with functions
+    - Different syntax from C
+    - Pattern matching
+    - Async built in
 
-##### In C3 but not in Rust
+!!! tip "In C3 but not in Rust"
+    - Same ease of programming as C
+    - Gradual contracts
+    - Familiar C syntax and behaviour
+    - Dynamic calls
 
-- Same ease of programming as C
-- Gradual contracts
-- Familiar C syntax and behaviour
-- Dynamic calls
+</div>
 
 ## Zig
 
@@ -104,34 +110,40 @@ with many different allocation strategies.
 Zig is a very ambitious project, aiming to support as many types of platforms as
 possible.
 
-##### In Zig but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Pervasive compile time execution with type generation
-- Memory allocation failure is an error
-- Build toolchain is scripted using build files written in Zig
-- Different syntax and behaviour compared to C
-- Structs define namespace
-- Async primitives built in\*
-- Arbitrary integer sizes
+<div markdown="1">
+!!! info "In Zig but not in C3"
+    - Pervasive compile time execution with type generation
+    - Memory allocation failure is an error
+    - Build toolchain is scripted using build files written in Zig
+    - Different syntax and behaviour compared to C
+    - Structs define namespace
+    - Async primitives built in\*
+    - Arbitrary integer sizes
 
-(\* Note that as of this writing, async is temporarily
-missing from Zig)
+!!! note
+    *Note that as of this writing, async is temporarily missing from Zig.
+</div>
 
-##### In C3 but not in Zig
+<div markdown="1">
+!!! tip "In C3 but not in Zig"
+    - Module system.
+    - Operator overloading
+    - C ABI compatibility by default
+    - First-class lambdas\*
+    - Macros with lazy parameters and/or trailing bodies.
+    - Gradual contracts
+    - Dynamic interfaces
+    - Familiar C syntax and behaviour
+    - Declarative integrated build system
+    - Built-in benchmarks
 
-- Module system.
-- Operator overloading
-- C ABI compatibility by default
-- First-class lambdas\*
-- Macros with lazy parameters and/or trailing bodies.
-- Gradual contracts
-- Dynamic interfaces
-- Familiar C syntax and behaviour
-- Declarative integrated build system
-- Built-in benchmarks
+!!! note
+    *In Zig, you can achieve a similar result by creating an anonymous struct with a single function.
+</div>
 
-(\* In Zig, you can achieve a similar result by creating an
-anonymous struct with a single function.)
+</div>
 
 ## Jai
 
@@ -141,22 +153,24 @@ to the point of being able to run programs at compile time. It also
 has compile-time polymorphism, a powerful macro system and uses 
 an implicit context system to switch allocation schemes.
 
-##### In Jai but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Pervasive compile time execution
-- Jai's compile time execution is the build system.
-- Different syntax and behaviour compared to C
-- More powerful macro system than C3
-- Implicit constructors
+!!! info "In Jai but not in C3"
+    - Pervasive compile time execution
+    - Jai's compile time execution is the build system.
+    - Different syntax and behaviour compared to C
+    - More powerful macro system than C3
+    - Implicit constructors
 
-##### In C3 but not in Jai
+!!! tip "In C3 but not in Jai"
+    - Module system
+    - Declarative integrated build system
+    - Gradual contracts
+    - Familiar C syntax and behaviour
+    - Fairly small language
+    - Dynamic interfaces
 
-- Module system
-- Declarative integrated build system
-- Gradual contracts
-- Familiar C syntax and behaviour
-- Fairly small language
-- Dynamic interfaces
+</div>
 
 ## Odin
 
@@ -168,23 +182,25 @@ and instead only relies on parametric polymorphism to ensure reuse.
 It also contains conveniences, like maps and arrays built into
 the language. For error handling it relies on Go style tuple returns.
 
-##### In Odin but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Different syntax and behaviour compared to C
-- Ad hoc parametric polymorphism
-- Multiple return values
-- Error handling through multiple returns
-- A rich built-in set of types for maths
+!!! info "In Odin but not in C3"
+    - Different syntax and behaviour compared to C
+    - Ad hoc parametric polymorphism
+    - Multiple return values
+    - Error handling through multiple returns
+    - A rich built-in set of types for maths
 
-##### In C3 but not in Odin
+!!! tip "In C3 but not in Odin"
+    - Familiar C syntax and behaviour
+    - Semantic macros
+    - Value methods
+    - Gradual contracts
+    - Built-in error handling
+    - Dynamic interfaces
+    - Operator overloading
 
-- Familiar C syntax and behaviour
-- Semantic macros
-- Value methods
-- Gradual contracts
-- Built-in error handling
-- Dynamic interfaces
-- Operator overloading
+</div>
 
 ## D
 
@@ -192,15 +208,17 @@ D is an incredibly extensive language. It covers anything C++ does and adds much
 D manages this with much fewer syntactic quirks than C++. It is a strong,
 feature-rich language.
 
-##### In D but not in C3
+<div class="lp-grid-2" style="gap: 2rem; max-width: 50rem; margin: 2rem auto;" markdown="1">
 
-- Objects and classes
-- RAII
-- Exceptions
-- Optional GC
+!!! info "In D but not in C3"
+    - Objects and classes
+    - RAII
+    - Exceptions
+    - Optional GC
 
-*+ Many, many more features.* 
+    - *+ Many, many more features.* 
 
-##### In C3 but not in D
+!!! tip "In C3 but not in D"
+    - Fairly small language
 
-- Fairly small language
+</div>

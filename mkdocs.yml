@@ -6,6 +6,11 @@ repo_name: c3lang/c3-web
 edit_uri: edit/main/docs/
 extra:
   generator: false
+  version:
+    provider: mike
+  analytics:
+    provider: custom #this is the cloudflare analytics
+    property: "044a1051452343c4acb523cbe625b1c6"
 
 extra_css:
   - assets/css/extra.css
@@ -15,7 +20,16 @@ theme:
   custom_dir: theme
   logo: assets/logo.png
   favicon: assets/favicon.svg
+  icon:
+    # repo: fontawesome/brands/git
+    repo: fontawesome/brands/git-alt
   palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
@@ -23,6 +37,7 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+    # Palette toggle for dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
@@ -32,11 +47,15 @@ theme:
         name: Switch to light mode
   features:
     - navigation.top
-    - navigation.tabs
-    - navigation.tracking
-    - navigation.instant
-    - navigation.instant.prefetch
-    - navigation.lazy
+    - navigation.footer
+    # nope # - navigation.sections # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-sections
+    # - navigation.tabs # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
+    # - navigation.tabs.sticky
+    - navigation.tracking # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#anchor-tracking
+    - navigation.instant # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-loading
+    - navigation.instant.prefetch # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-prefetching
+    - navigation.instant.progress
+    - toc.follow
     - search.suggest
     - content.code.copy
     - content.action.edit
@@ -44,6 +63,12 @@ theme:
 
 plugins:
   - search
+  # - minify: # this one is for production
+  #     minify_html: true
+  #     minify_js: true
+  #     minify_css: true
+  #     htmlmin_opts:
+  #         remove_comments: true
   - blog:
       blog_dir: blog
       blog_toc: true
@@ -52,7 +77,8 @@ plugins:
       type: datetime
 hooks:
   - hooks/c3_lexer.py
-  - hooks/clean_html.py
+  - hooks/latest_version.py
+  # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -68,16 +94,15 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
+      title: On this page
 
 nav:
   - Home: index.md
-  - Blog:
-    - blog/index.md
   - Docs:
+      - Introduction: getting-started/introduction.md
       - Getting Started:
-        - Introduction: getting-started/introduction.md
-        - How to compile: getting-started/compile.md
         - Hello World: getting-started/hello-world.md
+        - How to compile: getting-started/compile.md
         - Prebuilt Binaries: getting-started/prebuilt-binaries.md
         - Project Setup: getting-started/projects.md
         - Roadmap: getting-started/roadmap.md
@@ -141,3 +166,5 @@ nav:
         - Rejected Ideas: faq/rejected-ideas.md
       - Get Involved: get-involved/index.md
       - Thank You: thank-you/index.md
+  - Blog:
+    - blog/index.md
