@@ -192,10 +192,10 @@
 }
 
 .lp-code-wrapper {
-  background-color: #0f172a;
+  background-color: var(--md-code-bg-color);
   border-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--md-shadow-z3);
   position: relative; /* Ensure absolute positioning works for the button */
 }
 
@@ -383,6 +383,8 @@
 }
 
 :root [data-md-color-scheme="default"] {
+  --md-default-bg-color: #fafafa;
+  --md-code-bg-color: #e5e7eb;
   --md-code-hl-keyword-color: #cf222e;
   --md-code-hl-string-color: #0a3069;
   --md-code-hl-number-color: #0550ae;
@@ -422,7 +424,7 @@
 /* Material injects its own code block background, margin, padding and positioning */
 .lp-code-content .highlight,
 .lp-code-content pre {
-  background-color: #0f172a !important;
+  background-color: transparent !important;
   margin: 0 !important;
   padding: 0 1rem 1rem 1rem !important;
   position: static !important;
@@ -443,11 +445,11 @@
 
 .lp-code-content .md-code__button {
   background-color: transparent;
-  color: #94a3b8;
+  color: var(--md-default-fg-color--light);
   border: none;
   cursor: pointer;
 }
 
 .lp-code-content .md-code__button:hover {
-  color: #ffffff;
+  color: var(--md-default-fg-color);
 }
