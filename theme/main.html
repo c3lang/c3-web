@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+
+  {%- set page_title = page.meta.title if page.meta and page.meta.title else page.title %}
+  {%- set page_description = page.meta.description if page.meta and page.meta.description else config.site_description %}
+  {%- set page_url = page.canonical_url %}
+  {%- set og_image = config.site_url ~ "assets/logo.png" %}
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ page_url }}" />
+  <meta property="og:site_name" content="{{ config.site_name }}" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:image" content="{{ og_image }}" />
+  <meta property="og:image:width" content="353" />
+  <meta property="og:image:height" content="217" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:domain" content="c3-lang.org" />
+  <meta name="twitter:url" content="{{ page_url }}" />
+  <meta name="twitter:title" content="{{ page_title }}" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ og_image }}" />
+
+  <!-- Theme color -->
+  <meta name="theme-color" content="#4355ec" />
+
+{% endblock %}

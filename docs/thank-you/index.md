@@ -1,0 +1,14 @@
+---
+title: Thank You
+description: Thank You
+sidebar:
+    order: 1000
+---
+
+## Thank You
+- A huge "thank you" goes out to all contributors and sponsors.
+
+## Special Mentions
+- Bas van der Berg, the author of [C2](http://www.c2lang.org)
+- Jon Goodwin, the author of [Cone](http://cone.jondgoodwin.com)
+- Andrey Penechko, the author of [Vox](https://github.com/MrSmith33/vox).

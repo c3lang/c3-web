@@ -1,0 +1,143 @@
+site_name: C3 Programming Language
+site_description: "C3 is the ergonomic, safe evolution of C. Familiar syntax, full ABI compatibility, optionals, slices, contracts and zero-cost abstractions."
+site_url: https://c3-lang.org
+repo_url: https://github.com/c3lang/c3-web
+repo_name: c3lang/c3-web
+edit_uri: edit/main/docs/
+extra:
+  generator: false
+
+extra_css:
+  - assets/css/extra.css
+
+theme:
+  name: material
+  custom_dir: theme
+  logo: assets/logo.png
+  favicon: assets/favicon.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.top
+    - navigation.tabs
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.lazy
+    - search.suggest
+    - content.code.copy
+    - content.action.edit
+    # - search.highlight I don't like this one
+
+plugins:
+  - search
+  - blog:
+      blog_dir: blog
+      blog_toc: true
+      pagination_per_page: 20
+  - git-revision-date-localized:
+      type: datetime
+hooks:
+  - hooks/c3_lexer.py
+  - hooks/clean_html.py
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Blog:
+    - blog/index.md
+  - Docs:
+      - Getting Started:
+        - Introduction: getting-started/introduction.md
+        - How to compile: getting-started/compile.md
+        - Hello World: getting-started/hello-world.md
+        - Prebuilt Binaries: getting-started/prebuilt-binaries.md
+        - Project Setup: getting-started/projects.md
+        - Roadmap: getting-started/roadmap.md
+        - Design Goals: getting-started/design-goals.md
+
+      - Language Overview:
+        - Overview: language-overview/primer.md
+        - Examples: language-overview/examples.md
+        - Type System: language-overview/types.md
+      - Language Fundamentals:
+        - Basic Types: language-fundamentals/basic-types-and-values.md
+        - Variables: language-fundamentals/variables.md
+        - Functions: language-fundamentals/functions.md
+        - Statements: language-fundamentals/statements.md
+        - Expressions: language-fundamentals/expressions.md
+        - Modules: language-fundamentals/modules.md
+        - Naming: language-fundamentals/naming.md
+        - Comments: language-fundamentals/comments.md
+      - Language Common:
+        - Memory Management: language-common/memory.md
+        - Optionals (Essential): language-common/optionals-essential.md
+        - Optionals (Advanced): language-common/optionals-advanced.md
+        - Arrays: language-common/arrays.md
+        - Strings: language-common/strings.md
+        - Vectors: language-common/vectors.md
+        - C Interop: language-common/cinterop.md
+        - Contracts: language-common/contracts.md
+        - Defer: language-common/defer.md
+        - Attributes: language-common/attributes.md
+        - Aliases: language-common/alias.md
+      - Generic Programming:
+        - Generics: generic-programming/generics.md
+        - Macros: generic-programming/macros.md
+        - Compile Time: generic-programming/compiletime.md
+        - Reflection: generic-programming/reflection.md
+        - Any & Interfaces: generic-programming/anyinterfaces.md
+        - Operator Overloading: generic-programming/operator-overloading.md
+      - Build Your Project:
+        - Build Commands: build-your-project/build-commands.md
+        - Project Config: build-your-project/project-config.md
+      - Language Rules:
+        - Implicit Conversions: language-rules/conversion.md
+        - Precedence: language-rules/precedence.md
+        - Undefined Behaviour: language-rules/undefined-behaviour.md
+      - Misc Advanced:
+        - Inline Assembly: misc-advanced/asm.md
+        - Builtins: misc-advanced/builtins.md
+        - Debugging: misc-advanced/debugging.md
+        - Library Packaging: misc-advanced/library-packaging.md
+      - Implementation Details:
+        - Grammar: implementation-details/grammar.md
+        - Specification: implementation-details/specification.md
+      - Standard Library:
+        - Overview: standard-library/index.md
+
+      - FAQ:
+        - FAQ: faq/index.md
+        - All Features: faq/allfeatures.md
+        - Changes from C: faq/changesfromc.md
+        - Comparison: faq/compare-languages.md
+        - Rejected Ideas: faq/rejected-ideas.md
+      - Get Involved: get-involved/index.md
+      - Thank You: thank-you/index.md

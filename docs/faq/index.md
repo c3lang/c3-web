@@ -1,0 +1,463 @@
+---
+title: Frequently Asked Questions
+description: Frequently asked questions about C3
+sidebar:
+    order: 700
+---
+## Standard library
+
+**Q:** What are the most fundamental modules in the standard library?
+
+**A:** By default C3 will implicitly import anything in `std::core` into
+your files. It contains string functions, allocators and conveniences for
+doing type introspection. The latter is in particular useful when writing
+contracts for macros:
+
+- `std::core::array` functions for working with arrays.
+- `std::core::builtin` contains functions that are to be used without a module
+  prefix, `unreachable()`, `bitcast()`, `@catch()` and `@ok()`
+  are especially important.
+- `std::core::cinterop` contains types which will match the C types on the platform.
+- `std::core::dstring` Has the dynamic string type.
+- `std::core::mem` contains `malloc` etc, as well as functions for atomic
+  and volatile load / store.
+- `std::core::string` has all string functionality, including conversions,
+  splitting and searching strings.
+
+Aside from the `std::core` module, `std::collections` is important as it
+holds various containers. Of those the generic `List` type in `std::collections::list`
+and the `HashMap` in `std::collections::map` are very frequently used.
+
+IO is a must, and `std::io` contains `std::io::file` for working with files,
+`std::io::path` for working with paths. `std::io` itself contains
+functionality to writing to streams in various ways. Useful streams can
+be found in the `stream` sub folder.
+
+Also of interest could be `std::net` for sockets. `std::threads` for
+platform independent threads, `std::time` for dates and timers, `libc` for
+invoking libc functions. `std::os` for working with OS specific code and
+`std::math` for math functions and vector methods.
+
+
+**Q:** How do strings work?
+
+(see [Strings](../language-common/strings.md) for more info.)
+
+**A:** C3 defines a native string type `String`, which is a `typedef char[]`. Because
+`char[]` is essentially a pointer + length, some care has to be taken to
+ensure that the pointer is properly managed.
+
+For dynamic strings, or as a string builder, use `DString`. To get a String from
+a DString you can either get a *view* using `str_view()` or make a copy using `copy_str()`.
+In the former case, the String may become invalid if DString is then mutated.
+
+`ZString` is a zero terminated `typedef char*`. It is used to model zero-terminated
+strings like in C. It is mostly useful interfacing with C.
+
+`WString` is a `Char16*`, useful on those platforms, like Win32, where this
+is the common unicode format. Like ZString, it is mostly useful when interfacing
+with C.
+
+## Language features
+
+**Q:** How do I use slices?
+
+(see [Arrays/Slice](../language-common/arrays.md#slice) for more info.)
+
+**A:** Slices are typically preferred in any situation where one in C would pass
+a pointer + length. It is a struct containing a pointer + a length.
+
+Given an array, pointer or another slice you use either `[start..end]`
+or `[start:len]` to create it:
+
+```c3
+int[100] a;
+int[] b = a[3..6]; // Or a[3:4]
+b[0] = 1;          // Same as a[3] = 1
+```
+
+You can also just pass a pointer to an array:
+
+```c3
+b = &a; // Same as b = a[0..99];
+```
+
+The start and/or end may be omitted:
+
+```c3
+a[..6]; // a[0..6]
+a[1..]; // a[1..99]
+a[..];  // a[0..99];
+```
+
+It is possible to use ranges to assign:
+
+```c3
+a[1..2] = 5;         // Assign 5 to a[1] and a[2]
+a[1..3] = a[11..13]; // Copy 11-13 to 1-3
+```
+
+It is important to remember that the *lifetime* of a slice is the same
+as the lifetime of its underlying pointer:
+
+```c3
+fn int[] buggy_code()
+{
+    int[3] a;
+    int[] b = a[0..1];
+    return b; // returning a pointer to a!
+}
+```
+
+**Q:** How do I pass vaargs to another function that takes varargs?
+
+**A:** Use the splat operator, `...`
+
+```c3
+fn void test(String format, args...)
+{
+	io::printfn(format, ...args);
+}
+
+fn void main()
+{
+	test("Format: %s %d", "Foo", 123);
+}
+```
+
+**Q:** What are vectors?
+
+(see [Vectors](../language-common/vectors.md) for more info.)
+
+**A:** Vectors are similar to arrays, but declared with `[< >]` rather than `[ ]`. The element type may also only be of integer, floating point, `bool` or pointer types. Vectors are backed by SIMD types on supported platforms. Arithmetic operators available on the element type are also available on the vector as a whole and are performed element-wise, thus enabling more convenient vector math. For example:
+
+```c3
+int[<2>] pos = { 1, 3 };
+int[<2>] speed = { 5, 7 };
+pos += speed;              // pos is now { 6, 10 }
+```
+
+Swizzling (shorthand for rearranging vector components, which is commonly used in graphics and game programming) is also supported:
+
+```c3
+int[<3>] test = pos.yxx;    // test is now { 10, 6, 6 }
+```
+
+Any scalar value will be expanded to the vector size:
+
+```c3
+// Same as speed = speed * { 2, 2 }
+speed = speed * 2;
+```
+
+## Memory management
+
+**Q:** How do I work with memory?
+
+**A:** There is `malloc`, `calloc` and `free` just like in C. The main difference is that these will invoke whatever
+the current heap allocator is, which does not need to be the allocator provided by libc. You can get the current heap
+allocator using `mem` and do allocations directly. There is also a temporary allocator.
+
+Convenience functions are available for allocating particular types: `mem::new(Type)` would allocate a single `Type`
+on the heap and zero initialize it. `mem::alloc(Type)` does the same but without zero initialization.
+
+Alternatively, `mem::new` can take a second initializer argument:
+
+```c3
+Foo* f1 = malloc(Foo.sizeof);                   // No initialization
+Foo* f2 = calloc(Foo.sizeof);                   // Zero initialization
+Foo* f3 = mem::new(Foo);                        // Zero initialization
+Foo* f4 = mem::alloc(Foo);                      // No initialization
+Foo* f5 = mem::new(Foo, { 4, 10.0, .a = 123 }); // Initialized to argument
+```
+
+For arrays `mem::new_array` and `mem::alloc_array` works in corresponding ways:
+
+```c3
+Foo* foos1 = malloc(Foo.sizeof * len);    // No initialization
+Foo* foos2 = calloc(Foo.sizeof * len);    // Zero initialization
+Foo[] foos3 = mem::new_array(Foo, len);   // Zero initialization
+Foo[] foos4 = mem::alloc_array(Foo, len); // No initialization
+```
+
+Regardless of how they are allocated, they can be freed using `free()`
+
+**Q:** How does the temporary allocator work?
+
+**A:** The temporary allocator is a kind of stack allocator. `tmalloc`, `tcalloc` and `trealloc` correspond to `malloc`, `calloc` and `realloc`. There is no `free`, as temporary allocations are freed when the entire pool (a.k.a. arena) of temporary objects is released all at once (making it both very easy to use and extremely performant). You use the `@pool()` macro to create a temporary allocation scope. When execution exits this scope, the temporary objects within it are all freed automatically. For example:
+
+```c3
+@pool()
+{
+    void* some_mem = tmalloc(128);
+    foo(some_mem);
+};
+// Temporary allocations are automatically freed here.
+```
+
+Similar to the heap allocator, there is also `mem::tnew`, `mem::temp_alloc`, `mem::temp_array` and `mem::temp_alloc_array`,
+which all work like their heap counterparts.
+
+**Q:** How can I return a temporarily allocated object from inside a temporary allocation scope?
+
+**A:** You need to pass in a copy of the temp allocator *outside* of `@pool` and allocate explicitly
+using that allocator.
+
+```c3
+// Store the temp allocator
+Allocator temp = tmem;
+@pool()
+{
+    // Note, 'temp != tmem' here!
+    void* some_mem = tmalloc(128);
+    // Allocate this on the external temp allocator
+    Foo* foo = allocator::new(temp, Foo);
+    foo.z = foo(some_mem);
+    // Now "some_mem" will be released,
+    // but the memory pointed to by "foo" is still valid.
+    return foo;
+};
+```
+
+## Interfacing with C code
+
+(see [C Interoperability](../language-common/cinterop.md) for more info.)
+
+**Q:** How do I call a C function from C3?
+
+**A:** Just copy the C function declaration and prefix it with `extern` (and don’t forget the `fn` as well).
+
+Imagine for example that you have the function `double test(int a, void* b)`. To call it from C3 just declare
+`extern fn double test(CInt a, void* b)` in the C3 code.
+
+**Q:** My C function / global has a name that doesn't conform to the C3 name requirements. Just `extern fn` doesn't work.
+
+**A:** In this case you need to give the function a C3-compatible name and then use the `@cname` attribute to
+indicate its actual external name. For example, the function `int *ABC(void *x)` could be declared in the C3 code as
+`extern fn int* abc(void* x) @cname("ABC")`.
+
+There are many examples of this in the `std::os` modules.
+
+## Patterns
+
+**Q:** When should I put functionality in a method versus a free function?
+
+**A:** In the C3 standard library, free functions are preferred unless the function is only acting on the particular
+type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s", name)` over
+`file.fprintf("Hello %s", name)`. The former also has the advantage that it's easier to extend to work with many
+types.
+
+**Q:** Are there any naming conventions in the standard library what one should know about?
+
+**A:** Yes. A function or method with `new` in the name will in general do one or more allocations and can take an
+optional allocator. A function or method with `temp` in the name will usually allocate using the temp allocator.
+The method `free` will free all memory associated with a type. `destroy` is similar to `free` but also indicates
+that other resources (such as file handles) are released. In some cases `close` is used instead of `destroy`.
+
+Function and variable names use `snake_case` (all lower case with `_` separating words).
+
+**Q:** How do I create overloaded methods?
+
+**A:** This can be achieved with macro methods.
+
+Imagine you have two methods:
+
+```c3
+fn void Obj.func1(&self, String... args) @private {} // vaargs variant
+fn void Obj.func2(&self, Foo* pf) @private {} // Foo pointer variant
+```
+
+We can now create a macro method on `Obj` which compiles to different calls depending on arguments:
+
+```c3
+// The macro must be vararg, since the functions take different amount of arguments
+macro void Obj.func(&self, ...)
+{
+    // Does it have a single argument of type 'Foo*'?
+    $if $vacount == 1 &&& @typeis($vaarg[0], Foo*):
+        // If so, dispatch to func2
+        return self.func2($vaarg[0]);
+    $else
+        // Otherwise, dispatch all vaargs to func1
+        return self.func1($vasplat);
+    $endif
+}
+```
+
+The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`. (The use of `&&&` is the same as `&&` except that the right hand side is lazily evaluated. In this case, it only is checked if `$vacount` is `1`.)
+
+## Platform support
+
+**Q:** How do I use WASM?
+
+**A:** Currently WASM support is really incomplete.
+
+You can try this:
+
+`compile --reloc=none --target wasm32 -g0 --link-libc=no --no-entry mywasm.c3`
+
+Unless you are compiling with something that already runs initializers,
+you will need to call the function `runtime::wasm_initialize()` early in your
+main *or* call it externally (for example from JS) with the name `_initialize()`,
+otherwise globals might not be set up properly.
+
+This should yield an `out.wasm` file, but there is no CI running on the WASM code
+and no one is really using it yet, so the quality is low.
+
+We do want WASM to be working really well, so if you're interested in
+writing something in WASM please reach out to the C3 development team and we'll
+help you get things working.
+
+
+
+**Q:** How do I conditionally compile based on compiler flags?
+
+**A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key
+in the project file.
+
+You can then test for them using `$feature(FLAG_NAME)`:
+
+```c3
+int my_var @if($feature(USE_MY_VAR));
+
+fn int test()
+{
+    $if $feature(USE_MY_VAR):
+        return my_var;
+    $else
+        return 0;
+    $endif
+}
+```
+
+## Syntax & Language design
+
+**Q:** Why does C3 require that types start with upper case but functions with lower case?
+
+**A:** C's grammar is ambiguous. Usually compilers implement the so-called lexer hack, but other methods
+exist as well, such as delayed parsing. It is also possible to make it unambiguous using infinite lookahead.
+
+However, all of those methods make it much harder for tools to search the source code accurately. By making
+the naming convention part of the grammar, C3 is straightforward to parse with a single token lookahead.
+
+**Q:** Why are there no closures and only non-capturing lambdas?
+
+**A:** With closures, life-time management of captured variables become important to track. This can become
+arbitrarily complex, and without RAII or any other memory management technique it is fairly difficult to
+make code safe. Non-capturing lambdas on the other hand are fairly safe.
+
+**Q:** Why is it called C3 and not something better?
+
+**A:** Naming a programming language isn't easy. Most programming languages have pretty bad names, and
+while C3 isn't the best, no real better alternative has come along.
+
+**Q:** Why are there no static methods?
+
+**A:** Static methods create a tension between free functions in modules and functions namespaced by the type. Java for example, resolves this by not having free functions at all. C3 resolves it by not having static methods (nor static variables). Consequently more functions become part of the module rather than the type.
+
+**Q:** Why do macros with trailing bodies require `;` at the end?
+
+```c3
+@test()
+{
+   // code
+}; // <- Why is this needed?
+```
+
+**A:** All macro calls, including those with a trailing body, are expressions, so it would be ambiguous
+to let them terminate a statement without a much more complicated grammar. An example:
+
+```c3
+// How can the parser determine that the
+// last `}` ends the expression? (And does it?)
+int a = @test() {} + @test() {}
+*b = 123;
+// In comparison, the grammar for this is easy:
+int a = @test() {} + @test() {};
+*b = 123;
+```
+
+C3 strives for a simple grammar, and so the trade-off of having to use `;` was a fairly low price to pay for this feature.
+
+**Q:** Why does C3 choose to call Optional "Optional" and not "Result"?
+
+**A:** C3's optional has properties both from the traditional "Maybe" and "Result". While it carries two possible values,
+like a Result, it is trivially composable in the way optionals are. In the "Result" case, we cannot implicitly combine
+`Result<int, MyError>` and `Result<int, YourError>`, which also often reflected in the support for them.
+
+For the "Maybe" it is trivial, so we see how languages do things like "Optional Chaining". C3 even goes beyond that, and
+implements implicit "flat map" for operations with its Optional.
+
+For Result or multiple returns, it's also not guaranteed how big the error value can be. For C3 the size is defined to be pointer-sized to minimize overhead.
+
+This means that using an Optional is not heavier than using a "Maybe" or even a boolean return in some other language.
+
+For these reasons, the Optional leans more towards "Maybe" usage than "Result", and the name was chosen to nudge towards the
+correct use.
+
+**Q:** Why doesn't C3 have a tagged union?
+
+**A:** Tagged unions are great, but there is still discussion what it should look like if it was included in C3.
+
+See this issue: https://github.com/c3lang/c3c/issues/829
+
+**Q:** Why is the declaration of arrays swapped compared to C?
+
+**A:** The way C3 types are declared is the most inside one is to the left, the outermost to the right.
+Indexing or dereferencing will peel off the rightmost part.
+
+C uses a different way to do this: we place `*` and `[]` not on the type but on the variable, in the order it must be unpacked.
+So given `int (*foo) x[4]` we first dereference it (from inside) int[4], then index from the right.
+If we wanted to extract a standalone type from this, we'd have `int(*)[4]` for a pointer to an array of 4 integers.
+For "left is innermost", the declaration would instead be `int[4]*`. If left-is-innermost we can easily describe a pointer
+to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that be "int*(*)[4]",
+which is generally regarded as less easy to read, not the least because you need to think of which of * or [] has priority.
+
+In C3, we can have a variable `List{int}[3] x`, which is an array of 3 `List{int}`. If we do `x[1]` we will get an element of
+`List{int}`, from the middle element in the array. If we then further index this with [5], like `x[1][5]` we will get
+the 5th element of that list.
+
+**Q:** Why does C3 use `::` use to separate namespaces and not `.`?
+
+**A:** `.` is nice to type and read, but there are challenges. In particular, C3's "path shortening", where you're allowed to write
+`file::open("foo.txt")` rather than having to use the full `std::io::file::open("foo.txt")` is only made possible because
+the namespace is distinct at the grammar level. If we play with changing the syntax because it isn't as elegant as
+`file.open("foo.txt")`, we'd have to pay by actually writing `std.io.file.open("foo.txt")` or change to a flat module system.
+
+One can also note that if `.`is used, then something like `file.open("foo.txt")` would be ambiguous if there was both a module `file`
+and a variable `file` in the scope.
+
+## Choices in tooling
+
+**Q:** Why does C3 have comments in the default `project.json`?
+
+**A:** This was done as a way for users to understand what the various fields were used for. While this would more properly be
+a `.json5` file, many json parsers could ignore comments anyway. As tooling improves, comments will be phased out. Already it's
+possible to manipulate the project file from the command line.
+
+**Q:** Why does C3 use JSON for `project.json`, why not YAML, TOML or something else?
+
+**A:** JSON is a format with a parser in almost any language, plus it is straightforward to write a parser for.
+
+Originally C3 used TOML, which is great for manual configs. However, we moved away from this exactly because the project files
+should be easily generated and manipulated by tools, with no strict requirement that formatting remains the same.
+
+If tools manipulated hand-written TOML, there would be an expectation to retain formatting and comments in the same style, which
+would put a burden on tool writers.
+
+**Q:** Will C3 have a package manager?
+
+**A:** There will be some standard API for uploading and downloading C3 libraries. However, it will not be a full dependency manager.
+In an attempt to limit over-use of dependencies, each dependency will need to be downloaded separately, rather than automatically.
+
+See for example the discussion here: https://github.com/c3lang/c3c/issues/2077
+
+## Cross-compiling To Windows From Linux
+**Q:** How do I cross-compile my C3 program for Windows on Linux?
+
+**A:** With the C3 compiler you can specify which target you would like to cross-compile to.
+For Windows the following target would be needed:
+
+`c3c compile main.c3 --target windows-x64`
+
+*This requires the MSVC SDK components, which c3c automatically downloads and configures, including the Windows SDK files needed to enable cross-compilation to Windows.*

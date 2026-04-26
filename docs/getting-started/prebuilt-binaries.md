@@ -1,0 +1,106 @@
+---
+title: Install C3 Compiler Binary
+description: Installing C3 Compiler Binary
+sidebar:
+  order: 20
+---
+
+
+# Prebuilt binaries
+- [Installing on Windows](#installing-on-windows)
+- [Installing on Mac Arm64](#installing-on-mac-arm64)
+- [Installing on Ubuntu](#installing-on-ubuntu)
+- [Installing on Debian](#installing-on-debian) 
+- [Installing on Arch](#installing-on-arch-linux) 
+
+## Installing on Windows
+1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-windows.zip) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-windows-debug.zip). 
+2. Unzip it into a folder
+
+### Optional: set c3c as a global environment variable
+
+3. copy the folder
+4. navigate to `C:\Program Files`
+5. paste the folder here
+6. navigate inside the folder you've pasted
+7. copy the path of the folder
+8. search for "edit the system environment variables" on your computer
+9. click on the "environment variables" button on the bottom right
+10. under "user variables" double click on "path"
+11. click on "new" and paste the path to the folder
+12. run `c3c` on anywhere in your computer!
+```bash
+c3c compile ./hello.c3
+```
+
+## Installing on Mac Arm64
+1. Make sure you have XCode with command line tools installed.
+2. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-macos.zip) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-macos-debug.zip).
+3. Unzip executable and standard lib.
+4. Run `./c3c`.
+
+
+
+## Installing on Ubuntu
+1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-linux.tar.gz) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-debug.tar.gz).
+2. Unpack executable and standard lib.
+3. Run `./c3c`.
+
+## Installing on Debian
+1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-linux.tar.gz) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-debug.tar.gz).
+2. Unpack executable and standard lib.
+3. Run `./c3c`.
+
+## Installing on Arch Linux
+There is an AUR package for the c3c compiler : [c3c-git](https://aur.archlinux.org/packages/c3c-git).
+
+You can use your AUR package manager:
+```bash
+paru -S c3c-git
+# or yay -S c3c-git
+# or aura -A c3c-git
+```
+
+Or clone it manually:
+```bash
+git clone https://aur.archlinux.org/c3c-git.git
+cd c3c-git
+makepkg -si
+```
+
+## Troubleshooting
+
+**Note:** If you get an error like `No module named 'std::io' could be found`, you may need to set the `C3C_LIB` environment variable to point to the standard library location:
+
+**Bash/Zsh:**
+```bash
+export C3C_LIB=/path/to/c3c/lib
+```
+
+**Fish:**
+```fish
+set -gx C3C_LIB /path/to/c3c/lib
+```
+
+**Windows (PowerShell):**
+```powershell
+$env:C3C_LIB = "C:\path\to\c3c\lib"
+```
+
+### "cc: not found"
+On Linux and MacOS, C3 uses the available C compiler to link with the correct libraries. While C3 contains a built-in linker, 
+it is likely that your system will lack a complete environment with unless a C compiler is available.
+
+Linux users should generally install GCC or Clang, according to their distribution's documentation. 
+Below is a list of officially tested distributions and the minimum packages required to compile and link C3 programs:
+
+| Distribution | Required Packages | Command |
+|--------------|-------------------|---------|
+| **Ubuntu / Debian** | `gcc`, `libc6-dev` | `sudo apt-get install gcc libc6-dev` |
+| **Fedora / Rocky** | `gcc` | `sudo dnf install gcc` |
+| **Arch Linux** | `gcc` | `sudo pacman -S gcc` |
+| **openSUSE** | `gcc`, `glibc-devel` | `sudo zypper install gcc glibc-devel` |
+| **Alpine Linux** | `gcc`, `musl-dev` | `sudo apk add gcc musl-dev` |
+| **Void Linux** | `gcc` | `sudo xbps-install -S gcc` |
+
+On MacOS you can either install XCode or download the stand-alone command-line tools: https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/
