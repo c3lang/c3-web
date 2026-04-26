@@ -4,19 +4,7 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    ".vscode": true,
-    ".github": true,
-    ".astro": true,
-    "node_modules": true,
-    "pnpm-lock.yaml": true
+    "**/.DS_Store": true
   },
-  "hide-files.files": [
-    ".vscode",
-    ".github",
-    ".astro",
-    "node_modules",
-     "pnpm-lock.yaml"
-  ]
+  "hide-files.files": []
 }
