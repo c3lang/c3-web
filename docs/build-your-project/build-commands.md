@@ -4,7 +4,7 @@ description: Build Commands
 sidebar:
     order: 240
 ---
-import { FileTree } from '@astrojs/starlight/components';
+
 
 
 
@@ -62,19 +62,20 @@ Additional parameters:
 
 For example, `c3c init hello_world` creates the following structure:
 
-<FileTree>
-    - build/
-    - docs/
-    - lib/
-    - resources/
-    - scripts/
-    - src/
-    - main.c3
-    - test/
-    - LICENSE
-    - project.json
-    - README.md
-</FileTree>
+```text
+.
+├─ build/
+├─ docs/
+├─ lib/
+├─ resources/
+├─ scripts/
+├─ src/
+│  └─ main.c3
+├─ test/
+├─ LICENSE
+├─ project.json
+└─ README.md
+```
 
 Check the [project configuration docs](../build-your-project/project-config.md) to learn more about configuring your project.
 

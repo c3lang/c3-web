@@ -4,7 +4,7 @@ description: Learn to create C3 projects
 sidebar:
   order: 31
 ---
-import { FileTree } from '@astrojs/starlight/components';
+
 
 !!! note "Not installed the C3 compiler yet?"
     [Download C3](../getting-started/prebuilt-binaries.md), available on Mac, Windows and Linux.
@@ -29,19 +29,20 @@ You can also customize the path where the project will be created or specify a *
 
 If you check the directory that was created you might find it a bit confusing with a bunch of different directories, but worry not because if you expand them you will realise that most of them are actually empty!
 
-<FileTree>
-- build/
-- docs/
-- lib/
-- resources/
-- scripts/
-- src/
-  - main.c3
-- test/
-- LICENSE
-- project.json
-- README.md
-</FileTree>
+```text
+.
+├─ build/
+├─ docs/
+├─ lib/
+├─ resources/
+├─ scripts/
+├─ src/
+│  └─ main.c3
+├─ test/
+├─ LICENSE
+├─ project.json
+└─ README.md
+```
 
 #### Directory Overview
 | Directory       | Usage         |
