@@ -15,7 +15,7 @@ For other platforms it should be possible to compile it on any platform LLVM can
 See LLVM the [LLVM documentation](https://llvm.org/docs/GettingStarted.html) on how to set up LLVM for development. 
 - On MacOS, installing through Homebrew or MacPorts works fine.
 - Using apt-get on Linux should work fine as well. 
-- For Windows you can download suitable pre-compiled LLVM binaries from https://github.com/c3lang/win-llvm
+- For Windows you can download suitable pre-compiled LLVM binaries from [here](https://github.com/c3lang/llvm-for-c3/releases).
 
 ## 2. Clone the C3 compiler source code from Github
 

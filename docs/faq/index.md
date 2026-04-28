@@ -399,7 +399,7 @@ correct use.
 
 **A:** Tagged unions are great, but there is still discussion what it should look like if it was included in C3.
 
-See this issue: https://github.com/c3lang/c3c/issues/829
+See [this issue](https://github.com/c3lang/c3c/issues/829) for more details.
 
 **Q:** Why is the declaration of arrays swapped compared to C?
 
@@ -450,7 +450,7 @@ would put a burden on tool writers.
 **A:** There will be some standard API for uploading and downloading C3 libraries. However, it will not be a full dependency manager.
 In an attempt to limit over-use of dependencies, each dependency will need to be downloaded separately, rather than automatically.
 
-See for example the discussion here: https://github.com/c3lang/c3c/issues/2077
+See, for example, the [discussion here](https://github.com/c3lang/c3c/issues/2077).
 
 ## Cross-compiling To Windows From Linux
 **Q:** How do I cross-compile my C3 program for Windows on Linux?

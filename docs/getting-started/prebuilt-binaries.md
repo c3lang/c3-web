@@ -103,4 +103,4 @@ Below is a list of officially tested distributions and the minimum packages requ
 | **Alpine Linux** | `gcc`, `musl-dev` | `sudo apk add gcc musl-dev` |
 | **Void Linux** | `gcc` | `sudo xbps-install -S gcc` |
 
-On MacOS you can either install XCode or download the stand-alone command-line tools: https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/
+On MacOS, you can either install XCode or download the stand-alone [command-line tools](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools/).

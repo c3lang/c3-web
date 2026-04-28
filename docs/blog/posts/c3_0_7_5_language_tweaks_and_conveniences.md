@@ -93,7 +93,7 @@ Overall, C3 0.7.5 represents another step in maturing the language's core featur
 
 ### Demo
 
-For a deeper look at the changes, watch the demo: https://www.youtube.com/watch?v=OuZBxdM_YEI
+For a deeper look at the changes, watch the [demo](https://www.youtube.com/watch?v=OuZBxdM_YEI).
 
 ### Change Log
 <details markdown="1">
