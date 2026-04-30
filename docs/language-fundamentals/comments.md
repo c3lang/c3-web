@@ -1,8 +1,6 @@
 ---
 title: Comments & Documentation
 description: Comments & Documentation
-sidebar:
-    order: 40
 ---
 C3 has four distinct comment types:
 

@@ -1,8 +1,6 @@
 ---
 title: Expressions
 description: Expressions
-sidebar:
-    order: 42
 ---
 
 ## Temporary address

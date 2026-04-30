@@ -1,8 +1,6 @@
 ---
 title: Build C3 From Source
 description: Build C3 From Source
-sidebar:
-  order: 21
 ---
 
 !!! note "Want To Download Pre-Built C3 Binaries?"

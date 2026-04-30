@@ -1,8 +1,6 @@
 ---
 title: Frequently Asked Questions
 description: Frequently asked questions about C3
-sidebar:
-    order: 700
 ---
 ## Standard library
 

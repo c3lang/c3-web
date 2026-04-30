@@ -1,8 +1,8 @@
 ---
 title: What Is C3?
 description: A guide to the C3 Programming Language
-sidebar:
-  order: 1
+search:
+  exclude: true
 ---
 
 !!! note "Want To Download C3?"

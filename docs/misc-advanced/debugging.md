@@ -1,8 +1,6 @@
 ---
 title: Debugging
 description: Tools and techniques for debugging C3 applications.
-sidebar:
-    order: 233
 ---
 
 C3 provides several powerful features and compiler flags to help identify memory corruption, logic errors, and performance bottlenecks.

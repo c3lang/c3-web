@@ -1,8 +1,6 @@
 ---
 title: Essential Error Handling
 description: Essential Error Handling
-sidebar:
-    order: 65
 ---
 
 In this section we will go over the *essential* information about Optionals and safe methods for working with them, for example

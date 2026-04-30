@@ -1,8 +1,6 @@
 ---
 title: Conversions and Promotions
 description: Conversions and Promotions
-sidebar:
-    order: 210
 ---
 
 ## Conversion Rules For C3

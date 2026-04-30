@@ -1,8 +1,6 @@
 ---
 title: Grammar
 description: Grammar
-sidebar:
-    order: 999
 search:
   exclude: true
 ---

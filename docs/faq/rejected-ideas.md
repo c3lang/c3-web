@@ -1,8 +1,6 @@
 ---
 title: Rejected Ideas
 description: Rejected Ideas
-sidebar:
-    order: 703
 ---
 These are ideas that will not be implemented in C3. 
 

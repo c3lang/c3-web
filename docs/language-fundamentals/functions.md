@@ -1,8 +1,6 @@
 ---
 title: Functions
 description: Functions
-sidebar:
-    order: 45
 ---
 
 C3 has both regular functions and member functions. Member functions are functions namespaced using type names, and allows invocations using the dot syntax.

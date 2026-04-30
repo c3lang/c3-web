@@ -1,8 +1,6 @@
 ---
 title: Vectors
 description: Vectors
-sidebar:
-    order: 64
 ---
 
 Vectors - where possible - based on underlying hardware vector implementations. A vector is similar to an array, but 

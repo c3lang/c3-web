@@ -1,8 +1,6 @@
 ---
 title: Alias
 description: The `alias` statement
-sidebar:
-    order: 61
 ---
 
 # The `alias` statement

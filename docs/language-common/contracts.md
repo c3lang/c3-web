@@ -1,8 +1,6 @@
 ---
 title: Contracts
 description: Contracts
-sidebar:
-    order: 68
 ---
 
 Contracts are optional pre- and post-condition checks that the compiler may 

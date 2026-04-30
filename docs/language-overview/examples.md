@@ -1,8 +1,8 @@
 ---
 title: Examples
 description: Examples of C3 code
-sidebar:
-    order: 35
+search:
+    boost: 1.5
 ---
 ## Overview
 This is meant for a quick reference, to the learn more of the details, check the relevant sections.

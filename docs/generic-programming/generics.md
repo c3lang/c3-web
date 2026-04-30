@@ -1,8 +1,6 @@
 ---
 title: Generics
 description: Generics
-sidebar:
-    order: 82
 ---
 
 **NOTE** This section is updated for 0.7.9 and later. If you use a method before 0.7.9, use generic modules instead, which offers the same functionality but less granularity.

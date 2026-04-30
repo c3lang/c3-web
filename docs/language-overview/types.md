@@ -1,8 +1,6 @@
 ---
 title: Types
 description: Types
-sidebar:
-    order: 38
 ---
 # Overview
 

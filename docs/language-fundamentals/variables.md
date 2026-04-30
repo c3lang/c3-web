@@ -1,8 +1,6 @@
 ---
 title: Variables
 description: Variables
-sidebar:
-    order: 41
 ---
 
 

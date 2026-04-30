@@ -1,8 +1,6 @@
 ---
 title: C3 Specification
 description: C3 Specification
-sidebar:
-    order: 999
 search:
   exclude: true
 ---

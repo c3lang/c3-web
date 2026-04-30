@@ -1,8 +1,6 @@
 ---
 title: Builtins
 description: Builtins
-sidebar:
-    order: 226
 ---
 The compiler offers builtin constants and functions. Some are only available on certain targets. All builtins use the `$$`
 name prefix.

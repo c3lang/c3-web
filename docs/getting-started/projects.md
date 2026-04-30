@@ -1,8 +1,6 @@
 ---
 title: Projects
 description: Learn to create C3 projects
-sidebar:
-  order: 31
 ---
 
 

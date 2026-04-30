@@ -1,8 +1,6 @@
 ---
 title: Comparisons With Other Languages
 description: How C3 compares to other languages
-sidebar:
-    order: 701
 ---
 An important question to answer is "How does C3 compare to other similar programming languages?".
 Here is an extremely brief (and not yet complete) overview.

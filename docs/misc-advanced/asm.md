@@ -1,8 +1,6 @@
 ---
 title: Inline Assembly
 description: Inline Assembly
-sidebar:
-    order: 232
 ---
 
 C3 provides two ways to insert inline assembly code: `asm` strings and `asm` blocks. 

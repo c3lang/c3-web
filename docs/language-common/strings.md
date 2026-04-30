@@ -1,8 +1,6 @@
 ---
 title: Strings
 description: Strings
-sidebar:
-    order: 62
 ---
 In C3, multiple string types are available, each suited to different use cases.
 

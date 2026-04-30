@@ -1,8 +1,6 @@
 ---
 title: Macros
 description: Macros
-sidebar:
-    order: 83
 ---
 The macro capabilities of C3 reaches across several constructs:
 macros, [generic functions, generic modules](../generic-programming/generics.md), and [compile time variables](../generic-programming/compiletime.md#compile-time-values)

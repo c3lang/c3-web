@@ -1,8 +1,6 @@
 ---
 title: Modules
 description: Modules
-sidebar:
-    order: 46
 ---
 
 

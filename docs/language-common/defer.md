@@ -1,8 +1,6 @@
 ---
 title: Defer and Cleanup
 description: Defer and Cleanup
-sidebar:
-    order: 67
 ---
 
 # Defer

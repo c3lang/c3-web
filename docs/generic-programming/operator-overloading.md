@@ -1,8 +1,6 @@
 ---
 title: Operator Overloading
 description: Operator Overloading
-sidebar:
-    order: 81
 ---
 
 C3 has operator overloading for working with containers and for

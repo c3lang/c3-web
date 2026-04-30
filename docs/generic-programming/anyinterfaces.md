@@ -1,8 +1,6 @@
 ---
 title: Interfaces and Any Type
 description: Interfaces and Any Type
-sidebar:
-    order: 80
 ---
 
 ## Working with the type of `any` at runtime.

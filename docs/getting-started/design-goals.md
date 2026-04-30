@@ -1,8 +1,8 @@
 ---
 title: Design Goals & Background
 description: Design Goals & Background
-sidebar:
-  order: 2
+search:
+  exclude: true
 ---
 
 !!! note "Want To Download C3?"

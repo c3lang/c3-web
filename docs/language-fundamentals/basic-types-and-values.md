@@ -1,8 +1,6 @@
 ---
 title: Basic Types and Values
 description: Get an overview of C3's basic types and values
-sidebar:
-  order: 33
 ---
 
 C3 provides a similar set of fundamental data types as C: integers, floats, arrays and pointers. On top of this it

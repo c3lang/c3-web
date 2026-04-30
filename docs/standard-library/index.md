@@ -1,8 +1,6 @@
 ---
 title: Standard Library
 description: Standard Library
-sidebar:
-    order: 128
 ---
 
 The standard library is currently in development, so frequent changes will occur. Note that all std::core modules and

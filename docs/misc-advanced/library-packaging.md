@@ -1,8 +1,6 @@
 ---
 title: Library Packaging
 description: Library Packaging
-sidebar:
-    order: 227
 ---
 
 *Note that the library system is in early alpha. Everything below is subject to change.*

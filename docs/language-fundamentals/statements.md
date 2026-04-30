@@ -1,8 +1,6 @@
 ---
 title: Statements
 description: Statements
-sidebar:
-    order: 43
 ---
 
 Statements largely work like in C, but with some additions.

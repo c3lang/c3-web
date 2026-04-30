@@ -1,8 +1,6 @@
 ---
 title: Naming Rules
 description: Naming Rules
-sidebar:
-    order: 41
 ---
 
 C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools.

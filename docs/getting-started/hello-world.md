@@ -1,8 +1,6 @@
 ---
 title: Hello World
 description: Learn to write hello world
-sidebar:
-  order: 30
 ---
 
 !!! note "Not installed the C3 compiler yet?"

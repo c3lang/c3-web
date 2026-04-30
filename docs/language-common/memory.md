@@ -1,8 +1,6 @@
 ---
 title: Memory Handling
 description: Memory Handling
-sidebar:
-    order: 64
 ---
 
 Like in C, memory is manually managed in C3. An object can either be passed as a value on the stack, or it can be separately allocated.

@@ -1,8 +1,6 @@
 ---
 title: Advanced Error Handling
 description: Advanced Error Handling
-sidebar:
-    order: 66
 ---
 
 ### Optionals are only defined in certain code

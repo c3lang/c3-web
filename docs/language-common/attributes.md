@@ -1,8 +1,6 @@
 ---
 title: Attributes
 description: Attributes
-sidebar:
-    order: 69
 ---
 
 Attributes are compile-time annotations on functions, types, global constants and variables. Similar to Java annotations, an attribute may also take arguments. An attribute can also represent a bundle of attributes.

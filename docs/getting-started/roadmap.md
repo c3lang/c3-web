@@ -1,8 +1,8 @@
 ---
 title: Roadmap For C3
 description: Roadmap For C3
-sidebar:
-  order: 3
+search:
+  exclude: true
 ---
 
 

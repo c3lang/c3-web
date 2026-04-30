@@ -1,8 +1,6 @@
 ---
 title: Changes From C
 description: Changes From C
-sidebar:
-    order: 702
 ---
 
 

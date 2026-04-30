@@ -1,8 +1,6 @@
 ---
 title: Arrays
 description: Arrays
-sidebar:
-    order: 60
 ---
 
 Arrays have a central role in programming. C3 offers built-in arrays, [slices](#slice) and [vectors](../language-common/vectors.md).

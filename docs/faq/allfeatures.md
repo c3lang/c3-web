@@ -1,8 +1,6 @@
 ---
 title: All Features
 description: A list of all features of C3.
-sidebar:
-    order: 701
 search:
   exclude: true
 ---

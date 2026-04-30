@@ -1,8 +1,6 @@
 ---
 title: Build Commands
 description: Build Commands
-sidebar:
-    order: 240
 ---
 
 

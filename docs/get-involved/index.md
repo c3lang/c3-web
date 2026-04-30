@@ -1,8 +1,6 @@
 ---
 title: Community & Contribute
 description: Info regarding the development of C3
-sidebar:
-    order: 10
 ---
 
 ## Contributions Welcome!

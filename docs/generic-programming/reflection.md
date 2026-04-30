@@ -1,8 +1,6 @@
 ---
 title: Reflection
 description: Reflection
-sidebar:
-    order: 85
 search:
   boost: 0.9
 ---

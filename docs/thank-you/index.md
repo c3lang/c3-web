@@ -1,8 +1,6 @@
 ---
 title: Thank You
 description: Thank You
-sidebar:
-    order: 1000
 ---
 
 ## Thank You
