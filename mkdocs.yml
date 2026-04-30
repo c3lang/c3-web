@@ -165,7 +165,9 @@ nav:
         - Changes from C: faq/changesfromc.md
         - Comparison: faq/compare-languages.md
         - Rejected Ideas: faq/rejected-ideas.md
-      - Get Involved: get-involved/index.md
-      - Thank You: thank-you/index.md
+      - Get Involved:
+        - get-involved/index.md
+      - Thank You:
+        - thank-you/index.md
   - Blog:
     - blog/index.md
