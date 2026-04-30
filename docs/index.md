@@ -98,7 +98,7 @@ fn void main()
   </div>
 </main>
 
-<hr style="width: 34rem; height: 2px; margin: 3.5rem auto 1.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+<hr style="height: 2px; margin: 3.5rem auto 1.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
 <div class="lp-max-w" style="margin-top: 4rem;">
   <div class="lp-grid-3" style="gap: 3rem;">
@@ -143,11 +143,11 @@ fn void main()
   </div>
 </div>
 
-<hr style="width: 34rem; height: 2px; margin: 4rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+<hr style="height: 2px; margin: 4rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
 <div class="lp-max-w">
   <div class="lp-grid-2" style="gap: 4rem; align-items: center; max-width: 56rem; margin: 0 auto;">
-    <h2 style="font-size: 2.3rem; font-weight: 800; line-height: 1.2; margin: 0; color: var(--md-default-fg-color);">C3 is an evolution, not a revolution: <span class="lp-gradient-text">the C-like for programmers who like C.</span></h2>
+    <h2 class="lp-evolution-title">C3 is an evolution, not a revolution: <span class="lp-gradient-text">the C-like for programmers who like C.</span></h2>
     <div style="display: flex; flex-direction: column; gap: 0.75rem; color: var(--md-default-fg-color--light); line-height: 1.4; font-size: 0.8rem; font-weight: 400;">
       <p style="margin: 0;">C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers.</p>
       <p style="margin: 0;">Thanks to full ABI compatibility with C, it's possible to mix C and C3 in the same project with no effort. As a demonstration, <a href="https://github.com/c3lang/vkQuake" target="_blank" style="color: var(--md-primary-fg-color); font-weight: 600;">vkQuake</a> was compiled with a small portion of the code converted to C3 and compiled with the c3c compiler.</p>
@@ -155,7 +155,7 @@ fn void main()
   </div>
 </div>
 
-<hr style="width: 34rem; height: 2px; margin: 4.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+<hr style="height: 2px; margin: 4.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
 <div class="lp-max-w" style="margin-top: 4rem;">
   <!-- Global Icon Gradient Definition -->
@@ -239,7 +239,7 @@ fn void main()
       <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Detailed stacktraces out of the box for your debug builds.</p>
     </div>
   </div>
-</div><hr style="width: 34rem; height: 2px; margin: 1.3rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+</div><hr style="height: 2px; margin: 1.3rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
 <div class="lp-max-w" style="text-align: center;">
   <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--md-default-fg-color); margin-bottom: 0.5rem;"><span class="lp-gradient-text">Get</span> Started</h2>
