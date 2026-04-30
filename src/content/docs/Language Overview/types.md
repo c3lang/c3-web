@@ -359,7 +359,7 @@ fn void main()
 }
 ```
 
-Pre 0.7.0, you could unwrap an `any` with a switch statement, but this feature has been removed. You must unwrap the value manually by de-referencing it. After the type has been confirmed, it is safe to dereference.
+You can use a switch to check an `any`'s type, as well. After the type has been confirmed, it is safe to dereference.
 
 ```c3
 fn void test(any z)
