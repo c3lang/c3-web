@@ -3,6 +3,8 @@ title: Reflection
 description: Reflection
 sidebar:
     order: 85
+search:
+  boost: 0.9
 ---
 
 C3 allows both compile time and runtime reflection.
@@ -549,6 +551,7 @@ $endif
 ```
 
 The full list of what `$defined` can check:
+
 - `SomeType a = <expr>` - checks if `<expr>` can be used to initialize a variable of type `SomeType`
 - `var $a = <expr>` - checks if `<expr>` can be compile-time evaluated.
 - `*<expr>` - checks if `<expr>` can be dereferenced, `<expr>` must already be valid

@@ -3,6 +3,8 @@ title: "C3 0.7.11 - The last v0.7"
 date: 2026-04-06
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
+search:
+  exclude: true
 ---
 
 With 0.7.11 we've reached the end of the 0.7 era. It's been a really good year for C3, improving on rough edges and expanding the stdlib.

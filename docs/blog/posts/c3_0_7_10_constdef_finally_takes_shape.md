@@ -3,6 +3,8 @@ title: "C3 0.7.10 - Constdef finally takes shape"
 date: 2026-02-26
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
+search:
+  exclude: true
 ---
 
 After the big enhancement for generics in 0.7.9, coupled with the large number of bug fixes, 0.7.10 is naturally a more modest improvement.

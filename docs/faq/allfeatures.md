@@ -3,6 +3,8 @@ title: All Features
 description: A list of all features of C3.
 sidebar:
     order: 701
+search:
+  exclude: true
 ---
 
 Here is a summary of _all_ the features of C3 and how it differs from C.
