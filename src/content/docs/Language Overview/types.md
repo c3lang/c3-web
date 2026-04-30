@@ -359,30 +359,27 @@ fn void main()
 }
 ```
 
-Switching over the `any` type is another method to unwrap the pointer inside:
+Pre 0.7.0, you could unwrap an `any` with a switch statement, but this feature has been removed. You must unwrap the value manually by de-referencing it. After the type has been confirmed, it is safe to dereference.
 
 ```c3
 fn void test(any z)
 {
-    // Unwrapping switch
-    switch (z)
+    // Switch
+    switch (z.type)
     {
         case int:
-            // z is unwrapped to int* here
+            // This is safe here:
+            int* y = (int*)z;
         case double:
-            // z is unwrapped to double* here
+            // This is safe here:
+            double* y = (double*)z;
     }
     // Assignment switch
-    switch (y = z)
+    switch (y = z, y.type)
     {
         case int:
-            // y is int* here
-    }
-    // Direct unwrapping to a value is also possible:
-    switch (w = *z)
-    {
-        case int:
-            // w is int here
+            // This is safe here:
+            int* x = (int*)y;
     }
     // Finally, if we just want to deal with the case
     // where it is a single specific type:
@@ -398,6 +395,36 @@ fn void test(any z)
     }
 }
 ```
+
+Note that in `switch`es, if a substruct type is passed in and it's parent matches first, it will take priority.
+
+```c3
+fn void test(any z) 
+{
+    // Will always be seen as the parent type.
+    switch (z.type) 
+    {
+        case Parent:
+            // code...
+        case Subtype:
+            // code that will never execute...
+    }
+    // So order the subtypes first 
+    // if you're comparing them against their parent.
+
+    // Of course, this is still useful in cases
+    // of inherited types where the parent isn't in the switch.
+    switch (z.type) 
+    {
+        case Parent:
+            // modify data both Parent and Subtype have
+        case SomethingElse:
+            // completely different type code
+    }
+}
+```
+
+If you don't want the child type detected as the parent type, a `typedef` can be used to create a distinct type without changing any data.
 
 ### `any` fields
 
@@ -718,7 +745,8 @@ user-defined types:
 3. `lookup_field(field_name, value)` lookup an enum by associated value.
 4. `names` returns a list containing the names of all enums.
 5. `from_ordinal(value)` convert an integer to an enum.
-6. `values` return a list containing all the enum values of an enum.
+6. `values` returns a list containing all the enum values of an enum.
+7. `len` returns the length of the enum.
 
 
 ## Constdef
