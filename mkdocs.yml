@@ -46,6 +46,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.indexes
     - navigation.top
     - navigation.footer
     # nope # - navigation.sections # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-sections

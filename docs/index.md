@@ -25,6 +25,7 @@ search:
     -webkit-mask-image: linear-gradient(to right, transparent, black 50%, transparent);
     filter: blur(2px);
   }
+
 </style>
 
 <main style="padding-top: 2rem;">
@@ -68,6 +69,9 @@ search:
               Installation Guide
             </a>
           </div>
+          <a href="getting-started/introduction/" class="lp-get-started-btn lp-read-docs-btn">
+            <span>Read the Docs</span>
+          </a>
         </div>
       </div>
 
@@ -239,7 +243,7 @@ fn void main()
 
 <div class="lp-max-w" style="text-align: center;">
   <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--md-default-fg-color); margin-bottom: 0.5rem;"><span class="lp-gradient-text">Get</span> Started</h2>
-  
+
   <div class="lp-get-started-grid" style="margin-top: 0;">
     <a href="getting-started/prebuilt-binaries/" class="lp-card">
       <div class="lp-card-icon">
