@@ -577,6 +577,18 @@
 .md-nav__button.md-logo svg {
   filter: brightness(0) invert(1);
 }
+
+/* Ensure search output has height on mobile */
+@media screen and (max-width: 60rem) {
+  .md-search__inner {
+    overflow: visible !important;
+  }
+  .md-search__output {
+    height: 100vh !important;
+    background-color: #fafafa !important;
+  }
+}
+
 /* Documentation Utilities */
 .grid-2 {
   display: grid;
