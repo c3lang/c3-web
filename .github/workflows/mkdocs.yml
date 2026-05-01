@@ -60,7 +60,7 @@ jobs:
       - name: Deploy "dev" version via mike
         run: |
           uv run mike deploy --push dev
-          uv run mike set-default --push dev
+          uv run mike set-default --push -T theme/redirect.html dev
 
       - name: Deploy upstream version via mike (if missing)
         env:
@@ -78,7 +78,7 @@ jobs:
                 git checkout $BEFORE_SHA
               fi
               
-              uv run mike deploy --push $VERSION
+              uv run mike deploy --push -T theme/redirect.html $VERSION
               
               # Return to the current commit for subsequent steps
               git checkout ${{ github.sha }}
