@@ -17,47 +17,24 @@ search:
     display: none !important;
   }
 
-  /* Make header transparent on this page */
+  /* Standard variable override for landing page transparency */
   [data-md-color-scheme="default"] .md-header {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    color: var(--md-default-fg-color) !important;
+    --md-header-bg-color: transparent;
+    --md-header-fg-color: var(--md-default-fg-color);
+    box-shadow: none;
   }
 
-  /* Ensure header icons and logo are visible on transparent background */
+  /* Ensure icons and logo respect the transparent state */
   [data-md-color-scheme="default"] .md-header .md-header__button {
-    color: var(--md-default-fg-color) !important;
+    color: inherit;
   }
 
-  [data-md-color-scheme="default"] .md-header .md-search__button,
-  [data-md-color-scheme="default"] .md-header .md-search__icon {
-    color: #111111 !important;
-  }
-
-  /* Fix search bar appearance on transparent header */
   [data-md-color-scheme="default"] .md-header .md-search__form {
-    background-color: rgba(0, 0, 0, 0.08) !important;
-    transition: background-color 0.25s;
+    background-color: rgba(0, 0, 0, 0.08);
   }
 
   [data-md-color-scheme="default"] .md-header .md-search__form:hover {
-    background-color: rgba(0, 0, 0, 0.15) !important;
-  }
-
-  [data-md-color-scheme="default"] .md-header .md-search__input {
-    color: #111111 !important;
-  }
-
-  /* When search is focused/active, use white for text and icons */
-  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__input,
-  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__icon,
-  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__icon svg {
-    color: #fafafa !important;
-    fill: #fafafa !important;
-  }
-
-  [data-md-color-scheme="default"] .md-header .md-search__input::placeholder {
-    color: rgba(0, 0, 0, 0.54) !important;
+    background-color: rgba(0, 0, 0, 0.12);
   }
 
   [data-md-color-scheme="default"] .md-header__button.md-logo img,

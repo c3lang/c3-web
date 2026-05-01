@@ -46,6 +46,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - header.autohide
     - navigation.indexes
     - navigation.top
     - navigation.footer

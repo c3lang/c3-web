@@ -557,36 +557,65 @@
   }
 }
 
-/* Glassmorphism Header */
+/* Standard Theme Variable Overrides */
+:root {
+  /* Glassmorphism Header using variables */
+  --md-header-bg-color: color-mix(in srgb, var(--md-primary-fg-color), transparent 10%);
+  --md-header-bg-color--light: color-mix(in srgb, var(--md-primary-fg-color), transparent 10%);
+}
+
+[data-md-color-scheme="slate"] {
+  --md-header-bg-color: color-mix(in srgb, var(--md-header-bg-color), transparent 15%);
+}
+
 .md-header {
-  background-color: color-mix(in srgb, var(--md-primary-fg-color), transparent 10%) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-[data-md-color-scheme="slate"] .md-header {
-  background-color: color-mix(in srgb, var(--md-header-bg-color), transparent 15%) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: var(--md-header-bg-color);
 }
 
-/* Ensure the logo is visible on the indigo background (Light Mode Header & Mobile Menu) */
+/* Standard search visibility fix */
+.md-search[data-md-state="active"] .md-search__output {
+  display: block;
+}
+
+@media screen and (max-width: 60rem) {
+  /* Prevent backdrop-filter from clipping the search overlay on mobile */
+  .md-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Ensure visibility on semi-transparent background in Light Mode */
+[data-md-color-scheme="default"] {
+  --md-header-bg-color: color-mix(in srgb, var(--md-default-bg-color), transparent 15%);
+  --md-header-fg-color: #1f2937; /* Dark text/icons for light mode */
+}
+
+[data-md-color-scheme="slate"] {
+  --md-header-bg-color: color-mix(in srgb, var(--md-default-bg-color), transparent 15%);
+}
+
+[data-md-color-scheme="default"] .md-header {
+  color: var(--md-header-fg-color);
+}
+
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-header__link,
+[data-md-color-scheme="default"] .md-source {
+  color: inherit !important;
+}
+
 [data-md-color-scheme="default"] .md-header__button.md-logo img,
-[data-md-color-scheme="default"] .md-header__button.md-logo svg,
+[data-md-color-scheme="default"] .md-header__button.md-logo svg {
+  filter: none !important;
+}
+
 .md-nav__button.md-logo img,
 .md-nav__button.md-logo svg {
   filter: brightness(0) invert(1);
-}
-
-/* Ensure search output has height on mobile */
-@media screen and (max-width: 60rem) {
-  .md-search__inner {
-    overflow: visible !important;
-  }
-  .md-search__output {
-    height: 100vh !important;
-    background-color: #fafafa !important;
-  }
 }
 
 /* Documentation Utilities */
