@@ -526,7 +526,7 @@
 
 /* The markdown info note */
 .admonition.note {
-  width: 65%;
+  /* width: 65%; */
   margin: 0 auto;
 }
 
