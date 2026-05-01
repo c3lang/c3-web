@@ -11,8 +11,28 @@ search:
 
 <style>
   /* Hide the site name and page title in the header, only on this page */
-  .md-header__title .md-header__topic {
+  .md-header__title .md-header__topic,
+  .md-source-file,
+  .md-footer-meta {
     display: none !important;
+  }
+
+  /* Make header transparent on this page */
+  [data-md-color-scheme="default"] .md-header {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: var(--md-default-fg-color) !important;
+  }
+
+  /* Ensure header icons and logo are visible on transparent background */
+  [data-md-color-scheme="default"] .md-header .md-header__button,
+  [data-md-color-scheme="default"] .md-header .md-search__button {
+    color: var(--md-default-fg-color) !important;
+  }
+
+  [data-md-color-scheme="default"] .md-header__button.md-logo img,
+  [data-md-color-scheme="default"] .md-header__button.md-logo svg {
+    filter: none !important;
   }
 
   /* Thick, blurred streak that fades to oblivion at the tips */
@@ -98,66 +118,49 @@ fn void main()
   </div>
 </main>
 
-<hr style="height: 2px; margin: 3.5rem auto 1.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+<hr style="height: 2px; margin: 2.5rem auto 0 auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
-<div class="lp-max-w" style="margin-top: 4rem;">
-  <div class="lp-grid-3" style="gap: 3rem;">
-    <!-- Full C ABI Compatibility -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem;">
-      <span class="lp-feature-icon-wrapper" style="width: 5rem; height: 5rem;" markdown="1">
+<div class="lp-max-w" style="margin-top: 1rem;">
+  <div class="lp-features-top">
+    <!-- Left Column: Top 3 Features -->
+    <div class="lp-feature-list">
+      <div class="lp-feature-item">
+        <div class="lp-feature-icon-circle">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48"><path fill="currentColor" d="m15.45 15.97.42 2.44c-.26.14-.68.27-1.24.39-.57.13-1.24.2-2.01.2-2.21-.04-3.87-.7-4.98-1.96-1.14-1.27-1.68-2.88-1.68-4.83C6 9.9 6.68 8.13 8 6.89 9.28 5.64 10.92 5 12.9 5c.75 0 1.4.07 1.94.19s.94.25 1.2.4l-.6 2.49-1.04-.34c-.4-.1-.87-.15-1.4-.15-1.15-.01-2.11.36-2.86 1.1-.76.73-1.14 1.85-1.18 3.34.01 1.36.37 2.42 1.08 3.2.71.77 1.7 1.17 2.99 1.18l1.33-.12c.43-.08.79-.19 1.09-.32"/></svg>
-      </span>
-      <div>
-        <h3 class="lp-feature-title" style="margin: 0 0 0.75rem 0;">Full C ABI Compatibility</h3>
-        <p class="lp-feature-description">
-          C3 fits right into your C/C++ application with full C ABI compatibility out of the box.
-        </p>
+        </div>
+        <div class="lp-feature-content">
+          <h3><a href="language-common/cinterop/">Full C ABI Compatibility</a></h3>
+          <p>C3 fits right into your C/C++ application with full C ABI compatibility out of the box: no need for special "C compatible" types or functions, no limitations on what C3 features you can use from C.</p>
+        </div>
       </div>
-    </div>
-
-    <!-- Module System -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem;">
-      <span class="lp-feature-icon-wrapper" style="width: 5rem; height: 5rem;" markdown="1">
+      <div class="lp-feature-item">
+        <div class="lp-feature-icon-circle">
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M21.993 7.95a.96.96 0 0 0-.029-.214c-.007-.025-.021-.049-.03-.074-.021-.057-.04-.113-.07-.165-.016-.027-.038-.049-.057-.075-.032-.045-.063-.091-.102-.13-.023-.022-.053-.04-.078-.061-.039-.032-.075-.067-.12-.094-.004-.003-.009-.003-.014-.006l-.008-.006-8.979-4.99a1.002 1.002 0 0 0-.97-.001l-9.021 4.99c-.003.003-.006.007-.011.01l-.01.004c-.035.02-.061.049-.094.073-.036.027-.074.051-.106.082-.03.031-.053.067-.079.102-.027.035-.057.066-.079.104-.026.043-.04.092-.059.139-.014.033-.032.064-.041.1a.975.975 0 0 0-.029.21c-.001.017-.007.032-.007.05V16c0 .363.197.698.515.874l8.978 4.987.001.001.002.001.02.011c.043.024.09.037.135.054.032.013.063.03.097.039a1.013 1.013 0 0 0 .506 0c.033-.009.064-.026.097-.039.045-.017.092-.029.135-.054l.02-.011.002-.001.001-.001 8.978-4.987c.316-.176.513-.511.513-.874V7.998c0-.017-.006-.031-.007-.048zm-10.021 3.922L5.058 8.005 7.82 6.477l6.834 3.905-2.682 1.49zm.048-7.719L18.941 8l-2.244 1.247-6.83-3.903 2.153-1.191zM13 19.301l.002-5.679L16 11.944V15l2-1v-3.175l2-1.119v5.705l-7 3.89z"></path></svg>
-      </span>
-      <div>
-        <h3 class="lp-feature-title" style="margin: 0 0 0.75rem 0;">Module System</h3>
-        <p class="lp-feature-description">
-          A simple and straightforward module system that doesn't get in the way, with defaults that makes sense.
-        </p>
+        </div>
+        <div class="lp-feature-content">
+          <h3><a href="language-fundamentals/modules/">Module System</a></h3>
+          <p>A simple and straightforward module system that doesn't get in the way, with defaults that makes sense.</p>
+        </div>
+      </div>
+      <div class="lp-feature-item">
+        <div class="lp-feature-icon-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2H5v3H2v2h3v3h2V7h3V5H7V2zm7 3h8v2h-8zm0 10h8v2h-8zm0 4h8v2h-8zm-5.71-4.71L6 16.59l-2.29-2.3-1.42 1.42L4.59 18l-2.3 2.29 1.42 1.42L6 19.41l2.29 2.3 1.42-1.42L7.41 18l2.3-2.29-1.42-1.42z"/></svg>
+        </div>
+        <div class="lp-feature-content">
+          <h3><a href="generic-programming/operator-overloading/">Operator Overloading</a></h3>
+          <p>C3 empowers you with precise, purpose-built operator overloading — no C++ baggage, just clean, expressive code. Ideal for vectors, matrices, and fixed-point math that reads exactly how it should.</p>
+        </div>
       </div>
     </div>
 
-    <!-- Operator Overloading -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem;">
-      <span class="lp-feature-icon-wrapper" style="width: 5rem; height: 5rem;" markdown="1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="currentColor" d="M7 2H5v3H2v2h3v3h2V7h3V5H7V2zm7 3h8v2h-8zm0 10h8v2h-8zm0 4h8v2h-8zm-5.71-4.71L6 16.59l-2.29-2.3-1.42 1.42L4.59 18l-2.3 2.29 1.42 1.42L6 19.41l2.29 2.3 1.42-1.42L7.41 18l2.3-2.29-1.42-1.42z"></path></svg>
-      </span>
-      <div>
-        <h3 class="lp-feature-title" style="margin: 0 0 0.75rem 0;">Operator Overloading</h3>
-        <p class="lp-feature-description">
-          C3 empowers you with precise operator overloading / no baggage, just clean, expressive code.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<hr style="height: 2px; margin: 4rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
-
-<div class="lp-max-w">
-  <div class="lp-grid-2" style="gap: 4rem; align-items: center; max-width: 56rem; margin: 0 auto;">
-    <h2 class="lp-evolution-title">C3 is an evolution, not a revolution: <span class="lp-gradient-text">the C-like for programmers who like C.</span></h2>
-    <div style="display: flex; flex-direction: column; gap: 0.75rem; color: var(--md-default-fg-color--light); line-height: 1.4; font-size: 0.8rem; font-weight: 400;">
-      <p style="margin: 0;">C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers.</p>
+    <!-- Right Column: Evolution Statement -->
+    <div class="lp-evolution-section">
+      <h2 style="font-weight: 800; margin-top: 0;">C3 is an evolution, not a revolution: <span class="lp-gradient-text">the C-like for programmers who like C.</span></h2>
+      <p>C3 is a programming language that builds on the syntax and semantics of the C language, with the goal of evolving it while still retaining familiarity for C programmers.</p>
       <p style="margin: 0;">Thanks to full ABI compatibility with C, it's possible to mix C and C3 in the same project with no effort. As a demonstration, <a href="https://github.com/c3lang/vkQuake" target="_blank" style="color: var(--md-primary-fg-color); font-weight: 600;">vkQuake</a> was compiled with a small portion of the code converted to C3 and compiled with the c3c compiler.</p>
     </div>
   </div>
-</div>
 
-<hr style="height: 2px; margin: 4.5rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
-
-<div class="lp-max-w" style="margin-top: 4rem;">
   <!-- Global Icon Gradient Definition -->
   <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
     <linearGradient id="lp-icon-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
@@ -166,83 +169,89 @@ fn void main()
     </linearGradient>
   </svg>
 
-  <div class="lp-grid-4" style="gap: 3.5rem 2rem;">
-    <!-- Compile Time and Semantic Macros -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
+<hr style="height: 2px; margin: 1rem auto 0 auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+
+  <!-- Bottom Grid: 8 Features -->
+  <div class="lp-feature-grid-8">
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M6 14c-2.206 0-4 1.794-4 4s1.794 4 4 4a4.003 4.003 0 0 0 3.998-3.98H10V16h4v2.039h.004A4.002 4.002 0 0 0 18 22c2.206 0 4-1.794 4-4s-1.794-4-4-4h-2v-4h2c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4v2h-4V5.98h-.002A4.003 4.003 0 0 0 6 2C3.794 2 2 3.794 2 6s1.794 4 4 4h2v4H6zm2 4c0 1.122-.879 2-2 2s-2-.878-2-2 .879-2 2-2h2v2zm10-2c1.121 0 2 .878 2 2-2-.878-2-2v-2h2zM16 6c0-1.122.879-2 2-2s2 .878 2 2-.879 2-2 2h-2V6zM6 8c-1.121 0-2-.878-2-2s.879-2 2-2 2 .878 2 2v2H6zm4 2h4v4h-4v-4z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Compile Time Macros</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Unlock the full power of compile-time code with macros that read like functions.</p>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="generic-programming/macros/">Compile Time and Semantic Macros</a></h3>
+        <p>Unlock the full power of compile-time code with macros that read like functions — clearer, stronger, and miles beyond C's preprocessor.</p>
+      </div>
     </div>
-
-    <!-- Gradual Contracts -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M11.587 6.999H7.702a2 2 0 0 0-1.88 1.316l-3.76 10.342c-.133.365-.042.774.232 1.049l.293.293 6.422-6.422c-.001-.026-.008-.052-.008-.078a1.5 1.5 0 1 1 1.5 1.5c-.026 0-.052-.007-.078-.008l-6.422 6.422.293.293a.997.997 0 0 0 1.049.232l10.342-3.761a2 2 0 0 0 1.316-1.88v-3.885L19 10.414 13.586 5l-1.999 1.999zm8.353 2.062-5-5 2.12-2.121 5 5z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Gradual Contracts</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Express both runtime and compile-time constraints with unobtrusive contracts.</p>
-    </div>
-
-    <!-- Zero Overhead Errors -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M11 6h2v5h-2zm0 6h2v2h-2z"/><path fill="url(#lp-icon-gradient)" d="M20 2H4c-1.103 0-2 .897-2 2v18l5.333-4H20c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm0 14H6.667L4 18V4h16v12z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Zero Overhead Errors</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Error handling that combines Result types with the ease of exceptions.</p>
-    </div>
-
-    <!-- Generic modules -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M22 8a.76.76 0 0 0 0-.21v-.08a.77.77 0 0 0-.07-.16.35.35 0 0 0-.05-.08l-.1-.13-.08-.06-.12-.09-9-5a1 1 0 0 0-1 0l-9 5-.09.07-.11.08a.41.41 0 0 0-.07.11.39.39 0 0 0-.08.1.59.59 0 0 0-.06.14.3.3 0 0 0 0 .1A.76.76 0 0 0 2 8v8a1 1 0 0 0 .52.87l9 5a.75.75 0 0 0 .13.06h.1a1.06 1.06 0 0 0 .5 0h.1l.14-.06 9-5A1 1 0 0 0 22 16V8zm-10 3.87L5.06 8l2.76-1.52 6.83 3.9zm0-7.72L18.94 8 16.7 9.25 9.87 5.34zM4 9.7l7 3.92v5.68l-7-3.89zm9 9.6v-5.68l3-1.68V15l2-1v-3.18l2-1.11v5.7z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Generic Modules</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Superior simplicity and clarity for creating generic types.</p>
-    </div>
-
-    <!-- Runtime and compile reflection -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M10 11H7.101l.001-.009a4.956 4.956 0 0 1 .752-1.787 5.054 5.054 0 0 1 2.2-1.811c.302-.128.617-.226.938-.291a5.078 5.078 0 0 1 2.018 0 4.978 4.978 0 0 1 2.525 1.361l1.416-1.412a7.036 7.036 0 0 0-2.224-1.501 6.921 6.921 0 0 0-1.315-.408 7.079 7.079 0 0 0-2.819 0 6.94 6.94 0 0 0-1.316.409 7.04 7.04 0 0 0-3.08 2.534 6.978 6.978 0 0 0-1.054 2.505c-.028.135-.043.273-.063.41H2l4 4 4-4zm4 2h2.899l-.001.008a4.976 4.976 0 0 1-2.103 3.138 4.943 4.943 0 0 1-1.787.752 5.073 5.073 0 0 1-2.017 0 4.956 4.956 0 0 1-1.787-.752 5.072 5.072 0 0 1-.74-.61L7.05 16.95a7.032 7.032 0 0 0 2.225 1.5c.424.18.867.317 1.315.408a7.07 7.07 0 0 0 2.818 0 7.031 7.031 0 0 0 4.395-2.945 6.974 6.974 0 0 0 1.053-2.503c.027-.135.043-.273.063-.41H22l-4-4-4 4z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Reflection</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Type introspection available both at compile time and runtime.</p>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="generic-programming/reflection/">Runtime and compile reflection</a></h3>
+        <p>Type introspection available both at compile time and runtime, powering flexible macros and functions.</p>
+      </div>
     </div>
-
-    <!-- Inline Assembly -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M11.587 6.999H7.702a2 2 0 0 0-1.88 1.316l-3.76 10.342c-.133.365-.042.774.232 1.049l.293.293 6.422-6.422c-.001-.026-.008-.052-.008-.078a1.5 1.5 0 1 1 1.5 1.5c-.026 0-.052-.007-.078-.008l-6.422 6.422.293.293a.997.997 0 0 0 1.049.232l10.342-3.761a2 2 0 0 0 1.316-1.88v-3.885L19 10.414 13.586 5l-1.999 1.999zm8.353 2.062-5-5 2.12-2.121 5 5z"/></svg>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="language-common/contracts/">Gradual Contracts</a></h3>
+        <p>C3 brings programming-by-contract to the mainstream with unobtrusive contracts that are used to express both runtime and compile-time constraints.</p>
+      </div>
+    </div>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M8.293 6.293 2.586 12l5.707 5.707 1.414-1.414L5.414 12l4.293-4.293zm7.414 11.414L21.414 12l-5.707-5.707-1.414 1.414L18.586 12l-4.293 4.293z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Inline Assembly</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Write asm as regular inline code without cryptic constraints.</p>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="misc-advanced/asm/">Inline Assembly</a></h3>
+        <p>Write asm as regular inline code without using strings or cryptic constraints.</p>
+      </div>
     </div>
-
-    <!-- Debug with safety checks -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M6.787 7h10.426c-.108-.158-.201-.331-.318-.481l2.813-2.812-1.414-1.414-2.846 2.846a6.575 6.575 0 0 0-.723-.454 5.778 5.778 0 0 0-5.45 0c-.25.132-.488.287-.722.453L5.707 2.293 4.293 3.707l2.813 2.812c-.118.151-.21.323-.319.481zM5.756 9H2v2h2.307c-.065.495-.107.997-.107 1.5 0 .507.042 1.013.107 1.511H2v2h2.753c.013.039.021.08.034.118.188.555.421 1.093.695 1.6.044.081.095.155.141.234l-2.33 2.33 1.414 1.414 2.11-2.111a7.477 7.477 0 0 0 2.068 1.619c.479.253.982.449 1.496.58.204.052.411.085.618.118V16h2v5.914a6.23 6.23 0 0 0 .618-.118 6.812 6.812 0 0 0 1.496-.58c.465-.246.914-.55 1.333-.904.258-.218.5-.462.734-.716l2.111 2.111 1.414-1.414-2.33-2.33c.047-.08.098-.155.142-.236.273-.505.507-1.043.694-1.599.013-.039.021-.079.034-.118H22v-2h-2.308c.065-.499.107-1.004.107-1.511 0 -.503-.042-1.005-.106-1.5H22V9H5.756z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Safety Checks</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Extensive runtime bounds and value checks to catch bugs early.</p>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M11 6h2v5h-2zm0 6h2v2h-2z"/><path fill="url(#lp-icon-gradient)" d="M20 2H4c-1.103 0-2 .897-2 2v18l5.333-4H20c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm0 14H6.667L4 18V4h16v12z"/></svg>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="language-common/optionals-essential/">Zero Overhead Errors</a></h3>
+        <p>Error handling that combines the best parts of "Result" errors with the easy use of exceptions and integrates seamlessly with C.</p>
+      </div>
     </div>
-
-    <!-- Detailed stacktraces -->
-    <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
-      <span>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M6.787 7h10.426c-.108-.158-.201-.331-.318-.481l2.813-2.812-1.414-1.414-2.846 2.846a6.575 6.575 0 0 0-.723-.454 5.778 5.778 0 0 0-5.45 0c-.25.132-.488.287-.722.453L5.707 2.293 4.293 3.707l2.813 2.812c-.118.151-.21.323-.319.481zM5.756 9H2v2h2.307c-.065.495-.107.997-.107 1.5 0 .507.042 1.013.107 1.511H2v2h2.753c.013.039.021.08.034.118.188.555.421 1.093.695 1.6.044.081.095.155.141.234l-2.33 2.33 1.414 1.414 2.11-2.111a7.477 7.477 0 0 0 2.068 1.619c.479.253.982.449 1.496.58.204.052.411.085.618.118V16h2v5.914a6.23 6.23 0 0 0 .618-.118 6.812 6.812 0 0 0 1.496-.58c.465-.246.914-.55 1.333-.904.258-.218.5-.462.734-.716l2.111 2.111 1.414-1.414-2.33-2.33c.047-.08.098-.155.142-.236.273-.505.507-1.043.694-1.599.013-.039.021-.079.034-.118H22v-2h-2.308c.065-.499.107-1.004.107-1.511 0 -.503-.042-1.005-.106-1.5H22V9H5.756z"></path></svg>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="misc-advanced/debugging/">Debug with safety checks</a></h3>
+        <p>Feel confident in your code's correctness: in debug mode the compiler inserts extensive runtime bounds checks and value checks, which together with contracts will let you catch bugs early.</p>
+      </div>
+    </div>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M22 8a.76.76 0 0 0 0-.21v-.08a.77.77 0 0 0-.07-.16.35.35 0 0 0-.05-.08l-.1-.13-.08-.06-.12-.09-9-5a1 1 0 0 0-1 0l-9 5-.09.07-.11.08a.41.41 0 0 0-.07.11.39.39 0 0 0-.08.1.59.59 0 0 0-.06.14.3.3 0 0 0 0 .1A.76.76 0 0 0 2 8v8a1 1 0 0 0 .52.87l9 5a.75.75 0 0 0 .13.06h.1a1.06 1.06 0 0 0 .5 0h.1l.14-.06 9-5A1 1 0 0 0 22 16V8zm-10 3.87L5.06 8l2.76-1.52 6.83 3.9zm0-7.72L18.94 8 16.7 9.25 9.87 5.34zM4 9.7l7 3.92v5.68l-7-3.89zm9 9.6v-5.68l3-1.68V15l2-1v-3.18l2-1.11v5.7z"/></svg>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="generic-programming/generics/">Generic modules</a></h3>
+        <p>C3 generic modules offer superior simplicity and clarity for creating generic types.</p>
+      </div>
+    </div>
+    <div class="lp-grid-feature">
+      <div class="lp-grid-feature-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24"><path fill="url(#lp-icon-gradient)" d="M21 5c0-1.103-.897-2-2-2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5zM5 19V5h14l.002 14H5z"/><path fill="url(#lp-icon-gradient)" d="M7 7h1.998v2H7zm4 0h6v2h-6zm-4 4h1.998v2H7zm4 0h6v2h-6zm-4 4h1.998v2H7zm4 0h6v2h-6z"/></svg>
-      </span>
-      <h3 class="lp-feature-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">Stacktraces</h3>
-      <p class="lp-feature-description" style="margin: 0; font-size: 0.85rem; line-height: 1.5; color: var(--md-default-fg-color--light);">Detailed stacktraces out of the box for your debug builds.</p>
+      </div>
+      <div class="lp-feature-content">
+        <h3><a href="misc-advanced/debugging/">Detailed stacktraces</a></h3>
+        <p>No more anonymous "segmentation fault" errors: the C3 standard library enables detailed stacktraces out of the box for your debug builds.</p>
+      </div>
     </div>
   </div>
-</div><hr style="height: 2px; margin: 1.3rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+</div>
+
+<hr style="height: 2px; margin: 1.3rem auto 0 auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
 <div class="lp-max-w" style="text-align: center;">
-  <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--md-default-fg-color); margin-bottom: 0.5rem;"><span class="lp-gradient-text">Get</span> Started</h2>
+  <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--md-default-fg-color); margin: 0.6em 0 0.64em;"><span class="lp-gradient-text">Get</span> Started</h2>
 
   <div class="lp-get-started-grid" style="margin-top: 0;">
     <a href="getting-started/prebuilt-binaries/" class="lp-card">
@@ -270,8 +279,6 @@ fn void main()
     </a>
   </div>
 </div>
-
-
 
 <script>
 	function setupDownloads() {
