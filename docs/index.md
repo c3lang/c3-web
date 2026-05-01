@@ -25,9 +25,39 @@ search:
   }
 
   /* Ensure header icons and logo are visible on transparent background */
-  [data-md-color-scheme="default"] .md-header .md-header__button,
-  [data-md-color-scheme="default"] .md-header .md-search__button {
+  [data-md-color-scheme="default"] .md-header .md-header__button {
     color: var(--md-default-fg-color) !important;
+  }
+
+  [data-md-color-scheme="default"] .md-header .md-search__button,
+  [data-md-color-scheme="default"] .md-header .md-search__icon {
+    color: #111111 !important;
+  }
+
+  /* Fix search bar appearance on transparent header */
+  [data-md-color-scheme="default"] .md-header .md-search__form {
+    background-color: rgba(0, 0, 0, 0.08) !important;
+    transition: background-color 0.25s;
+  }
+
+  [data-md-color-scheme="default"] .md-header .md-search__form:hover {
+    background-color: rgba(0, 0, 0, 0.15) !important;
+  }
+
+  [data-md-color-scheme="default"] .md-header .md-search__input {
+    color: #111111 !important;
+  }
+
+  /* When search is focused/active, use white for text and icons */
+  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__input,
+  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__icon,
+  [data-md-color-scheme="default"] .md-header .md-search__form:focus-within .md-search__icon svg {
+    color: #fafafa !important;
+    fill: #fafafa !important;
+  }
+
+  [data-md-color-scheme="default"] .md-header .md-search__input::placeholder {
+    color: rgba(0, 0, 0, 0.54) !important;
   }
 
   [data-md-color-scheme="default"] .md-header__button.md-logo img,
