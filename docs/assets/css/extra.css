@@ -164,6 +164,9 @@
   border-bottom: none !important;
 }
 
+.md-typeset h2 { font-weight: 600;}
+.md-typeset h3 { font-weight: 600;}
+
 .lp-hero-logo {
   transition: filter 0.2s ease-in-out;
   color: transparent;
@@ -440,7 +443,8 @@
   --md-code-hl-string-color: #a5d6ff;
   --md-code-hl-number-color: #79c0ff;
   --md-code-hl-comment-color: #8b949e;
-  --md-code-hl-name-color: #c9d1d9;
+  --md-code-hl-name-color: #C5E478;
+  --md-code-fg-color: #D39DD6;
   --md-code-hl-variable-color: #ffa657;
   --md-code-hl-function-color: #d2a8ff;
   --md-code-hl-type-color: #7ee787;
@@ -456,7 +460,8 @@
   --md-code-hl-string-color: #0a3069;
   --md-code-hl-number-color: #0550ae;
   --md-code-hl-comment-color: #6e7781;
-  --md-code-hl-name-color: #24292f;
+  --md-code-hl-name-color: #3B61B0;
+  --md-code-fg-color: #8250df;
   --md-code-hl-variable-color: #953800;
   --md-code-hl-function-color: #8250df;
   --md-code-hl-type-color: #116329;
