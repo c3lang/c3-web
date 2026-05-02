@@ -36,8 +36,7 @@ $endswitch  $eval       $evaltype   $error
 $extnameof  $for        $foreach    $if
 $include    $nameof     $offsetof   $qnameof
 $sizeof     $stringify  $switch     $typefrom
-$typeof     $vacount    $vatype     $vaconst
-$vaarg      $vaexpr     $vasplat
+$typeof     $vaarg
 ```
 
 The following attributes are built in:
