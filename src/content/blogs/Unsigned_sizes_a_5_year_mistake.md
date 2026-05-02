@@ -143,7 +143,9 @@ In order to more clearly promote the signed size, it was renamed just "sz", givi
 
 Originally the implicit conversion between signed <-> unsigned was mainly left intact, but it was later completely dropped.
 
+---
 
+Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=47989154).
 
 
 
