@@ -112,11 +112,22 @@ search:
 
       <div class="lp-code-wrapper">
         <div class="lp-code-header">
-          <div class="lp-code-dot" style="background-color: #ef4444;"></div>
-          <div class="lp-code-dot" style="background-color: #f59e0b;"></div>
-          <div class="lp-code-dot" style="background-color: #10b981;"></div>
+          <div class="lp-code-dots">
+            <div class="lp-code-dot" style="background-color: #ef4444;"></div>
+            <div class="lp-code-dot" style="background-color: #f59e0b;"></div>
+            <div class="lp-code-dot" style="background-color: #10b981;"></div>
+          </div>
+          <div class="lp-code-select-wrapper">
+            <select class="lp-code-select">
+              <option value="tab-0">Hello World</option>
+              <option value="tab-1">Safety</option>
+              <option value="tab-2">Reflection</option>
+              <option value="tab-3">Generics</option>
+            </select>
+          </div>
         </div>
         <div class="lp-code-content">
+          <div id="tab-0" class="lp-tab-content active">
 
 ```c3
 module hello;
@@ -127,8 +138,103 @@ fn void main()
     io::printn("Hello, World!");
 }
 ```
+
+          </div>
+          <div id="tab-1" class="lp-tab-content">
+
+```c3
+fn void? test(int x)
+{
+    defer io::printn("");
+    defer io::print("A");
+    defer try io::print("X");
+    defer catch io::print("B");
+
+    if (x == 1) return NOT_FOUND~;
+    io::print("!");
+}
+```
+
+          </div>
+          <div id="tab-2" class="lp-tab-content">
+
+```c3
+macro print_fields($Type)
+{
+    $foreach $field : $Type::members:
+        io::printfn("Field %s, offset: %s, size: %s",
+                $field::name, $field::offset, $field::size);
+    $endforeach
+}
+
+fn void main() { print_fields(Foo); }
+```
+
+          </div>
+          <div id="tab-3" class="lp-tab-content">
+
+```c3
+struct Stack <Type>
+{
+    usz capacity;
+    usz size;
+    Type* elems;
+}
+
+fn void Stack.push(Stack* this, Type element)
+{
+    // ... implementation
+    this.elems[this.size++] = element;
+}
+```
+
+          </div>
         </div>
       </div>
+
+      <script>
+        (function() {
+          const wrapper = document.querySelector('.lp-code-wrapper');
+          if (!wrapper) return;
+          const select = wrapper.querySelector('.lp-code-select');
+
+          function autoZoom() {
+            const activeTab = wrapper.querySelector('.lp-tab-content.active');
+            if (!activeTab) return;
+            const code = activeTab.querySelector('code');
+            if (!code) return;
+
+            wrapper.style.zoom = "1";
+            requestAnimationFrame(() => {
+              const containerWidth = wrapper.clientWidth - 20;
+              const contentWidth = code.scrollWidth;
+              if (contentWidth > containerWidth) {
+                const factor = containerWidth / contentWidth;
+                wrapper.style.zoom = Math.max(0.6, factor);
+              }
+            });
+          }
+
+          function syncTab() {
+            wrapper.querySelectorAll('.lp-tab-content').forEach(c => c.classList.remove('active'));
+            const target = wrapper.querySelector(`#${select.value}`);
+            if (target) {
+              target.classList.add('active');
+              autoZoom();
+              setTimeout(autoZoom, 100);
+            }
+          }
+
+          document.addEventListener('change', e => {
+            if (e.target.closest('.lp-code-select')) syncTab();
+          });
+
+          window.addEventListener('resize', autoZoom);
+
+          // Sync on initial load to match browser-persisted dropdown state
+          if (select) syncTab();
+        })();
+      </script>
     </div>
   </div>
 </main>

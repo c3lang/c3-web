@@ -325,9 +325,65 @@
 }
 
 .lp-code-header {
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: color-mix(in srgb, var(--md-code-fg-color), transparent 95%);
+  border-bottom: 1px solid color-mix(in srgb, var(--md-code-fg-color), transparent 90%);
+}
+
+.lp-code-dots {
   display: flex;
   gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.lp-code-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lp-code-select {
+  background: color-mix(in srgb, var(--md-code-fg-color), transparent 95%);
+  color: var(--md-default-fg-color);
+  border: 1px solid color-mix(in srgb, var(--md-code-fg-color), transparent 85%);
+  border-radius: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 1.5rem 0.2rem 0.5rem;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.2s ease;
+}
+
+.lp-code-select:hover {
+  background-color: color-mix(in srgb, var(--md-code-fg-color), transparent 90%);
+  border-color: var(--md-primary-fg-color);
+}
+
+.lp-code-select-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 0.5rem;
+  font-size: 0.6rem;
+  pointer-events: none;
+  color: var(--md-code-hl-comment-color);
+}
+
+.lp-tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.lp-tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .lp-code-dot {
@@ -337,7 +393,7 @@
 }
 
 .lp-code-content {
-  font-size: 1.125rem;
+  font-size: 0.85rem;
 }
 
 .lp-features-grid {
@@ -498,19 +554,19 @@
 .lp-code-content pre {
   background-color: transparent !important;
   margin: 0 !important;
-  padding: 0 1rem 1rem 1rem !important;
-  position: static !important;
+  padding: 0 0 1rem 0 !important;
+  position: relative !important; /* Anchor for the copy button */
 }
 
 .lp-code-content code {
   background-color: transparent !important;
 }
 
-/* Material's copy button component, repositioned to sit inside our custom header */
+/* Material's copy button component, stabilized to the top-right of the code area */
 .lp-code-content .md-code__nav {
   position: absolute;
-  top: 0.75rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   z-index: 10;
   background-color: transparent !important;
 }
