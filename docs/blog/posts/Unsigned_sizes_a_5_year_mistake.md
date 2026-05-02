@@ -18,7 +18,7 @@ Since the early days, C3 has been using unsigned sizes. And while the *name* of 
 However, unsigned has known pitfalls, the most well known being:
 
 ```c3
-for (uint x = 10; x >= 0; x--)
+for (uint x = 10; x >= 0; x--) // Infinte loop!
 { ... }
 ```
 
@@ -101,13 +101,13 @@ The correct code for unsigned needs to look something like this:
 index = (start + length - (offset_back % length)) % length;
 ```
 
-Now what about C3's rules with unsigned? If we start with signed everything, then go to unsigned everything then even the rule "signed % unsigned => error" won't help us.
+Regardless of what rules we apply to unsigned and unsigned-signed conversions, there is simply no way for the compiler to let us know that the first "offset_back" example is broken for unsigned.
 
 So let's back up a bit.
 
 ### The unsigned size
 
-It seems hard to solve the problem with unsigned, is there some faulty assumption we're making?
+It seems hard to solve the problem with unsigned, so is there some faulty assumption we're making?
 
 Let's look back in time: C initially was about using signed integers being designed around the `int` type. This all changed when the type of `sizeof` was standardized to the unsigned `size_t`.
 
