@@ -16,7 +16,7 @@ Since the early days, C3 has been using unsigned sizes. And while the *name* of 
 However, unsigned has known pitfalls, the most well known being:
 
 ```c3
-for (uint x = 10; x >= 0; x--)
+for (uint x = 10; x >= 0; x--) // Infinte loop!
 { ... }
 ```
 
