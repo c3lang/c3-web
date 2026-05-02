@@ -638,19 +638,6 @@
   background-color: var(--md-header-bg-color);
 }
 
-@media screen and (min-width: 76.25em) {
-  [dir="ltr"] .md-header__source {
-    margin-left: 0.2rem;
-  }
-}
-
-@media screen and (min-width: 60em) {
-  .md-header__source {
-    /* display: block; */
-    /* max-width: 9.7rem; */
-    width: 7rem;
-  }
-}
 
 /* Standard search visibility fix */
 .md-search[data-md-state="active"] .md-search__output {
@@ -690,8 +677,7 @@
 }
 
 [data-md-color-scheme="default"] .md-header__button,
-[data-md-color-scheme="default"] .md-header__link,
-[data-md-color-scheme="default"] .md-source {
+[data-md-color-scheme="default"] .md-header__link {
   color: inherit !important;
 }
 

@@ -36,14 +36,12 @@
       <a href="https://discord.gg/qN76R87" class="md-header__link" target="_blank" rel="noopener">
         Discord
       </a>
+      {% if config.repo_url %}
+      <a href="{{ config.repo_url }}" class="md-header__link" target="_blank" rel="noopener">
+        GitHub
+      </a>
+      {% endif %}
     </div>
-
-    <!-- Repository Source -->
-    {% if config.repo_url %}
-    <div class="md-header__source">
-      {% include "partials/source.html" %}
-    </div>
-    {% endif %}
 
 
     <!-- User Preference (for search/theme) -->
