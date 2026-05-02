@@ -120,9 +120,10 @@ search:
           <div class="lp-code-select-wrapper">
             <select class="lp-code-select">
               <option value="tab-0">Hello World</option>
-              <option value="tab-1">Safety</option>
+              <option value="tab-1">Optionals</option>
               <option value="tab-2">Reflection</option>
               <option value="tab-3">Generics</option>
+              <option value="tab-4">Disctinct types and aliases</option>
             </select>
           </div>
         </div>
@@ -143,15 +144,32 @@ fn void main()
           <div id="tab-1" class="lp-tab-content">
 
 ```c3
-fn void? test(int x)
-{
-    defer io::printn("");
-    defer io::print("A");
-    defer try io::print("X");
-    defer catch io::print("B");
+import std::io;
 
-    if (x == 1) return NOT_FOUND~;
-    io::print("!");
+faultdef DIVISION_BY_ZERO;
+
+fn int? divide_int(int x, int y)
+{
+	if (!y) return DIVISION_BY_ZERO~;
+	return x / y;
+}
+
+fn void main()
+{
+	int a = 4;
+	int b = 0;
+	int? x = divide_int(a, b);
+	// int y = x * 2 this would be an error here
+
+	if (catch err = x)
+	{
+		// Running if b == 0
+		io::printfn("Had error: '%s'.", err);
+		return;
+	}
+	// x is a normal "int" now,
+	// so this works:
+	int y = x * 2;
 }
 ```
 
@@ -185,6 +203,29 @@ fn void Stack.push(Stack* this, Type element)
 {
     // ... implementation
     this.elems[this.size++] = element;
+}
+```
+
+          </div>
+          <div id="tab-4" class="lp-tab-content">
+
+```c3
+import std::io;
+
+alias MyInt = int;
+typedef MyId = int;
+
+fn void main()
+{
+	MyInt x = 27;
+	MyId y = 3;
+	int a = x;
+	// int b = y; <- This doesn't work
+
+	// Explicit conversion works
+	x += (int)y;
+
+	io::printfn("%s %s", y, x);
 }
 ```
 
