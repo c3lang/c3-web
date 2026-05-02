@@ -8,7 +8,7 @@
   {% set repo_name = page.meta.repo_name %}
 {% endif %}
 
-<a href="{{ repo_url }}" title="{{ lang.t('source') }}" class="md-source">
+<a href="{{ repo_url }}" title="{{ lang.t('source') }}" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     {% set icon = config.theme.icon.repo or "fontawesome/brands/git-alt" %}
     {% include ".icons/" ~ icon ~ ".svg" %}

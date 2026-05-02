@@ -1,7 +1,7 @@
 /* Tweak these to change the overall page density */
 :root {
-  --lp-max-width: 66rem;
-  --lp-text-scale: 0.9;
+  --lp-max-width: 50rem;
+  --lp-text-scale: 0.75;
 }
 
 .lp-max-w {
@@ -582,6 +582,20 @@
   background-color: var(--md-header-bg-color);
 }
 
+@media screen and (min-width: 76.25em) {
+  [dir="ltr"] .md-header__source {
+    margin-left: 0.2rem;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-header__source {
+    /* display: block; */
+    /* max-width: 9.7rem; */
+    width: 7rem;
+  }
+}
+
 /* Standard search visibility fix */
 .md-search[data-md-state="active"] .md-search__output {
   display: block;
@@ -680,12 +694,12 @@
   flex-shrink: 0;
   width: calc(4.5rem * var(--lp-text-scale));
   height: calc(4.5rem * var(--lp-text-scale));
-  border: 1px solid #1d4ed8;
+  border: 1px solid color-mix(in srgb, var(--md-header-fg-color), transparent 85%);
   border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1d4ed8;
+  color: var(--md-header-fg-color);
   background-color: #f3f4f6;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -731,7 +745,7 @@
 .lp-feature-grid-8 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem 4rem;
+  gap: 2.5rem 4rem;
   margin-top: 1.5rem;
 }
 

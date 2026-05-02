@@ -38,8 +38,13 @@
       </a>
     </div>
 
-    <!-- Color Palette Toggle -->
-    {% include "partials/palette.html" %}
+    <!-- Repository Source -->
+    {% if config.repo_url %}
+    <div class="md-header__source">
+      {% include "partials/source.html" %}
+    </div>
+    {% endif %}
+
 
     <!-- User Preference (for search/theme) -->
     {% if config.extra.alternate %}
@@ -52,11 +57,8 @@
     </label>
     {% include "partials/search.html" %}
 
-    <!-- Repository Source -->
-    {% if config.repo_url %}
-    <div class="md-header__source">
-      {% include "partials/source.html" %}
-    </div>
-    {% endif %}
+    <!-- Color Palette Toggle -->
+    {% include "partials/palette.html" %}
+
   </nav>
 </header>

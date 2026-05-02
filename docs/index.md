@@ -17,6 +17,14 @@ search:
     display: none !important;
   }
 
+  .md-header {
+    position: absolute !important;
+  }
+
+  .md-container {
+    margin-top: 0 !important;
+  }
+
   /* Standard variable override for landing page transparency */
   [data-md-color-scheme="default"] .md-header {
     --md-header-bg-color: transparent;
@@ -168,7 +176,7 @@ fn void main()
     </div>
   </div>
 
-<hr style="height: 5px; margin: 3rem auto 2rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
+<hr style="height: 2px; margin: 4rem auto 4rem auto; background-color: var(--md-default-fg-color--lightest); border: none;">
 
   <!-- Bottom Grid: 8 Features -->
   <div class="lp-feature-grid-8">
