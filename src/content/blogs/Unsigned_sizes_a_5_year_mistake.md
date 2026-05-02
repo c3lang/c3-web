@@ -16,7 +16,7 @@ Since the early days, C3 has been using unsigned sizes. And while the *name* of 
 However, unsigned has known pitfalls, the most well known being:
 
 ```c3
-for (uint x = 10; x >= 0; x--) // Infinte loop!
+for (uint x = 10; x >= 0; x--) // Infinite loop!
 { ... }
 ```
 
@@ -84,6 +84,8 @@ index = ((start + offset) % length + length) % length;
 ```
 
 Since `offset` is negative, we can assume signed numbers, so barring extremely large offsets (causing signed overflow) this will work.
+
+(Note: if `%` had yielded the modulo rather than the remainder, the naive solution would have worked)
 
 Now, remember how we started with unsigned sizes? Unsigned first will likely lead us to using all unsigned, leading to code looking like this:
 
