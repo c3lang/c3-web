@@ -338,6 +338,22 @@ exist as well, such as delayed parsing. It is also possible to make it unambiguo
 However, all of those methods make it much harder for tools to search the source code accurately. By making
 the naming convention part of the grammar, C3 is straightforward to parse with a single token lookahead.
 
+**Q:** Can't you relax C3's naming rules?
+
+It is a common misunderstanding that the naming rules are something enforced by the semantic analyzer.
+This is not true: it is a lexer rule, to be able to distinguish between types and other identifiers.
+
+It is the only way to make a C grammar parsable with only 1 token lookahead. All other approaches add
+significant complexity to work around this, and often they still rely on C being parsed in order, top to bottom.
+
+Consequently, the answer is a strong **NO**. There is no way to "relax" the rules, because they are fundamental
+to making a C-like grammar parsable.
+
+Either C3 has `int a = 2;` *with* these rules, or it gains some alternative
+variable declaration syntax like `var a : int = 2;`. But in the latter case, the changes would not end there since
+the declaration syntax also strongly shapes struct declarations, for-statements and other things to the point that
+no one would recognize it as a C evolution anyway. So it's a non-starter.
+
 **Q:** Why are there no closures and only non-capturing lambdas?
 
 **A:** With closures, life-time management of captured variables become important to track. This can become
