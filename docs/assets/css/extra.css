@@ -1,9 +1,11 @@
-/* ================================================================
-   Landing Page
-   ================================================================ */
+/* Tweak these to change the overall page density */
+:root {
+  --lp-max-width: 66rem;
+  --lp-text-scale: 0.9;
+}
 
 .lp-max-w {
-  max-width: 85rem;
+  max-width: var(--lp-max-width);
   margin-left: auto;
   margin-right: auto;
   padding-left: 1rem;
@@ -44,7 +46,7 @@
 }
 
 .lp-title {
-  font-size: 2.25rem;
+  font-size: calc(2.25rem * var(--lp-text-scale));
   font-weight: 800;
   line-height: 1;
   color: #1f2937;
@@ -52,7 +54,7 @@
 
 @media (min-width: 1024px) {
   .lp-title {
-    font-size: 5rem;
+    font-size: calc(5rem * var(--lp-text-scale));
     line-height: 1;
   }
 }
@@ -62,7 +64,7 @@
 }
 
 .lp-subtitle {
-  font-size: 0.9rem;
+  font-size: calc(0.9rem * var(--lp-text-scale));
   color: #4b5563;
 }
 
@@ -416,7 +418,7 @@
 }
 
 .lp-card-title {
-  font-size: 1.125rem;
+  font-size: calc(1.125rem * var(--lp-text-scale));
   font-weight: 600;
   color: var(--md-default-fg-color);
   margin-top: 0;
@@ -425,7 +427,7 @@
 
 .lp-card-description {
   color: var(--md-default-fg-color--light);
-  font-size: 0.875rem;
+  font-size: calc(0.875rem * var(--lp-text-scale));
 }
 
 /* ================================================================
@@ -671,8 +673,8 @@
 
 .lp-feature-icon-circle {
   flex-shrink: 0;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: calc(4.5rem * var(--lp-text-scale));
+  height: calc(4.5rem * var(--lp-text-scale));
   border: 1px solid #1d4ed8;
   border-radius: 9999px;
   display: flex;
@@ -697,25 +699,25 @@
 
 .lp-feature-content h3 {
   margin: 0 !important;
-  font-size: 1.1rem !important;
+  font-size: calc(1.1rem * var(--lp-text-scale)) !important;
   font-weight: 700 !important;
 }
 
 .lp-feature-content p {
   margin: 0 !important;
-  font-size: 0.85rem !important;
+  font-size: calc(0.85rem * var(--lp-text-scale)) !important;
   line-height: 1.5 !important;
   color: var(--md-default-fg-color--light);
 }
 
 .lp-evolution-section h2 {
-  font-size: 2.2rem !important;
+  font-size: calc(2.2rem * var(--lp-text-scale)) !important;
   line-height: 1.1 !important;
   margin-bottom: 1.5rem !important;
 }
 
 .lp-evolution-section p {
-  font-size: 0.95rem !important;
+  font-size: calc(0.95rem * var(--lp-text-scale)) !important;
   line-height: 1.6 !important;
   color: var(--md-default-fg-color--light);
   margin-bottom: 1.5rem !important;
@@ -737,6 +739,12 @@
 .lp-grid-feature-icon {
   flex-shrink: 0;
   color: var(--md-default-fg-color);
+}
+
+.lp-grid-feature-icon svg {
+  fill: currentColor;
+  width: calc(54px * var(--lp-text-scale));
+  height: calc(54px * var(--lp-text-scale));
 }
 
 @media screen and (max-width: 60rem) {
