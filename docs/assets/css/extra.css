@@ -657,6 +657,16 @@
   display: block;
 }
 
+/* Search placeholder and icon color for light mode */
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: var(--md-default-fg-color);
+  opacity: 1;
+}
+
+[data-md-color-scheme="default"] .md-search__icon {
+  color: var(--md-default-fg-color);
+}
+
 @media screen and (max-width: 60rem) {
   /* Prevent backdrop-filter from clipping the search overlay on mobile */
   .md-header {

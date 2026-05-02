@@ -38,7 +38,7 @@ search:
   }
 
   [data-md-color-scheme="default"] .md-header .md-search__form {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: #e5e7eb;
   }
 
   [data-md-color-scheme="default"] .md-header .md-search__form:hover {
