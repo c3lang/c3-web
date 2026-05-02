@@ -144,3 +144,7 @@ This change was discussed in the C3 discord before it was implemented and got th
 In order to more clearly promote the signed size, it was renamed just "sz", giving 0.8.0 the asymmetric pair `sz`/`usz`. This makes it easy to remember which one is preferred. Consequently the change was renamed "szmageddon".
 
 Originally the implicit conversion between signed <-> unsigned was mainly left intact, but it was later completely dropped.
+
+---
+
+Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=47989154).
