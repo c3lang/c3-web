@@ -71,7 +71,7 @@ search:
         <div style="display: flex; justify-content: center; margin-bottom: 1rem; position: relative;">
           <div class="lp-logo-aura"></div>
           <a href="getting-started/hello-world/" style="display: contents;">
-            <img src="assets/logo.svg" alt="C3 Language logo" class="lp-hero-logo" width="353" height="217" style="width: min(100%, 22rem); height: auto; aspect-ratio: 353 / 217;">
+            <img src="assets/logo.svg" alt="C3 Language logo" class="lp-hero-logo" width="353" height="217" fetchpriority="high" style="width: min(100%, 22rem); height: auto; aspect-ratio: 353 / 217;">
             <span class="lp-hero-tooltip">Getting Started <span>→</span></span>
           </a>
         </div>

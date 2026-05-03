@@ -1,7 +1,13 @@
-/* Tweak these to change the overall page density */
 :root {
   --lp-max-width: 50rem;
   --lp-text-scale: 0.75;
+}
+
+/* Prevent white flash on slow connections for dark mode users */
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: #1e293b; /* Slate dark background */
+  }
 }
 
 .lp-max-w {

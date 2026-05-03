@@ -1,6 +1,38 @@
 {% extends "base.html" %}
 
+{% block announce %}
+<script>
+  /* Try fix first frame flash */
+  (function() {
+    var key = location.pathname.replace(/\/$/, "") + "/__palette";
+    var palette = localStorage.getItem(key) || localStorage.getItem("__palette");
+    if (palette) {
+      try {
+        var data = JSON.parse(palette);
+        if (data.color && data.color.scheme) {
+          document.body.setAttribute("data-md-color-scheme", data.color.scheme);
+          return;
+        }
+      } catch(e) {}
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      document.body.setAttribute("data-md-color-scheme", "slate");
+    }
+  })();
+</script>
+{% endblock %}
+
 {% block extrahead %}
+  {% if page.url == "" or page.url == "./" %}
+  <link rel="preload" href="{{ 'assets/logo.svg' | url }}" as="image" type="image/svg+xml">
+  {% endif %}
+
+  <style>
+    /* Try to prevent flash  */
+    @media (prefers-color-scheme: dark) {
+      html { background-color: #1e2029; color: #e2e8f0; }
+    }
+  </style>
 
   {%- set page_title = config.site_name if page.url == "" else (page.meta.title if page.meta and page.meta.title else page.title) %}
   {%- set page_description = page.meta.description if page.meta and page.meta.description else config.site_description %}
