@@ -105,7 +105,7 @@
   background: linear-gradient(135deg, var(--md-primary-fg-color), #7c3aed);
   filter: blur(80px);
   opacity: 0.15;
-  z-index: -1;
+  z-index: 0;
   animation: aura-morph 15s linear infinite;
   pointer-events: none;
 }
