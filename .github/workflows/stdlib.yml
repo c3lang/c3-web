@@ -1,0 +1,44 @@
+name: Update Standard Library Documentation
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-stdlib-docs:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download and extract c3c
+        run: |
+          wget https://github.com/c3lang/c3c/releases/download/latest-prerelease-tag/c3-linux-static.tar.gz -O c3.tar.gz
+          tar -xzf c3.tar.gz
+
+      - name: Generate documentation
+        run: |
+          cd c3
+          ./c3c docgen lib/std --target linux-x64 --append
+          ./c3c docgen lib/std --target windows-x64 --append
+          ./c3c docgen lib/std --target macos-aarch64 --append
+
+      - name: Copy documentation
+        run: |
+          mkdir -p docs/standard-library
+          cp c3/docs.html docs/standard-library/docs.html
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/standard-library/docs.html
+
+          # Only commit if there are changes
+          if ! git diff-index --quiet HEAD --; then
+            git commit -m "docs: auto-update standard library docs.html"
+            git push
+          else
+            echo "No changes to commit"
+          fi
