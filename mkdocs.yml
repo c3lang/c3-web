@@ -157,9 +157,7 @@ nav:
       - Implementation Details:
         - Grammar: implementation-details/grammar.md
         - Specification: implementation-details/specification.md
-      - Standard Library:
-        - Overview: standard-library/index.md
-        - Documentation: standard-library/docs.html
+      - Standard Library: standard-library/docs.html
 
       - FAQ:
         - FAQ: faq/index.md
