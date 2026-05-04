@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Standard Library Documentation"]
+    types:
+      - completed
 
 permissions:
   contents: write  # Needed by mike to push to gh-pages branch
@@ -17,6 +21,7 @@ concurrency:
 jobs:
   build-and-deploy:
     name: Build and Deploy
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
