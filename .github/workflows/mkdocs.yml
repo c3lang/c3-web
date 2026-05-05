@@ -42,78 +42,25 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
-      - name: Set up Git for Mike
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch latest c3lang/c3c version
-        id: upstream_version
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Use GitHub CLI to get latest release tag
-          LATEST_TAG=$(gh api repos/c3lang/c3c/releases/latest --jq .tag_name || echo "")
-          if [ -n "$LATEST_TAG" ]; then
-            VERSION=${LATEST_TAG#v}
-            echo "version=$VERSION" >> $GITHUB_OUTPUT
-          else
-            echo "Failed to fetch upstream version."
-            echo "version=unknown" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Deploy "dev" version via mike
-        run: |
-          uv run mike deploy --push dev
-          uv run mike set-default --push -T theme/redirect.html dev
-
-      - name: Deploy upstream version via mike (if missing)
-        env:
-          VERSION: ${{ steps.upstream_version.outputs.version }}
-          BEFORE_SHA: ${{ github.event.before }}
-        run: |
-          if [ "$VERSION" != "unknown" ]; then
-            if ! uv run mike list | grep -q "^$VERSION"; then
-              echo "New upstream version $VERSION detected! Creating a permanent snapshot..."
-              
-              # If possible, checkout the state before this push so the snapshot 
-              # represents the docs exactly as they were before these new edits.
-              if [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
-                echo "Time-traveling to $BEFORE_SHA..."
-                git checkout $BEFORE_SHA
-              fi
-              
-              uv run mike deploy --push -T theme/redirect.html $VERSION
-              
-              # Return to the current commit for subsequent steps
-              git checkout ${{ github.sha }}
-            else
-              echo "Version $VERSION is already snapshotted. Skipping."
-            fi
-          fi
-
-      - name: Checkout gh-pages for Pages deployment
-        uses: actions/checkout@v6
-        with:
-          ref: gh-pages
-          path: gh-pages-dir
+      - name: Build with MkDocs
+        run: uv run mkdocs build
 
       - name: Setup root files (CNAME and robots.txt)
         run: |
           # Move robots.txt to root for search engines
           if [ -f "docs/assets/robots.txt" ]; then
-            cp docs/assets/robots.txt gh-pages-dir/robots.txt
+            cp docs/assets/robots.txt site/robots.txt
           fi
           
           # Add custom domain if upstream repository
           if [ "${{ github.repository }}" == "c3lang/c3-web" ]; then
-            echo "c3-lang.org" > gh-pages-dir/CNAME
+            echo "c3-lang.org" > site/CNAME
           fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: gh-pages-dir
+          path: site
 
   deploy:
     environment:

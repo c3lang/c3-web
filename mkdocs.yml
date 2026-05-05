@@ -6,8 +6,8 @@ repo_name: c3lang/c3-web
 edit_uri: edit/main/docs/
 extra:
   generator: false
-  version:
-    provider: mike
+  # version:
+  #   provider: mike
   analytics:
     provider: custom #this is the cloudflare analytics
     property: "044a1051452343c4acb523cbe625b1c6"
@@ -76,7 +76,7 @@ plugins:
       type: datetime
 hooks:
   - hooks/c3_lexer.py
-  - hooks/latest_version.py
+  - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
   # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:

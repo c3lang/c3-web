@@ -5,7 +5,6 @@ description = "C3 Programming Language Documentation"
 requires-python = ">=3.12"
 dependencies = [
     "beautifulsoup4>=4.14.3",
-    "mike>=2.2.0",
     "mkdocs>=1.6.1",
     "mkdocs-git-revision-date-localized-plugin>=1.5.1",
     "mkdocs-material>=9.7.6",
