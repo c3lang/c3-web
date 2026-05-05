@@ -55,10 +55,6 @@ search:
     color: #1f2937 !important;
   }
 
-  [data-md-color-scheme="default"] .md-header__link:hover {
-    background-color: rgba(0, 0, 0, 0.06) !important;
-  }
-
   /* Thick, blurred streak that fades to oblivion at the tips */
   hr {
     border: 0;
