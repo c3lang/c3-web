@@ -4,18 +4,15 @@
   <script>
     /* Try fix first frame flash */
     (function() {
-      var key = location.pathname.replace(/\/$/, "") + "/__palette";
-      var palette = localStorage.getItem(key) || localStorage.getItem("__palette");
+      var palette = localStorage.getItem("__palette");
       if (palette) {
         try {
           var data = JSON.parse(palette);
           if (data.color && data.color.scheme) {
             document.documentElement.setAttribute("data-md-color-scheme", data.color.scheme);
-            return;
           }
         } catch(e) {}
-      }
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         document.documentElement.setAttribute("data-md-color-scheme", "slate");
       }
     })();
