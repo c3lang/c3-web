@@ -3,6 +3,9 @@ title: Standard Library
 description: Standard Library
 sidebar:
     order: 128
+tableOfContents:
+  minHeadingLevel: 2
+  maxHeadingLevel: 4
 ---
 
 The standard library is currently in development, so frequent changes will occur. Note that all std::core modules and
@@ -584,3 +587,289 @@ Free all memory associated with this list.
 ### `void List.swap(&self, usz i, usz j)`
 Swap two elements in the list.
 
+## `std::collections::orderedmap{Key, Value}`
+
+`OrderedMap` is a map for cases where key order matters. Unlike a hash map, iteration is sorted by key, which makes it useful for indexes, interval tables, ranked values, and any workload where you want to ask for "the next key", "the previous key", or "everything between A and B".
+
+Internally it is implemented as a skip list. In everyday use, the important part is the behavior:
+
+- lookup by key
+- iteration in key order
+- access to neighboring keys
+- range iteration without sorting a separate list first
+
+By default `OrderedMap` uses the built-in ordering for `Key`, so the key type must support ordered comparison. If you want a different order, for example descending or case-insensitive, initialize it with a custom comparator.
+
+Typical lookup, insert, and remove operations are expected `O(log n)`. Iteration is `O(n)`, range iteration is `O(log n + k)` for `k` returned elements, and space usage is `O(n)`.
+
+### When To Use It
+
+Use `OrderedMap` when you need both mapping and ordering.
+
+- Use `std::collections::map` when fast key lookup matters but key order does not.
+- Use `OrderedMap` when iteration order should follow the keys.
+- Use `OrderedMap` when you need nearest-match queries such as floor, ceiling, lower, or higher.
+- Use `OrderedMap` when you want to iterate only part of the key space.
+
+### Basic Usage
+
+```c3
+import std::collections::orderedmap;
+import std::io;
+
+alias IntToStringMap = OrderedMap{int, String};
+
+fn void main()
+{
+    IntToStringMap map;
+    map.init(mem);
+    defer map.free();
+
+    map[10] = "ten";
+    map[3] = "three";
+    map[7] = "seven";
+
+    foreach (entry : map.iter())
+    {
+        io::printfn("%s -> %s", entry.key, entry.value);
+    }
+}
+```
+
+The output is ordered by key:
+
+```text
+3 -> three
+7 -> seven
+10 -> ten
+```
+
+Even though the values were inserted in the order `10`, `3`, `7`, iteration follows the key order.
+
+### Common Operations
+
+```c3
+if (try name = map[7])
+{
+    io::printfn("found: %s", name);
+}
+
+bool updated = map.set(7, "SEVEN");
+bool exists = map.has_key(3);
+bool removed = map.remove(10);
+```
+
+The main operations are:
+
+- `map[key]` returns `NOT_FOUND` if the key is absent.
+- `map[key] = value` inserts or updates.
+- `set` returns `true` when an existing key was updated, and `false` when a new entry was created.
+- `get_ref` is useful when you want to mutate the stored value in place.
+- `@get_or_set` is useful for lazy initialization.
+
+Example:
+
+```c3
+alias CounterMap = OrderedMap{String, int};
+
+CounterMap map;
+map.init(mem);
+defer map.free();
+// Adding a default value to the map if it does not exist, then returning a pointer to it
+int* count = map.get_ref("warnings") ?? {
+    map["warnings"] = 0;
+    return map.get_ref("warnings")!!;
+};
+(*count)++;
+```
+
+### Nearest-Key Queries
+
+One of the main reasons to use `OrderedMap` over a hash map is the support for neighbor queries:
+
+- `floor_key(k)` gives the greatest key less than or equal to `k`
+- `ceiling_key(k)` gives the least key greater than or equal to `k`
+- `lower_key(k)` gives the greatest key strictly less than `k`
+- `higher_key(k)` gives the least key strictly greater than `k`
+
+This is useful for table lookup and range navigation:
+
+```c3
+alias PriceTable = OrderedMap{int, String};
+
+PriceTable prices;
+prices.init(mem);
+defer prices.free();
+
+prices[10] = "basic";
+prices[25] = "pro";
+prices[100] = "enterprise";
+
+if (try tier_key = prices.floor_key(30))
+{
+    io::printfn("matched tier: %s", prices[tier_key]!!);
+}
+```
+
+### Range Iteration
+
+If you only want part of the map, you do not need to iterate everything.
+
+- `iter()` walks the whole map in key order
+- `iter_from(k)` starts at the first key greater than or equal to `k`
+- `iter_range(a, b)` walks the half-open range `[a, b)`
+
+```c3
+foreach (entry : map.iter_range(10, 20))
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```
+
+This makes `OrderedMap` a practical choice for paged output, time windows, or prefix-like numeric ranges.
+
+### Custom Ordering
+
+To change iteration order, pass a comparator to `init_with_cmp`. The comparator should return `true` when the first argument should come before the second.
+
+```c3
+fn bool descending(int a, int b)
+{
+    return a > b;
+}
+
+OrderedMap{int, String} map;
+map.init_with_cmp(mem, descending);
+defer map.free();
+
+map[1] = "one";
+map[3] = "three";
+map[2] = "two";
+
+foreach (entry : map.iter())
+{
+    io::printfn("%s", entry.key);
+}
+```
+
+This prints `3`, `2`, `1`.
+
+### Lifecycle
+
+Initialize the map with `init`, `tinit`, `init_with_cmp`, or `tinit_with_cmp`.
+
+- `clear()` removes all entries but keeps the map allocated.
+- `free()` releases all memory owned by the map.
+- `clone()` and `tclone()` create a copy of the map.
+- `merge()` inserts all entries from another ordered map and overwrites on key collision.
+- `first_key()`, `last_key()`, `pop_first()`, and `pop_last()` are useful when treating the map as a sorted work queue.
+
+### API Summary
+
+- `init` / `tinit`: create a map with default ordering
+- `init_with_cmp` / `tinit_with_cmp`: create a map with custom ordering
+- `get`, `get_ref`, `set`, `has_key`, `remove`: basic map operations
+- `first_key`, `last_key`, `floor_key`, `ceiling_key`, `lower_key`, `higher_key`: ordered navigation
+- `iter`, `iter_from`, `iter_range`: ordered traversal
+- `len`, `is_empty`, `clear`, `free`: container management
+- `clone`, `tclone`, `merge`: copying and combining maps
+
+### API Reference
+
+#### `OrderedMap.init(&self, Allocator allocator)`, `tinit(...)`
+
+Initialize the map using the provided allocator or the temporary allocator.
+
+#### `OrderedMap.init_with_cmp(&self, Allocator allocator, CmpFn cmp_fn)`, `tinit_with_cmp(...)`
+
+Initialize the map with a custom comparator. The comparator should return `true` when the first key should come before the second key.
+
+#### `bool OrderedMap.set(&self, Key key, Value value)`, `map[key] = value`
+
+Insert or update an entry. Returns `true` if an existing key was updated, `false` if a new entry was inserted.
+
+#### `Value? OrderedMap.get(&self, Key key)`, `map[key]`
+
+Get the value for a key, or `NOT_FOUND` if the key does not exist.
+
+#### `Value*? OrderedMap.get_ref(&self, Key key)`, `map&[key]`
+
+Get a pointer to the stored value for in-place updates.
+
+#### `Value OrderedMap.@get_or_set(&self, Key key, #default_value)`
+
+Return the current value for `key`, or insert and return `#default_value` if the key is missing.
+
+#### `bool OrderedMap.has_key(&self, Key key)`
+
+Return `true` if the key exists.
+
+#### `bool OrderedMap.remove(&self, Key key)`
+
+Remove a key and return whether it was present.
+
+#### `Key? OrderedMap.first_key(&self)`, `last_key(&self)`
+
+Return the first or last key in sorted order.
+
+#### `Entry? OrderedMap.pop_first(&self)`, `pop_last(&self)`
+
+Remove and return the first or last entry in sorted order.
+
+#### `Key? OrderedMap.floor_key(&self, Key key)`
+
+Return the greatest key less than or equal to `key`.
+
+#### `Key? OrderedMap.ceiling_key(&self, Key key)`
+
+Return the least key greater than or equal to `key`.
+
+#### `Key? OrderedMap.lower_key(&self, Key key)`
+
+Return the greatest key strictly less than `key`.
+
+#### `Key? OrderedMap.higher_key(&self, Key key)`
+
+Return the least key strictly greater than `key`.
+
+#### `sz OrderedMap.len(&self)`, `bool OrderedMap.is_empty(&self)`
+
+Return the number of entries or whether the map is empty.
+
+#### `void OrderedMap.clear(&self)`, `free(&self)`
+
+Remove all entries, or release all memory owned by the map.
+
+#### `OrderedMap OrderedMap.clone(&self, Allocator allocator)`, `tclone(&self)`
+
+Clone the map into a new map. The clone keeps the same comparator.
+
+#### `void OrderedMap.merge(&self, OrderedMap* other)`
+
+Insert all entries from `other`, overwriting existing values on key collisions.
+
+#### `OrderedMapIterator OrderedMap.iter(&self)`
+
+Iterate over all entries in sorted order.
+
+```c3
+foreach (entry : map.iter())
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```
+
+#### `OrderedMapRangeIterator OrderedMap.iter_from(&self, Key from_key)`
+
+Iterate from the first key greater than or equal to `from_key`.
+
+#### `OrderedMapRangeIterator OrderedMap.iter_range(&self, Key from_key, Key to_key)`
+
+Iterate over keys in the half-open range `[from_key, to_key)`.
+
+```c3
+foreach (entry : map.iter_range(10, 20))
+{
+    io::printfn("%s = %s", entry.key, entry.value);
+}
+```
