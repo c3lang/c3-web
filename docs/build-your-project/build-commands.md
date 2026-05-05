@@ -1,0 +1,172 @@
+---
+title: Build Commands
+description: Build Commands
+---
+
+
+
+
+Building a project is done by invoking the C3 compiler with the `build` or `run` command inside of the project structure. The compiler will search upwards in the file hierarchy until a `project.json` file is found.
+
+You can also [customise the project build config](../build-your-project/project-config.md).
+
+## Compile Individual Files
+
+By default the compiler will compile a stand-alone file as an executable binary, rather than as a static or dynamic library.
+
+The resulting executable binary will be given the same name as whichever C3 file contains the `main` function.
+
+```bash
+c3c compile <file1> <file2> <file3>
+```
+
+Alternatively, libraries can be compiled via `c3c static-lib` or `c3c dynamic-lib` or by creating a project configured as such and built via `c3c build` and `c3c run` and so on.
+
+## Run
+
+When starting out, with C3 it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead.
+
+The `compile-run` command works the same as normal compilation (via `compile`, `build`, etc), but also immediately runs the resulting executable.
+
+```bash
+c3c compile-run <file1> <file2> <file3>
+```
+
+## Common additional parameters
+
+Additional parameters:
+- `--lib <path>` add a library to search.
+- `--output <path>` override the output directory.
+- `--path <path>` execute as if standing at `<path>`
+
+## Init a new project
+
+```bash
+c3c init <project_name> [optional path]
+```
+
+Create a new project structure in the current directory.
+
+Use the `--template` command option to select a template. The following are built in:
+
+- `exe` - the default template, produces an executable.
+- `static-lib` - template for producing a static library.
+- `dynamic-lib` - template for producing a dynamic library.
+
+It is also possible to give the path to a custom template.
+
+Additional parameters:
+- `--template <path>` indicate an alternative template to use.
+
+For example, `c3c init hello_world` creates the following structure:
+
+```text
+.
+├─ build/
+├─ docs/
+├─ lib/
+├─ resources/
+├─ scripts/
+├─ src/
+│  └─ main.c3
+├─ test/
+├─ LICENSE
+├─ project.json
+└─ README.md
+```
+
+Check the [project configuration docs](../build-your-project/project-config.md) to learn more about configuring your project.
+
+## Test
+```bash
+c3c test
+```
+Will run any tests in the project in the `"sources"` directory defined in your `project.json`. For example:
+```json5
+...
+"sources": [ "src/**" ],
+...
+```
+
+Tests are defined with a `@test` attribute. For example:
+
+```c3
+fn void test_fn() @test
+{
+    assert(true == true, "true is definitely true");
+}
+```
+
+
+## Build
+
+```bash
+c3c build [target]
+```
+
+Build the project in the current path. It doesn't matter where in the project structure you are. 
+
+The built-in templates define two targets: `debug` (which is the default) and `release`.
+
+## Clean
+
+```bash
+c3c clean
+```
+
+Removes some of the generated build artifacts of the previous builds of the C3 project.
+In most cases this is unnecessary.
+
+## Build and Run
+
+```bash
+c3c run [target]
+```
+
+Build the target (if needed) and run the executable.
+
+## Clean and Run
+
+```bash
+c3c clean-run [target]
+```
+
+Clean, build and run the target.
+
+## Dist
+
+```bash
+c3c dist [target]
+```
+
+Clean, build and package the target for distribution to end users.
+
+The `c3c dist` command will also run the target afterwards if it is a executable, for convenience, as it is likely you will want to check that the program is still working.
+
+You should also transfer the distribution package to a clean machine and test that the application works correctly there too at a minimum. Otherwise, there is a high risk that your application will be broken due to some dependencies existing on your machine that don't exist on end users' machines. Developers' machines often have many more libraries already installed than users' machines, hence users' machines are far more likely to lack necessary dependencies. It is hard to reliably discern without testing.
+
+!!! caution
+    *`c3c dist` has not been properly added yet!*
+
+## Docs
+
+
+```bash
+c3c docs [target]
+```
+
+*Not added yet!*
+
+Rebuilds the documentation based upon whatever documentation comments and contracts have been written into your C3 code, so that you and other programmers working on your project can easily get a more expedient and more readily navigable overview of what things are available and what they do and how to use them.
+
+This is what is known as a "documentation generation" or "docgen" system. The most common example of a documentation generator in the C and C++ ecosystem is perhaps [Doxygen](https://www.doxygen.nl/) (a 3rd party tool) but many other languages have their own built-in documentation generators.
+
+Alternatively, if you do not want to maintain documentation for your project, such as if your project is too transient for documentation to matter or if you want to potentially iterate faster, then consider instead at least ensuring that you have lots of unit tests (via the `@test` attribute) and assertions (`$assert` and `assert`) in your code so that the "self documenting" qualities of your codebase are maximized. Be aware however that some things can never be adequately expressed in any amount of "self documenting" code. Each approach has tradeoffs. A balanced mix is also a good approach.
+
+## Benchmark
+
+```bash
+c3c benchmark [target]
+```
+
+Runs benchmarks on a target, meaning that every function that has been annotated with `@benchmark` will be run and have its performance profiled (including time spent and a CPU cycle count) so that you can easily monitor opportunities for optimization and avoid computational waste.

@@ -1,0 +1,170 @@
+site_name: C3 Programming Language
+site_description: "C3 is the ergonomic, safe evolution of C. Familiar syntax, full ABI compatibility, optionals, slices, contracts and zero-cost abstractions."
+site_url: https://c3-lang.org
+repo_url: https://github.com/c3lang/c3-web
+repo_name: c3lang/c3-web
+edit_uri: edit/main/docs/
+extra:
+  generator: false
+  # version:
+  #   provider: mike
+  analytics:
+    provider: custom #this is the cloudflare analytics
+    property: "044a1051452343c4acb523cbe625b1c6"
+
+extra_css:
+  - assets/css/extra.css
+
+theme:
+  name: material
+  custom_dir: theme
+  logo: assets/logo.png
+  favicon: assets/favicon.svg
+  icon:
+    repo: fontawesome/brands/git
+    # repo: fontawesome/brands/git-alt
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - header.autohide
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    # nope # - navigation.sections # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-sections
+    # - navigation.tabs # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-tabs
+    # - navigation.tabs.sticky
+    - navigation.tracking # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#anchor-tracking
+    - navigation.instant # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-loading
+    - navigation.instant.prefetch # https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#instant-prefetching
+    - navigation.instant.progress
+    - toc.follow
+    - search.suggest
+    - content.code.copy
+    - content.action.edit
+    # - search.highlight I don't like this one
+
+plugins:
+  - search
+  - minify: # this one is for production
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+          remove_comments: true
+  - blog:
+      blog_dir: blog
+      blog_toc: true
+      pagination_per_page: 10
+      post_url_format: "{slug}"
+  - git-revision-date-localized:
+      type: datetime
+hooks:
+  - hooks/c3_lexer.py
+  - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
+  # - hooks/clean_html.py # just for working offline and having a pretty html
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      pygments_lang_class: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+      title: On this page
+
+nav:
+  - Home: index.md
+  - Docs:
+      - Introduction: getting-started/introduction.md
+      - Getting Started:
+        - Hello World: getting-started/hello-world.md
+        - How to compile: getting-started/compile.md
+        - Prebuilt Binaries: getting-started/prebuilt-binaries.md
+        - Project Setup: getting-started/projects.md
+        - Roadmap: getting-started/roadmap.md
+        - Design Goals: getting-started/design-goals.md
+
+      - Language Overview:
+        - Overview: language-overview/primer.md
+        - Examples: language-overview/examples.md
+        - Type System: language-overview/types.md
+      - Language Fundamentals:
+        - Basic Types: language-fundamentals/basic-types-and-values.md
+        - Variables: language-fundamentals/variables.md
+        - Functions: language-fundamentals/functions.md
+        - Statements: language-fundamentals/statements.md
+        - Expressions: language-fundamentals/expressions.md
+        - Modules: language-fundamentals/modules.md
+        - Naming: language-fundamentals/naming.md
+        - Comments: language-fundamentals/comments.md
+      - Language Common:
+        - Memory Management: language-common/memory.md
+        - Optionals (Essential): language-common/optionals-essential.md
+        - Optionals (Advanced): language-common/optionals-advanced.md
+        - Arrays: language-common/arrays.md
+        - Strings: language-common/strings.md
+        - Vectors: language-common/vectors.md
+        - C Interop: language-common/cinterop.md
+        - Contracts: language-common/contracts.md
+        - Defer: language-common/defer.md
+        - Attributes: language-common/attributes.md
+        - Aliases: language-common/alias.md
+      - Generic Programming:
+        - Generics: generic-programming/generics.md
+        - Macros: generic-programming/macros.md
+        - Compile Time: generic-programming/compiletime.md
+        - Reflection: generic-programming/reflection.md
+        - Any & Interfaces: generic-programming/anyinterfaces.md
+        - Operator Overloading: generic-programming/operator-overloading.md
+      - Build Your Project:
+        - Build Commands: build-your-project/build-commands.md
+        - Project Config: build-your-project/project-config.md
+      - Language Rules:
+        - Implicit Conversions: language-rules/conversion.md
+        - Precedence: language-rules/precedence.md
+        - Undefined Behaviour: language-rules/undefined-behaviour.md
+      - Misc Advanced:
+        - Inline Assembly: misc-advanced/asm.md
+        - Builtins: misc-advanced/builtins.md
+        - Debugging: misc-advanced/debugging.md
+        - Library Packaging: misc-advanced/library-packaging.md
+      - Implementation Details:
+        - Grammar: implementation-details/grammar.md
+        - Specification: implementation-details/specification.md
+      - Standard Library: standard-library/docs.html
+
+      - FAQ:
+        - FAQ: faq/index.md
+        - All Features: faq/allfeatures.md
+        - Changes from C: faq/changesfromc.md
+        - Comparison: faq/compare-languages.md
+        - Rejected Ideas: faq/rejected-ideas.md
+      - Get Involved:
+        - get-involved/index.md
+      - Thank You:
+        - thank-you/index.md
+  - Blog:
+    - blog/index.md

@@ -1,0 +1,19 @@
+{% set repo_url = config.repo_url %}
+{% if page and page.meta and page.meta.repo_url %}
+  {% set repo_url = page.meta.repo_url %}
+{% endif %}
+
+{% set repo_name = config.repo_name %}
+{% if page and page.meta and page.meta.repo_name %}
+  {% set repo_name = page.meta.repo_name %}
+{% endif %}
+
+<a href="{{ repo_url }}" title="{{ lang.t('source') }}" class="md-source">
+  <div class="md-source__icon md-icon">
+    {% set icon = config.theme.icon.repo or "fontawesome/brands/git-alt" %}
+    {% include ".icons/" ~ icon ~ ".svg" %}
+  </div>
+  <div class="md-source__repository">
+    {{ repo_name }}
+  </div>
+</a>

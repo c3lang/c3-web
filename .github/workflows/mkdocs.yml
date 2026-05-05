@@ -1,0 +1,75 @@
+name: Deploy MkDocs site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Standard Library Documentation"]
+    types:
+      - completed
+
+permissions:
+  contents: write  # Needed by mike to push to gh-pages branch
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Required by mkdocs-git-revision-date-localized-plugin and mike
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build with MkDocs
+        run: uv run mkdocs build
+
+      - name: Setup root files (CNAME and robots.txt)
+        run: |
+          # Move robots.txt to root for search engines
+          if [ -f "docs/assets/robots.txt" ]; then
+            cp docs/assets/robots.txt site/robots.txt
+          fi
+          
+          # Add custom domain if upstream repository
+          if [ "${{ github.repository }}" == "c3lang/c3-web" ]; then
+            echo "c3-lang.org" > site/CNAME
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

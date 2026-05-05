@@ -1,55 +1,87 @@
-<img align="right" src="public/logo.svg" alt="Essence logo">
+# C3 Documentation Site (MkDocs)
+<img src="https://c3-lang.org/logo.svg" align="right" height="120" />
 
-<h1 style="font-size: 36px">C3-Web</h1>
+This documentation site for the C3 Programming Language is built using [MkDocs](https://www.mkdocs.org/) and the [Material theme](https://squidfunk.github.io/mkdocs-material/).
 
-The C3 Website made with [Astro](https://astro.build/), [TailwindCSS](https://tailwindcss.com/) and [Starlight](https://starlight.astro.build/).
+<h3 align="center"><a href="https://c3-lang.org">[Go to the website]</a></h3>
 
-<h1 style="font-size: 24px;">Get Started</h1>
+## Editing
 
-After cloning the repository with `git clone`, you need to run:
-- `npm install`
-- `npm run dev`
+Modify the files in the `docs/` folder.
 
-<h1 style="display: flex; align-items: center; font-size: 24px;">Project Structure</h1>
-  
-```
-📦c3
- ┣ 📂public
- ┣ 📂src
- ┃ ┣ 📂components
- ┃ ┣ 📂content
- ┃ ┃ ┣ 📂docs
- ┃ ┃ ┃ ┗ 📂guide
- ┃ ┃ ┗ 📜config.js
- ┃ ┣ 📂pages
- ┃ ┃ ┗ 📜index.astro
- ┃ ┗ 📜env.d.ts
- ┣ 📜.gitignore
- ┣ 📜astro.config.mjs
- ┣ 📜package.json
- ┣ 📜tailwind.config.cjs
- ┗ 📜tsconfig.json
-```
 
-# Contribution
+## Search
 
-If you want to contribute to this project, you can do so by forking this repository and creating a pull request.
+Search is provided by the [Material for MkDocs search plugin](https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/).
 
-## Adding Documentation content
-Navigate to one of the following folders:
-`src/content/docs/guide`
-or 
-`src/content/docs/references`
+You can tune search relevance per page via frontmatter:
 
-create a file ending in `.mdx` (or `.md`) (or edit one that already exists)
-
-and lastly add a little bit of a header on top of whatever markdown content you have, one that looks like this (for SEO and visibility on the website)
-```astro
+```yaml
 ---
-title: the C3 Handbook
-description: A guide to the C3 Programming Language
+# Rank this page higher in results (use low values, e.g. 1.5–2.0)
+search:
+  boost: 2
+
+# Or remove a page from the index entirely
+search:
+  exclude: true
 ---
-and after the `---` everything else is just plain old markdown!
 ```
 
-Please visit the [Starlight Docs](https://starlight.astro.build/) for more info.
+To exclude a specific section, add `{ data-search-exclude }` after the heading (requires `attr_list`, which is already enabled):
+
+```markdown
+## This section is indexed
+
+## This section is not { data-search-exclude }
+```
+
+
+## Setup
+
+### 1. Using `uv`
+```bash
+uv run mkdocs serve
+```
+
+
+### 2. Manual Setup (pip)
+If you prefer using standard `pip`:
+
+```bash
+# Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies from pyproject.toml
+pip install .
+
+# Run server
+mkdocs serve
+```
+
+
+### 3. Build for Deployment
+To generate the static HTML files:
+
+```bash
+uv run mkdocs build
+# or
+mkdocs build
+```
+The output will be in the `site/` folder.
+
+
+* **Local access:** Open `site/index.html` with Firefox.
+* **Server deployment:** The site is automatically deployed via GitHub Actions to GitHub Pages.
+
+
+## Project Structure
+
+- `docs/`: Markdown source files.
+- `docs/assets/css/extra.css`: Landing page styles and MkDocs Material overrides.
+- `theme/`: Material theme overrides (templates and partials).
+- `hooks/`: MkDocs hook scripts (`c3_lexer.py`, `latest_version.py`).
+- `mkdocs.yml`: Configuration file.
+- `pyproject.toml`: Project configuration and dependencies.
+- `site/`: Generated static files (created after build).
