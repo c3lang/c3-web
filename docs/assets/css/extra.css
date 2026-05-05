@@ -3,12 +3,7 @@
   --lp-text-scale: 0.75;
 }
 
-/* Prevent white flash on slow connections for dark mode users */
-@media (prefers-color-scheme: dark) {
-  :root {
-    background-color: #1e293b; /* Slate dark background */
-  }
-}
+
 
 .lp-max-w {
   max-width: var(--lp-max-width);
@@ -500,7 +495,7 @@
    ================================================================ */
 
 /* Syntax highlighting colors (GitHub theme) */
-:root [data-md-color-scheme="slate"] {
+[data-md-color-scheme="slate"] {
   --md-code-hl-keyword-color: #ff7b72;
   --md-code-hl-string-color: #a5d6ff;
   --md-code-hl-number-color: #79c0ff;
@@ -515,7 +510,7 @@
   --md-code-hl-punctuation-color: #c9d1d9;
 }
 
-:root [data-md-color-scheme="default"] {
+[data-md-color-scheme="default"] {
   --md-default-bg-color: #fafafa;
   --md-code-bg-color: #e5e7eb;
   --md-code-hl-keyword-color: #cf222e;

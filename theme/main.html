@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 
 {% block extrahead %}
+  <meta name="color-scheme" content="light dark">
+  <style>
+    /* flash prevention: Immediately apply dark background if OS is dark */
+    @media (prefers-color-scheme: dark) {
+      html:not([data-md-color-scheme="default"]) {
+        background-color: #1e2029;
+      }
+    }
+    /* If theme is explicitly slate, ensure background stays dark */
+    [data-md-color-scheme="slate"] {
+      background-color: #1e2029;
+    }
+  </style>
+
   <script>
     /* Try fix first frame flash */
     (function() {
@@ -22,12 +36,7 @@
   <link rel="preload" href="{{ 'assets/logo.svg' | url }}" as="image" type="image/svg+xml">
   {% endif %}
 
-  <style>
-    /* Try to prevent flash  */
-    @media (prefers-color-scheme: dark) {
-      html { background-color: #1e2029; color: #e2e8f0; }
-    }
-  </style>
+
 
   {%- set page_title = config.site_name if page.url == "" else (page.meta.title if page.meta and page.meta.title else page.title) %}
   {%- set page_description = page.meta.description if page.meta and page.meta.description else config.site_description %}
