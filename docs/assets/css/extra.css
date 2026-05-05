@@ -823,3 +823,8 @@
     gap: 3rem;
   }
 }
+
+/* Remove footer meta (copyright, social links, etc.) */
+.md-footer-meta {
+  display: none;
+}
