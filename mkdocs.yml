@@ -61,12 +61,12 @@ theme:
 
 plugins:
   - search
-  # - minify: # this one is for production
-  #     minify_html: true
-  #     minify_js: true
-  #     minify_css: true
-  #     htmlmin_opts:
-  #         remove_comments: true
+  - minify: # this one is for production
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+          remove_comments: true
   - blog:
       blog_dir: blog
       blog_toc: true

@@ -3,8 +3,6 @@
   --lp-text-scale: 0.75;
 }
 
-
-
 .lp-max-w {
   max-width: var(--lp-max-width);
   margin-left: auto;
