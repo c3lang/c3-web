@@ -2,6 +2,7 @@
 title: "How C3 Manages Memory Without Leaks, GC, or Borrow Checkers"
 date: 2025-07-11
 author: "Josh Ring"
+slug: how-c3-manages-memory-without-leaks,-gc,-or-borrow-checkers
 search:
   exclude: true
 ---

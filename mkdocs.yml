@@ -70,7 +70,8 @@ plugins:
   - blog:
       blog_dir: blog
       blog_toc: true
-      pagination_per_page: 20
+      pagination_per_page: 10
+      post_url_format: "{slug}"
   - git-revision-date-localized:
       type: datetime
 hooks:

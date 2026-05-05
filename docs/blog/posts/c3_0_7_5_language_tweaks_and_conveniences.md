@@ -2,6 +2,7 @@
 title: "C3 Language at 0.7.5: Language tweaks and conveniences"
 date: 2025-09-01
 author: "Christoffer Lernö"
+slug: c3-language-at-0-7-5-language-tweaks-and-conveniences
 search:
   exclude: true
 ---

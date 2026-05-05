@@ -4,6 +4,7 @@ date: 2025-10-04
 readingTime: "5 min"
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
+slug: c3-language-at-0-7-6-shebang,-generic-inference-and-lengthof()
 search:
   exclude: true
 ---

@@ -3,6 +3,7 @@ title: "Unsigned sizes: a five year mistake"
 date: 2026-05-02
 tags: ["language-design"]
 author: "Christoffer Lernö"
+slug: unsigned-sizes-a-five-year-mistake
 search:
   exclude: true
 ---

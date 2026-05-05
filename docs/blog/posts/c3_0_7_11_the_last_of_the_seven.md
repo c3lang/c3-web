@@ -3,6 +3,7 @@ title: "C3 0.7.11 - The last v0.7"
 date: 2026-04-06
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
+slug: c3-0-7-11-the-last-v0-7
 search:
   exclude: true
 ---

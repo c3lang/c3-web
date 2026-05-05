@@ -38,7 +38,7 @@ state.*
 - [Safe array access using slices](../language-common/arrays.md#slice)
 - [Safe array iteration using foreach](../language-common/arrays.md#iteration-over-arrays)
 - [Easy to use inline assembly](../misc-advanced/asm.md)
-- [Cross-platform standard library which includes dynamic containers and strings](../standard-library/index.md)
+- [Cross-platform standard library which includes dynamic containers and strings](../standard-library/docs.html)
 - LLVM backend
 
 ## C3 Background

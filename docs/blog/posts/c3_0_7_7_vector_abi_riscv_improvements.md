@@ -3,6 +3,7 @@ title: "C3 Language at 0.7.7: Vector ABI, RISCV improvements and more"
 date: 2025-10-30
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
+slug: c3-language-at-0-7-7-vector-abi,-riscv-improvements-and-more
 search:
   exclude: true
 ---
