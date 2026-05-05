@@ -5,7 +5,7 @@ sidebar:
     order: 35
 ---
 ## Overview
-This is meant for a quick reference, to the learn more of the details, check the relevant sections.
+This is only a quick reference, to learn more of the details, check the relevant sections.
 
 ## If Statement
 ```c3
@@ -84,7 +84,7 @@ fn void example_while()
 
 ## Enum And Switch
 
-Switches have implicit break and scope. Use "nextcase" to implicitly fallthrough or use comma:
+Switches have implicit break and scope. Use "nextcase" to explicitly fallthrough or use comma:
 
 ```c3
 enum Height : uint
@@ -161,7 +161,7 @@ fn void demo_enum(Height h)
 
 Enums are always namespaced.
 
-Enum support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
+Enums support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
 of enum values, `.inner` returns the storage type. `.names` returns an array with the names of all enums. `.associated`
 returns an array of the typeids of the associated values for the enum.
 
