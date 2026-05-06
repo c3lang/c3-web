@@ -121,12 +121,15 @@ nav:
         - Naming: language-fundamentals/naming.md
         - Comments: language-fundamentals/comments.md
       - Language Common:
+        - Arrays: language-common/arrays.md
+        - Strings: language-common/strings.md
+        - Enums: language-common/enums.md
+        - Structs and unions: language-common/structs-and-unions.md
+        - Bitstructs: language-common/bitstructs.md
+        - Vectors: language-common/vectors.md
         - Memory Management: language-common/memory.md
         - Optionals (Essential): language-common/optionals-essential.md
         - Optionals (Advanced): language-common/optionals-advanced.md
-        - Arrays: language-common/arrays.md
-        - Strings: language-common/strings.md
-        - Vectors: language-common/vectors.md
         - C Interop: language-common/cinterop.md
         - Contracts: language-common/contracts.md
         - Defer: language-common/defer.md
