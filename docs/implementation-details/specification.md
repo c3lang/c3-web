@@ -326,7 +326,7 @@ Vectors support the same arithmetics and bit operations as its underlying type, 
 
 Example:
 
-```c
+```c3
 int[<2>] a = { 1, 3 };
 int[<2>] b = { 2, 7 };
 
@@ -779,7 +779,7 @@ variable.
 
 Example:
 
-```c
+```c3
 void* a = &a;  // Valid
 int a = a + 1; // Invalid
 ```
@@ -810,7 +810,7 @@ are executed.
 
 Example:
 
-```c
+```c3
 int a = 0;
 defer a++;
 return a;
@@ -906,7 +906,7 @@ implicitly unwrapped.
 
 Example:
 
-```
+```c3
 int? a = foo();
 int? b = foo();
 if (catch a, b)
@@ -927,7 +927,7 @@ after the if-statement.
 
 Example:
 
-```
+```c3
 int? a = foo();
 if (catch a)
 {
@@ -1016,7 +1016,7 @@ the pointee type given by the case statement.
 
 Example:
 
-```c
+```c3
 any a = abc();
 switch (a)
 {
