@@ -475,3 +475,28 @@ For Windows the following target would be needed:
 `c3c compile main.c3 --target windows-x64`
 
 *This requires the MSVC SDK components, which c3c automatically downloads and configures, including the Windows SDK files needed to enable cross-compilation to Windows.*
+
+## Changes from C
+
+**Q:** Why does C3 have zero initialization for local variables?
+
+**A:** There are several reasons:
+
+- In the "zero-is-initialization" paradigm, zeroing variables, in particular structs,
+  is very common. By offering zero initialization by default this **avoids a whole class of vulnerabilities**.
+- Another alternative that was considered for C3 was mandatory initialization,
+  but this adds a lot of extra boilerplate.
+- C3 also offers a way to opt out of zero-initialization, so the change comes at no performance loss.
+
+**Q:** Why is the `const` qualifier removed?
+
+**A:** "const correctness" requires littering const across the code base. Although const is useful, it provides weaker guarantees than it appears.
+
+**Q:** Why was the 0777 octal format removed?
+
+**A:** C's octal syntax looks too much like base 10 with leading zeros prepended (and is sometimes used outside of C to represent fixed-width base 10 numbers). Removing such ambiguous octal syntax prevents a common source of subtle numerical errors in C.
+
+**Q:** Why is `goto` gone?
+
+**A:** It is very difficult to make goto work well with `defer` and implicit unwrapping of optional results. It is not just making the compiler harder to write, but
+the code is harder to understand as well. The replacements together with `defer` cover many if not all usages of `goto` in regular code.

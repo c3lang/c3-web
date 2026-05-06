@@ -106,11 +106,11 @@ nav:
         - Project Setup: getting-started/projects.md
         - Roadmap: getting-started/roadmap.md
         - Design Goals: getting-started/design-goals.md
-
       - Language Overview:
-        - Overview: language-overview/primer.md
         - Examples: language-overview/examples.md
         - Type System: language-overview/types.md
+      - C to C3:
+        - A Guide For C Programmers: c-to-c3/a-guide-for-c-programmers.md
       - Language Fundamentals:
         - Basic Types: language-fundamentals/basic-types-and-values.md
         - Variables: language-fundamentals/variables.md
@@ -162,7 +162,6 @@ nav:
       - FAQ:
         - FAQ: faq/index.md
         - All Features: faq/allfeatures.md
-        - Changes from C: faq/changesfromc.md
         - Comparison: faq/compare-languages.md
         - Rejected Ideas: faq/rejected-ideas.md
       - Get Involved:
