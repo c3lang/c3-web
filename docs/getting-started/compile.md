@@ -10,7 +10,7 @@ For other platforms it should be possible to compile it on any platform LLVM can
 
 ## 1. Install LLVM
 
-See LLVM the [LLVM documentation](https://llvm.org/docs/GettingStarted.html) on how to set up LLVM for development. 
+See the [LLVM documentation](https://llvm.org/docs/GettingStarted.html) on how to set up LLVM for development. 
 - On MacOS, installing through Homebrew or MacPorts works fine.
 - Using apt-get on Linux should work fine as well. 
 - For Windows you can download suitable pre-compiled LLVM binaries from [here](https://github.com/c3lang/llvm-for-c3/releases).
@@ -71,14 +71,14 @@ A `c3c` executable will be found under `bin/`.
 
 # Building on Mac using Homebrew
 
-2. Install CMake: `brew install cmake`
-3. Install LLVM 17+: `brew install llvm`
-4. Clone the C3C github repository: `git clone https://github.com/c3lang/c3c.git`
-5. Enter the C3C directory `cd c3c`.
-6. Create a build directory `mkdir build`
-7. Change directory to the build directory `cd build`
-8. Set up CMake build for debug: `cmake ..`
-9. Build: `cmake --build .`
+1. Install CMake: `brew install cmake`
+2. Install LLVM 17+: `brew install llvm`
+3. Clone the C3C github repository: `git clone https://github.com/c3lang/c3c.git`
+4. Enter the C3C directory `cd c3c`.
+5. Create a build directory `mkdir build`
+6. Change directory to the build directory `cd build`
+7. Set up CMake build for debug: `cmake ..`
+8. Build: `cmake --build .`
 
 
 # Building on Mac using MacPorts 

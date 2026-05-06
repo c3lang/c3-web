@@ -129,7 +129,7 @@ int foo(Foo *b, int x, void *z) { ... }
 fn int foo(Foo* b, int x, void* z) { ... }
 ```
 
-Find out more more about [functions](../language-fundamentals/functions.md), including named arguments and default arguments.
+Find out more about [functions](../language-fundamentals/functions.md), including named arguments and default arguments.
 
 ---
 
@@ -255,7 +255,7 @@ Find out more about [`alias`](../language-common/alias.md).
 
 ## `typedef` creates new types
 
-`typedef` in C3 creates a new type with it's own methods, and the original type cannot implictly convert to this new type, unless cast.
+`typedef` in C3 creates a new type with it's own methods, and the original type cannot implicitly convert to this new type, unless cast.
 
 ```c
 typedef MyId = int;
@@ -413,7 +413,7 @@ return true;
 
 ## Changes To `enum` and introducing `constdef`
 
-C3 enums gives new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constdef` instead:
+C3 enums give new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constdef` instead:
 
 <div class="lp-grid-2" style="gap: 1.5rem;" markdown="1">
 

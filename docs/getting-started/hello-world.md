@@ -40,7 +40,7 @@ the function to identify what module it belongs to.
 
 ### 📏 Imports can use a shorthand
 We could have used the original longer path: `std::io::printn`
-if we wanted, but we *can* shorten it to just the lowest level module like `io::printn`. This is the *convention* in C3 and is is known as "path-shortening", it avoids writing long import paths that can make code harder to read.
+if we wanted, but we *can* shorten it to just the lowest level module like `io::printn`. This is the *convention* in C3 and is known as "path-shortening", it avoids writing long import paths that can make code harder to read.
 
 ```diff
 - std::io::printn("Hello, World!");
