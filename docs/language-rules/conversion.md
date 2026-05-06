@@ -268,6 +268,6 @@ Dereferencing 0 is implementation defined.
 #### 2. Constants and literals
 
 1. If the constant is an integer, it is assumed to be the *arithmetic promotion width* and signed. Suffixes imply the following: 'u' - unsigned, 'ul' - unsigned 64-bit, 'ull' - unsigned 128-bit, 
-'l' - signed 64-bit, 'll' - signed 128-bit. If a constant does not fit in the *arithmetic promotion width*, the following rules apply: if decimal, promote to the smallest signed integer able to contain it, if hex, binary or octal, promot to the smallest signed or unsigned integer able to contain it.
+'l' - signed 64-bit, 'll' - signed 128-bit. If a constant does not fit in the *arithmetic promotion width*, the following rules apply: if decimal, promote to the smallest signed integer able to contain it, if hex, binary or octal, promote to the smallest signed or unsigned integer able to contain it.
 2. If the constant is a floating point value, it is assumed to be a `double` unless suffixed
  with `f` which is then assumed to be a `float`.
