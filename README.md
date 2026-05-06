@@ -1,5 +1,5 @@
 # C3 Documentation Site (MkDocs)
-<img src="https://c3-lang.org/logo.svg" align="right" height="120" />
+<img src="https://c3-lang.org/assets/logo.svg" align="right" height="120" />
 
 This documentation site for the C3 Programming Language is built using [MkDocs](https://www.mkdocs.org/) and the [Material theme](https://squidfunk.github.io/mkdocs-material/).
 
