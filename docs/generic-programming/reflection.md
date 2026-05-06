@@ -500,10 +500,6 @@ enum FooEnum
 String x = FooEnum.values[1].description; // "BAR"
 ```
 
-#### `typefrom` {: #typefrom }
-
-Get a type from a compile time constant `typeid`. It can also convert a compile-time string to the corresponding type.
-
 ## Compile time functions
 
 There are several built-in functions to inspect the code during compile time.
@@ -511,7 +507,7 @@ There are several built-in functions to inspect the code during compile time.
 - `$alignof` 0.7.x only
 - `$defined`
 - `$eval`
-- `$evaltype`
+- `$evaltype` 0.7.x only
 - `$extnameof` 0.7.x only
 - `$nameof` 0.7.x only
 - `$offsetof` 0.7.x only
@@ -519,6 +515,7 @@ There are several built-in functions to inspect the code during compile time.
 - `$sizeof` 0.7.x only
 - `$stringify`
 - `$typeof`
+- `$typefrom`
 - `$reflect` 0.8+
 
 #### `$defined`
@@ -613,13 +610,6 @@ fn void test()
 }
 ```
 
-#### `$evaltype`
-
-Similar to `$eval` but for types:
-
-```c3
-$evaltype("float") f = 12.0f;
-```
 
 #### `$reflect`
 
@@ -656,6 +646,15 @@ Returns the type of an expression or variable.
 ```c3
 Foo f;
 $typeof(f) x = f;
+```
+
+#### `$typefrom` {: #typefrom }
+
+Get a type from a compile time constant `typeid`. It can also convert a compile-time string to the corresponding type.
+
+```c3
+$typefrom("float") f = 12.0f;
+$typefrom(int::typeid) i = 12;
 ```
 
 ## 0.7.x only
@@ -734,3 +733,5 @@ to doing `$typeof(a).sizeof`. Note that this is only used on values and not on t
 $typeof(a)* x = allocate_bytes($sizeof(a));
 *x = a;
 ```
+
+
