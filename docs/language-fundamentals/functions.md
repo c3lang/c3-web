@@ -3,7 +3,7 @@ title: Functions
 description: Functions
 ---
 
-C3 has both regular functions and member functions. Member functions are functions namespaced using type names, and allows invocations using the dot syntax.
+C3 has both regular functions and mmethods. Methods are functions namespaced using type names, and allow invocation using the dot syntax.
 
 ## Regular functions
 
@@ -21,7 +21,7 @@ fn void test(int times)
 
 ### Function arguments
 
-C3 allows use of default arguments as well as named arguments. Note that
+C3 allows the use of default arguments as well as named arguments. Note that
 any unnamed arguments must appear before any named arguments.
 
 ```c3
@@ -237,7 +237,7 @@ if all Optional values contain a *result*, otherwise the first Excuse found is r
 ```c3
 fn void test()
 {
-    // The following line is either prints a value less than 0.2
+    // The following line either prints a value less than 0.2
     // or does not print at all. The (void) is needed
     // to let the compiler know we're deliberately
     // ignoring the Optional result.
@@ -283,7 +283,7 @@ fn void print_input_with_chaining()
 
 ## Methods
 
-Methods look exactly like functions, but are prefixed with a type name and is (usually)
+Methods look exactly like functions, but are prefixed with a type name and are (usually)
 invoked using dot syntax, on an instance of the type.
 
 ```c3
@@ -371,10 +371,10 @@ It is customary to use `self` as the name of the first parameter, but it is not 
 
 ### Guidelines on method use
 
-Methods are customary associated with Object-Oriented programming.
+Methods are customarily associated with Object-Oriented programming.
 In this style one will often encounter code like `some_object.run_everything()`.
 C3 is not accommodating to this style, instead one should prefer `task::run_everything(some_object)`.
-Both the standard library and the design of the language instead follows
+Both the standard library and the design of the language instead follow
 the principle that functions are used whenever the system is mutating
 global data, whereas methods are used for mutating a particular value, or
 extracting data from it. `foo.add(bar)`, `foo.to_list()` and `foo.push(x)`

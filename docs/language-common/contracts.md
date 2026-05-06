@@ -149,7 +149,7 @@ fn void main()
 }
 ```
 
-Circumventing "pure" annotations will cause the compiler optimize under the assumption
+Circumventing "pure" annotations will cause the compiler to optimize under the assumption
 that globals are not affected, even if this isn't true.
 
 
@@ -162,7 +162,7 @@ function which returns true if the code inside would pass semantic checking.
 ```c3
 <*
  @require $defined(resource.open, resource.open()) : `Expected resource to have an "open" function`
- @require resource != nil
+ @require resource != null
  @require $assignable(resource.open(), void*)
 *>
 macro open_resource(resource)

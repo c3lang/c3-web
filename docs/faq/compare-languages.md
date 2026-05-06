@@ -174,7 +174,7 @@ an implicit context system to switch allocation schemes.
 
 Odin is a language built for high performance but tries to remain
 a simple language to learn. Superficially the syntax shares much with
-Jai, and some of Jai's features things – like an implicit context – also shows up
+Jai, and some of Jai's features things – like an implicit context – also show up
 in Odin. In contrast with both Jai and Zig, Odin uses only minimal compile time evaluation
 and instead only relies on parametric polymorphism to ensure reuse.
 It also contains conveniences, like maps and arrays built into

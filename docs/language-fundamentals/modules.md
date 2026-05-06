@@ -32,7 +32,7 @@ module bar;
 /* ... */
 ```
 
-Here `file_a.c3` and `file_b.c3` belong to the same module, **foo** while `file_c.c3` belongs to to **bar**.
+Here `file_a.c3` and `file_b.c3` belong to the same module, **foo** while `file_c.c3` belongs to **bar**.
 
 ## Details
 
@@ -187,7 +187,7 @@ fn void test()
 
 In a normal module, global declarations will be public by default. If some other
 visibility is desired, it's possible to declare `@private` or `@local` after the module name.
-It will affect all declaration in the same section.
+It will affect all declarations in the same section.
 
 ```c3
 module foo @private;
@@ -245,7 +245,7 @@ struct Foo { ... }
 struct Bar { ... }
 struct TheAStruct { ... }
 
-fn void anAFunction() { ... }
+fn void a_function() { ... }
 
 // File b.c3
 
@@ -255,7 +255,7 @@ struct Foo { ... }
 struct Bar { ... }
 struct TheBStruct { ... }
 
-fn void aBFunction() { ... }
+fn void b_function() { ... }
 
 // File c.c3
 module c;
@@ -264,7 +264,7 @@ import a, b;
 struct TheCStruct { ... }
 struct Bar { ... }
 
-fn void aCFunction() { ... }
+fn void c_function() { ... }
 
 fn void test()
 {
@@ -277,10 +277,10 @@ fn void test()
     // name.
     Bar bar;
     // Namespace required:
-    a::aAFunction();
-    b::aBFunction();
+    a::a_function();
+    b::b_function();
     // A local symbol does not require it:
-    aCFunction();
+    c_function();
 }
 ```
 
@@ -349,7 +349,7 @@ fn void test()
     }
     else
     {
-        dynlib::do_someting_else();
+        dynlib::do_something_else();
     }
 }
 ```

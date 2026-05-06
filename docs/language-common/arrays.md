@@ -44,7 +44,7 @@ int len3 = b.len; // 2
 
 ### Indexing into pointers of arrays
 
-A source of confusion going from C to C3 is that indexing into, for example, a pointer `int[3]*` would yield a `int[3]`, rather than an `int`.
+A source of confusion going from C to C3 is that indexing into, for example, a pointer `int[3]*` would yield an `int[3]`, rather than an `int`.
 To get the integer inside of the array that is pointed to, we need to do a dereference:
 
 ```c3
@@ -382,7 +382,7 @@ fn void test()
 
 ## Fixed Size Multi-Dimensional Arrays
 
-To declare two dimensional fixed arrays as `<type>[<inner-size>, <outer-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
+Declare two-dimensional fixed arrays as `<type>[<inner-size>][<outer-size>] arr`, like `int[4][2] arr`. Below you can see how this compares to C:
 ```c
 // C
 // Uses: name[<outer-size>][<inner-size>]
@@ -419,7 +419,7 @@ int[][4] array = {
 ```
 
 !!! note
-    Accessing the multi-dimensional fixed array has inverted array index order to when the array was declared.
+    Accessing the multi-dimensional fixed array has inverted array index order compared to when the array was declared.
 
     ```c3
     // Uses: <type>[<inner-size>][<outer-size>]

@@ -63,8 +63,7 @@ fn char[]? file_read(String filename, char[] buffer)
 
 If the file named `filename` is found the function will read the content into a buffer,
 `defer` will then make sure that any open `File` handlers are closed.
-Note that if a scope exit happens before the `defer` declaration, the `defer` will not run, this a useful property because if the file failed to open, we don't need to close it.
-
+Note that if a scope exit happens before the `defer` declaration, the `defer` will not run. This is a useful property because if the file failed to open, we don't need to close it.
 
 ## `defer try`
 
@@ -120,11 +119,12 @@ defer catch { ... }
 ```c3
 defer (catch err) { ... };
 ```
-When the fault is captured this is convenient for logging the fault:
+In the latter form the fault is captured, which can be convenient for logging the fault:
 
 ```c3
 defer (catch err) io::printfn("fault found: %s", err)
 ```
+
 ### Memory allocation example
 
 ```c3

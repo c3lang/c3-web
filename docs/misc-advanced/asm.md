@@ -39,7 +39,7 @@ An example:
 int aa = 3;
 int g;
 int* gp = &g;
-int* xa = &a;
+int* xa = &aa;
 usz asf = 1;
 asm
 {

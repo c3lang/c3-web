@@ -102,7 +102,7 @@ In C3 all _constant expressions_ are guaranteed to be calculated at compile time
 3. The result of arithmetics on constant expressions.
 4. Compile time variables (prefixed with `$`)
 5. Global constant variables with initializers that are constant expressions.
-6. The result of macros that does not generate code and only uses constant expressions.
+6. The result of macros that do not generate code and only use constant expressions.
 7. The result of a cast if the value is cast to a boolean, floating point or integer type and the value that is converted is a constant expression.
 8. String literals.
 9. Initializer lists containing constant values.
@@ -127,7 +127,7 @@ The result of an embed works similar to a string literal and may implicitly conv
 
 ##### Limiting length
 
-It's possible to limit the length of included with the optional second parameter.
+It's possible to limit the length of what is included using the optional second parameter.
 
 ```c3
 char[4] my_data = $embed("foo.txt", 4);
@@ -142,7 +142,7 @@ If this is desired, declare the left hand side an [Optional](../language-common/
 char[]? my_image = $embed("my_image.png");
 ```
 
-`my_image` with be an optional `io::FILE_NOT_FOUND~` if the image is missing.
+`my_image` will be an optional `io::FILE_NOT_FOUND~` if the image is missing.
 
 This also allows us to pass a [default value using `??`](../language-common/optionals-advanced.md#return-a-default-value-if-optional-is-empty):
 ```c3

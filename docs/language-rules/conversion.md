@@ -12,8 +12,8 @@ C3 differs in some crucial respects when it comes to number conversions and prom
 - Widening `float` conversions are only conditionally allowed<sup>*</sup>.
 - Narrowing conversions require a cast<sup>*</sup>.
 - Widening `int` conversions are only conditionally allowed<sup>*</sup>.
-- Signed <-> unsigned conversions of the same type *do not* require a cast. Note: 0.8.0 it requires a cast.
-- In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value considered true.
+- Signed <-> unsigned conversions of the same type *do not* require a cast. Note: As of 0.8.0 it requires a cast.
+- In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value  isconsidered true.
 - Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `()` e.g. `bool x = (1.0)` or `if (1.0) { ... }`
 
 C3 uses two's complement arithmetic for all integer math.
@@ -25,7 +25,7 @@ C3 uses two's complement arithmetic for all integer math.
 
 ### Target type
 
-The left hand side of an assignment, or the parameter type in a call is known as the *target type* the target type is used for implicit widening and inferring struct initialization.
+The left hand side of an assignment, or the parameter type in a call is known as the *target type*. The target type is used for implicit widening and inferring struct initialization.
 
 ### Common arithmetic promotion
 
@@ -36,7 +36,7 @@ Like C, C3 uses implicit arithmetic promotion of integer and floating point vari
 
 ### Implicit narrowing
 
-An expression with an integer type, may implicitly narrow to smaller integer type, and similarly a float type may implicitly narrow to less wide floating point type is determined from the following algorithm.
+An expression with an integer type, may implicitly narrow to a smaller integer type, and similarly a float type may implicitly narrow to a less wide floating point type. This is determined from the following algorithm:
 
 1. Shifts and assign look at the lhs expression.
 2. `++`, `--`, `~`, `-`, `!!`, `!` - check the inner type.
@@ -115,7 +115,7 @@ maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`
 6. 0.7.0: If both types are integer types with different signedness, the 
 maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`. 0.8.0: Compare the two types to the list: ichar, char, short, ushort, int, uint, long, ulong, int128, uint128, the max type is the one furthermost to the right in the list. Consequently `ulong + int -> ulong`, `uint + int -> uint`.
 7. If at least one side is a struct or a pointer to a struct with an 
-`inline` directive on a member, check recursively check if the type of 
+`inline` directive on a member, check recursively if the type of 
 the inline member can be used to find a maximum type (see below under sub struct conversions)
 8. All other cases are errors.
  
@@ -171,7 +171,7 @@ These operations are only valid for integer and float types.
 #### 4. Subtraction with both sides pointers
 
 1. Resolve the operands.
-2. If the either side is a `void*`, it is cast to the other type.
+2. If either side is a `void*`, it is cast to the other type.
 3. If the types of the sides are different, this is an error.   
 4. The result of the expression is isz.
 5. If this result exceeds the target width, this is an error.
@@ -185,7 +185,7 @@ These operations are only valid for integers and booleans.
 3. Promote both operands to the [maximum type](#maximum-type) if they are simple expressions.
 4. The result of the expression is the [maximum type](#maximum-type).
 
-#### 6. Shift operations `<<` `>>` 
+#### 7. Shift operations `<<` `>>` 
 
 These operations are only valid for integers.
 
@@ -193,25 +193,25 @@ These operations are only valid for integers.
 2. In safe mode, insert a trap to ensure that rhs >= 0 and rhs < bit width of the left hand side.
 3. The result of the expression is the lhs type.
 
-#### 7. Assignment operations `+=` `-=` `*=` `*=` `/=` `%=` `^=` `|=` `&=`
+#### 8. Assignment operations `+=` `-=` `*=` `/=` `%=` `^=` `|=` `&=`
 
 1. Resolve the lhs.
 2. Resolve the right operand as an assignment rhs.
 3. The result of the expression is the lhs type.
 
-#### 8. Assignment shift `>>=` `<<=`
+#### 9. Assignment shift `>>=` `<<=`
 
 1. Resolve both operands
 2. In safe mode, insert a trap to ensure that rhs >= 0 and rhs < bit width of the left hand side.
 3. The result of the expression is the lhs type.
 
-#### 9. `&&` and `||`
+#### 10. `&&` and `||`
 
 1. Resolve both operands.
 2. Insert bool cast of both operands.
 3. The type is bool.
 
-#### 10. `<=` `==` `>=` `!=`
+#### 11. `<=` `==` `>=` `!=`
 
 1. Resolve the operands, left to right.
 2. Find the [maximum type](#maximum-type) of the two operands.
@@ -234,7 +234,7 @@ These operations are only valid for integers.
 #### 3. Negation
 
 1. Resolve the inner operand.
-2. If the type inner type is not a number this is an error.
+2. If the inner type is not a number, then this is an error.
 3. If the inner type is an unsigned integer, cast it to the same signed type.
 4. The type is the type of the result from (3).
 

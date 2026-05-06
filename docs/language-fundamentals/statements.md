@@ -132,8 +132,7 @@ switch (true)
 
 Because of the evaluation order, only `foo()` will be invoked for x > 0, even when x is greater than 2.
 
-It's also possible to omit the conditional after `switch`. In that case it is implicitly assumed to be same as
-writing `(true)`
+It's also possible to omit the conditional after `switch`. In that case it is implicitly assumed to be the same as writing `(true)`
 
 ```c3
 switch

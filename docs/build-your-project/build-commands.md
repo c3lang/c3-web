@@ -8,7 +8,7 @@ description: Build Commands
 
 Building a project is done by invoking the C3 compiler with the `build` or `run` command inside of the project structure. The compiler will search upwards in the file hierarchy until a `project.json` file is found.
 
-You can also [customise the project build config](../build-your-project/project-config.md).
+You can also [customize the project build config](../build-your-project/project-config.md).
 
 ## Compile Individual Files
 
@@ -24,7 +24,7 @@ Alternatively, libraries can be compiled via `c3c static-lib` or `c3c dynamic-li
 
 ## Run
 
-When starting out, with C3 it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead.
+When starting out with C3, it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead.
 
 The `compile-run` command works the same as normal compilation (via `compile`, `build`, etc), but also immediately runs the resulting executable.
 
@@ -141,7 +141,7 @@ c3c dist [target]
 
 Clean, build and package the target for distribution to end users.
 
-The `c3c dist` command will also run the target afterwards if it is a executable, for convenience, as it is likely you will want to check that the program is still working.
+For convenience, the `c3c dist` command will also run the target afterwards if it is an executable, as it is likely you will want to check that the program is still working.
 
 You should also transfer the distribution package to a clean machine and test that the application works correctly there too at a minimum. Otherwise, there is a high risk that your application will be broken due to some dependencies existing on your machine that don't exist on end users' machines. Developers' machines often have many more libraries already installed than users' machines, hence users' machines are far more likely to lack necessary dependencies. It is hard to reliably discern without testing.
 
