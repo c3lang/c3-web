@@ -55,7 +55,7 @@ are common to all C3 runtime types:
 5. `qnameof` - Returns a string with the qualified (using the full path) name of the type.
 6. `sizeof` - Returns the storage size of the type in bytes.
 7. `typeid` - Returns a runtime typeid for the type.
-8. `methodsof` - Retuns the methods implemented for a type.
+8. `methodsof` - Returns the methods implemented for a type.
 9. `has_tagof(tagname)` - Returns true if the type has a particular tag.
 10. `tagof(tagname)` - Retrieves the tag defined on the type.
 11. `is_eq` - True if the type implements `==`
@@ -278,7 +278,7 @@ it is also possible to implicitly return if it is Empty using `!` and panic with
 To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](../language-common/optionals-essential.md).
 
 !!! note
-    If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::colletions.
+    If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::collections.
 
 ## The `fault` type 
 
@@ -355,30 +355,27 @@ fn void main()
 }
 ```
 
-Switching over the `any` type is another method to unwrap the pointer inside:
+You can use a switch to check an `any`'s type, as well. After the type has been confirmed, it is safe to dereference.
 
 ```c3
 fn void test(any z)
 {
-    // Unwrapping switch
-    switch (z)
+    // Switch
+    switch (z.type)
     {
         case int:
-            // z is unwrapped to int* here
+            // This is safe here:
+            int* y = (int*)z;
         case double:
-            // z is unwrapped to double* here
+            // This is safe here:
+            double* y = (double*)z;
     }
     // Assignment switch
-    switch (y = z)
+    switch (y = z, y.type)
     {
         case int:
-            // y is int* here
-    }
-    // Direct unwrapping to a value is also possible:
-    switch (w = *z)
-    {
-        case int:
-            // w is int here
+            // This is safe here:
+            int* x = (int*)y;
     }
     // Finally, if we just want to deal with the case
     // where it is a single specific type:
@@ -394,6 +391,36 @@ fn void test(any z)
     }
 }
 ```
+
+Note that in `switch`es, if a substruct type is passed in and it's parent matches first, it will take priority.
+
+```c3
+fn void test(any z) 
+{
+    // Will always be seen as the parent type.
+    switch (z.type) 
+    {
+        case Parent:
+            // code...
+        case Subtype:
+            // code that will never execute...
+    }
+    // So order the subtypes first 
+    // if you're comparing them against their parent.
+
+    // Of course, this is still useful in cases
+    // of inherited types where the parent isn't in the switch.
+    switch (z.type) 
+    {
+        case Parent:
+            // modify data both Parent and Subtype have
+        case SomethingElse:
+            // completely different type code
+    }
+}
+```
+
+If you don't want the child type detected as the parent type, a `typedef` can be used to create a distinct type without changing any data.
 
 ### `any` fields
 
