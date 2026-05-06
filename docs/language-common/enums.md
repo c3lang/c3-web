@@ -138,6 +138,7 @@ user-defined types:
 4. `names` returns a list containing the names of all enums.
 5. `from_ordinal(value)` convert an integer to an enum.
 6. `values` return a list containing all the enum values of an enum.
+7. `len` return the number of enum values.
 
 ### Enum type properties 0.8.0+
 

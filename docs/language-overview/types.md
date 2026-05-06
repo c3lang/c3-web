@@ -8,7 +8,7 @@ As usual, types are divided into basic types and user defined types (`enum`, `un
 
 ### Naming
 
-All user defined types in C3 starts with upper case. So `MyStruct` or `Mystruct` would be fine, `mystruct_t` or `mystruct` would not.
+All user-defined types in C3 start with upper-case. So `MyStruct` or `Mystruct` would be fine, `mystruct_t` or `mystruct` would not.
 This naming requirement ensures that the language *is easy to parse for tools*.
 It is possible to use attributes to change the *external* name of a type:
 
@@ -28,7 +28,7 @@ This affects generated C headers, but little else.
 Unlike C, C3 _does not_ use type qualifiers. `const` exists,
 but is a storage class modifier, not a type qualifier.
 Instead of `volatile`, volatile loads and stores are implemented using `@volatile_load` and `@volatile_store`.
-Restrictions on function parameter usage are implemented though parameter [preconditions](../language-common/contracts.md#pre-conditions).
+Restrictions on function parameter usage are implemented through parameter [preconditions](../language-common/contracts.md#pre-conditions).
 
 C3's equivalent of C's `typedef` has a slightly different syntax in C3 and is renamed `alias`. In contrast, in C3 a *distinct* type is created when using C3's `typedef` keyword. As such, take care to not confuse C3's `alias` and `typedef` keywords relative to C.
 
@@ -155,7 +155,7 @@ Conversion is always done so that the character string has the correct ordering 
 
 ### Base64 and hex data literals
 
-Base64 encoded values work like TwoCC/FourCC/EightCC, in that is it laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `'00 00 11'x` encodes to the same value as `x'000011'`.
+Base64 encoded values work like TwoCC/FourCC/EightCC, in that it is laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `'00 00 11'x` encodes to the same value as `x'000011'`.
 
 In our case we could encode `b64'Rk9PQkFSMTE='` as `'FOOBAR11'`.
 
@@ -271,7 +271,7 @@ Function and macro parameters in their definitions may not be optionals.
 ```c3
 fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
 int? x = 0; // ✅ Ok!
-fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn paramater
+fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn parameter
 ```
 
 An Optional value can use the special `if-try` and `if-catch` to unwrap its result or its Empty,
@@ -334,7 +334,7 @@ However, at runtime only a few are available:
 
 ### The `any` type
 
-C3 contains a built-in variant type, which is essentially struct containing a `typeid` plus a `void*` pointer to a value.
+C3 contains a built-in variant type, which is essentially a struct containing a `typeid` plus a `void*` pointer to a value.
 While it is possible to cast the `any` pointer to any pointer type, it is recommended to use the `anycast` macro or checking the type explicitly first. With the `anycast` macro, the return will be
 an optional, which is empty if there is a mismatch.
 

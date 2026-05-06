@@ -20,7 +20,7 @@ found. This means that anyone using it in production would need to stay
  updated with the latest fixes.
 
 The focus of `0.8`–`0.9` will be fleshing out the cross-platform standard 
-library and make sure the syntax and semantics are solid. Also, the 
+library and making sure the syntax and semantics are solid. Also, the 
 toolchain will expand and improve. [Please refer to this issue for what's 
 left in terms of features for `1.0`](https://github.com/c3lang/c3c/issues/1456).
 
@@ -31,7 +31,7 @@ The intended roadmap has one major `0.1` release per year:
 
 | Date       |  Release  |
 |------------|-----------|
-| 2026-04-01 |    0.8    |
+| 2026-06-01 |    0.8    |
 | 2027-04-01 |    0.9    |
 | 2028-04-01 |    1.0    |
 

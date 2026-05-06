@@ -321,7 +321,7 @@ fn void example_cb()
 
 ## Error Handling
 
-Errors are handled using optional results, denoted with a '~' suffix. A variable of an optional
+Errors are handled using optional results, denoted with a '?' suffix. A variable of an optional
 result type may either contain the regular value or a `fault` value.
 
 ```c3
@@ -400,7 +400,7 @@ fn void print_file2(String filename)
         // We return, so that below 'file' will be unwrapped.
         return;
     }
-    // No need for a void cast here, 'file' is unwrappeed to 'String'.
+    // No need for a void cast here, 'file' is unwrapped to 'String'.
     io::printfn("Loaded %s and got:\n%s", filename, file);
 }
 ```
@@ -749,7 +749,7 @@ Read more about dynamic calls [here](../generic-programming/anyinterfaces.md).
 
 ## Classic text games
 
-Here are two classic simple text based games showcasing C3 feature and the C3 standard library.
+Here are two classic simple text based games showcasing C3 features and the C3 standard library.
 
 ### Guess a number
 

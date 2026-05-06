@@ -140,7 +140,7 @@ bitstruct Foo : char @overlap
 
 ### Boolean-only bitstructs
 
-When a boolean consists of only bool fields, the bit position may be dropped, and the bit position is inferred:
+When a bitstruct consists of only bool fields, the bit position may be dropped, and the bit position is inferred:
 
 ```c3
 // The following produce exactly the same layout:

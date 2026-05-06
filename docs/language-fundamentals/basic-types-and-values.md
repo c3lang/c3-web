@@ -55,7 +55,7 @@ For decimal numbers, the value is assumed to be a signed `int`, unless the numbe
 
 For hexadecimal, octal and binary, the type is assumed to be unsigned.
 
-A integer literal can *implicitly* convert to a floating point literal, or an integer of
+An integer literal can *implicitly* convert to a floating point literal, or an integer of
 a different type provided the number fits in the type.
 
 ### Constant suffixes
@@ -101,9 +101,9 @@ as `ushort`, `uint` and `ulong` respectively and are laid out in memory from lef
 This means that the actual value depends on the [endianness](https://en.wikipedia.org/wiki/Endianness)
 of the target.
 
-- 2 character literals, e.g. `'C3'`, would convert to an ushort.
-- 4 character literals, e.g. `'TEST'`, converts to an uint.
-- 8 character literals, e.g. `'FOOBAR11'` converts to an ulong.
+- 2 character literals, e.g. `'C3'`, would convert to a ushort.
+- 4 character literals, e.g. `'TEST'`, converts to a uint.
+- 8 character literals, e.g. `'FOOBAR11'` converts to a ulong.
 
 The 4 character literals correspond to the layout of [FourCC](https://en.wikipedia.org/wiki/FourCC)
 codes. It will also correctly arrange unicode characters in memory. E.g. `Char32 smiley = '\u1F603'`
@@ -119,7 +119,7 @@ Floating point constants will *at least* use 64 bit precision.
 Just like for integer constants, it is possible to use `_` to improve
 readability, but it may not occur immediately before or after a dot or an exponential.
 
-C3 supports floating points values either written in decimal or hexadecimal formats.
+C3 supports floating point values either written in decimal or hexadecimal formats.
 For decimal, the exponential symbol is e (or E, both are acceptable),
 for hexadecimal p (or P) is used: `-2.22e-21` `-0x21.93p-10`
 
@@ -160,7 +160,7 @@ int[3] abc = { 1, 2, 3 };
 int[] slice = &abc;       // A slice pointing to abc with length 3
 ```
 
-Because indexing into slices is range checked in safe mode, slices are vastly more safe
+Because indexing into slices is range checked in safe mode, slices are vastly more safe than
 providing pointer + length separately.
 
 The internal representation of a slice is a two element struct:
@@ -175,7 +175,7 @@ This definition can be found in the module `std::core::runtime`.
 
 ## Vectors
 
-[Vectors](../language-common/vectors.md) similar to arrays, use the format
+[Vectors](../language-common/vectors.md), similar to arrays, use the format
 `Type[<size>]`, with the restriction that vectors may only form out
 of integers, floats and booleans. Similar to arrays, wildcard can be
 used to infer the size of a vector:
@@ -184,7 +184,7 @@ used to infer the size of a vector:
 int[<*>] a = { 1, 2 };
 ```
 
-Vectors are based on hardware SIMD vectors, and supports many different operations that work
+Vectors are based on hardware SIMD vectors, and support many different operations that work
 on all elements in parallel, including arithmetics:
 
 ```c3

@@ -17,5 +17,5 @@ AStruct bar = {};    // bar is explicitly zeroed
 AStruct baz @noinit; // baz is explicitly undefined
 ```
 
-Using a variable that is explicitly undefined before will trap or be initialized to a 
+Using a variable that is explicitly undefined before assignment will trap or be initialized to a 
 specific value when compiling "safe" and is undefined behaviour in "fast" builds.

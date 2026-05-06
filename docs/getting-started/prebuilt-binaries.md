@@ -26,7 +26,7 @@ description: Installing C3 Compiler Binary
 9. click on the "environment variables" button on the bottom right
 10. under "user variables" double click on "path"
 11. click on "new" and paste the path to the folder
-12. run `c3c` on anywhere in your computer!
+12. run `c3c` anywhere on your computer!
 ```bash
 c3c compile ./hello.c3
 ```
@@ -87,7 +87,7 @@ $env:C3C_LIB = "C:\path\to\c3c\lib"
 
 ### "cc: not found"
 On Linux and MacOS, C3 uses the available C compiler to link with the correct libraries. While C3 contains a built-in linker, 
-it is likely that your system will lack a complete environment with unless a C compiler is available.
+it is likely that your system will lack a complete environment unless a C compiler is available.
 
 Linux users should generally install GCC or Clang, according to their distribution's documentation. 
 Below is a list of officially tested distributions and the minimum packages required to compile and link C3 programs:

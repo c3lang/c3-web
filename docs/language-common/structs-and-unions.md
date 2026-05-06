@@ -26,7 +26,7 @@ fn void test()
 
     io::printfn("%s is %d years old.", p.name, p.age);
 
-    Person* p_ptr_ = &p;
+    Person* p_ptr = &p;
     p_ptr.age = 20; // Ok!
 
     io::printfn("%s is %d years old.", p_ptr.name, p_ptr.age);
