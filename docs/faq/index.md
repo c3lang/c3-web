@@ -28,7 +28,7 @@ and the `HashMap` in `std::collections::map` are very frequently used.
 
 IO is a must, and `std::io` contains `std::io::file` for working with files,
 `std::io::path` for working with paths. `std::io` itself contains
-functionality to writing to streams in various ways. Useful streams can
+functionality for writing to streams in various ways. Useful streams can
 be found in the `stream` sub folder.
 
 Also of interest could be `std::net` for sockets. `std::threads` for
@@ -169,7 +169,7 @@ Foo* f4 = mem::alloc(Foo);                      // No initialization
 Foo* f5 = mem::new(Foo, { 4, 10.0, .a = 123 }); // Initialized to argument
 ```
 
-For arrays `mem::new_array` and `mem::alloc_array` works in corresponding ways:
+For arrays `mem::new_array` and `mem::alloc_array` work in corresponding ways:
 
 ```c3
 Foo* foos1 = malloc(Foo.sizeof * len);    // No initialization
@@ -245,7 +245,7 @@ type. Some exceptions exist, but prefer things like `io::fprintf(file, "Hello %s
 `file.fprintf("Hello %s", name)`. The former also has the advantage that it's easier to extend to work with many
 types.
 
-**Q:** Are there any naming conventions in the standard library what one should know about?
+**Q:** Are there any naming conventions in the standard library that one should know about?
 
 **A:** Yes. A function or method with `new` in the name will in general do one or more allocations and can take an
 optional allocator. A function or method with `temp` in the name will usually allocate using the temp allocator.
@@ -356,7 +356,7 @@ no one would recognize it as a C evolution anyway. So it's a non-starter.
 
 **Q:** Why are there no closures and only non-capturing lambdas?
 
-**A:** With closures, life-time management of captured variables become important to track. This can become
+**A:** With closures, life-time management of captured variables becomes important to track. This can become
 arbitrarily complex, and without RAII or any other memory management technique it is fairly difficult to
 make code safe. Non-capturing lambdas on the other hand are fairly safe.
 
@@ -397,7 +397,7 @@ C3 strives for a simple grammar, and so the trade-off of having to use `;` was a
 
 **A:** C3's optional has properties both from the traditional "Maybe" and "Result". While it carries two possible values,
 like a Result, it is trivially composable in the way optionals are. In the "Result" case, we cannot implicitly combine
-`Result<int, MyError>` and `Result<int, YourError>`, which also often reflected in the support for them.
+`Result<int, MyError>` and `Result<int, YourError>`, which is also often reflected in the support for them.
 
 For the "Maybe" it is trivial, so we see how languages do things like "Optional Chaining". C3 even goes beyond that, and
 implements implicit "flat map" for operations with its Optional.
@@ -411,7 +411,7 @@ correct use.
 
 **Q:** Why doesn't C3 have a tagged union?
 
-**A:** Tagged unions are great, but there is still discussion what it should look like if it was included in C3.
+**A:** Tagged unions are great, but there is still discussion of what it should look like if it was included in C3.
 
 See [this issue](https://github.com/c3lang/c3c/issues/829) for more details.
 
@@ -424,21 +424,21 @@ C uses a different way to do this: we place `*` and `[]` not on the type but on 
 So given `int (*foo) x[4]` we first dereference it (from inside) int[4], then index from the right.
 If we wanted to extract a standalone type from this, we'd have `int(*)[4]` for a pointer to an array of 4 integers.
 For "left is innermost", the declaration would instead be `int[4]*`. If left-is-innermost we can easily describe a pointer
-to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that be "int*(*)[4]",
+to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that would be "int*(*)[4]",
 which is generally regarded as less easy to read, not the least because you need to think of which of * or [] has priority.
 
 In C3, we can have a variable `List{int}[3] x`, which is an array of 3 `List{int}`. If we do `x[1]` we will get an element of
 `List{int}`, from the middle element in the array. If we then further index this with [5], like `x[1][5]` we will get
 the 5th element of that list.
 
-**Q:** Why does C3 use `::` use to separate namespaces and not `.`?
+**Q:** Why does C3 use `::` to separate namespaces and not `.`?
 
 **A:** `.` is nice to type and read, but there are challenges. In particular, C3's "path shortening", where you're allowed to write
 `file::open("foo.txt")` rather than having to use the full `std::io::file::open("foo.txt")` is only made possible because
 the namespace is distinct at the grammar level. If we play with changing the syntax because it isn't as elegant as
 `file.open("foo.txt")`, we'd have to pay by actually writing `std.io.file.open("foo.txt")` or change to a flat module system.
 
-One can also note that if `.`is used, then something like `file.open("foo.txt")` would be ambiguous if there was both a module `file`
+One can also note that if `.` is used, then something like `file.open("foo.txt")` would be ambiguous if there was both a module `file`
 and a variable `file` in the scope.
 
 ## Choices in tooling

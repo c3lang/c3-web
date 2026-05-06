@@ -608,7 +608,7 @@ bitstruct Flags : char
 }
 ```
 
-For more information see [the section on bitstructs](../language-overview/types.md#bitstructs).
+For more information see [the page on bitstructs](../language-common/bitstructs.md).
 
 ## Other Changes
 

@@ -8,7 +8,7 @@ In this section we will go over the *essential* information about Optionals and 
  and the [Rethrow operator `!`](#rethrow-operator).
 
 In the [advanced section](../language-common/optionals-advanced.md) there are other *nice to have* features.
-Like an alternative to safely unwrap a result from an Optionals using
+Like an alternative to safely unwrap a result from an Optional using
 [`if (try optional_value)`](../language-common/optionals-advanced.md#run-code-if-the-optional-has-a-result)
 and an unsafe method to [force unwrap `!!`](../language-common/optionals-advanced.md#force-unwrapping-expressions)
 a result from an Optional, return [default values for optionals `??`](../language-common/optionals-advanced.md#return-a-default-value-if-optional-is-empty) if they are empty and other more specialised concepts.
@@ -21,7 +21,7 @@ has either a *result* or is *empty*. When an Optional
 is empty it has an `Excuse` explaining what happened.
 
 - For example, trying to open a missing file returns the `Excuse` of `io::FILE_NOT_FOUND`.
-- Optionals are declared by adding `~` after the type.
+- Optionals are declared by adding `?` after the type.
 - An `Excuse` is of type `fault`.
 ```c3
 int? a = 1; // Set the Optional to a result

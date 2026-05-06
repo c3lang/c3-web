@@ -44,7 +44,7 @@ fn void test(Foo* foo, Bar* bar)
 }
 ```
 
-*Rationale: const correctness requires littering const across the code base. Although const is useful, it provides weaker guarantees that it appears.*
+*Rationale: const correctness requires littering const across the code base. Although const is useful, it provides weaker guarantees than it appears.*
 
 ##### Fixed arrays do not decay and have copy semantics
 
@@ -69,7 +69,7 @@ int a = 1;    // Ok
 int b, c;     // Ok
 ```
 
-In conditionals, a special form of multiple declarations are allowed but each must then provide its type:
+In conditionals, a special form of multiple declarations is allowed but each must then provide its type:
 
 ```c3
 for (int i = 0, int j = 1; i < 10; i++, j++) { ... }
@@ -82,7 +82,7 @@ C3 allows implicit widening only
 where there is only a single way to widen the expression. To explain the latter:
 take the case of `long x = int_val_1 + int_val_2`. In C this would widen the result of the addition:
 `long x = (long)(int_val_1 + int_val_2)`, but there is another possible 
-way to widen: `long x = (long)int_val_1 + (long)int_val_2`. So, in this case, the widening is disallowed in C3. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](../language-rules/conversion.md). 
+way to widen: `long x = (long)int_val_1 + (long)int_val_2`. So, in this case, the widening is disallowed in C3. However, `long x = int_val_1` is unambiguous, so C3 permits it just like C (read more on the [conversion page](../language-rules/conversion.md)). 
 
 C3 also adds *safe signed-unsigned comparisons*: this means that comparing signed and unsigned values will always yield the correct result:
 
@@ -127,7 +127,7 @@ switch (h)
 }
 ```
 
-##### Locals variables are implicitly zeroed
+##### Local variables are implicitly zeroed
 
 In C global variables are implicitly zeroed out, but local variables aren’t. In C3 both global and local variables are zeroed out by default, but may be *explicitly* undefined (using the `@noinit` attribute) if you wish to match the C behaviour.
 
@@ -178,7 +178,7 @@ struct Flags : char
 
 ##### Evaluation order is well-defined
 
-Evaluation order (after precedence, meaning when operators have equal precedence, a.ka. associativity) is left-to-right and in assignment expressions assignment happens after expression evaluation.
+Evaluation order (after precedence, meaning when operators have equal precedence, a.k.a. associativity) is left-to-right and in assignment expressions assignment happens after expression evaluation.
 
 ##### Signed overflow is well-defined
 

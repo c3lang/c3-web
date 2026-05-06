@@ -5,11 +5,13 @@ description: Naming Rules
 
 C3 introduces fairly rigid naming rules to reduce ambiguity and make the language easy to parse for tools.
 
-As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 31 character.
+As a basic rule, all identifiers are limited to a-z, A-Z, 0-9 and `_`. The initial character can not be a number. Furthermore, all identifiers are limited to 127 characters.
+
+Module sub-paths are limited to 31 characters, and a full module path must be 63 characters or less.
 
 ### Structs, unions, enums, typedefs and aliases
 
-All user defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to a external name using the attribute "cname".
+All user-defined types must start with A-Z after any optional initial `_` and include at least 1 lower case letter. `Bar`, `_T_i12` and `TTi` are all valid names. `_1`, `bAR` and `BAR` are not. For C-compatibility it's possible to alias the type to an external name using the attribute "cname".
 
 ```c3
 struct Foo @cname("foo")

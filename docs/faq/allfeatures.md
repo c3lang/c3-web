@@ -49,7 +49,7 @@ Changes relating to literals, identifiers etc.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
 8. Pointer-sized `iptr` and `uptr` integers.
 9. `isz` and `usz` integers corresponding to the `size_t` bitwidth. 
-10. Optional types are formed using the `~` suffix.
+10. Optional types are formed using the `?` suffix.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
 13. `any` contains a `typeid` and `void*` allowing it to act as a reference to any type of value.
@@ -134,7 +134,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 18. Structs may implicitly convert to their `inline` member if they have one.
 19. Pointers to arrays may implicitly convert to slices.
 20. Any pointer may implicitly convert to an `any` containing the type of the pointee.
-21. An optional values will implicitly invoke “flatmap” on an expression it is a subexpression of.
+21. An optional value will implicitly invoke “flatmap” on an expression it is a subexpression of.
 22. Swizzling for arrays and vectors. For example, to reverse a 3-element vector `vec` via swizzling you can use `vec.xyz = vec.zyx;`.
 
 ### Changed
@@ -149,8 +149,6 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 ### Removed
 
 1. The comma operator is removed.
-
-### Cast changes
 
 ## Functions
 
@@ -303,7 +301,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 ## Features provided by builtins
 
 Some features are [provided by "builtins" in the standard library](../misc-advanced/builtins.md),
-and appear like normal functions and macros in the standard library, but nonetheless provided unique functionality:
+and appear like normal functions and macros in the standard library, but nonetheless provide unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.
 2. `@anycast(...)` casts an `any` with an optional result.
@@ -331,7 +329,6 @@ and appear like normal functions and macros in the standard library, but nonethe
 9. Imports are recursive. For example, `import my_lib` will implicitly also import `my_lib::net`.
 10. Multiple imports may be specified with the same `import`, e.g. `import std::net, std::io;`.
 11. Generic modules are not type checked until any of their types, functions or globals are instantiated.
-12. Generic modules are not type checked until any of its types, functions or globals are instantiated.
 
 ## Contracts
 

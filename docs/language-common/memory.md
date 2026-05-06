@@ -95,7 +95,7 @@ fn void some_function()
         do_calculations();
     };
     // All temporary allocations inside of do_calculations
-    // and deeper down is freed when exiting the `@pool` scope.
+    // and deeper down are freed when exiting the `@pool` scope.
 }
 ```
 
@@ -129,7 +129,7 @@ fn void a_function()
 }
 ```
 
-Using single line function body syntax `=>` we can write this even more compact as:
+Using single line function body syntax `=>` we can write this even more compactly as:
 
 ```c3
 fn void a_function() => @pool()
@@ -241,11 +241,11 @@ Some types, such as `List`, `HashMap` and `DString` will use the temp allocator 
    str.insert_at(5, ",");
    str.append("!");
    io::printn(str);                  // Prints Hello, World!
-}; // list and str is freed here
+}; // list and str are freed here
 ```
 
 This is often useful for locals, but in the case of globals, you might want the container
-to default use the heap allocator. For most containers there is a `ONHEAP` constant which
+to use the heap allocator by default. For most containers there is a `ONHEAP` constant which
 allows you to statically initialize globals to use the heap allocator:
 
 ```c3
@@ -270,7 +270,7 @@ int* p = mem::alloc(int);  // Same as 'new' but memory is uninitialized
 Foo* t = mem::tnew(Foo);   // Same as 'new' but using the temp allocator
 ```
 
-`new` and `tnew` also takes an optional initializer, allowing you to allocate and initialize in a single call.
+`new` and `tnew` also take an optional initializer, allowing you to allocate and initialize in a single call.
 ```c3
 Foo* f = mem::new(Foo, { 1, 2 });
 // Equivalent to:
@@ -286,7 +286,7 @@ There are also more specialized functions such as `new_with_padding` and `new_al
 ```c3
 // Returns a pointer to a Foo[3] array, zero initialized
 Foo[] arr = mem::new_array(Foo, 3);
-// Same but memory is unitialized
+// Same but memory is uninitialized
 Foo[] a2 = mem::alloc_array(Foo, 3);
 // Same as new_array, but using the temp allocator
 Foo[] tarr = mem::temp_array(Foo, 3);

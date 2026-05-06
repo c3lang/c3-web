@@ -27,10 +27,10 @@ A common request is to change the builtin type names from `char`, `int`, `long` 
 
 Because C3 limits user-defined names to PascalCase in order to easily resolve the language grammar, it is not possible to create type aliases for such names, which leads to requests to build them into the language itself. (`Int32` is fine, but `int32` is not, nor are `INT32` and `I32`).
 
-Originally, C3 was going to have both bit-fixed type names (like today, where `int` is always 32 bits, `long` always 64 bits and so on) as well as explicit bitsize-names like `u8`, `i32` that aliased to the same types. Ultimately this was shelved, because it would mean that libraries would end up standardizing on one style or the other, creating friction when used. Ultimately the language would end up with one style being the "accepted" way to name things anyway. So after quite a bit of deliberation, the C naming scheme was chosen. This was mainly for the following two reasons:
+Originally, C3 was going to have both bit-fixed type names (like today, where `int` is always 32 bits, `long` always 64 bits and so on) as well as explicit bitsize-names like `u8`, `i32` that aliased to the same types. Ultimately this was shelved, because it would mean that libraries would end up standardizing on one style or the other, creating friction when used. Ultimately the language would end up with one style being the "accepted" way to name things anyway. So after quite a bit of deliberation, the C naming scheme was chosen. This was mainly for the following three reasons:
 
 1. It's familiar from C, so one would need to rewrite and learn less coming from C/C++/C#/Java, the code would also look more C-like.
-2. `i32` have readability problems when combined with `i` for index in for loops, which was considered a major drawback.
+2. `i32` has readability problems when combined with `i` for index in for loops, which was considered a major drawback.
 3. While the `int32` scheme does not have readability issues, it is longer than the C names in almost every case.
 
 After this decision was made and the types established, someone mentioned that `s32` could have been an alternative to consider as well, and indeed it is far superior as a prefix for bitsize-names. However, it's not obvious that for example `sptr` is better than `iptr`, plus the decision was made.

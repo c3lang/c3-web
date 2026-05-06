@@ -2,7 +2,7 @@
 title: Macros
 description: Macros
 ---
-The macro capabilities of C3 reaches across several constructs:
+The macro capabilities of C3 reache across several constructs:
 macros, [generic functions, generic modules](../generic-programming/generics.md), and [compile time variables](../generic-programming/compiletime.md#compile-time-values)
 (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
@@ -200,11 +200,11 @@ Preventing top level compile time evaluation helps prevent lots of declarations 
 
 In effect, top level declarations become always *visible* in C3, regardless of whether they are included or removed, whereas in C and C++ unbounded invisible declarations may occur, causing code to become increasingly opaque and riddled with seemingly indecipherable "magic" and numerous variables and constants seemingly coming from nowhere.
 
-Local function scopes in contrast have the full range of [C3's compile time evaulation features](../generic-programming/compiletime.md) available though, which are arguably often more expressive and pleasant to use than C and C++'s equivalents for many use cases.
+Local function scopes in contrast have the full range of [C3's compile time evaluation features](../generic-programming/compiletime.md) available though, which are arguably often more expressive and pleasant to use than C and C++'s equivalents for many use cases.
 
 ## Macro declarations
 
-A macro is defined using the syntax `macro <return_type> <name>(<parameters>)`. Specifying the return type of a macro is optional and if omitted the return type is inferred but must always be well defined (hence different paths cannot return different types, etc). 
+A macro is defined using the syntax `macro <return_type> <name>(<parameters>)`. Specifying the return type of a macro is optional and if omitted the return type is inferred but must always be well-defined (hence different paths cannot return different types, etc). 
 
 The parameters have different sigils that must prefix their names where applicable: `$` means compile time evaluated (constant expression or type). `#` indicates an expression that is not yet evaluated, but is bound to where it was defined.
 
