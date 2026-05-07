@@ -77,8 +77,8 @@ plugins:
   - print-site: # print-site must be at the bottom of the plugin list
       add_cover_page: false
       add_to_navigation: true
-      print_page_title: 'Print Site'
-      print_page_basename: 'print_page'
+      print_page_title: 'Single Page Docs'
+      print_page_basename: 'all'
       # Table of contents
       add_table_of_contents: true
       toc_title: 'Table of Contents'
