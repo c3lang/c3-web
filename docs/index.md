@@ -248,15 +248,16 @@ fn void main()
             const activeTab = wrapper.querySelector('.lp-tab-content.active');
             if (!activeTab) return;
             const code = activeTab.querySelector('code');
-            if (!code) return;
+            const content = wrapper.querySelector('.lp-code-content');
+            if (!code || !content) return;
 
-            wrapper.style.zoom = "1";
+            content.style.zoom = "1";
             requestAnimationFrame(() => {
               const containerWidth = wrapper.clientWidth - 20;
               const contentWidth = code.scrollWidth;
               if (contentWidth > containerWidth) {
                 const factor = containerWidth / contentWidth;
-                wrapper.style.zoom = Math.max(0.6, factor);
+                content.style.zoom = Math.max(0.6, factor);
               }
             });
           }

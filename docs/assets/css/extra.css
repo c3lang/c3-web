@@ -268,7 +268,7 @@
   background-color: #2563eb;
   border: 2px solid #2563eb;
   border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.6rem;
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s;
@@ -354,12 +354,22 @@
   padding: 0.2rem 1.5rem 0.2rem 0.5rem;
   cursor: pointer;
   appearance: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in;
 }
 
 .lp-code-select:hover {
   background-color: color-mix(in srgb, var(--md-code-fg-color), transparent 90%);
   border-color: var(--md-primary-fg-color);
+}
+
+.lp-code-select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.lp-code-select option {
+  background-color: var(--md-code-bg-color);
+  color: var(--md-default-fg-color);
 }
 
 .lp-code-select-wrapper::after {
@@ -553,7 +563,7 @@
 .lp-code-content pre {
   background-color: transparent !important;
   margin: 0 !important;
-  padding: 0 0 1rem 0 !important;
+  padding: 0 !important;
   position: relative !important; /* Anchor for the copy button */
 }
 
@@ -583,7 +593,8 @@
 
 /* General view of the documentation width */
 .md-grid {
-  max-width: 1680px; /* https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#content-area-width */
+  /* default is 61rem https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#content-area-width */
+  max-width: 61rem;
 }
 
 /* The markdown info note */
@@ -716,7 +727,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: start;
 }
 
 .lp-feature-list {
