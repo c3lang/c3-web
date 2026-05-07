@@ -74,6 +74,22 @@ plugins:
       post_url_format: "{slug}"
   - git-revision-date-localized:
       type: datetime
+  - print-site: # print-site must be at the bottom of the plugin list
+      add_cover_page: false
+      add_to_navigation: true
+      print_page_title: 'Print Site'
+      print_page_basename: 'print_page'
+      # Table of contents
+      add_table_of_contents: true
+      toc_title: 'Table of Contents'
+      toc_depth: 3
+      enumerate_headings: true
+      enumerate_figures: false
+      add_cover_page: false
+      exclude:
+        - index.md
+        - blog/*
+
 hooks:
   - hooks/c3_lexer.py
   - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
