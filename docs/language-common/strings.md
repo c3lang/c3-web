@@ -27,7 +27,6 @@ typedef ZString = inline char*;
 `ZString` is used when working with C code, which expects null-terminated C-style strings of type `char*`.
 It is a `typedef` so converting to a `ZString` requires an explicit cast. This helps to remind the user to check there is appropriate `\0` termination of the string data.
 
-The [`ZString` methods](#zstring-member-functions) are outlined below.
 
 !!! caution
     Ensure the terminal `\0` when converting from `String` to `ZString`.

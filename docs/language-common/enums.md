@@ -22,7 +22,7 @@ State current_state = WAITING; // or '= State.WAITING'
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
-Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](#bitstructs-as-bit-masks).
+Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](bitstructs.md#bitstructs-as-bit-masks).
 
 ### Enum associated values
 

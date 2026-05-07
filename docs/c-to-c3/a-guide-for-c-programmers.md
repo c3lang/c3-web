@@ -408,7 +408,7 @@ fn void testme()
 
 </div>
 
-Read more about enums [here](types.md#enum).
+Read more about enums [here](../language-common/enums.md).
 
 ### Bitfields Are Replaced By Explicit Bitstructs
 
