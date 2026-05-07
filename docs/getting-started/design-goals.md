@@ -34,7 +34,7 @@ state.*
 - [Zero overhead errors](../language-common/optionals-essential.md#what-is-an-optional)
 - [Semantic macro system](../generic-programming/macros.md)
 - [First-class SIMD vector types](../language-common/vectors.md)
-- [Struct subtyping](../language-overview/types.md#struct-subtyping)
+- [Struct subtyping](../language-common/structs-and-unions.md#struct-subtyping)
 - [Safe array access using slices](../language-common/arrays.md#slice)
 - [Safe array iteration using foreach](../language-common/arrays.md#iteration-over-arrays)
 - [Easy to use inline assembly](../misc-advanced/asm.md)
