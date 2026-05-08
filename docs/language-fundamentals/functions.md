@@ -184,6 +184,34 @@ fn void main()
 }
 ```
 
+- Splat `...` a struct anywhere. The splatted struct must have its fields in the same order than the function parameters (the names don't need to match, but the types do).
+
+```c3
+struct Foo
+{
+    int x;
+    double y;
+}
+
+fn void foo(int a, double b) 
+{
+    io::printfn("foo: a=%s, b=%s", a, b);
+}
+
+fn void bar(double b, int a)
+{
+    io::printfn("bar: b=%s, a=%s", a, b);
+}
+
+fn void main()
+{
+    Foo f = {.x = 12, .y = 2.2};
+
+    foo(...f); // OK
+    bar(...f); // ERROR, not in the same order
+}
+```
+
 
 
 ### Named arguments and vaargs
