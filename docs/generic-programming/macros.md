@@ -218,7 +218,8 @@ For example, here's a basic swap written as a macro instead of using pointers, w
 
 ```c3
 <*
- @checked $defined(#a = #b, #b = #a)
+ @require $defined(#a = #b)
+ @require $defined(#b = #a)
 *>
 macro void @swap(#a, #b)
 {
