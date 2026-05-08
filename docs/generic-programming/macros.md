@@ -464,7 +464,8 @@ Returns the number of arguments passed into the macro's vaarg list.
 
 #### `$vaarg[idx]`
 
-Returns the argument at `idx`. The argument is guaranteed to be evaluated once, even if the argument is used multiple times.
+Returns the argument at index `idx` as an unevaluated expression. Multiple uses will
+evaluate the expression multiple times. This corresponds to `#` parameters.
 
 #### `$strigify($vaarg[idx])`
 
@@ -486,9 +487,9 @@ dbg(x, y)
 // y=22.98
 ```
 
-#### `$typefrom($vaarg[$idx])`
+#### `$typefrom($vaarg[idx])`
 
-Will treat the argument at the index `$idx` as a type. It is equivalent to the old `$vatype` and corresponds to `$Type` parameters.
+Will treat the argument at the index `idx` as a type. It is equivalent to the old `$vatype` and corresponds to `$Type` parameters.
 e.g. `$typefrom($vaarg[2]) a = 2`.
 
 #### `...$vaarg` (splatting)
