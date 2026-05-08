@@ -440,9 +440,9 @@ Nor is `$vasplat` limited to function arguments. You can also use `$vasplat` wit
 int[*] a = { 5, $vasplat[2..], 77 };
 ```
 
-### In 0.8+
+### 0.8.0+
 
-In 0.8+, all operations on the arguments are done through the built-in keyword `$vaarg`:
+In 0.8.0+, all operations on the arguments are done through the built-in keyword `$vaarg`:
 
 ```c3
 macro compile_time_sum(...)
@@ -467,14 +467,14 @@ Returns the number of arguments passed into the macro's vaarg list.
 Returns the argument at index `idx` as an unevaluated expression. Multiple uses will
 evaluate the expression multiple times. This corresponds to `#` parameters.
 
-#### `$strigify($vaarg[idx])`
+#### `$stringify($vaarg[idx])`
 
 Will return the expression at the index `idx` as a string. It is equivalent to `$stringify(#param)`.
 ```c3
 macro dbg(...)
 {
     $for int $i = 0; $i < $vaarg.len; $i++:
-        io::printfn("%s=%s", $stringify($vaarg[$i]), $vaarg[$i]);
+        io::printfn("%s = %s", $stringify($vaarg[$i]), $vaarg[$i]);
     $endfor
 }
 
@@ -483,8 +483,8 @@ double y = 22.98
 
 dbg(x, y)
 // Will print
-// x=111
-// y=22.98
+// x = 111
+// y = 22.98
 ```
 
 #### `$typefrom($vaarg[idx])`
