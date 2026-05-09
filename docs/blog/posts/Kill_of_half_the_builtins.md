@@ -24,7 +24,7 @@ This might seem onerous, but first of all this allows us to store the reflection
 
 In 0.7.x you would use things like `$defined($sizeof(x))` to test if something had a size defined. After the changes in 0.8.0, this becomes `$defined($reflect(x).size)` instead.
 
-This change allows us to reduce the number of keywords and overall "language surface". Without explicit keywords, compile-time reflection actually becomes more flexible as well – it's easier to introduce additional introspection at some later time in the 0.8.x cycle  information if needed.
+This change allows us to reduce the number of keywords and overall "language surface". Without explicit keywords, compile-time reflection actually becomes more flexible as well – it's easier to introduce additional introspection at some later time in the 0.8.x cycle if needed.
 
 ### Stripping types of their properties
 
@@ -128,6 +128,6 @@ There is a natural contract-expand cycle to language design: first add features,
 
 The builtins we're removing solved real problems, but they also added surface area: extra keywords, naming conventions, subtle interactions. 
 
-These simplifications were only possible now, after things like maturing the splat functionality, observing `$vaarg` use-patterns and reaching the point where the old type property syntax prevented growth. 
+These simplifications were only possible now, after things like maturing the splat functionality, observing `$vaarg` usage-patterns and reaching the point where the old type property syntax prevented growth. 
 
 We hope you'll like them!
