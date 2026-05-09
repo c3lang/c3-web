@@ -38,3 +38,24 @@ After this decision was made and the types established, someone mentioned that `
 Over the years, requests for builtin types have occasionally appeared, but interestingly, not always arguing for the same scheme. Some would say iXX was the only possibility, others thought such naming was out of the question and an intXX scheme the only right decision and so on. Given that, it's rather clear that the preference for *any* naming scheme is subjective, and one is pretty much as good as the other.
 
 So, the C3 naming scheme will not change, although small tweaks are not ruled out.
+
+### String interpolation
+
+There is sometimes the request for string interpolation in the style of:
+
+```c3
+String str1 = "hello";
+String str2 = "world";
+int val = 3;
+float pi = 3.14;
+String str = "{str1}:{str2}:{val}:{pi}";
+```
+
+1. This is not a replacement for printf, as it assumes that the format string is always known at compile time. This is not always the case.
+2. This is often surprisingly hard to read compared to printf, except in simple cases or when dealing with huge string templates. In the latter case it doesn't need to be a language builtin.
+3. The general runtime case needs implicit allocation, which isn't compatible with C3 memory management.
+4. Compile time string generation already has @sprintf.
+5. The main downside of `printf` is when accidentally providing too many or too few arguments, but the C3 compiler already checks for that.
+6. This solution is as complex as `printf` and they strongly overlap – printf won't get removed, so adding it would mean there are two ways of achieving the same thing (except printf doesn't have any of its downsides)
+
+For these reasons, C3 won't get string interpolation syntax.
