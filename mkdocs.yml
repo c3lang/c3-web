@@ -93,6 +93,7 @@ plugins:
 hooks:
   - hooks/c3_lexer.py
   - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
+  - hooks/shortlinks.py
   # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:
