@@ -3,14 +3,11 @@ title: Generics
 description: Generics
 ---
 
-**NOTE** This section is updated for 0.7.9 and later. If you use a method before 0.7.9, use generic modules instead, which offers the same functionality but less granularity.
-
 Generics allow you to create code that works with arbitrary types.
 
 ```c3
 // If the module section is generic,
 // then all its declarations are as well
-// Note that previous to 0.7.9, this would be written "module my_module {Type};"
 module my_module <Type>;
 
 // Parameterized struct
@@ -26,7 +23,7 @@ fn Type square(Type t)
 }
 ```
 
-We can rewrite this with individual generic declarations (note that this is not available before 0.7.9):
+We can rewrite this with individual generic declarations:
 
 ```c3
 module my_module;
@@ -173,7 +170,7 @@ struct Foo <Test>
     Test a;
 }
 
-<* @require Test.sizeof < 4 *>
+<* @require Test::size < 4 *>
 fn Test testme(Test t) <Test>
 {
     return t * 2;

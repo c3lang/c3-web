@@ -212,7 +212,7 @@ int[] h = f[0..2];
 
 #### Internals
 
-Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; usz len; }`. Note that in 0.8+, the length is `sz`.
+Internally the layout of a slice is guaranteed to be `struct { <type>* ptr; sz len; }`.
 
 There is a built-in struct `std::core::runtime::SliceRaw` which
 has the exact data layout of the fat array pointers. It is defined to be
@@ -221,7 +221,7 @@ has the exact data layout of the fat array pointers. It is defined to be
 struct SliceRaw
 {
     void* ptr;
-    usz len;
+    sz len;
 }
 ```
 
@@ -275,9 +275,8 @@ fn void test()
     foreach (idx, &item : arr)
     {
         *item = 7 + (int)idx; // Mutates the array element
-        // index is usz when not specified, requiring an explicit
-        // cast on platforms where usz is larger than int.
-        // 0.8+, "sz" rather than usz is used.
+        // index is sz when not specified, requiring an explicit
+        // cast on platforms where sz is larger than int.
     }
 
     // Or equivalently, writing the types
@@ -317,17 +316,17 @@ by implementing `.len` and `[]` methods and annotating them using the `@operator
 ```c3
 struct DynamicArray
 {
-    usz count;
-    usz capacity;
+    sz count;
+    sz capacity;
     int* elements;
 }
 
-macro int DynamicArray.get(DynamicArray* arr, usz element) @operator([])
+macro int DynamicArray.get(DynamicArray* arr, sz element) @operator([])
 {
     return arr.elements[element];
 }
 
-macro usz DynamicArray.count(DynamicArray* arr) @operator(len)
+macro sz DynamicArray.count(DynamicArray* arr) @operator(len)
 {
     return arr.count;
 }

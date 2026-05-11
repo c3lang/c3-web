@@ -172,9 +172,9 @@ enum State : uint
     STOP,
 }
 
-State start = State.values[0];
-usz enums = State.elements;   // 2
-String[] names = State.names; // [ "START", "STOP" ]
+State start = State::values[0];
+sz enums = State::len;   // 2
+String[] names = State::names; // [ "START", "STOP" ]
 ```
 
 ### Duff's Device
@@ -529,7 +529,7 @@ Improve macro errors with preconditions:
 ```c3
 <*
  @param x : "value to square"
- @require types::is_numerical($typeof(x)) : "cannot multiply"
+ @require types::is_numerical($Typeof(x)) : "cannot multiply"
 *>
 macro square(x)
 {
@@ -562,9 +562,9 @@ struct Foo
 
 macro print_fields($Type)
 {
-    $foreach $field : $Type.membersof:
+    $foreach $field : $Type::members:
         io::printfn("Field %s, offset: %s, size: %s, type: %s",
-                $field.nameof, $field.offsetof, $field.sizeof, $field.typeid.nameof);
+                $field.name, $field.offset, $field.size, $field.type.name);
     $endforeach
 }
 
@@ -644,8 +644,8 @@ module stack;
 
 struct Stack <Type>
 {
-    usz capacity;
-    usz size;
+    sz capacity;
+    sz size;
     Type* elems;
 }
 
@@ -655,7 +655,7 @@ fn void Stack.push(Stack* this, Type element)
     if (this.capacity == this.size)
     {
         this.capacity = this.capacity ? this.capacity * 2 : 16;
-        this.elems = realloc(this.elems, Type.sizeof * this.capacity);
+        this.elems = realloc(this.elems, Type::size * this.capacity);
     }
     this.elems[this.size++] = element;
 }

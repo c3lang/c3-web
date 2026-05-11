@@ -40,7 +40,7 @@ int aa = 3;
 int g;
 int* gp = &g;
 int* xa = &aa;
-usz asf = 1;
+sz asf = 1;
 asm
 {
     movl x, 4;                  // Move 4 into the variable x

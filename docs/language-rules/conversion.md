@@ -12,7 +12,6 @@ C3 differs in some crucial respects when it comes to number conversions and prom
 - Widening `float` conversions are only conditionally allowed<sup>*</sup>.
 - Narrowing conversions require a cast<sup>*</sup>.
 - Widening `int` conversions are only conditionally allowed<sup>*</sup>.
-- Signed <-> unsigned conversions of the same type *do not* require a cast. Note: As of 0.8.0 it requires a cast.
 - In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value  isconsidered true.
 - Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `()` e.g. `bool x = (1.0)` or `if (1.0) { ... }`
 
@@ -112,8 +111,7 @@ the maximum type is the floating point type. E.g. `int + float -> float`.
 4. If both types are floating point types, the maximum type is the widest floating point type. E.g. `float + double -> double`.
 5. If both types are integer types with the same signedness, the 
 maximum type is the widest integer type of the two. E.g. `uint + ulong -> ulong`.
-6. 0.7.0: If both types are integer types with different signedness, the 
-maximum type is a signed integer with the same bit width as the maximum integer type. `ulong + int -> long`. 0.8.0: Compare the two types to the list: ichar, char, short, ushort, int, uint, long, ulong, int128, uint128, the max type is the one furthermost to the right in the list. Consequently `ulong + int -> ulong`, `uint + int -> uint`.
+6. Compare the two types to the list: ichar, char, short, ushort, int, uint, long, ulong, int128, uint128, the max type is the one furthermost to the right in the list. Consequently `ulong + int -> ulong`, `uint + int -> uint`.
 7. If at least one side is a struct or a pointer to a struct with an 
 `inline` directive on a member, check recursively if the type of 
 the inline member can be used to find a maximum type (see below under sub struct conversions)
@@ -159,13 +157,13 @@ These operations are only valid for integer and float types.
 
 1. Resolve the operands.
 2. If the rhs is not an integer, this is an error.   
-3. If the rhs has a bit width that exceeds isz, this is an error.
+3. If the rhs has a bit width that exceeds sz, this is an error.
 4. The result of the expression is the lhs type.
 
 #### 3. Subtraction with lhs pointer and rhs integer 
 
 1. Resolve the operands.
-2. If the right hand type has a bit width that exceeds isz, this is an error.
+2. If the right hand type has a bit width that exceeds sz, this is an error.
 3. The result of the expression is the left hand type.
 
 #### 4. Subtraction with both sides pointers
@@ -173,7 +171,7 @@ These operations are only valid for integer and float types.
 1. Resolve the operands.
 2. If either side is a `void*`, it is cast to the other type.
 3. If the types of the sides are different, this is an error.   
-4. The result of the expression is isz.
+4. The result of the expression is sz.
 5. If this result exceeds the target width, this is an error.
 
 #### 6. Bit operations `^` `&` `|`

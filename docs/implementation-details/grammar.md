@@ -12,7 +12,7 @@ The following are reserved keywords used by C3:
 ```c3
 void        bool        char        double
 float       float16     int128      ichar
-int         iptr        isz         long
+int         iptr        sz          long
 short       uint128     uint        ulong
 uptr        ushort      usz         float128
 any         fault    	typeid      assert
@@ -28,15 +28,13 @@ true        try         union       var
 while       attrdef
 ```
 
-```c3
-$alignof    $assert     $case       $default
-$defined    $echo       $embed      $exec
-$else       $endfor     $endforeach $endif
-$endswitch  $eval       $evaltype   $error
-$extnameof  $for        $foreach    $if
-$include    $nameof     $offsetof   $qnameof
-$sizeof     $stringify  $switch     $typefrom
-$typeof     $vaarg
+```
+$assert     $case       $default    $defined
+$echo       $else       $embed      $exec       
+$expand     $endfor     $endforeach $endif
+$endswitch  $eval       $error      $for        
+$foreach    $if         $include    $stringify  
+$switch     $vaarg      $Typefrom   $Typeof     
 ```
 
 The following attributes are built in:
