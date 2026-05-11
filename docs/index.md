@@ -199,8 +199,8 @@ fn void main() { print_fields(Foo); }
 ```c3
 struct Stack <Type>
 {
-    usz capacity;
-    usz size;
+    sz capacity;
+    sz size;
     Type* elems;
 }
 

@@ -126,39 +126,35 @@ any        bfloat      bool
 char       double      fault
 float      float128    float16
 ichar      int         int128
-iptr       isz         long
+iptr       sz          long
 short      typeid      uint
 uint128    ulong       uptr
 ushort     usz         void
 
-alias      assert      asm
-attrdef    bitstruct   break
-case       catch       const
-continue   default     defer
-do         else        enum
-extern     false       faultdef
-for        foreach     foreach_r
-fn         tlocal      if
-inline     import      macro
-module     nextcase    null
-interface  return      static
-struct     switch      true
-try        typedef     union
-var        while
+alias       assert      asm
+attrdef     bitstruct   break
+case        catch       const
+continue    default     defer
+do          else        enum
+extern      false       faultdef
+for         foreach     foreach_r
+fn          tlocal      if
+inline      import      macro
+module      nextcase    null
+interface   return      static
+struct      switch      true
+try         typedef     union
+var         while
 
-$alignof   $assert     $assignable
-$case      $default    $defined
-$echo      $else       $embed
-$endfor    $endforeach $endif
-$endswitch $eval       $error
-$exec      $extnameof  $feature
-$for       $foreach    $if
-$include   $is_const   $nameof
-$offsetof  $qnameof    $sizeof
-$stringify $switch     $typefrom
-$typeof    $vacount    $vatype
-$vaconst   $vaarg      $vaexpr
-$vasplat
+$alignof    $assert     $case      
+$default    $defined    $echo      
+$else       $embed      $endfor    
+$endforeach $endif      $endswitch 
+$eval       $error      $exec
+$expand     $feature    $for       
+$foreach    $if         $include
+$stringify  $switch     $vaarg
+$Typefrom   $Typeof
 ```
 
 ### Operators and punctuation
@@ -261,7 +257,7 @@ In addition, the following type aliases exist:
 uptr      unsigned pointer size
 iptr      signed pointer size
 usz       unsigned pointer offset / object size
-isz       signed pointer offset  / object size
+sz        signed pointer offset  / object size
 ```
 
 ### Floating point types
@@ -366,7 +362,7 @@ An array has the alignment of its elements. An array must have at least one elem
 
 ### Slice types
 
-The slice consist of a pointer, followed by an usz length, having the alignment of pointers.
+The slice consist of a pointer, followed by an sz length, having the alignment of pointers.
 
 ### Pointer types
 
@@ -386,7 +382,7 @@ Dereferencing a pointer will return the value in the memory location interpreted
 
 ### Pointer arithmetics
 
-An `usz` or `isz` offset may be added to a pointer resulting in a new pointer of the same type. This will offset the underlying address by the offset times the pointee size. An example: the size of a `long` is 8 bytes. Adding `3` to a pointer to a long consequently increases the address by 24 (3 * 8).
+An `sz` or `usz` offset may be added to a pointer resulting in a new pointer of the same type. This will offset the underlying address by the offset times the pointee size. An example: the size of a `long` is 8 bytes. Adding `3` to a pointer to a long consequently increases the address by 24 (3 * 8).
 
 #### Subscripting
 
@@ -1189,7 +1185,7 @@ type, then an implicit conversion will be attempted. Failing this is a compile t
 If a variable name is added before the foreach variable, then this variable will receive the index of the element.
 For `foreach_r` this mean that the first value of the index will be `len - 1`.
 
-The index type defaults to `usz`.
+The index type defaults to `sz`.
 
 If an optional type is added to the index, the index will be converted to this type. The type must be an
 integer type. The conversion happens as if the conversion was a direct cast. If the actual index value

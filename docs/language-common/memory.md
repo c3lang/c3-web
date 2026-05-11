@@ -47,7 +47,7 @@ The normal solution here is to allocate memory on the heap instead, the code mig
 <* @require n >= 0 *>
 fn int[] create_array(int n)
 {
-    int* arr = malloc(n * int.sizeof);
+    int* arr = malloc(n * int::size);
     for (int i = 0; i < n; i++)
     {
         arr[i] = i;
@@ -105,7 +105,7 @@ To allocate we use `tmalloc`, which works the same as `malloc`, but uses the tem
 <* @require n >= 0 *>
 fn int[] create_temp_array(int n)
 {
-    int* arr = tmalloc(n * int.sizeof);
+    int* arr = tmalloc(n * int::size);
     for (int i = 0; i < n; i++)
     {
         arr[i] = i;
@@ -146,12 +146,12 @@ fn void nested()
 {
     @pool()
     {
-        int* a = tmalloc(int.sizeof);
+        int* a = tmalloc(int::size);
         *a = 123;
         // Only 'a' is valid
         @pool()
         {
-            int* b = tmalloc(int.sizeof);
+            int* b = tmalloc(int::size);
             *b = *a;
             // Both 'b' and 'a' are valid
         };
@@ -262,7 +262,7 @@ In C, memory is allocated with plain `malloc` (uninitialized memory) and `calloc
 
 #### `new` and `alloc` macros
 
-The `new` and `alloc` macros take a type and allocate just enough memory for that value. This is often more convenient and clearer than `Foo* f = malloc(Foo.sizeof)`.
+The `new` and `alloc` macros take a type and allocate just enough memory for that value. This is often more convenient and clearer than `Foo* f = malloc(Foo::size)`.
 
 ```c3
 Foo* f = mem::new(Foo);    // Returns a zero initialized pointer for a type

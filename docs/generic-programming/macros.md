@@ -95,7 +95,7 @@ macro @m(#x, y)
 // C3 Macro
 macro size($Type)
 {
-    return $Type.sizeof + int.sizeof;
+    return $Type::size + int::size;
 }
 ```
 
@@ -118,7 +118,7 @@ FOR_EACH(it, list)
 // C3 Macro
 macro @for_each(list; @body(it))
 {
-    for ($typeof(list) x = list; x; x = x.next)
+    for ($Typeof(list) x = list; x; x = x.next)
     {
         @body(x);
     }
@@ -140,10 +140,10 @@ macro @for_each(list; @body(it))
 
 ```c3
 // C3 Macro
-macro usz @offset($Type, #field)
+macro sz @offset($Type, #field)
 {
     $Type* t = null;
-    return (usz)(uptr)&t.#field;
+    return (sz)(iptr)&t.#field;
 }
 ```
 
@@ -384,65 +384,6 @@ The maximum recursion depth is limited to the `macro-recursion-depth` build sett
 Macros support the typed vaargs used by C3 functions: `macro void foo(int... args)` and `macro void bar(args...)`
 but also support a unique set of macro vaargs that look like C-style vaargs: `macro void baz(...)`.
 
-### In 0.7.x
-In 0.7.x, to access the arguments there is a family of $va-* built-in functions to retrieve
-the arguments:
-
-```c3
-macro compile_time_sum(...)
-{
-    var $x = 0;
-    $for var $i = 0; $i < $vacount; $i++:
-        $x += $vaconst[$i];
-    $endfor
-    return $x;
-}
-$if compile_time_sum(1, 3) > 2: // Will compile to $if 4 > 2
-    ...
-$endif
-```
-
-#### `$vacount`
-
-Returns the number of arguments passed into the macro's vaarg list.
-
-#### `$vaarg`
-
-Returns the argument as a regular parameter. The argument is
-guaranteed to be evaluated once, even if the argument is used multiple times.
-
-#### `$vaconst`
-
-Returns the argument as a compile time constant, this is suitable for
-placing in a compile time variable or use for compile time evaluation,
-e.g. `$foo = $vaconst[1]`. This corresponds to `$` parameters.
-
-#### `$vaexpr`
-
-Returns the argument as an unevaluated expression. Multiple uses will
-evaluate the expression multiple times. This corresponds to `#` parameters.
-
-#### `$vatype`
-
-Returns the argument as a type. This corresponds to `$Type` style parameters,
-e.g. `$vatype[2] a = 2`.
-
-#### `$vasplat`
-
-`$vasplat` allows you to paste the vaargs in the call into another call. For example,
-if the macro was called with values `"foo"` and `1`, the code `foo($vasplat)`, would become `foo("foo", 1)`. 
-
-You can even extract a range of arguments from the splat: `$vasplat[2..4]`. In this case, doing so would paste in arguments 2, 3 and 4.
-
-Nor is `$vasplat` limited to function arguments. You can also use `$vasplat` within initializers. For example:
-
-```c3
-int[*] a = { 5, $vasplat[2..], 77 };
-```
-
-### 0.8.0+
-
-In 0.8.0+, all operations on the arguments are done through the built-in keyword `$vaarg`:
 
 ```c3
 macro compile_time_sum(...)
@@ -487,10 +428,10 @@ dbg(x, y)
 // y = 22.98
 ```
 
-#### `$typefrom($vaarg[idx])`
+#### `$Typefrom($vaarg[idx])`
 
 Will treat the argument at the index `idx` as a type. It is equivalent to the old `$vatype` and corresponds to `$Type` parameters.
-e.g. `$typefrom($vaarg[2]) a = 2`.
+e.g. `$Typefrom($vaarg[2]) a = 2`.
 
 #### `...$vaarg` (splatting)
 

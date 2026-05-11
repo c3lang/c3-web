@@ -126,22 +126,6 @@ fn void test(State s)
 }
 ```
 
-
-### Enum type properties 0.7.x
-
-Enum types have the following additional properties in addition to the usual properties for
-user-defined types:
-
-1. `membersof` returns a list of member references, similar to struct's `membersof`.
-2. `inner` returns the type of the ordinal as a `typeid`.
-3. `lookup_field(field_name, value)` lookup an enum by associated value.
-4. `names` returns a list containing the names of all enums.
-5. `from_ordinal(value)` convert an integer to an enum.
-6. `values` return a list containing all the enum values of an enum.
-7. `len` return the number of enum values.
-
-### Enum type properties 0.8.0+
-
 Enum types have the following additional properties in addition to the usual properties for
 user-defined types:
 

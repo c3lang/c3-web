@@ -48,7 +48,7 @@ Changes relating to literals, identifiers etc.
 6. `char` is an unsigned 8-bit integer. `ichar` is its signed counterpart.
 7. Well-defined bitwidth for integer types: ichar/char (8 bits), short/ushort (16 bits), int/uint (32 bits), long/ulong (64 bits), int128/uint128 (128 bits)
 8. Pointer-sized `iptr` and `uptr` integers.
-9. `isz` and `usz` integers corresponding to the `size_t` bitwidth. 
+9. `sz` and `usz` integers corresponding to the `size_t` bitwidth. 
 10. Optional types are formed using the `?` suffix.
 11. `bool` is the boolean type.
 12. `typeid` is a unique type identifier for a type, it can be used at runtime and compile time.
@@ -104,11 +104,11 @@ Changes relating to literals, identifiers etc.
 
 ### Introspection
 
-Compile time type methods: `alignof`, `associated`, `elements`, `extnameof`, `inf`, `inner`, `kindof`, `len`,
-`max`, `membersof`, `min`, `nan`, `names`, `params`, `returns`, `sizeof`, `typeid`, `values`,
-`qnameof`, `is_eq`, `is_ordered`.
+Compile time type methods: `alignmend`, `cname`, `inf`, `inner`, `kind`, `len`
+`max`, `members`, `min`, `nan`, `names`, `params`, `returns`, `size`, `typeid`, `values`,
+`qname`, `has_equals`, `is_ordered`.
 
-Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
+Runtime type methods: `inner`, `kind`, `len`, `names`, `size`.
 
 ## Expressions
 
@@ -141,8 +141,8 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `sizeof`.
 
 1. Operator precedence of bit operations is higher than `+` and `-`.
 2. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
-3. `sizeof` is `$sizeof` and only works on expressions. Use `Type.sizeof` on types.
-4. `alignof` is `$alignof` for expressions. Types use `Type.alignof`.
+3. `sizeof` is `@sizeof` and only works on expressions. Use `Type::size` on types.
+4. `alignof` is `@alignof` for expressions. Types use `Type.alignment`.
 5. Narrowing conversions are only allowed if all sub-expressions are as small or smaller than the type.
 6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened).
 
@@ -250,20 +250,17 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 2. Compile time variables with `$` prefix, e.g. `$foo`.
 3. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
 4. `$for` and `$foreach` to loop over compile time variables and data.
-5. `$typeof` determines an expression type without evaluating it.
+5. `$Typeof` determines an expression type without evaluating it.
 6. Type properties may be accessed at compile time.
 7. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects.
 8. `$error` emits an error if encountered.
 9. `$embed` includes a file as binary data.
 10. `$include` includes a file as text.
 11. `$exec` includes the output of a program as code.
-12. `$evaltype` takes a compile time string and turns it into a type.
+12. `$expand` takes a compile time string and turns it code.
 13. `$eval` takes a string and turns it into an identifier.
-14. `$extnameof` turns an identifier into its string external name.
-15. `$nameof` turns an identifier into its local string name.
-16. `$qnameof` turns an identifier into its local string name with the module prefixed.
-17. Compile time constant values are always compile time folded for arithmetic operations and casts.
-18. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
+14. Compile time constant values are always compile time folded for arithmetic operations and casts.
+15. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
 
 ### Changed
 

@@ -9,32 +9,30 @@ expands on this set by adding slices and vectors, as well as the `any` and `type
 ## Integers
 
 C3 has signed and unsigned integer types. The built-in signed integer types are `ichar`, `short`, `int`, `long`,
-`int128`, `iptr` and `isz`. `ichar` to `int128` have all well-defined power-of-two bit sizes, whereas `iptr`
-has the same number of bits as a `void*` and `isz` has the same number of bits as the maximum difference
+`int128`, `iptr` and `sz`. `ichar` to `int128` have all well-defined power-of-two bit sizes, whereas `iptr`
+has the same number of bits as a `void*` and `sz` has the same number of bits as the maximum difference
 between two pointers. For each signed integer type there is a corresponding unsigned integer type: `char`,
 `ushort`, `uint`, `ulong`, `uint128`, `uptr` and `usz`.
 
-| type    | signed? | min    | max       | bits   |
-|---------|---------|--------|-----------|--------|
-| ichar   | yes     | -128   | 127       | 8      |
-| short   | yes     | -32768 | 32767     | 16     |
-| int     | yes     | -2^31  | 2^31 - 1  | 32     |
-| long    | yes     | -2^63  | 2^63 - 1  | 64     |
-| int128  | yes     | -2^127 | 2^127 - 1 | 128    |
-| iptr    | yes     | varies | varies    | varies |
-| isz     | yes     | varies | varies    | varies |
-| char    | no      | 0      | 255       | 8      |
-| ushort  | no      | 0      | 65535     | 16     |
-| uint    | no      | 0      | 2^32 - 1  | 32     |
-| ulong   | no      | 0      | 2^64 - 1  | 64     |
+| type   | signed? | min    | max       | bits   |
+|--------|---------|--------|-----------|--------|
+| ichar  | yes     | -128   | 127       | 8      |
+| short  | yes     | -32768 | 32767     | 16     |
+| int    | yes     | -2^31  | 2^31 - 1  | 32     |
+| long   | yes     | -2^63  | 2^63 - 1  | 64     |
+| int128 | yes     | -2^127 | 2^127 - 1 | 128    |
+| iptr   | yes     | varies | varies    | varies |
+| sz     | yes     | varies | varies    | varies |
+| char   | no      | 0      | 255       | 8      |
+| ushort | no      | 0      | 65535     | 16     |
+| uint   | no      | 0      | 2^32 - 1  | 32     |
+| ulong  | no      | 0      | 2^64 - 1  | 64     |
 | uint128 | no      | 0      | 2^128 - 1 | 128    |
-| uptr    | no      | 0      | varies    | varies |
-| usz     | no      | 0      | varies    | varies |
+| uptr   | no      | 0      | varies    | varies |
+| usz    | no      | 0      | varies    | varies |
 
-On 64-bit machines `iptr`/`uptr` and `isz`/`usz` are usually 64-bits, like `long`/`ulong`.
+On 64-bit machines `iptr`/`uptr` and `sz`/`usz` are usually 64-bits, like `long`/`ulong`.
 On 32-bit machines on the other hand they are generally `int`/`uint`.
-
-*Note: from 0.8.0 and onward, `isz` is renamed `sz` and is used as the default. (see [https://c3-lang.org/blog/unsigned-sizes-a-five-year-mistake/]())*
 
 ### Integer constants
 
@@ -168,7 +166,7 @@ The internal representation of a slice is a two element struct:
 struct SliceRaw
 {
 	void* ptr;
-	usz len;
+	sz len;
 }
 ```
 This definition can be found in the module `std::core::runtime`.

@@ -136,7 +136,7 @@ fn void test()
 }
 ```
 
-Note that unions only take up as much space as their largest member, so `Integral.sizeof` is equivalent to `long.sizeof`.
+Note that unions only take up as much space as their largest member, so `Integral::size` is equivalent to `long::size`.
 
 
 ## Nested sub-structs / unions
@@ -164,5 +164,5 @@ struct Person
 
 ## Union and structs type properties
 
-Structs and unions also support the `membersof` property (`members` in 0.8.0+), which returns a list of struct/union members.
+Structs and unions also support the `members` property, which returns a list of struct/union members.
 

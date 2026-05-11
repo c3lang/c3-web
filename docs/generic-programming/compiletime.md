@@ -143,7 +143,7 @@ Looping over enums:
 ```c3
 macro foo_enum($SomeEnum)
 {
-    $foreach $x : $SomeEnum.values:
+    $foreach $x : $SomeEnum::values:
         io::printfn("%d", (int)$x);
     $endforeach
 }
@@ -259,13 +259,9 @@ At compile time, full type information is available. This allows for creation of
 like serialization.
 
 ```c3
-usz foo_alignment = Foo.alignof; 
-usz foo_member_count = Foo.membersof.len;
-String foo_name = Foo.nameof;
-// Note: In 0.8+ use:
-// sz foo_alignment = Foo::alignof; 
-// sz foo_member_count = Foo::members.len;
-// String foo_name = Foo::name;
+sz foo_alignment = Foo::alignment; 
+sz foo_member_count = Foo::members.len;
+String foo_name = Foo::name;
 ```
 
 
@@ -276,13 +272,6 @@ To read more about all the fields available at compile time, see the page on [re
 ## Compile time functions
 
 The following is a list of functions available at compile time:
-
-### `$alignof`
-
-Get the alignment of something.
-See [reflection](../generic-programming/reflection.md#alignof).
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
 
 ### `$assert`
 
@@ -350,23 +339,9 @@ fn void main()
 Execute a script at compile time and include the result in the source code.
 [See more](../language-fundamentals/modules.md#exec).
 
-### `$extnameof`, `$qnameof` and `$nameof`
+### `$expand`
 
-Get the external name of a symbol.
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
-
-See [reflection](../generic-programming/reflection.md#extnameof).
-
-External names are the names written into the symbol table of the executable or library binary, which subsequently may later be used by other programs to call into the binary by linking to those names, such as via foreign function interfaces (FFI) from another language or via direct use of the binary interface (such as enabled by the ABI and library compatibility of C and C3). 
-
-The external name of a symbol in the built binary can be set by attaching an `@export("<intended_symbol_name>")` attribute.
-
-On Linux, the `nm` shell command can be used to view the symbol table of a binary directly, thus enabling determination of what names a foreign program would see when looking at the binary. For example, try running `nm path/to/binary &> nm_out.txt` then viewing the `nm_out.txt` file. The `&>` combines both normal (`stdout`) and error (`stderrr`) output into the file, whereas just `>` would redirect only normal (`stdout`) output. 
-
-On Windows, you can try `dumpbin /SYMBOLS` for debug builds, `dumpbin /EXPORTS` for libraries, or `dumpbin /IMPORTS` for executables, but it may not help as much since large parts of the symbol table may be missing and hence misleading. There may also be tools available only in Visual Studio or associated with it, since Microsoft designs it that way intentionally to encourage programs to be built the way Microsoft wants.
-
-On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before may help.
+Convert any compile time string into code at compile time.
 
 ### `$feature`
 
@@ -380,64 +355,9 @@ As an important limitation, the text may not include a `module` statement.
 
 Note that if pure data inclusion is what you want then `$embed` may be more helpful than `$include`, and if you want dynamic data, `$exec` may be better.
 
-### `$nameof`
+### `$vaarg`
 
-Get the local name of a symbol.
-See [reflection](../generic-programming/reflection.md#dollar-nameof).
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
-
-Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
-
-For example, `$nameof(io::printn)` is `printn`.
-
-### `$offsetof`
-
-Get the offset of a member.
-See [reflection](../generic-programming/reflection.md#offsetof).
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
-
-### `$qnameof`
-
-Get the qualified name of a symbol.
-See [reflection](../generic-programming/reflection.md#qnameof).
-
-Qualified names are the full ("absolute") namespace paths needed to reach a symbol.
-
-For example, `$qnameof(io::printn)` is `std::io::printn`.
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
-
-### `$vacount`
-
-Return the number of macro vaarg arguments.
-For this and other vaarg compile-time functions
-[see here](../generic-programming/macros.md#macro-vaargs).
-
-### `$vaconst`
-
-Return a vaarg as a `$constant` parameter.
-
-### `$vaexpr`
-
-Return a vaarg as an `#expr` parameter.
-
-### `$vasplat`
-
-Expand the vaargs into an initializer list or function call, thus providing a way of passing part or all of the vaarg list's arguments onward.
-
-To expand only part of a vaarg list rather than all of it, use `$vasplat[<min>..<max>]` with the intended indices instead of just `$vasplat`. See the section on [slicing arrays](../language-common/arrays.md#slicing-arrays) to learn more about the wide variety of ways that such index ranges can be formed.
-
-### `$vatype`
-
-Get a vaarg as a `$Type` parameter.
-
-### `$sizeof`
-
-Return the size of an expression.
-
-\**Note: this function is removed in 0.8+, use `$reflect` instead.*
+This is the interface for accessing macro raw vaargs, [see here](../generic-programming/macros.md#macro-vaargs).
 
 ### `$stringify`
 
@@ -469,7 +389,7 @@ fn void main()
 
 This elminates redundancy when print debugging. This code could be refined to be better, such as by making `@show` handle [Optionals](../language-common/optionals-essential.md#what-is-an-optional) correctly, but the simple version above is less distracting. However, as you can see, code can be annoted for temporary print debugging very easily by using `$stringify` based expression macros. 
 
-### `$typeof`
+### `$Typeof`
 
 Get the type of an expression at compile time, without ever evaluating it at run time and thus without causing side effects.
 
@@ -479,14 +399,14 @@ For example, the following C3 test passes:
 fn void typeof_has_no_side_effects() @test
 {
     int minutes_left = 20;
-    $assert($typeof(minutes_left += 10).nameof == "int");
+    $assert($Typeof(minutes_left += 10)::name == "int");
     assert(minutes_left == 20);
     
     // The state of `minutes_left` above never changes.
 }
 ```
 
-### `$typefrom`
+### `$Typefrom`
 
 Get a type from a compile time constant `typeid`. It can also convert a compile-time string to the corresponding type.
 

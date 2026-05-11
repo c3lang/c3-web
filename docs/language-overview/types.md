@@ -45,24 +45,22 @@ fn Callback getCallback() { /* ... */ } // Ok!
 
 ### Compile time properties
 
-Types have built in type properties available through `.method` syntax. The following properties 
+Types have built-in type properties available through `::property` syntax. The following properties 
 are common to all C3 runtime types:
 
-1. `alignof` - The standard alignment of the type in bytes. For example `int.alignof` will typically be 4.
-2. `kindof` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
-3. `extnameof` - Returns a string with the extern name of the type, rarely used.
-4. `nameof` - Returns a string with the unqualified name of the type.
-5. `qnameof` - Returns a string with the qualified (using the full path) name of the type.
-6. `sizeof` - Returns the storage size of the type in bytes.
+1. `alignment` - The standard alignment of the type in bytes. For example `int::alignment` will typically be 4.
+2. `kind` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
+3. `cname` - Returns a string with the extern name of the type, rarely used.
+4. `name` - Returns a string with the unqualified name of the type.
+5. `qname` - Returns a string with the qualified (using the full path) name of the type.
+6. `size` - Returns the storage size of the type in bytes.
 7. `typeid` - Returns a runtime typeid for the type.
-8. `methodsof` - Returns the methods implemented for a type.
-9. `has_tagof(tagname)` - Returns true if the type has a particular tag.
-10. `tagof(tagname)` - Retrieves the tag defined on the type.
-11. `is_eq` - True if the type implements `==`
+8. `methods` - Returns the methods implemented for a type.
+9. `get_tag(tagname)` - Returns true if the type has a particular tag.
+10. `has_tag(tagname)` - Retrieves the tag defined on the type.
+11. `has_equals` - True if the type implements `==`
 12. `is_ordered` - True if the type implements comparisons.
 13. `is_substruct` - True if the type has an inline member.
-
-\*Note: 0.8.0 moves to the `int::align` syntax instead.
 
 ## Basic types
 
@@ -72,29 +70,27 @@ Integer types are either signed or unsigned.
 
 ### Integer types
 
-| Name        | bit size | signed |
-|:------------| --------:|:------:|
-| `bool`&dagger;    | 1        | no     |
-| `ichar`     | 8        | yes    |
-| `char`      | 8        | no     |
-| `short`     | 16       | yes    |
-| `ushort`    | 16       | no     |
-| `int`       | 32       | yes    |
-| `uint`      | 32       | no     |
-| `long`      | 64       | yes    |
-| `ulong`     | 64       | no     |
-| `int128`    | 128      | yes    |
-| `uint128`   | 128      | no     |
-| `iptr`&Dagger;  | varies   | yes    |
-| `uptr`&Dagger;  | varies   | no     |
-| `isz`&Dagger;   | varies   | yes    |
-| `usz`&Dagger;   | varies   | no     |
+| Name             | bit size | signed |
+|:-----------------| --------:|:------:|
+| `bool`&dagger;   | 1        | no     |
+| `ichar`          | 8        | yes    |
+| `char`           | 8        | no     |
+| `short`          | 16       | yes    |
+| `ushort`         | 16       | no     |
+| `int`            | 32       | yes    |
+| `uint`           | 32       | no     |
+| `long`           | 64       | yes    |
+| `ulong`          | 64       | no     |
+| `int128`         | 128      | yes    |
+| `uint128`        | 128      | no     |
+| `iptr`&Dagger;   | varies   | yes    |
+| `uptr`&Dagger;   | varies   | no     |
+| `sz`&Dagger;     | varies   | yes    |
+| `usz`&Dagger;    | varies   | no     |
 
 &dagger;: `bool` will be stored as a byte.
 
 &Dagger;: Size, pointer and pointer-sized types depend on the target platform.
-
-*Note that `isz` is renamed `sz` from 0.8.0 and onwards.*
 
 #### Integer type properties
 
@@ -133,14 +129,14 @@ Integer literals follow C's rules:
 6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
 
 ```c3
-$typeof(1);              // int
-$typeof(1u);             // uint
-$typeof(1L);             // long
-$typeof(0x11);           // uint, hex is unsigned by default
-$typeof(0x1ULL);         // uint128
-$typeof(4000000000);     // long, since the number exceeds int.max
-$typeof(0x000000000000); // ulong: 12 hex chars indicate a 48 bit value
-$typeof(0b000000000000); // uint: 12 binary chars indicate a 12 bit value
+$Typeof(1);              // int
+$Typeof(1u);             // uint
+$Typeof(1L);             // long
+$Typeof(0x11);           // uint, hex is unsigned by default
+$Typeof(0x1ULL);         // uint128
+$Typeof(4000000000);     // long, since the number exceeds int.max
+$Typeof(0x000000000000); // ulong: 12 hex chars indicate a 48 bit value
+$Typeof(0b000000000000); // uint: 12 binary chars indicate a 12 bit value
 ```
 
 ### TwoCC, FourCC and EightCC literals
@@ -305,9 +301,9 @@ and each value defined by `faultdef` is globally unique. This is true even when 
 !!! note
     The underlying unique value assigned to a fault may vary each time a program is run.
 
-#### Fault nameof
+#### Fault description
 
-The fault type only has one field: `nameof`, which returns the name of the fault, namespaced with the last module path, e.g. `"io::EOF"`.
+The fault type only has one field: `description`, which returns the name of the fault, namespaced with the last module path, e.g. `"io::EOF"`.
 
 ### The `typeid` type
 
@@ -319,15 +315,15 @@ e.g. `typeid a = Foo.typeid;`. The value itself is pointer-sized.
 At compile time, a typeid value has all the properties of its underlying type:
 
 ```c3
-String a = int.nameof;        // "int"
-String b = int.typeid.nameof; // "int"
+String a = int::name;        // "int"
+String b = int::typeid.name; // "int"
 ```
 
 However, at runtime only a few are available:
 
-1. `sizeof` - always supported.
-2. `kindof` - always supported.
-3. `parentof` - supported on distinct and struct types, returning the inline member type.
+1. `size` - always supported.
+2. `kind` - always supported.
+3. `parent` - supported on distinct and struct types, returning the inline member type.
 4. `inner` - supported on types implementing it.
 5. `names` - supported on enum types.
 6. `len` - supported on arrays, vectors and enums.

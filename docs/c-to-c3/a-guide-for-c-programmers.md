@@ -459,8 +459,8 @@ long c;     // Guaranteed 64 bits
 ulong d;    // Guaranteed 64 bits
 int128 e;   // Guaranteed 128 bits
 uint128 f;  // Guaranteed 128 bits
-usz g;      // Same as C size_t, depends on target
-sz h;       // Same as C ptrdiff_t
+sz g;       // Same as C ptrdiff_t, ssize_t, depends on target
+usz h;      // Same as C size_t, depends on target 
 iptr i;     // Same as intptr_t depends on target
 uptr j;     // Same as uintptr_t depends on target
 ```
@@ -550,7 +550,7 @@ return false;
 // C3, direct translation:
 do FAIL:
 {
-    Foo* foo = malloc(Foo.sizeof);
+    Foo* foo = malloc(Foo::size);
 
     if (tryFoo(foo)) break FAIL;
     if (modifyFoo(foo)) break FAIL;
@@ -562,7 +562,7 @@ free(foo);
 return false;
 
 // C3, using defer:
-Foo* foo = malloc(Foo.sizeof);
+Foo* foo = malloc(Foo::size);
 defer free(foo);
 
 if (tryFoo(foo)) return false;

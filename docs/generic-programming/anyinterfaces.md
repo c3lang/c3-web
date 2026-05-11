@@ -16,9 +16,9 @@ This allows switching over the typeid, using a normal switch:
 ```c3
 switch (my_any.type)
 {
-    case Foo.typeid:
+    case Foo::typeid:
         ...
-    case Bar: // .typeid can be elided
+    case Bar: // ::typeid can be elided
         ...
 }
 ```
@@ -28,13 +28,13 @@ is typically done using the `any_make` function: `any_make(ptr, type)`
 will create an `any` pointing to `ptr` and with typeid `type`.
 
 Since the runtime `typeid` is available, we can query for any runtime `typeid` property available
-at runtime, for example the size, e.g. `my_any.type.sizeof`. This allows us to do a lot of work
+at runtime, for example the size, e.g. `my_any.type.size`. This allows us to do a lot of work
 on with the enclosed data without knowing the details of its type.
 
 For example, this would make a copy of the data and place it in the variable `any_copy`:
 ```c3
-void* data = malloc(a.type.sizeof);
-mem::copy(data, a.ptr, a.type.sizeof);
+void* data = malloc(a.type.size);
+mem::copy(data, a.ptr, a.type.size);
 any any_copy = any_make(data, a.type);
 ```
 
@@ -68,7 +68,7 @@ C3, this is possible to emulate by passing around structs containing a pointer t
 While this is efficient and often the best solution, it puts certain assumptions on the code and makes interfaces
 more challenging to evolve over time.
 
-As an alternative there are languages (such as Objective-C) which instead use message passing to dynamically typed
+As an alternative, there are languages (such as Objective-C) which instead use message passing to dynamically typed
 objects, where the availability of functionality may be queried at runtime.
 
 C3 provides this latter functionality over the `any` type using *interfaces*.

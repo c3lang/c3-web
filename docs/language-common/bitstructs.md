@@ -199,5 +199,5 @@ fn void test()
 
 Bitstructs also support:
 
-1. `membersof` - Return a list of all bitstruct members. (use `member` in 0.8.0+).
+1. `members` - Return a list of all bitstruct members.
 2. `inner` - Return the type of the bitstruct "container" type.

@@ -38,7 +38,7 @@ This will return `"<GLOBAL>"` if used on the global level (outside any function)
 #### `$$FUNCTION`
 The current function as an identifier, as if its name were written in place of `$$FUNCTION`. 
 
-As such, it may be queried for associated info (e.g. `$$FUNCTION.nameof`, `$typeof($$FUNCTION)`, etc) or assigned to a function pointer and later called, etc. Thus, more info than just a `String` function name may be accessed this way, in contrast to `$$FUNC`.
+As such, it may be queried for associated info (e.g. `$reflect($$FUNCTION).name`, `$Typeof($$FUNCTION)`, etc) or assigned to a function pointer and later called, etc. Thus, more info than just a `String` function name may be accessed this way, in contrast to `$$FUNC`.
 
 #### `$$LINE`
 The current line as an integer.

@@ -18,7 +18,7 @@ struct Foo
     double[] x;
 }
 
-fn double Foo.get(&self, usz i) @operator([])
+fn double Foo.get(&self, sz i) @operator([])
 {
     return self.x[i];
 }
@@ -42,7 +42,7 @@ be retrieved in a different way. If this overload isn't defined, then `&my_type[
 be a syntax error.
 
 ```c3
-fn double* Foo.get_ref(&self, usz i) @operator(&[])
+fn double* Foo.get_ref(&self, sz i) @operator(&[])
 {
     return &self.x[i];
 }
@@ -53,7 +53,7 @@ fn double* Foo.get_ref(&self, usz i) @operator(&[])
 This operator, the assignment counterpart of `[]`, allows setting an element using `my_type[<index>] = <value>`.
 
 ```c3
-fn void Foo.set(&self, usz i, double new_val) @operator([]=)
+fn void Foo.set(&self, sz i, double new_val) @operator([]=)
 {
     return self.x[i] = new_val;
 }
@@ -72,12 +72,12 @@ with overloads for `[]` (`@operator([])`) and `len` (`@operator(len)`) need to b
 If `&[]` is implemented, `foreach` by reference will be enabled (e.g. `foreach(double* &d : foo)`).
 
 ```c3
-fn double Foo.get(&self, usz i) @operator([])
+fn double Foo.get(&self, sz i) @operator([])
 {
     return self.x[i];
 }
 
-fn usz Foo.len(&self) @operator(len)
+fn sz Foo.len(&self) @operator(len)
 {
     return self.x.len;
 }
@@ -198,11 +198,9 @@ fn void main()
 
 Overloading `==` is, like overloading arithmetic operators, only allowed on user-defined types.
 
-\* Please note that 0.8.x removes `!=`.
+## Operator overloading for `<` 
 
-## Operator overloading for `<` (0.8+) 
-
-Overloading `<` is supported for 0.8.0 and onwards. If `<` and `==` are implemented, then the type supports all ordering operations: `< <= == != >= >`.
+If `<` and `==` are implemented, then the type supports all ordering operations: `< <= == != >= >`.
 
 !!! note
 

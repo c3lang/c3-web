@@ -13,256 +13,11 @@ Runtime type information is also available by retrieving a `typeid` from a runti
 
 See [the documentation about the `any` type](../language-overview/types.md#the-any-type) for more information if you want or need runtime reflection. Such runtime info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`) to implement runtime polymorphism.
 
-## Compile time reflection in 0.7.x
-
-During compile time there are many compile time fields that may be accessed using "dot notation" of the form `<type>.<property>`. That works for types, but in contrast when you want to retrieve type information about *values* or other expressions then try [the `$` functions](../generic-programming/reflection.md#compile-time-functions) instead.
-
-For example, notice that `<type>.sizeof` and `$sizeof(<value>)` do not operate on the same kinds of entities. The former is for types whereas the later is for values.
-
-They can nonetheless be used to achieve similar effects though. For example, the following assertions all pass:
-
-```c3
-$assert(short.sizeof == $sizeof((short)0));
-
-short sh = 0;
-$assert($sizeof(sh) == $typeof(sh).sizeof);
-```
-
-### Type properties
-
-Here are the property-like ("dot notation") constants associated with each type:
-
-- `alignof`
-- `associated`
-- `elements`
-- `extnameof`
-- `inf`
-- `inner`
-- `kindof`
-- `len`
-- `max`
-- `membersof`
-- `methodsof`
-- `min`
-- `nan`
-- `nameof`
-- `names`
-- `paramsof`
-- `parentof`
-- `qnameof`
-- `returns`
-- `sizeof`
-- `typeid`
-- `values`
-
-Many of these properties are very useful for writing generics macros and contracts.
-
-#### `alignof`
-
-Returns the alignment in bytes needed for the type.
-
-```c3
-struct Foo @align(8)
-{
-    int a;
-}
-
-uint a = Foo.alignof; // 8
-```
-
-#### `associated`
-
-*Only available for enums.*
-Returns an array containing the types of associated values if any.
-
-```c3
-enum Foo : int (double d, String s)
-{
-    BAR { 1.0, "normal" },
-    BAZ { 2.0, "exceptional" }
-}
-String s = Foo.associated[0].nameof; // "double"
-```
-
-#### `inf`
-
-*Only available for floating point types*
-
-Returns a representation of floating point "infinity".
-
-#### `inner`
-
-This returns a typeid to an "inner" type. What this means is different for each type:
-
-- Array -> the array base type.
-- Bitstruct -> underlying base type.
-- Distinct -> the underlying type.
-- Enum -> underlying enum base type.
-- Pointer -> the type being pointed to.
-- Vector -> the vector base type.
-
-It is not defined for other types.
-
-#### `kindof`
-
-Returns the underlying `TypeKind` as defined in std::core::types.
-
-```c3
-TypeKind kind = int.kindof; // TypeKind.SIGNED_INT
-```
-
-#### `len`
-
-Returns the length of the array. For enums and constdefs, it will return the number of constants.
-
-```c3
-enum Foo
-{
-    BAR,
-    BAZ
-}
-usz len = int[4].len; // 4
-int foo_values = Foo.len; // 2
-```
-
-#### `max`
-
-Returns the maximum value of the type (only valid for integer and float types).
-
-```c3
-ushort max_ushort = ushort.max; // 65535
-```
-
-#### `membersof`
-
-*Only available for bitstruct, struct and union types.*
-
-Returns a *compile time* list containing the fields in a bitstruct, struct or union. The
-elements have the *compile time only* type of `member_ref`.
-
-*Note: As the list is an "untyped" list, you are limited to iterating and accessing it at
-compile time.*
-
-```c3
-struct Baz
-{
-    int x;
-    Foo* z;
-}
-String x = Baz.membersof[1].nameof; // "z"
-```
-
-A `member_ref` has properties `alignof`, `kindof`, `membersof`, `nameof`, `offsetof`, `sizeof` and `typeid`.
-
-#### `methodsof`
-
-This property returns the methods associated with a type as a constant array of strings.
-
-Methods are generally registered *after* types are registered, which means that the use of
-"methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
-It is always safe to use inside a function.
-
-#### `min`
-
-Returns the minimum value of the type (only valid for integer and float types).
-
-```c3
-ichar min_ichar = ichar.min; // -128
-```
-
-#### `nameof` {: #nameof }
-
-Returns the name of the type.
-
-#### `names`
-
-Returns a slice containing the names of an enum.
-
-```c3
-enum FooEnum
-{
-    BAR,
-    BAZ
-}
-String[] x = FooEnum.names; // ["BAR", "BAZ"]
-```
-
-#### `paramsof`
-
-*Only available for function pointer types.*
-Returns a ReflectedParam struct for all function pointer parameters.
-
-```c3
-alias TestFunc = fn int(int x, double f);
-String s = TestFunc.paramsof[1].name; // "f"
-typeid t = TestFunc.paramsof[1].type; // double.typeid
-```
-
-#### `parentof`
-
-*Only available for bitstruct and struct types.*
-Returns the typeid of the parent type.
-
-```c3
-struct Foo
-{
-    int a;
-}
-
-struct Bar
-{
-    inline Foo f;
-}
-
-String x = Bar.parentof.nameof; // "Foo"
-```
-
-#### `returns`
-
-*Only available for function types.*
-Returns the typeid of the return type.
-
-```c3
-alias TestFunc = fn int(int, double);
-String s = TestFunc.returns.nameof; // "int"
-```
-
-#### `sizeof`
-
-Returns the size in bytes for the given type, like C `sizeof`.
-
-```c3
-usz x = Foo.sizeof;
-```
-
-#### `typeid`
-
-Returns the typeid for the given type. `alias`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
-
-```c3
-typeid x = Foo.typeid;
-```
-
-#### `values`
-
-Returns a slice containing the values of an enum.
-
-```c3
-enum FooEnum
-{
-    BAR,
-    BAZ
-}
-String x = FooEnum.values[1].nameof; // "BAR"
-```
-
-## Compile time reflection in 0.8+
-
-Starting from 0.8.0, compile time information about types is accessed using `::`, e.g. `MyType::size`.
+Compile time information about types is accessed using `::`, e.g. `MyType::size`.
 
 For *values* use `$reflect(<value>)` to access the reflected properties for the underlying value.
 
-The exception is `$typeof(<value>)`, which creates a type from the type of the value. There are convenience macros like `@sizeof(<value>)`, `@kindof(<value>)` for immediately accessing reflection data without explicitly invoking `$reflect`.
+The exception is `$Typeof(<value>)`, which creates a type from the type of the value. There are convenience macros like `@sizeof(<value>)`, `@kindof(<value>)` for immediately accessing reflection data without explicitly invoking `$reflect`.
 
 ### Type properties & functions
 
@@ -334,7 +89,7 @@ enum Foo
     BAR,
     BAZ
 }
-usz len = int[4]::len; // 4
+sz len = int[4]::len; // 4
 int foo_values = Foo::len; // 2
 ```
 
@@ -472,7 +227,7 @@ String s = TestFunc::returns.name; // "int"
 Returns the size in bytes for the given type, like C `sizeof`.
 
 ```c3
-usz x = Foo::size;
+sz x = Foo::size;
 ```
 
 #### `get_tag` / `has_tag`
@@ -504,19 +259,12 @@ String x = FooEnum.values[1].description; // "BAR"
 
 There are several built-in functions to inspect the code during compile time.
 
-- `$alignof` 0.7.x only
 - `$defined`
 - `$eval`
-- `$evaltype` 0.7.x only
-- `$extnameof` 0.7.x only
-- `$nameof` 0.7.x only
-- `$offsetof` 0.7.x only
-- `$qnameof` 0.7.x only
-- `$sizeof` 0.7.x only
 - `$stringify`
-- `$typeof`
-- `$typefrom`
-- `$reflect` 0.8+
+- `$Typeof`
+- `$Typefrom`
+- `$reflect`
 
 #### `$defined`
 
@@ -633,105 +381,72 @@ macro @describe(#expr)
 
 fn void main()
 {
-	@describe(isz.sizeof);
+	@describe(sz::size);
   //Prints:
-  //  The value of `isz.sizeof` is `8`.
+  //  The value of `sz.size` is `8`.
 }
 ```
 
-#### `$typeof`
+#### `$Typeof`
 
 Returns the type of an expression or variable.
 
 ```c3
 Foo f;
-$typeof(f) x = f;
+$Typeof(f) x = f;
 ```
 
-#### `$typefrom` {: #typefrom }
+#### `$Typefrom` {: #typefrom }
 
 Get a type from a compile time constant `typeid`. It can also convert a compile-time string to the corresponding type.
 
 ```c3
-$typefrom("float") f = 12.0f;
-$typefrom(int::typeid) i = 12;
+$Typefrom("float") f = 12.0f;
+$Typefrom(int::typeid) i = 12;
 ```
 
-## 0.7.x only
+## Expression values through `$reflect`
 
-#### `$alignof`
+`$reflect` give access to different properties depending on the expression. To determine at compile time that some information is available use `$define($reflect(x).some_property)`.
 
-Returns the alignment in bytes needed for the type or member.
+### `alignment`
 
-```c3
-module test::bar;
+Get the alignment of something.
+See [reflection](../generic-programming/reflection.md#alignment).
 
-struct Foo
-{
-    int x;
-    char[] y;
-}
-int g = 123;
+### `cname`
 
-$alignof(Foo.x); // => returns 4
-$alignof(Foo.y); // => returns 8 on 64 bit
-$alignof(Foo);   // => returns 8 on 64 bit
-$alignof(g);     // => returns 4
-```
+This returns the external name of a symbol.
 
-#### `$extnameof`
+External names are the names written into the symbol table of the executable or library binary, which subsequently may later be used by other programs to call into the binary by linking to those names, such as via foreign function interfaces (FFI) from another language or via direct use of the binary interface (such as enabled by the ABI and library compatibility of C and C3).
 
-Returns the external name of a type, variable or function. The external name is
-the one used by the linker.
+The external name of a symbol in the built binary can be set by attaching an `@export("<intended_symbol_name>")` attribute.
 
-```c3
-fn void testfn(int x) { }
-String a = $extnameof(g); // => "test.bar.g";
-String b = $extnameof(testfn); // => "test.bar.testfn"
-```
+On Linux, the `nm` shell command can be used to view the symbol table of a binary directly, thus enabling determination of what names a foreign program would see when looking at the binary. For example, try running `nm path/to/binary &> nm_out.txt` then viewing the `nm_out.txt` file. The `&>` combines both normal (`stdout`) and error (`stderrr`) output into the file, whereas just `>` would redirect only normal (`stdout`) output.
 
-#### `$nameof` {: #dollar-nameof }
+On Windows, you can try `dumpbin /SYMBOLS` for debug builds, `dumpbin /EXPORTS` for libraries, or `dumpbin /IMPORTS` for executables, but it may not help as much since large parts of the symbol table may be missing and hence misleading. There may also be tools available only in Visual Studio or associated with it, since Microsoft designs it that way intentionally to encourage programs to be built the way Microsoft wants.
 
-Returns the name of a function or variable as a string without module prefixes.
-
-```c3
-fn void test() { }
-int g = 1;
-
-String a = $nameof(g); // => "g"
-String b = $nameof(test); // => "test"
-```
-
-#### `$offsetof`
-
-Returns the offset of a member in a struct.
-
-```c3
-Foo z;
-$offsetof(z.y); // => returns 8 on 64 bit, 4 on 32 bit
-```
-
-#### `$qnameof`
-
-Returns the same as `$nameof`, but with the full module name prepended.
-
-```c3
-module abc;
-fn void test() { }
-int g = 1;
-
-String a = $qnameof(g); // => "abc::g"
-String b = $qnameof(test); // => "abc::test"
-```
-
-#### `$sizeof`
-
-This is used on a value to determine the allocation size needed. `$sizeof(a)` is equivalent
-to doing `$typeof(a).sizeof`. Note that this is only used on values and not on types.
-
-```c3
-$typeof(a)* x = allocate_bytes($sizeof(a));
-*x = a;
-```
+On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before may help.
 
 
+### `name`
+
+Get the local name of a symbol. Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
+
+For example, `$reflect(io::printn).name` is `printn`.
+
+### `offset`
+
+Get the offset of a member.
+
+### `qname`
+
+Get the qualified name of a symbol.
+
+Qualified names are the full ("absolute") namespace paths needed to reach a symbol.
+
+For example, `$reflect(io::printn).qname` is `std::io::printn`.
+
+### `size`
+
+Return the size of an expression in bytes.

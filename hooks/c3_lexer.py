@@ -21,7 +21,7 @@ class C3Lexer(RegexLexer):
             # Keywords
             (words((
                 'any', 'bfloat', 'bool', 'char', 'double', 'fault', 'float',
-                'float128', 'float16', 'ichar', 'int', 'int128', 'iptr', 'isz',
+                'float128', 'float16', 'ichar', 'int', 'int128', 'iptr', 'sz',
                 'long', 'short', 'typeid', 'uint', 'uint128', 'ulong', 'uptr',
                 'ushort', 'usz', 'void'
             ), suffix=r'\b'), Keyword.Type),

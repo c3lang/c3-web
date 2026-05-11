@@ -162,8 +162,8 @@ on the heap and zero initialize it. `mem::alloc(Type)` does the same but without
 Alternatively, `mem::new` can take a second initializer argument:
 
 ```c3
-Foo* f1 = malloc(Foo.sizeof);                   // No initialization
-Foo* f2 = calloc(Foo.sizeof);                   // Zero initialization
+Foo* f1 = malloc(Foo::size);                   // No initialization
+Foo* f2 = calloc(Foo::size);                   // Zero initialization
 Foo* f3 = mem::new(Foo);                        // Zero initialization
 Foo* f4 = mem::alloc(Foo);                      // No initialization
 Foo* f5 = mem::new(Foo, { 4, 10.0, .a = 123 }); // Initialized to argument
@@ -172,8 +172,8 @@ Foo* f5 = mem::new(Foo, { 4, 10.0, .a = 123 }); // Initialized to argument
 For arrays `mem::new_array` and `mem::alloc_array` work in corresponding ways:
 
 ```c3
-Foo* foos1 = malloc(Foo.sizeof * len);    // No initialization
-Foo* foos2 = calloc(Foo.sizeof * len);    // Zero initialization
+Foo* foos1 = malloc(Foo::size * len);    // No initialization
+Foo* foos2 = calloc(Foo::size * len);    // Zero initialization
 Foo[] foos3 = mem::new_array(Foo, len);   // Zero initialization
 Foo[] foos4 = mem::alloc_array(Foo, len); // No initialization
 ```
