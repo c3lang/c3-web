@@ -2,8 +2,6 @@
 title: "How to procrastinate while working hard"
 date: 2020-01-18
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/how-to-procrastinate-while-working-hard-4l5f](https://dev.to/lerno/how-to-procrastinate-while-working-hard-4l5f)*

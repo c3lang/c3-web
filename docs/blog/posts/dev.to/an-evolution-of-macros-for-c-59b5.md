@@ -2,8 +2,6 @@
 title: "An evolution of macros for C"
 date: 2020-01-28
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/an-evolution-of-macros-for-c-59b5](https://dev.to/lerno/an-evolution-of-macros-for-c-59b5)*

@@ -2,8 +2,6 @@
 title: "Why implicit imports fails"
 date: 2022-07-01
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8448-why_implicit_imports_fails](https://c3.handmade.network/blog/p/8448-why_implicit_imports_fails)*

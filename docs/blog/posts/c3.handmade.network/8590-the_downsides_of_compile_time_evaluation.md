@@ -2,8 +2,6 @@
 title: "The downsides of compile time evaluation"
 date: 2022-11-20
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8590-the_downsides_of_compile_time_evaluation](https://c3.handmade.network/blog/p/8590-the_downsides_of_compile_time_evaluation)*

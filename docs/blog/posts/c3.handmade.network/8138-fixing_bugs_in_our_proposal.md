@@ -2,8 +2,6 @@
 title: "Fixing \"bugs\" in our proposal"
 date: 2021-10-05
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8138-fixing_bugs_in_our_proposal](https://c3.handmade.network/blog/p/8138-fixing_bugs_in_our_proposal)*

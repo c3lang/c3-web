@@ -2,8 +2,6 @@
 title: "Overflow trapping in practice"
 date: 2021-02-26
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7651-overflow_trapping_in_practice](https://c3.handmade.network/blog/p/7651-overflow_trapping_in_practice)*

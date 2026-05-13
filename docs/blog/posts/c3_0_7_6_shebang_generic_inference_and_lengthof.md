@@ -5,8 +5,6 @@ readingTime: "5 min"
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
 slug: c3-language-at-0-7-6-shebang,-generic-inference-and-lengthof()
-search:
-  exclude: true
 ---
 
 The C3 programming language continues its steady evolution with version 0.7.6, focusing on quality-of-life improvements and language refinements While previous 0.7.x versions have seen some notable additions to the language itself, 0.7.6 only adds a few minor features, with nothing new planned for 0.7.7. Originally the inline asm updates and fixes were scheduled for 0.7.6, the discussion around the semantics took too much time for it to make it to 0.7.6.

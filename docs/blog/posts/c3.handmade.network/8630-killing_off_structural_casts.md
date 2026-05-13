@@ -2,8 +2,6 @@
 title: "Killing off structural casts"
 date: 2023-01-09
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8630-killing_off_structural_casts](https://c3.handmade.network/blog/p/8630-killing_off_structural_casts)*

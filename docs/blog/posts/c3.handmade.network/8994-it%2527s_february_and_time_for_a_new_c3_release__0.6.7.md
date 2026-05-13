@@ -2,8 +2,6 @@
 title: "It's February and time for a new C3 release: 0.6.7"
 date: 2025-02-16
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8994-it%2527s_february_and_time_for_a_new_c3_release__0.6.7](https://c3.handmade.network/blog/p/8994-it%2527s_february_and_time_for_a_new_c3_release__0.6.7)*

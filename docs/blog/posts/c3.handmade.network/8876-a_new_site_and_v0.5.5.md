@@ -2,8 +2,6 @@
 title: "A new site and v0.5.5"
 date: 2024-03-18
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8876-a_new_site_and_v0.5.5](https://c3.handmade.network/blog/p/8876-a_new_site_and_v0.5.5)*

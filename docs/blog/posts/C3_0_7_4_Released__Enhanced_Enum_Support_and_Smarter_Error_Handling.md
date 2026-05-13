@@ -3,8 +3,6 @@ title: "C3 0.7.4 Released: Enhanced Enum Support and Smarter Error Handling"
 date: 2025-08-01
 author: "Christoffer Lernö"
 slug: c3-0-7-4-released-enhanced-enum-support-and-smarter-error-handling
-search:
-  exclude: true
 ---
 
 C3 version 0.7.4 brings a substantial set of improvements focused on better enum support, enhanced error handling, improved debugging capabilities, and numerous quality-of-life improvements. And we're now also releasing binaries for OpenBSD! Here's a comprehensive look at what's new.

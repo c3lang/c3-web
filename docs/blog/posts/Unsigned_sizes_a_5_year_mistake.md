@@ -4,8 +4,6 @@ date: 2026-05-02
 tags: ["language-design"]
 author: "Christoffer Lernö"
 slug: unsigned-sizes-a-five-year-mistake
-search:
-  exclude: true
 ---
 
 *A quick note for readers who don't follow C3: it's a systems language in the C tradition. Specifics below are C3's, but the tradeoffs apply to any language that has to pick a type for sizes and lengths.*

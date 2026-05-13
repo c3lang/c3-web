@@ -4,8 +4,6 @@ date: 2025-12-05
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
 slug: jingle-bells,-c3-0-7-8-
-search:
-  exclude: true
 ---
 
 With Christmas on the horizon, C3 gets another monthly update to 0.7 with 0.7.8. As usual it brings a set of small tweaks and fixes. Let's see what we got:

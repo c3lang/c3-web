@@ -3,8 +3,6 @@ title: "C3 Language at 0.7.5: Language tweaks and conveniences"
 date: 2025-09-01
 author: "Christoffer Lernö"
 slug: c3-language-at-0-7-5-language-tweaks-and-conveniences
-search:
-  exclude: true
 ---
 
 The C3 programming language has reached 0.7.5, marking another milestone in the language's evolution. This release brings improvements to language features, developer experience, and standard library functionality.
