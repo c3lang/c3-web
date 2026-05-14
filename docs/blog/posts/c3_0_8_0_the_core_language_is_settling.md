@@ -246,7 +246,7 @@ Use with care.
 
 ### Removal of $xxxxof style builtins, updated type access
 
-This has its own article: https://c3-lang.org/blog/lets-kill-off-half-the-builtins-in-080/
+This has its own article: [link](https://c3-lang.org/blog/lets-kill-off-half-the-builtins-in-080/)
 
 
 ## Contracts
@@ -317,7 +317,7 @@ int a = b ?: 4 + foo();
 int a = foo() ?? b | 3;
 ```
 
-### `$Typeof` and `$Typefrom` instead of `$typeof`, $typefrom`
+### `$Typeof` and `$Typefrom` instead of `$typeof`, `$typefrom`
 
 This is a simple name change, to make it clearer that they can be in a type slot, as opposed to being a value.
 
@@ -340,7 +340,7 @@ alias Foo = @get_type();
 
 ### `docgen` command for html documentation generation
 
-This major addition to the C3 compiler now allows you do produce high quality documentation out of the box. This is also (finally!) ensuring that this site has up to date docs: https://c3-lang.org/standard-library/docs.html.
+This major addition to the C3 compiler now allows you do produce high quality documentation out of the box. This is also (finally!) ensuring that this site has up to date docs: [link](https://c3-lang.org/standard-library/docs.html).
 
 ### Support for Emscripten
 
