@@ -313,7 +313,7 @@ int a = foo() ?? io::EOF~ + 3;
 // Parses as (b ?: 4) + foo() in 0.8.0
 int a = b ?: 4 + foo();
 
-// Still parses as as (foo() ?? (b | 3))
+// Still parses as as foo() ?? (b | 3)
 int a = foo() ?? b | 3;
 ```
 
