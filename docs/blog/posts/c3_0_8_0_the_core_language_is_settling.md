@@ -4,8 +4,6 @@ date: 2026-05-14
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
 slug: 0_8_0_the_core_language_is_settling
-search:
-  exclude: true
 ---
 
 C3 is a programming language that evolves C – the same low-level model but with modern ergonomics. With 0.8.0, we're getting our first real glimpse of what C3 1.0 will look like: the core language design is now locking into its final shape.
