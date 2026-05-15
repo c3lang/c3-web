@@ -7,6 +7,8 @@ search:
 ## Overview
 This is meant for a quick reference, to learn more of the details, check the relevant sections.
 
+For a richer catalogue of example projects and scripts covering various themes and difficulties, check out the [C3 compiler's resources/examples directory](https://github.com/c3lang/c3c/tree/master/resources/examples).
+
 ## If Statement
 ```c3
 fn void if_example(int a)
