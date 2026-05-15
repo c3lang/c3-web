@@ -327,11 +327,83 @@ The keywords `true` and `false` are the two literals of the boolean type `bool`.
 The keyword `null` is the literal pointer value whose address is zero. Its type and conversions are specified in *Types*.
 
 ## Constants
-TODO
-### Extern constants
-TODO
+
+A constant is an immutable, named value. A constant declaration binds a `CONST_IDENT` to the value of its initializer.
+
+```
+const_decl ::= "const" type? CONST_IDENT attributes? ("=" expression)?
+```
+
+A constant declaration binds exactly one name and is terminated by a semicolon. It may appear at module level or within the body of a function.
+
+A constant declaration falls into one of three categories. A declaration preceded by `extern` declares an *extern constant*; the `extern` prefix is permitted only at module level, and the declaration has no initializer. A declaration that is not extern and specifies a type declares a *typed constant*. A declaration that is not extern and omits the type declares an *untyped constant*. A non-extern declaration must have an initializer.
+
+A constant declared within the body of a function is a *local constant*; it has local visibility and static storage duration.
+
+The initializer is an expression. The grammar does not restrict it, but it must evaluate to a constant value.
+
+A constant value belongs to one of two categories. A *compile-time constant* can participate in compile-time constant folding; a *runtime constant* cannot. The classification rules are given in *Compile-time and runtime constants*.
+
+Types, reflection values, and member references have no runtime representation. They may not be bound to a constant; they must be bound to a compile-time variable.
+
+A constant declaration may carry attributes. The applicable attributes are listed in *Attributes*.
+
+### Typed constants
+
+A *typed constant* is a non-extern constant declaration that specifies a type.
+
+```
+const int LIMIT = 100;
+const String GREETING = "hello";
+```
+
+The initializer must be assignable to the specified type. Assignability is defined in *Properties of types and values*.
+
+The specified type may be an optional type. It may have an inferred length, in which case the length is taken from the initializer.
+
+```
+const int[*] PRIMES = { 2, 3, 5, 7 };
+```
+
+A typed constant exists at runtime. Its address may be taken.
+
 ### Untyped constants
-TODO
+
+An *untyped constant* is a non-extern constant declaration that omits the type.
+
+```
+const LIMIT = 100;
+```
+
+An untyped constant differs from a typed constant in three respects:
+
+1. Its type is the type of its initializer.
+2. It does not exist at runtime.
+3. Its address may not be taken.
+
+### Extern constants
+
+An *extern constant* is a constant declaration preceded by `extern`.
+
+```
+extern const int VERSION;
+```
+
+An extern constant must specify a type, has no initializer, and may be declared only at module level.
+
+The value of an extern constant is not available during compilation. An extern constant is therefore not a constant expression, and may not be used where a constant value is required, including as the initializer of another constant.
+
+### Constant expressions
+
+A *constant expression* is an expression that evaluates to a constant value.
+
+Syntactically, a constant expression is an expression that excludes the assignment operators. Whether an expression is a constant expression, and the category of its value, is determined during semantic analysis.
+
+The following require a compile-time constant: array lengths, vector lengths, bitstruct member ranges, enum values, attribute arguments, and the operands of `$assert`, `$error`, `$switch`, `$case`, and `$embed`.
+
+A constant initializer and a global variable initializer accept a constant value of either category.
+
+
 ### Constant literals
 TODO
 ## Variables
