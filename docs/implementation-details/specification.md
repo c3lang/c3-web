@@ -403,6 +403,132 @@ The following require a compile-time constant: array lengths, vector lengths, bi
 
 A constant initializer and a global variable initializer accept a constant value of either category.
 
+## Variables
+
+A variable is a named, mutable value held in storage. A variable declaration binds an `IDENTIFIER` to a storage location of a specified or inferred type.
+
+A variable declaration may appear at module level or within the body of a function. A variable declared at module level is a *global variable*; a variable declared in a function body is a *local variable*.
+
+Every variable has a *storage duration* that determines its *lifetime*: the portion of program execution during which storage is reserved for the variable. A variable has a constant address and retains its last-stored value throughout its lifetime. Accessing a variable outside its lifetime is undefined behaviour.
+
+There are three storage durations:
+
+* A variable with *static storage duration* exists for the entire execution of the program. Its initializer, if any, is evaluated once before program startup.
+* A variable with *automatic storage duration* has storage allocated for the lifetime of the enclosing function call. The variable's name is in scope only within the block in which it is declared, but its storage remains valid until the function returns. If an initializer is given, it is evaluated each time the declaration is reached during execution; otherwise the variable is zero-initialized each time the declaration is reached.
+* A variable with *thread-local storage duration* exists for the lifetime of the thread for which it is created. Each thread that accesses the variable has a distinct instance, and each instance's initializer is evaluated when its thread starts.
+
+A global variable has static storage duration by default. A local variable has automatic storage duration by default. The modifiers `static` and `tlocal` change a local variable's storage duration to static or thread-local, respectively.
+
+A variable without an initializer is implicitly zero-initialized. The `@noinit` attribute may be used to leave a variable uninitialized; a type marked `@mustinit` may not carry `@noinit`.
+
+Variables and constants are mutually exclusive. A constant is declared with `const` and bound to a `CONST_IDENT`; a variable is declared without `const` and bound to an `IDENTIFIER`.
+
+A separate kind of declaration introduces *compile-time variables*, which exist only during compilation. They are described in their own subsection below.
+
+A variable declaration may carry attributes. The applicable attributes are listed in *Attributes*. Visibility of a global variable is controlled by `@public`, `@private`, and `@local`; see *Modules*.
+
+### Global variables
+
+A global variable is declared at module level.
+
+```
+global_var_decl ::= "tlocal"? type IDENT ("," IDENT)* attributes? ("=" expression)? ";"
+```
+
+The type is required. Each name must be an `IDENTIFIER`. A single declaration may bind several names by separating them with commas; a declaration that binds multiple names may not have an initializer.
+
+The initializer, if present, must be a constant expression (see *Constant expressions*). It may be either a compile-time or a runtime constant.
+
+A global variable has static storage duration. If the declaration is preceded by `tlocal`, the variable instead has thread-local storage duration; see *Thread-local variables*.
+
+A global variable preceded by `extern` is an *extern global variable*; see *Extern global variables*.
+
+### Extern global variables
+
+An *extern global variable* is a global variable whose definition is provided elsewhere and resolved at link time. It is declared with the `extern` prefix and has no initializer.
+
+```
+extern_global_var_decl ::= "extern" "tlocal"? type IDENT ("," IDENT)* attributes? ";"
+```
+
+```
+extern int VERSION;
+```
+
+An extern global variable must specify a type. It is otherwise subject to the same rules as a non-extern global variable, including the use of `tlocal` to give it thread-local storage duration.
+
+### Local variables
+
+A local variable is declared within the body of a function.
+
+```
+local_var_decl ::= type IDENT ("," IDENT)* attributes? ("=" expression)? ";"
+                 | "var" IDENT attributes? "=" expression ";"
+```
+
+In the first form the type is given explicitly. A single declaration may bind several names by separating them with commas; a declaration that binds multiple names may not have an initializer. In the second form the keyword `var` introduces the declaration and the type is inferred from the initializer; the initializer is required, and only a single name may be bound.
+
+The initializer is an expression. It need not be constant.
+
+A local variable has automatic storage duration. Its storage is allocated for the lifetime of the enclosing function call: the variable's name is in scope only within the block in which it is declared, but its storage remains valid until the function returns. If an initializer is given, it is evaluated each time the declaration is reached during execution; otherwise the variable is zero-initialized each time the declaration is reached.
+
+The modifiers `static` and `tlocal` change a local variable's storage duration; see *Static local variables* and *Thread-local variables*. The two modifiers may not appear together, and neither may be combined with the `var` form.
+
+### Thread-local variables
+
+A variable preceded by `tlocal` has thread-local storage duration: a distinct instance of the variable exists for each thread that accesses it, and each instance is initialized when its thread starts and persists for the lifetime of that thread.
+
+```
+tlocal int counter;             // global, thread-local
+
+fn void f()
+{
+    tlocal int n;               // local, thread-local
+}
+```
+
+A `tlocal` local variable is, in effect, a thread-local global variable whose name is visible only within the enclosing function.
+
+The initializer of a `tlocal` variable, if present, must be a constant expression.
+
+### Static local variables
+
+A local variable preceded by `static` is, in effect, a global variable whose name is visible only within the enclosing function. It has static storage duration: a single instance persists for the lifetime of the program, and its initializer is evaluated once before program startup.
+
+```
+fn int next_id()
+{
+    static int counter = 0;
+    return counter++;
+}
+```
+
+`static` is permitted only on local variable declarations; a global variable already has static storage duration.
+
+The initializer of a `static` local variable, if present, must be a constant expression.
+
+### Compile-time variables
+
+A compile-time variable exists only during compilation. It has no runtime representation, and its address may not be taken.
+
+A compile-time variable holds either a value or a type, distinguished by the case of its name:
+
+* A *compile-time value variable* is named with a `CT_IDENT` (`$name`).
+* A *compile-time type variable* is named with a `CT_TYPE_IDENT` (`$Name`).
+
+A compile-time variable is introduced by one of the following forms:
+
+```
+ct_var_decl ::= "var" CT_IDENT ("=" expression)? ";"
+              | "var" CT_TYPE_IDENT ("=" expression)? ";"
+              | type CT_IDENT ("=" expression)? ";"
+```
+
+A compile-time value variable may be untyped (`var $x`), typed by the `var` form with the type inferred from the initializer, or typed explicitly by giving a type in place of `var`. A compile-time type variable may not be given an explicit type.
+
+An initializer is optional. If present, it must be a constant expression for a value variable, or denote a type for a type variable.
+
+Attributes may not be applied to a compile-time variable. A compile-time variable may be declared within a function body or a macro body.
 
 ### Constant literals
 TODO
