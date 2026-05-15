@@ -2,8 +2,6 @@
 title: "Four ways to ways when you need a variably sized list in C3"
 date: 2023-02-18
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8654-four_ways_to_ways_when_you_need_a_variably_sized_list_in_c3](https://c3.handmade.network/blog/p/8654-four_ways_to_ways_when_you_need_a_variably_sized_list_in_c3)*

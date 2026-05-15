@@ -2,8 +2,6 @@
 title: "Your users will do what you make easy"
 date: 2021-11-07
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8208-your_users_will_do_what_you_make_easy](https://c3.handmade.network/blog/p/8208-your_users_will_do_what_you_make_easy)*

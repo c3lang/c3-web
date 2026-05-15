@@ -2,8 +2,6 @@
 title: "C3: Handling casts and overflows part 2"
 date: 2021-03-03
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7661-c3__handling_casts_and_overflows_part_2](https://c3.handmade.network/blog/p/7661-c3__handling_casts_and_overflows_part_2)*

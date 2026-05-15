@@ -2,8 +2,6 @@
 title: "Are modules without imports \"considered harmful\"?"
 date: 2022-02-05
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8337-are_modules_without_imports_considered_harmful](https://c3.handmade.network/blog/p/8337-are_modules_without_imports_considered_harmful)*

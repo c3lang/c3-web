@@ -2,8 +2,6 @@
 title: "Updating keywords for 0.5"
 date: 2023-04-08
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8685-updating_keywords_for_0.5](https://c3.handmade.network/blog/p/8685-updating_keywords_for_0.5)*

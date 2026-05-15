@@ -2,8 +2,6 @@
 title: "Too much power, too poor accuracy - the story of $checks in C3"
 date: 2023-10-25
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8810-too_much_power%252C_too_poor_accuracy_-_the_story_of_checks_in_c3](https://c3.handmade.network/blog/p/8810-too_much_power%252C_too_poor_accuracy_-_the_story_of_checks_in_c3)*

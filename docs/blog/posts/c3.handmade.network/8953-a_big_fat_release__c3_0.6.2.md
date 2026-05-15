@@ -2,8 +2,6 @@
 title: "A big fat release: C3 0.6.2"
 date: 2024-09-03
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8953-a_big_fat_release__c3_0.6.2](https://c3.handmade.network/blog/p/8953-a_big_fat_release__c3_0.6.2)*

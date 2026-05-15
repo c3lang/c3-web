@@ -2,8 +2,6 @@
 title: "Another monthly release: C3 0.6.6 is here"
 date: 2025-01-16
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8983-another_monthly_release__c3_0.6.6_is_here](https://c3.handmade.network/blog/p/8983-another_monthly_release__c3_0.6.6_is_here)*

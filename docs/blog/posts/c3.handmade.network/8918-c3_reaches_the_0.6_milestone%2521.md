@@ -2,8 +2,6 @@
 title: "C3 reaches the 0.6 milestone!"
 date: 2024-06-13
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8918-c3_reaches_the_0.6_milestone%2521](https://c3.handmade.network/blog/p/8918-c3_reaches_the_0.6_milestone%2521)*

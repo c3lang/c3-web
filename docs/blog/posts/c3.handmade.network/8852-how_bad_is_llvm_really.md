@@ -2,8 +2,6 @@
 title: "How bad is LLVM really?"
 date: 2024-01-18
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8852-how_bad_is_llvm_really](https://c3.handmade.network/blog/p/8852-how_bad_is_llvm_really)*

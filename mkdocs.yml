@@ -1,9 +1,9 @@
 site_name: C3 Programming Language
 site_description: "C3 is the ergonomic, safe evolution of C. Familiar syntax, full ABI compatibility, optionals, slices, contracts and zero-cost abstractions."
 site_url: https://c3-lang.org
-repo_url: https://github.com/c3lang/c3-web
-repo_name: c3lang/c3-web
-edit_uri: edit/main/docs/
+repo_url: https://github.com/c3lang/c3c
+repo_name: c3lang/c3c
+edit_uri: https://github.com/c3lang/c3-web/edit/main/docs/
 extra:
   generator: false
   # version:
@@ -94,6 +94,7 @@ hooks:
   - hooks/c3_lexer.py
   - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
   - hooks/shortlinks.py
+  - hooks/deprioritize_blog.py
   # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:

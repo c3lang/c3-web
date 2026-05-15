@@ -2,8 +2,6 @@
 title: "On arithmetics and overflow"
 date: 2021-02-23
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7640-on_arithmetics_and_overflow](https://c3.handmade.network/blog/p/7640-on_arithmetics_and_overflow)*

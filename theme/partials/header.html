@@ -36,8 +36,12 @@
       <a href="https://discord.gg/qN76R87" class="md-header__link" target="_blank" rel="noopener">
         Discord
       </a>
-      {% if config.repo_url %}
-      <a href="{{ config.repo_url }}" class="md-header__link" target="_blank" rel="noopener">
+      {% set repo_url = config.repo_url %}
+      {% if page and page.meta and page.meta.repo_url %}
+        {% set repo_url = page.meta.repo_url %}
+      {% endif %}
+      {% if repo_url %}
+      <a href="{{ repo_url }}" class="md-header__link" target="_blank" rel="noopener">
         GitHub
       </a>
       {% endif %}

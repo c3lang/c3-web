@@ -17,7 +17,9 @@ jobs:
 
       - name: Download and extract c3c
         run: |
-          wget https://github.com/c3lang/c3c/releases/download/latest-prerelease-tag/c3-linux-static.tar.gz -O c3.tar.gz
+          # Fallback to "latest" is "latest-prerelease-tag" is not there
+          wget https://github.com/c3lang/c3c/releases/download/latest-prerelease-tag/c3-linux-static.tar.gz -O c3.tar.gz || \
+            wget https://github.com/c3lang/c3c/releases/latest/download/c3-linux-static.tar.gz -O c3.tar.gz
           tar -xzf c3.tar.gz
 
       - name: Generate documentation

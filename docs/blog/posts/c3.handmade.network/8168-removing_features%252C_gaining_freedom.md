@@ -2,8 +2,6 @@
 title: "Removing features, gaining freedom"
 date: 2021-10-17
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8168-removing_features%252C_gaining_freedom](https://c3.handmade.network/blog/p/8168-removing_features%252C_gaining_freedom)*

@@ -2,8 +2,6 @@
 title: "Why doesn't C3 do import aliasing?"
 date: 2024-12-22
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8982-why_doesn%2527t_c3_do_import_aliasing](https://c3.handmade.network/blog/p/8982-why_doesn%2527t_c3_do_import_aliasing)*

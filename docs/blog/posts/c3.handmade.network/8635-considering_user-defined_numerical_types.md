@@ -2,8 +2,6 @@
 title: "Considering user-defined numerical types"
 date: 2023-01-22
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8635-considering_user-defined_numerical_types](https://c3.handmade.network/blog/p/8635-considering_user-defined_numerical_types)*

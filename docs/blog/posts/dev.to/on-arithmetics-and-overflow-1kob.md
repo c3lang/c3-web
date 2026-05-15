@@ -2,8 +2,6 @@
 title: "On arithmetics and overflow"
 date: 2021-02-23
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/on-arithmetics-and-overflow-1kob](https://dev.to/lerno/on-arithmetics-and-overflow-1kob)*

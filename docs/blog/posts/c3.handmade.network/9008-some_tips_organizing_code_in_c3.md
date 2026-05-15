@@ -2,8 +2,6 @@
 title: "Some tips organizing code in C3"
 date: 2025-03-27
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/9008-some_tips_organizing_code_in_c3](https://c3.handmade.network/blog/p/9008-some_tips_organizing_code_in_c3)*

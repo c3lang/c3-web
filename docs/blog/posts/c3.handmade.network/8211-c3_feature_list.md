@@ -2,8 +2,6 @@
 title: "C3 Feature List"
 date: 2021-11-09
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8211-c3_feature_list](https://c3.handmade.network/blog/p/8211-c3_feature_list)*

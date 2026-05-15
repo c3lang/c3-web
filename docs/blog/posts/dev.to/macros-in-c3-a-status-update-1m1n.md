@@ -2,8 +2,6 @@
 title: "Macros in C3 - a status update"
 date: 2020-07-18
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/macros-in-c3-a-status-update-1m1n](https://dev.to/lerno/macros-in-c3-a-status-update-1m1n)*

@@ -2,8 +2,6 @@
 title: "A new error handling paradigm for C3"
 date: 2020-06-14
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/a-new-error-handling-paradigm-for-c3-2geo](https://dev.to/lerno/a-new-error-handling-paradigm-for-c3-2geo)*

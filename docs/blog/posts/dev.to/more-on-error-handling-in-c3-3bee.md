@@ -2,8 +2,6 @@
 title: "More on error handling in C3"
 date: 2020-07-03
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://dev.to/lerno/more-on-error-handling-in-c3-3bee](https://dev.to/lerno/more-on-error-handling-in-c3-3bee)*

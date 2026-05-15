@@ -2,8 +2,6 @@
 title: "Fixes and improvements: C3 0.6.1 is here"
 date: 2024-07-25
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8934-fixes_and_improvements__c3_0.6.1_is_here](https://c3.handmade.network/blog/p/8934-fixes_and_improvements__c3_0.6.1_is_here)*

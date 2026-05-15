@@ -4,8 +4,6 @@ date: 2026-01-29
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
 slug: c3-0-7-9-new-generics-and-new-optional-syntax
-search:
-  exclude: true
 ---
 
 0.7.9 revamps the generics, moving from a strict module-based generic module to something similar to conventional generics, but retaining the advantages of module-based generics.

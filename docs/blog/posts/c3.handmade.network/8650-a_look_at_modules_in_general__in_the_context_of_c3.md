@@ -2,8 +2,6 @@
 title: "A look at modules (in general + in the context of C3)"
 date: 2023-02-15
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8650-a_look_at_modules_in_general__in_the_context_of_c3](https://c3.handmade.network/blog/p/8650-a_look_at_modules_in_general__in_the_context_of_c3)*

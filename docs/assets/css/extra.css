@@ -112,7 +112,7 @@
 .lp-grid-2 {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 @media screen and (max-width: 48rem) {
@@ -704,8 +704,9 @@
 /* Documentation Utilities */
 .grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  align-items: start;
 }
 
 @media screen and (max-width: 48rem) {

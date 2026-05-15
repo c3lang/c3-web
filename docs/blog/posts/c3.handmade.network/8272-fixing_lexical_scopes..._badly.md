@@ -2,8 +2,6 @@
 title: "Fixing lexical scopes... badly"
 date: 2021-12-21
 author: "Christoffer Lernö"
-search:
-  exclude: true
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8272-fixing_lexical_scopes..._badly](https://c3.handmade.network/blog/p/8272-fixing_lexical_scopes..._badly)*

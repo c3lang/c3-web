@@ -1,6 +1,4 @@
 ---
-repo_url: https://github.com/c3lang/c3c
-repo_name: c3lang/c3c
 hide:
   - navigation
   - toc
