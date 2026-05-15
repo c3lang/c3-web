@@ -340,7 +340,7 @@ alias Foo = @get_type();
 
 ### `docgen` command for html documentation generation
 
-This major addition to the C3 compiler now allows you do produce high quality documentation out of the box. This is also (finally!) ensuring that this site has up to date docs: [link](https://c3-lang.org/standard-library/docs.html).
+This major addition to the C3 compiler now allows you to produce high quality documentation out of the box. This is also (finally!) ensuring that this site has up to date docs: [link](https://c3-lang.org/standard-library/docs.html).
 
 ### Support for Emscripten
 

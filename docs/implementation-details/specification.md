@@ -38,48 +38,28 @@ The form `a..b` represents the set of characters from a through b as alternative
 
 ## Source code representation
 
-A program consists of one or more _translation units_ stored in files written in the Unicode character set, stored as a sequence of bytes using the UTF-8 encoding. Except for comments and the contents of character and string literals, all input elements are formed only from the ASCII subset (U+0000 to U+007F) of Unicode.
+A C3 program consists of one or more *translation units*. Each translation unit is stored in a file written in the Unicode character set, encoded as a sequence of bytes using UTF-8.
 
-#### Carriage return
+Except within comments and the contents of character and string literals, all input is formed from the ASCII subset (U+0000 to U+007F) of Unicode. A compiler may reject a source file that contains bytes outside the ASCII subset in any other position.
 
-The carriage return (U+000D) is usually treated as white space, but may be stripped from the source code prior to lexical translation.
+For simplicity, this document uses the unqualified term *character* to refer to a single Unicode code point in the source text. Each code point is distinct; in particular, an upper-case letter and its lower-case counterpart are different characters.
 
-#### Bidirectional markers
+### Characters
 
-Unbalanced bidirectional markers (such as U+202D and U+202E) is not legal.
+The following terms denote individual characters and classes of characters:
 
-### Lexical Translations
-
-A raw byte stream is translated into a sequence of tokens which white space and comments are discarded. The resulting input elements form the tokens that are the terminal symbols of the syntactic grammar.
-
-The longest possible translation is used at each step, even if the result does not ultimately make a correct program while another lexical translation would.
-
-> Example: `a--b` is translated as `a`, `--`, `b`, which does not form a grammatically correct expression, even though the tokenization `a`, `-`, `-`, `b` could form a grammatically correct expression.
-
-### Line Terminators
-
-The C3 compiler divides the sequence of input bytes into lines by recognizing *line terminators*
-
-Lines are terminated by the ASCII LF character (U+000A), also known as "newline". A line termination specifies the termination of the // form of a comment.
-
-### Comments
-
-There are two types of regular comments:
-
-1. `// text` a line comment. The text between `//` and line end is ignored.
-2. `/* text */` block comments. The text between `/*` and `*/` is ignored. It has nesting behaviour, so for every `/*` discovered between the first `/*` and the last `*/` a corresponding `*/` must be found.
-
-### White Space
-
-White space is defined as the ASCII horizontal tab character (U+0009), carriage return (U+000D), space character (U+0020) and the line terminator character (U+000D).
-
-```text
-WHITESPACE      ::= [ \t\r\n]
 ```
+NEWLINE        ::= /* the code point U+000A */
+UNICODE_CHAR   ::= /* any code point except NEWLINE */
+```
+
+`UNICODE_CHAR` may appear only within comments and within character and string literals. In every other position the source text is restricted to the ASCII subset.
 
 ### Letters and digits
 
-```text
+The following terms denote the letters and digits used to form tokens:
+
+```
 UC_LETTER       ::= [A-Z]
 LC_LETTER       ::= [a-z]
 LETTER          ::= UC_LETTER | LC_LETTER
@@ -95,106 +75,256 @@ UC_ALPHANUM_    ::= UC_LETTER_ | DIGIT
 LC_ALPHANUM_    ::= LC_LETTER_ | DIGIT
 ```
 
+The underscore character `_` (U+005F) is not a `LETTER`; it is admitted only by the productions in which it appears explicitly.
+
+### Carriage return
+
+The carriage return (U+000D) is treated as white space. A compiler may alternatively strip carriage return characters from the source text prior to lexical translation; both treatments are valid, so a program must not depend on whether carriage returns are preserved.
+
+### Bidirectional markers
+
+Unbalanced Unicode bidirectional formatting markers — such as U+202D (`LEFT-TO-RIGHT OVERRIDE`) and U+202E (`RIGHT-TO-LEFT OVERRIDE`) — are not legal in C3 source text.
+
+
+## Lexical elements
+
+This chapter describes how the source text of a translation unit is divided into tokens, and defines the lexical structure of each kind of token.
+
+### Tokens
+
+A translation unit is translated into a sequence of *tokens* by repeatedly removing the longest prefix of the remaining input that forms a valid token. White space, line terminators, and comments are not tokens; they are discarded during translation, but may serve to separate tokens that would otherwise combine into a single token.
+
+Because the longest valid prefix is always taken, a tokenization is chosen even when it does not yield a grammatically correct program and another tokenization would.
+
+> Example: `a--b` is translated as the tokens `a`, `--`, `b`, which is not a valid expression, even though the tokenization `a`, `-`, `-`, `b` would be.
+
+There are four classes of tokens: *identifiers*, *keywords*, *operators and punctuation*, and *literals*.
+
+### Line terminators
+
+The compiler divides the input into lines by recognizing *line terminators*. A line is terminated by the ASCII LF character (U+000A), the *newline*. A line terminator ends a line comment, and like white space it separates tokens.
+
+### White space
+
+White space is any of the space character (U+0020), the horizontal tab (U+0009), and the carriage return (U+000D). White space separates tokens and is otherwise insignificant.
+
+```
+WHITESPACE   ::= " " | "\t" | "\r"
+```
+
+### Comments
+
+There are two forms of regular comment:
+
+1. A *line comment* begins with `//` and stops at the end of the line.
+2. A *block comment* begins with `/*` and ends with `*/`. Block comments nest: every `/*` within a block comment must be matched by a corresponding `*/`.
+
+In addition, when the first line of a translation unit begins with `#!`, that line is treated as a line comment. The `#!` form is recognized only as the first line of the file; it has no special meaning anywhere else.
+
+A comment does not begin inside a character, string, or byte literal, nor inside another comment.
+
+### Doc contracts
+
+A *doc contract* begins with `<*` and ends with `*>`. Doc contracts do not nest. Unlike comments, a doc contract is not discarded during lexical translation: it is a token and is semantically significant. Its internal structure and meaning are specified in *Contracts*.
+
 ### Identifiers
 
-Identifiers name program entities such as variables and types. An identifier is a sequence of one or more letters and digits. The first character in an identifier must be a letter or underscore.
+An identifier names a program entity. C3 distinguishes several lexical classes of identifier by the case of their characters and by an optional prefix sigil.
 
-C3 has three groups of identifiers: const identifiers - containing only underscore and upper-case letters, type identifiers - starting with an upper case letter followed by at least one underscore letter and regular identifiers, starting with a lower case letter.
-
-Identifiers are limited to 127 characters.
-
-```text
+```
 IDENTIFIER       ::= "_"* LC_LETTER ALPHANUM_*
 CONST_IDENT      ::= "_"* UC_LETTER UC_ALPHANUM_*
 TYPE_IDENT       ::= "_"* UC_LETTER UC_ALPHANUM_* LC_LETTER ALPHANUM_*
 CT_IDENT         ::= "$" IDENTIFIER
+CT_CONST_IDENT   ::= "$" CONST_IDENT
+CT_BUILTIN       ::= "$$" IDENTIFIER
 CT_BUILTIN_CONST ::= "$$" CONST_IDENT
-CT_BUILTIN_FN    ::= "$$" IDENTIFIER
-CT_TYPE_IDENT    ::= "$" TYPE_IDENT
-AT_IDENT         ::= "@" IDENT
+AT_IDENT         ::= "@" IDENTIFIER
 AT_TYPE_IDENT    ::= "@" TYPE_IDENT
-HASH_IDENT       ::= "#" IDENT
+HASH_IDENT       ::= "#" IDENTIFIER
 PATH_SEGMENT     ::= "_"* LC_LETTER LC_ALPHANUM_*
 ```
 
+A `CONST_IDENT` consists only of underscores, upper-case letters, and digits. A `TYPE_IDENT` begins like a `CONST_IDENT` but additionally contains at least one lower-case letter. A plain `IDENTIFIER` begins with an optional run of underscores followed by a lower-case letter.
+
+A sequence consisting solely of underscores — including a single underscore `_` — is not a valid identifier; it matches none of these classes.
+
+Identifiers are limited to 127 characters.
+
 ### Keywords
 
-The following keywords are reserved and may not be used as identifiers:
+The following identifiers are reserved as keywords and may not be used otherwise.
 
-```text
-any        bfloat      bool
-char       double      fault
-float      float128    float16
-ichar      int         int128
-iptr       sz          long
-short      typeid      uint
-uint128    ulong       uptr
-ushort     usz         void
+```
+alias      asm        assert     attrdef    bitstruct
+break      case       catch      const      constdef
+continue   default    defer      do         else
+enum       extern     false      faultdef   fn
+for        foreach    foreach_r  if         import
+inline     interface  lengthof   macro      module
+nextcase   null       return     static     struct
+switch     tlocal     true       try        typedef
+union      var        while
+```
 
-alias       assert      asm
-attrdef     bitstruct   break
-case        catch       const
-continue    default     defer
-do          else        enum
-extern      false       faultdef
-for         foreach     foreach_r
-fn          tlocal      if
-inline      import      macro
-module      nextcase    null
-interface   return      static
-struct      switch      true
-try         typedef     union
-var         while
+The built-in type names are also reserved:
 
-$alignof    $assert     $case      
-$default    $defined    $echo      
-$else       $embed      $endfor    
-$endforeach $endif      $endswitch 
-$eval       $error      $exec
-$expand     $feature    $for       
-$foreach    $if         $include
-$stringify  $switch     $vaarg
-$Typefrom   $Typeof
+```
+any        bfloat     bool       char       double
+fault      float      float16    float128   ichar
+int        int128     iptr       long       short
+sz         typeid     uint       uint128    untypedlist
+uptr       ushort     usz        void
+```
+
+The following compile-time keywords, each beginning with `$`, are reserved:
+
+```
+$assert     $case       $default    $defined    $echo
+$else       $embed      $endfor     $endforeach $endif
+$endswitch  $error      $eval       $exec       $expand
+$feature    $for        $foreach    $if         $include
+$reflect    $stringify  $switch     $Typefrom   $Typeof
+$vaarg
 ```
 
 ### Operators and punctuation
 
-The following character sequences represent operators and punctuation.
+The following character sequences are operators and punctuation:
 
-```text
-&       @       ~       |       ^       :
-,       /       $       .       ;       =
->       <       #       {       }       -
-(       )       *       [       ]       %
->=      <=      +       +=      -=      !
-?       ?:      &&      ??      &=      |=
-^=      /=      ..      ==      [<      >]
-++      --      %=      !=      ||      ::
-<<      >>      !!      ->      =>      ...
-<<=     >>=     +++     &&&    |||      ???
 ```
++    -    *    /    %
+&    |    ^    ~    <<   >>
+=    +=   -=   *=   /=   %=
+&=   |=   ^=   <<=  >>=
+==   !=   <    >    <=   >=
+&&   ||   !
+?    ?:   ??   !!
+++   --
+.    ..   ...
+,    ;    :    ::
+->   =>
+(    )    {    }    [    ]
+[<   >]
+@    #    $
+&&&  |||  ???  +++  +++=
+```
+
+The sequence `$$` introduces a compile-time built-in identifier, as described under *Identifiers*.
+
+### Integer literals
+
+An integer literal denotes an integer constant. It is written in decimal, binary, octal, or hexadecimal, and may carry a suffix fixing its type.
+
+```
+INTEGER         ::= (DECIMAL_LIT | BINARY_LIT | OCTAL_LIT | HEX_LIT) INTEGER_SUFFIX?
+DECIMAL_LIT     ::= DIGIT ("_"* DIGIT)*
+BINARY_LIT      ::= "0" ("b" | "B") BINARY_DIGIT ("_"* BINARY_DIGIT)*
+OCTAL_LIT       ::= "0" ("o" | "O") OCTAL_DIGIT ("_"* OCTAL_DIGIT)*
+HEX_LIT         ::= "0" ("x" | "X") HEX_DIGIT ("_"* HEX_DIGIT)*
+INTEGER_SUFFIX  ::= ("l" | "L") ("l" | "L")?
+                  | ("u" | "U") (("l" | "L") ("l" | "L")?)?
+```
+
+An underscore may appear between two digits and is insignificant; it may not appear at the start or end of the digit sequence, nor immediately after the base prefix. Underscores may be repeated.
+
+The suffix is case-insensitive. A single `l` group selects a 64-bit literal, and a doubled `ll` group selects a 128-bit literal; a leading `u` selects the unsigned form. These widths are fixed on every platform.
+
+### Floating-point literals
+
+A floating-point literal denotes a real constant, written in decimal or hexadecimal form, with an optional type suffix.
+
+```
+REAL            ::= (DEC_FLOAT_LIT | HEX_FLOAT_LIT) REAL_SUFFIX?
+DEC_FLOAT_LIT   ::= DECIMAL_LIT DEC_EXPONENT
+                  | DECIMAL_LIT "." DECIMAL_LIT DEC_EXPONENT?
+HEX_FLOAT_LIT   ::= "0" ("x" | "X") HEX_DIGITS ("." HEX_DIGITS)? HEX_EXPONENT
+HEX_DIGITS      ::= HEX_DIGIT ("_"* HEX_DIGIT)*
+DEC_EXPONENT    ::= ("e" | "E") ("+" | "-")? DIGIT+
+HEX_EXPONENT    ::= ("p" | "P") ("+" | "-")? DIGIT+
+REAL_SUFFIX     ::= "d" | "D" | "f" | "F"
+```
+
+A decimal floating-point literal either has an exponent, or has a fractional part with digits on both sides of the `.` and an optional exponent. A leading `.` or a trailing `.` is therefore not part of a floating-point literal. A hexadecimal floating-point literal always requires a `p` binary exponent.
+
+The suffix is case-insensitive: `f` denotes the `float` type and `d` denotes the `double` type.
+
+### Character literals
+
+A character literal is one or more characters enclosed in single quotes.
+
+```
+CHAR_LIT     ::= "'" CHAR_ELEMENT+ "'"
+CHAR_ELEMENT ::= UNICODE_CHAR_NO_QUOTE | ESCAPE_SEQUENCE
+```
+
+`UNICODE_CHAR_NO_QUOTE` is any character other than a control character (U+0000–U+001F), a backslash, or a single quote. A line terminator may not appear inside a character literal. Backslash escape sequences are described under *Backslash escapes*.
+
+A character literal may contain 1, 2, 4, 8, or 16 bytes of character data; the resulting constant and its type are specified in *Constants*.
+
+### String literals
+
+A string literal is a sequence of characters enclosed in double quotes.
+
+```
+STRING_LIT   ::= '"' CHAR_ELEMENT* '"'
+```
+
+The same character and escape rules apply as for character literals: no raw control characters, no line terminator, backslash escapes permitted. A string literal therefore may not span multiple lines.
+
+Adjacent string literals are concatenated into a single string constant; a character literal participates in the same concatenation.
+
+### Raw string literals
+
+A raw string literal is enclosed in backticks. No escape processing is performed on its contents: every character stands for itself, and the literal may span multiple lines. A literal backtick is written by doubling it (`` `` ``).
+
+```
+RAW_STRING_LIT ::= "`" ( RAW_CHAR | "``" )* "`"
+```
+
+`RAW_CHAR` is any character other than a backtick. A raw string literal yields an ordinary string constant and concatenates with adjacent string and character literals.
+
+### Byte data literals
+
+A byte data literal denotes a sequence of raw bytes. It is introduced by `x` (hexadecimal) or `b64` (Base64) and may use double-quote, single-quote, or backtick delimiters; the backtick and single-quote forms may be broken across lines, with intervening white space ignored.
+
+```
+BYTES        ::= HEX_BYTES | B64_BYTES
+HEX_BYTES    ::= "x"   ( '"' ... '"' | "'" ... "'" | "`" ... "`" )
+B64_BYTES    ::= "b64" ( '"' ... '"' | "'" ... "'" | "`" ... "`" )
+```
+
+A hexadecimal byte literal contains hexadecimal digits, each pair denoting one byte. A Base64 byte literal contains Base64-encoded data. Adjacent byte data literals are concatenated. The precise content rules and the resulting constant are specified in *Constants*.
 
 ### Backslash escapes
 
-The following backslash escapes are available for characters and string literals:
+Within character literals and string literals (but not raw string literals), the backslash introduces an escape sequence:
 
-```text
-\0      0x00 zero value
-\a      0x07 alert/bell
-\b      0x08 backspace
-\e      0x1B escape
-\f      0x0C form feed
-\n      0x0A newline
-\r      0x0D carriage return
-\t      0x09 horizontal tab
-\v      0x0B vertical tab
-\\      0x5C backslash
-\'      0x27 single quote '
-\"      0x22 double quote "
-\x      Escapes a single byte hex value
-\u      Escapes a two byte unicode hex value
-\U      Escapes a four byte unicode hex value
 ```
+\0          the zero byte (0x00)
+\a          alert / bell (0x07)
+\b          backspace (0x08)
+\e          escape (0x1B)
+\f          form feed (0x0C)
+\n          newline (0x0A)
+\r          carriage return (0x0D)
+\t          horizontal tab (0x09)
+\v          vertical tab (0x0B)
+\\          backslash (0x5C)
+\'          single quote (0x27)
+\"          double quote (0x22)
+\xNN        one byte, two hex digits
+\uNNNN      a two-byte Unicode value, four hex digits
+\UNNNNNNNN  a four-byte Unicode value, eight hex digits
+```
+
+### The boolean literals
+
+The keywords `true` and `false` are the two literals of the boolean type `bool`.
+
+### The null literal
+
+The keyword `null` is the literal pointer value whose address is zero. Its type and conversions are specified in *Types*.
 
 ## Constants
 TODO
