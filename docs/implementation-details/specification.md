@@ -419,7 +419,7 @@ There are three storage durations:
 
 A global variable has static storage duration by default. A local variable has automatic storage duration by default. The modifiers `static` and `tlocal` change a local variable's storage duration to static or thread-local, respectively.
 
-A variable without an initializer is implicitly zero-initialized. The `@noinit` attribute may be used to leave a variable uninitialized; a type marked `@mustinit` may not carry `@noinit`.
+A variable without an initializer is implicitly zero-initialized. The `@noinit` attribute may be used to leave a variable uninitialized; a variable whose type is marked `@mustinit` may not use `@noinit`.
 
 Variables and constants are mutually exclusive. A constant is declared with `const` and bound to a `CONST_IDENT`; a variable is declared without `const` and bound to an `IDENTIFIER`.
 
@@ -530,101 +530,661 @@ An initializer is optional. If present, it must be a constant expression for a v
 
 Attributes may not be applied to a compile-time variable. A compile-time variable may be declared within a function body or a macro body.
 
-### Constant literals
-TODO
-## Variables
-TODO
-### Global variables
-TODO
-#### Extern global variables
-TODO
-#### Thread local globals
-TODO
-### Local variables
-TODO
-#### Static locals
-TODO
-#### Thread local locals
-TODO
-#### Copying declarations
-TODO
-##### Macro copying
-TODO
-##### Defer copying
-TODO
-
 ## Types
 
-Types consist of built-in types and user-defined types (enums, structs, unions, bitstructs and typedef).
+A type determines a set of values together with the operations applicable to those values. A type is either *named* or expressed as a *type literal*.
+
+The built-in types — booleans, integer types, floating-point types, `void`, `any`, `typeid`, and `fault` — are predeclared. Named user-defined types are introduced by `struct`, `union`, `bitstruct`, `enum`, `constdef`, `interface`, `typedef`, and `alias` declarations, each described below. A type literal constructs a type from existing types: pointers, arrays, slices, vectors, optionals, and function types.
+
+```
+type      ::= type_name | type_literal
+type_name ::= path? TYPE_IDENT | builtin_type
+path      ::= IDENTIFIER "::" (IDENTIFIER "::")*
+builtin_type ::= "void" | "bool" | "any" | "typeid" | "fault"
+               | "ichar" | "char" | "short" | "ushort"
+               | "int" | "uint" | "long" | "ulong"
+               | "int128" | "uint128"
+               | "iptr" | "uptr" | "sz" | "usz"
+               | "float" | "double" | "untypedlist"
+```
+
+The syntax of each type literal is given in the corresponding subsection.
 
 ### Boolean types
 
-`bool` may have the two values `true` and `false`. It holds a single bit of information but is
-stored in a `char` type.
+The type `bool` represents truth values. It has two values, `true` and `false`. A `bool` occupies one byte of storage.
 
 ### Integer types
 
-The built-in integer types:
+C3 has fourteen built-in integer types: seven signed and seven unsigned. The first five pairs have fixed power-of-two widths; the remaining four are platform-dependent.
 
-```text
-char      unsigned 8-bit
-ichar     signed 8-bit
-ushort    unsigned 16-bit
-short     signed 16-bit
-uint      unsigned 32-bit
-int       signed 32-bit
-ulong     unsigned 64-bit
-long      signed 64-bit
-uint128   unsigned 128-bit
-int128    singed 128-bit
+| Signed   | Unsigned  | Width                          |
+|----------|-----------|--------------------------------|
+| `ichar`  | `char`    | 8 bits                         |
+| `short`  | `ushort`  | 16 bits                        |
+| `int`    | `uint`    | 32 bits                        |
+| `long`   | `ulong`   | 64 bits                        |
+| `int128` | `uint128` | 128 bits                       |
+| `iptr`   | `uptr`    | same width as `void*`          |
+| `sz`     | `usz`     | width of the maximum pointer difference |
+
+A signed type with N bits represents values in the range −2^(N−1) to 2^(N−1) − 1. An unsigned type with N bits represents values in the range 0 to 2^N − 1.
+
+Integer arithmetic uses two's complement representation. Signed overflow wraps and does not produce undefined behaviour.
+
+### Floating-point types
+
+C3 has two floating-point types: `float` is 32 bits and `double` is 64 bits. Both follow the IEEE 754 binary representation for their respective widths.
+
+### The void type
+
+The type `void` represents the absence of a value. It is used as the return type of a function that produces no value, and as the pointed-to type of `void*`. A `void` value cannot be stored or named.
+
+### Pointer types
+
+A pointer type denotes the address of an object of a given type:
+
+```
+pointer_type ::= type "*"
 ```
 
-In addition, the following type aliases exist:
+A pointer holds the address of an object of the pointed-to type, or the literal value `null`.
 
-```text
-uptr      unsigned pointer size
-iptr      signed pointer size
-usz       unsigned pointer offset / object size
-sz        signed pointer offset  / object size
-```
+The literal `null` converts implicitly to any pointer type. The type `void*` is a *wildcard pointer*: it converts implicitly to and from any other pointer type.
 
-### Floating point types
+Pointer arithmetic is supported on pointers to non-`void` types and follows the same rules as C.
 
-Built-in floating point types:
+### Array types
+
+An array type holds a fixed number of values of an element type:
 
 ```
-float16      IEEE 16-bit*
-bfloat16     Brainfloat*
-float        IEEE 32-bit
-double       IEEE 64-bit
-float128     IEEE 128-bit*
+array_type ::= type "[" expression "]"
+             | type "[" "*" "]"
 ```
 
-(\* optionally supported)
+The expression must be a compile-time constant expression of integer type denoting the array length. The form `type[*]` is permitted where the length can be inferred from an initializer; the inferred length becomes part of the type.
+
+The length is part of the type, so `int[3]` and `int[4]` are distinct. An array is a value: assignment, parameter passing, and return copy the elements.
+
+A pointer to an array, `type[N]*`, implicitly converts to a pointer to the first element, `type*`.
+
+### Slice types
+
+A slice type denotes a view into a contiguous sequence of elements:
+
+```
+slice_type ::= type "[" "]"
+```
+
+A slice is a pair consisting of a pointer to the element sequence and an integer length. The fields `.ptr` and `.len` provide these components.
+
+A slice is obtained by taking the address of an array, by slicing an array, slice, or vector with a range expression, or by allocating a sequence of elements at runtime.
+
+Indexing a slice is range-checked in safe builds.
 
 ### Vector types
 
-A vector lowers to the platform's vector types where available. A vector has a base type and a width.
+A vector type holds a fixed number of values that may be operated on using SIMD instructions:
 
 ```
-vector_type        ::= base-type "[<" length ">]"
+vector_type ::= type "[<" expression ">]"
+              | type "[<" "*" ">]"
 ```
 
-#### Vector base type
+The element type must be a boolean, integer, floating-point, or pointer type. The length must be a compile-time constant expression of integer type; the form `type[<*>]` is permitted where the length can be inferred from an initializer.
 
-The base type of a vector must be of boolean, pointer, enum, integer or floating point type, or a distinct type wrapping one of those types.
+A plain vector such as `int[<3>]` has the same size and ABI representation as the corresponding array type (`int[3]`): element alignment, no padding. When used in arithmetic or bitwise expressions, the operations are applied elementwise using SIMD instructions where available.
 
-#### Min width
+The `@simd` attribute declares a *SIMD aligned vector*. A SIMD aligned vector must have a length that is a power of two, and has platform SIMD alignment (typically it will match the size of the vector). As locals and globals, plain vectors and SIMD aligned vectors are treated identically in terms of alignment; the distinction arises when the vector is embedded inside a struct or an array, or appears at the ABI boundary. In those contexts a plain vector has the alignment of the corresponding array type, while a `@simd` vector retains its SIMD alignment.
 
-The vector width must be at least 1.
+Arithmetic and bitwise operations on a vector are applied elementwise. A scalar value used with a vector is widened by replication.
 
-#### Element access
+A vector implicitly converts to the corresponding array type and vice versa.
 
-Vector elements are accessed using `[]`. It is possible to take the address of a single element.
+### Struct types
+
+A struct type is a named sequence of fields stored in declaration order:
+
+```
+struct_decl ::= "struct" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "{" struct_body "}"
+```
+
+(The full grammar of `struct_union_body` is given in *Declarations*.)
+
+Field access uses dot notation. The dot operator also applies to a single level of pointer-to-struct: if `p` is of type `St*` and `f` is a field of `St`, then `p.f` denotes the field of the pointee.
+
+A field may be declared `inline`. Such a field designates an *inline member*: values of the struct then implicitly convert to the type of that field, and methods of that type are accessible through the enclosing struct. See *Properties of types and values*.
+
+Anonymous nested structs and unions are permitted, following C99 conventions.
+
+Layout attributes (`@align`, `@packed`, `@compact`, `@nopadding`) control storage representation. See *Attributes*.
+
+### Union types
+
+A union type is declared like a struct, but its fields share storage:
+
+```
+union_decl ::= "union" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "{" struct_union_body "}"
+```
+
+All fields of a union share storage beginning at the same address. The alignment of a union is the maximum alignment requirement of any of its fields; consequently, any member access through a union pointer is correctly aligned regardless of which member is read. The size of a union is the size of its largest field rounded up to the nearest multiple of the union's alignment.
+
+Writing a member of type Ty stores that value's bit pattern in the first `sizeof(Ty)` bytes of the union's storage. Reading a member of type Un interprets the first `sizeof(Un)` bytes of the union's storage as a value of type Un.
+
+When the most recently written member is of type Ty:
+
+* If `sizeof(Un) ≤ sizeof(Ty)`, all bytes read are part of Ty's written representation; the result is those bytes reinterpreted as type U. The result is fully defined.
+* If `sizeof(Un) > sizeof(Ty)`, the first `sizeof(Ty)` bytes hold Ty's written representation; the bytes in the range `[sizeof(Ty), sizeof(Un))` hold unspecified values, and the result may be any value representable in type Un.
+
+A union may therefore be used as a controlled way to reinterpret a bit pattern, provided the member being read is no wider than the member most recently written.
+
+Anonymous nested structs and unions are permitted, as in struct types.
+
+### Bitstruct types
+
+A bitstruct type is a struct whose fields occupy specified bit ranges within a backing storage:
+
+```
+bitstruct_decl ::= "bitstruct" TYPE_IDENT ("(" type ("," type)* ")")? ":" type attributes? "{" bitstruct_body "}"
+```
+
+The backing type is either an integer type or a character array. Each field of a bitstruct must be an integer type or `bool`; each field specifies a single bit position or an inclusive bit range within the backing storage.
+
+A bitstruct field is not addressable.
+
+By default, fields of a bitstruct may not overlap. The `@overlap` attribute permits overlapping ranges. Endianness of the underlying storage follows the host system by default, but may be set explicitly with `@bigendian` or `@littleendian`.
+
+### Enum types
+
+An enum type is a finite ordered set of named values, optionally backed by an integer type and optionally carrying associated values:
+
+```
+enum_decl ::= "enum" TYPE_IDENT ("(" type ("," type)* ")")? (":" "inline"? integer_type? enum_param_list?)? attributes? "{" enum_body "}"
+```
+
+Each enum value has an *ordinal*: its position in the declaration, beginning at zero. Ordinals are consecutive; an enum type defines no gaps.
+
+If a parameter list follows the backing type, each declared value supplies a value for each associated parameter; these are accessed through the value as if they were fields.
+
+An enum is converted to and from its ordinal via the properties `.ordinal` and `from_ordinal`; explicit casts to and from the backing integer type are also permitted.
+
+### Constdef types
+
+A `constdef` declaration introduces a *constdef type*: a set of named constants of a backing type, with explicitly chosen values that need not be consecutive.
+
+```
+constdef_decl ::= "constdef" TYPE_IDENT ("(" type ("," type)* ")")? (":" "inline"? type)? attributes? "{" constdef_body "}"
+```
+
+If the backing type is omitted, it is taken to be `int`. Values that are not explicitly assigned take the value of the previous value plus one.
+
+Unlike `enum`, a constdef has no ordinal: its values are those of its constants. Constdef values do not implicitly convert to or from the backing type; conversions are made by explicit cast unless `inline` is given on the backing type, in which case values convert implicitly *to* the backing type.
+
+A `constdef` declaration may carry the attribute `@constinit` to permit literals of the backing type to implicitly convert *to* the constdef type.
+
+### Fault types
+
+The type `fault` is the type of fault values. Fault values are declared with `faultdef`:
+
+```
+fault_decl ::= "faultdef" CONST_IDENT ("," CONST_IDENT)* attributes? ";"
+```
+
+Each declared name is a value of type `fault`. Fault values are used as the *excuse* of an empty optional and are described further under *Optionals and faults*.
+
+### Optional types
+
+An optional type holds either a *result* of a base type or an empty optional carrying a fault value as its *excuse*:
+
+```
+optional_type ::= type "?"
+```
+
+The base type may not itself be optional. The optional `void?` is permitted only as a function return type; an optional may not otherwise have base type `void`.
+
+An optional type has the same size and alignment as its base type. The presence or absence of a result is tracked separately; it does not add overhead to the stored value.
+
+The use, propagation, and handling of optionals is specified in *Optionals and faults*.
+
+### Function types
+
+A function type describes the signature of a function:
+
+```
+function_type ::= "fn" type "(" parameter_list? ")"
+```
+
+A function type is not itself a first-class type; it is used through a `typedef` or `alias` to declare a function pointer type:
+
+```
+alias Callback = fn void(int);
+```
+
+A value of an aliased function type holds the address of a function (or `null`). Function pointer types may carry default argument values and named parameters; see *Functions and methods*.
+
+### Distinct types
+
+A `typedef` declaration introduces a new type derived from an existing type:
+
+```
+typedef_decl ::= "typedef" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "=" "inline"? type ";"
+```
+
+The new type is distinct from its underlying type: values of one do not implicitly convert to the other. Literals do not implicitly convert to a typedef type unless the typedef carries the `@constinit` attribute.
+
+When the `inline` modifier is given, values of the typedef type implicitly convert *to* the underlying type, but not from it.
+
+A typedef type has its own method set, and methods, attributes, and operator overloads may be defined for it.
+
+### Type aliases
+
+An `alias` declaration introduces a new name for an existing type:
+
+```
+type_alias_decl ::= "alias" TYPE_IDENT attributes? "=" type ";"
+```
+
+A type alias is fully equivalent to its underlying type; the two are interchangeable in every context. Unlike a `typedef`, an alias does not introduce a new type.
+
+The `alias` keyword is also used to introduce aliases for functions, variables, and generic instantiations; those forms are described in *Declarations*.
+
+### Interface types
+
+An interface type names a set of method signatures:
+
+```
+interface_decl ::= "interface" TYPE_IDENT (":" type ("," type)*)? attributes? "{" interface_body "}"
+```
+
+Each entry in the body is a method signature giving a name, return type, and parameter list. A signature marked `@optional` need not be implemented by every type that implements the interface.
+
+An interface value has the same representation as `any`: a pointer paired with a `typeid`. Its size is twice the pointer width; its alignment is the pointer alignment. An implementing type must satisfy the method requirements of the interface and all interfaces it extends.
+
+Any user-defined type — struct, union, bitstruct, enum, constdef, or typedef — may implement one or more interfaces. The interface list is given in parentheses after the type name in the type declaration, and each non-optional method must be provided as a `@dynamic` method. Aliases may not implement interfaces, as they introduce no new type. A value of an implementing type implicitly converts to the interface type. Conversion from an interface to a concrete type, or from `any` to an interface, is explicit and may fail at runtime.
+
+### The any type
+
+The type `any` is a runtime-tagged reference: it pairs a pointer with a `typeid` identifying the type of the pointee. Its size is twice the pointer width; its alignment is the pointer alignment.
+
+The fields `.ptr` and `.type` retrieve the pointer and the runtime type respectively. Any pointer type implicitly converts to `any`.
+
+### The typeid type
+
+The type `typeid` is the type of values identifying types at runtime. The width of `typeid` is the same as the width of `iptr`.
+
+Every type has a corresponding `typeid` value, obtained by the property `::typeid` of the type. The `typeid` of the type identified by an `any` value is its `.type` field.
+
+### The untypedlist type
+
+The type `untypedlist` is the type of compile time lists which lack a definite type. An untyped list may be appended to and indexed into at compile time.
+
+Because it is compile-time only, only compile-time variables may have this type. It may not exist at runtime.
+
+### Generic type instantiation
+
+A type may be parameterized by a generic module. Such a type is instantiated by writing the type name followed by a brace-delimited list of type and constant arguments:
+
+```
+generic_instantiation ::= type_name "{" generic_arg ("," generic_arg)* "}"
+generic_arg ::= type | expression
+```
+
+The same syntax is used to instantiate generic functions, macros, and global variables. The rules for declaring and using generics are given in *Generics*.
+
+## Properties of types and values
+
+### Underlying type
+
+Every type has an *underlying type*.
+
+* For a predeclared type or a type literal, the underlying type is the type itself.
+* For a struct, union, bitstruct, enum, constdef, fault, or interface type, the underlying type is the declared type itself.
+* For a type alias, the underlying type is the underlying type of the aliased type.
+* For a `typedef`, the underlying type is the underlying type of the type from which it derives.
+
+### Inner type
+
+For some types, an *inner type* is defined.
+
+* The inner type of a pointer is the pointed-to type.
+* The inner type of an array, slice, or vector is its element type.
+* The inner type of an `enum` is its backing integer type.
+* The inner type of a `constdef` is its backing type.
+* The inner type of a `bitstruct` is its backing type.
+* The inner type of a `typedef` is the type from which it derives.
+
+Other types have no inner type.
+
+### Type identity
+
+Two types are *identical* if they have the same name (for named types) or the same structure (for type literals). Two distinct declarations of `struct`, `union`, `bitstruct`, `enum`, `constdef`, `interface`, or `typedef` produce distinct types, even when their bodies are textually identical. A type alias is identical to the type it names.
+
+Two `typedef` types with the same underlying type are nevertheless distinct.
+
+### Alignment
+
+Every type has an *alignment requirement*: a positive integer power of two. An object of a given type must be stored at an address that is a multiple of the type's alignment requirement. The alignment of a type is available at compile time through its `::alignment` property.
+
+C3 distinguishes between *ABI alignment* — used when a type appears as a struct field, array element, or function parameter — and *alloca alignment* — used when a type is allocated as a local or global variable. For most types these are identical.
+
+Alignment depends on the platform and the ABI compiled for. However, some types are derived from others, and their alignment is given below
+
+* **`bool`**: alignment is same as `char`
+* `typeid`, `iptr`, `uptr`, `fault`, `any`, interface types: alignment is the same as for `void*`
+* **`void`**: 1 byte.
+* **Array types**: the alignment of the element type.
+* **Slice types**: `max(alignof(void*), alignof(sz))`, equal to the pointer alignment on all supported platforms.
+* **Plain vector types** (ABI — embedded in struct or array, or passed as argument): the alignment of the element type, identical to the corresponding array type.
+* **Plain vector types** (alloca — as a local or global variable): same as the *SIMD aligned vector type* 
+* **Struct types**: the maximum alignment of any field. Fields are laid out in declaration order with padding inserted between adjacent fields as needed; trailing padding is added after the last field so that the total size is a multiple of the struct's alignment.
+* **Union types**: the maximum alignment of any field. The size of a union is the size of its largest field, rounded up to the nearest multiple of the union's alignment. Fields share storage at the same address with no inter-field padding.
+* **Bitstruct types**: the alignment of the backing type, unless overridden by `@align`.
+* **Enum and constdef types**: the alignment of the backing integer type.
+* **Optional types (`T?`)**: the alignment of `T`. An optional type has the same size as `T`; the optional status is tracked separately and does not affect storage.
+* **Typedef and alias types**: the alignment of the underlying or aliased type.
+
+The `@align(n)` attribute raises the alignment of a struct, union, bitstruct, variable, or function to at least `n`, where `n` must be a compile-time constant power of two. Alignment may only be increased, not decreased. To reduce per-member alignment, `@packed` sets all member alignments to 1; a subsequent `@align` may then restore the aggregate's overall alignment.
+
+### Assignability
+
+A value of type Va is *assignable* to a target of type Ty — for example, the right-hand side of an assignment, the initializer of a variable, an argument in a function call, or a value returned from a function — when any of the following holds:
+
+1. Va is identical to Ty.
+2. Va is a numeric literal whose value is representable in Ty, where Ty is a numeric type or a `typedef` or `constdef` of a numeric type with `@constinit` declared.
+3. Va is the literal `null` and Ty is a pointer type.
+4. Va is `void*` and Ty is any pointer type, or vice versa.
+5. Va is any non-`void*` pointer and Ty is `void*`.
+6. Va is any pointer type and Ty is `any`.
+7. Va is an interface type and Ty is `any`.
+8. Va is a numeric expression and Ty is a wider numeric type, subject to the rules in *Implicit widening*.
+9. Va is a numeric expression and Ty is a narrower numeric type, subject to the rules in *Implicit narrowing*.
+10. Va is a struct value or pointer with an inline member of type Ty (transitively), subject to the rules in *Substruct conversions*.
+11. Va is a pointer to a value whose type implements interface Ty.
+12. Va is an interface type that extends Ty (Ty is a parent interface of Va).
+13. Va is a `typedef` declared `inline` and Ty is its underlying type.
+14. Va is a `constdef` with a backing type declared `inline` and Ty is that backing type.
+15. Va is a vector type and Ty is the corresponding array type with the same element type and length, or vice versa.
+16. Va is a slice type and Ty is `void*` or a pointer to the element type of Va.
+
+Outside these cases, conversion requires an explicit cast.
+
+### Common arithmetic promotion
+
+Before arithmetic, the operands of an arithmetic operation are *promoted* according to the following rules:
+
+* A floating-point operand of width less than 32 bits is promoted to `float`.
+* An integer operand narrower than the *arithmetic promotion width* is promoted to an integer of the same signedness with that width.
+
+The arithmetic promotion width is the width of a C `int` on the target platform. This is currently 32 bits on all supported target platforms.
+
+### Maximum type
+
+When two operands of different numeric types appear in an operation that returns a single value, a *maximum type* is computed:
+
+1. Both operands undergo common arithmetic promotion.
+2. If the promoted types are identical, the maximum type is that type.
+3. If one is floating-point and the other is integer, the maximum type is the floating-point type.
+4. If both are floating-point, the maximum type is the wider type.
+5. If both are integer with the same signedness, the maximum type is the wider type.
+6. If both are integer with different signedness, the maximum type is determined by precedence in the list `ichar`, `char`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `int128`, `uint128`; the operand later in the list wins.
+
+If neither operand is a numeric type but at least one is a struct, or a pointer to a struct, with an `inline` member, the rules are applied recursively to the inline member's type. Other combinations have no defined maximum type.
+
+### Implicit widening
+
+A numeric expression implicitly converts to a wider numeric type only when it is a *simple expression*. An expression is *simple* if its value is invariant under the choice of evaluation width — that is, widening its operands and then evaluating yields the same result as evaluating at the source width and then widening. Non-simple expressions require an explicit cast to widen.
+
+When the target is a wider **integer** type, the non-simple forms are:
+
+* Binary `+`, `-`, `*` — integer overflow at the source width gives a different value than at the wider width.
+* Binary `<<` and `>>` — bits shifted past the source width are lost, and sign extension depends on the source width.
+* Unary `-` — negating the minimum signed integer overflows at the source width but is well-defined at a wider width.
+* Unary `~` — the high-order bits of the complemented value depend on the source width.
+
+When the target is a **floating-point** type, the non-simple forms are:
+
+* Binary `+`, `-`, `*` — integer overflow at the source width changes the value before conversion.
+* Binary `/` — integer division and floating-point division produce different values.
+* Unary `-` — same corner case as for integer targets.
+
+A ternary expression `cond ? a : b` is non-simple if either branch `a` or `b` is non-simple. All other expressions are simple, including identifiers, literals, function calls, member access, subscripts, comparisons, logical operators, assignment expressions, bitwise `&`, `|`, `^`, the operators `%`, `??`, and (for integer targets) `/`, and the unary operators `+`, `!`, `++`, `--`, `*` (dereference), and `&` (address-of).
+
+Within simple expressions, the widening conversion itself is further restricted by signedness:
+
+* Signed → wider signed: allowed.
+* Unsigned → wider unsigned: allowed.
+* Unsigned → wider signed: allowed (the unsigned range always fits).
+* Signed → unsigned: never allowed implicitly, regardless of size; requires an explicit cast.
+* Integer → float, or float → wider float: allowed.
+
+Same-size conversions between types of different signedness (e.g., `int` → `uint`) are not widening and are not permitted implicitly.
+
+### Implicit narrowing
+
+A numeric expression may implicitly convert to a *narrower* target type through a recursive structural analysis. The compiler walks the expression tree and verifies that every contributing value is already narrow enough to fit in the target type.
+
+The traversal rules are:
+
+* **Arithmetic and bitwise operators** (`+`, `-`, `*`, `/`, `%`, `|`, `^`, `&`, `??`): both operands are checked recursively; narrowing succeeds only if all operands pass.
+* **Shift operators** (`<<`, `>>`): only the left operand is checked; the right operand does not affect the result type.
+* **Assignment operators**: only the left operand is checked.
+* **Comparison and logical operators** (`==`, `!=`, `<`, `<=`, `>`, `>=`, `&&`, `||`): always succeed; these produce `bool`.
+* **Unary operators** (`+`, `-`, `~`, `++`, `--`): the operand is checked recursively.
+* **Integer and float constants**: succeed if the constant value fits in the target type.
+* **Widening casts**: if the cast source type is directly compatible with the target (see below), the check succeeds; otherwise the inner expression is checked recursively.
+* **All other expressions** (identifiers, calls, subscripts, etc.): succeed only if the expression's own type is *compatible* with the target type U:
+    * Both types are identical.
+    * Both are signed integers, and the source is no wider than U.
+    * Both are unsigned integers, and the source is no wider than U.
+    * Both are floats, and the source is no wider than U.
+    * The source is an unsigned integer and U is a signed integer of **strictly** greater width.
+    * Any other combination — including any signed-to-unsigned conversion — fails and requires an explicit cast.
+
+### Substruct conversions
+
+A struct may declare an `inline` member, which establishes a *subtype* relation between the struct and the inline member's type:
+
+* A pointer to the substruct implicitly converts to a pointer to the inline member's type.
+* A substruct value implicitly assigns to a variable of the inline member's type; the assignment copies only the inlined portion.
+* The inverse conversions — from a value of the inline member's type to the substruct — are not implicit.
+* Conversions between an array or slice of substructs and an array or slice of the inline member's type are not permitted, even by explicit cast.
+
+These rules apply transitively through chains of inline members.
+
+### Vector conversions
+
+A vector type implicitly converts to and from an array type with the same element type and length. All other vector conversions require an explicit cast.
+
+When a boolean vector value is cast to a vector with integer element type, each `true` element yields a value with all bits set and each `false` element yields zero.
+
+### Casts
+
+An explicit cast `(type)expression` produces a value of the specified type. A cast is permitted when any of the following holds:
+
+* The source and target are numeric types.
+* The source and target are pointer types.
+* The source is a pointer type and the target is an integer type able to hold a pointer, or vice versa.
+* The source and target are vector and array types with the same element type and length.
+* The source and target differ only by chains of `typedef` and alias.
+* The source is an interface type and the target is `any`, or vice versa.
+
+A cast between numeric types whose result is not representable in the target type has implementation-defined behaviour.
+
+### Method sets
+
+Every named type has a *method set*: the set of methods declared on that type. A method is declared by attaching a type name to the function name in a function declaration; see *Functions and methods*.
+
+The method set of a `typedef` is distinct from the method set of the type from which it derives. A type alias shares the method set of the type it names.
+
+A struct with an `inline` member makes the methods of the inline member's type accessible through values of the enclosing struct.
+
+### Method extension on built-in types
+
+A method may be declared on any named type, including a built-in type. The method name is qualified by the type name in the declaration:
+
+```
+fn int int.double_it(int self) { return self * 2; }
+```
+
+A method extension on a built-in type is visible according to the same module visibility rules as any other declaration.
+
+### Operator overloading
+
+A method or macro method may participate in operator overloading by carrying an `@operator` attribute with one of the following arguments: `[]`, `&[]`, `[]=`, `len`, or one of the operators `+`, `-`, `*`, `/`, `%`, `^`, `|`, `&`, `<<`, `>>`, `==`, `<`. The variant attributes `@operator_s` and `@operator_r` apply to binary operators between two distinct types and produce symmetric and reverse forms respectively.
+
+Restrictions:
+
+* Arithmetic and bitwise operator overloads are permitted only on user-defined types.
+* A bitstruct type may not overload `^`, `|`, or `&`, since these are predefined on bitstructs.
+* Defining `+` implicitly defines `+=`, and similarly for the other arithmetic operators; an explicit overload of the compound-assignment form takes precedence when present.
+* Defining `==` implicitly defines `!=`. Defining `<` together with `==` defines the full set of ordering operators `<`, `<=`, `>=`, `>`, `==`, `!=`.
+
+Overload resolution proceeds as follows:
+
+1. If an overload exactly matches the operand types, that overload is selected.
+2. Otherwise, if exactly one overload matches after applying implicit conversions to the non-self operand, that overload is selected.
+3. Otherwise, the operation is ambiguous and a compile-time error is reported.
+
+## Blocks and scope
+
+C3 source text is organized into nested *blocks*. Each block introduces a *scope* — a region of program text in which a declaration is visible. C3 distinguishes runtime blocks and compile-time blocks; the two form independent scope structures within any function or macro body.
+
+### Runtime blocks
+
+A runtime block is a brace-delimited sequence of declarations and statements:
+
+```
+runtime_block ::= "{" (declaration | statement)* "}"
+```
+
+Runtime blocks appear as the bodies of functions and macros and as compound statements within those bodies. Each runtime block introduces a nested runtime block scope.
+
+### Compile-time blocks
+
+A compile-time block is the body of a compile-time control structure. Compile-time blocks are not brace-delimited; each is opened by a `$`-prefixed keyword and closed by the matching `$end` keyword. For example:
+
+```
+$if FEATURE_X:
+    int x = compute_x();
+$endif
+```
+
+The full set of compile-time control structures — `$if`, `$else`, `$for`, `$foreach`, `$switch`, `$case`, `$default`, and related forms — and their precise grammar are given in *Statements*. Each compile-time block introduces a nested compile-time block scope.
+
+A compile-time block may itself contain runtime declarations and statements as well as further compile-time blocks; conversely a runtime block may contain compile-time blocks. The two structures interleave freely in the source text but track their scopes independently.
+
+### Scopes
+
+A scope is a region of program text in which a declaration is visible. C3 has four kinds of scope:
+
+**Module scope.** Module-level declarations — global variables, functions, types, constants, and macros — are visible throughout every section of the module in which they appear, regardless of textual position. Mutually recursive functions therefore require no forward declarations. Visibility across module boundaries is subject to the visibility rules described in *Modules*.
+
+**Function scope.** Each function or macro body forms a single function scope. The function scope contains all labels declared in the body; a label is visible throughout the entire body, from the beginning of the body, regardless of where the label appears textually.
+
+**Runtime block scope.** Each runtime block introduces a runtime block scope. A name declared within a runtime block is visible from the point of its declaration to the closing brace of the enclosing runtime block. A declaration is not visible above itself in the same block. Runtime block scopes nest in textual order and may shadow declarations in outer runtime block scopes and at module scope.
+
+**Compile-time block scope.** Each compile-time block introduces a compile-time block scope. A compile-time variable is visible from the point of its declaration to the close of its enclosing compile-time block. If no compile-time block encloses a compile-time variable, its scope extends to the end of the function or macro body. Compile-time variables may not be declared at module scope.
+
+The runtime block scope structure and the compile-time block scope structure are independent: the boundaries of a runtime block do not end the scope of a compile-time variable, and the boundaries of a compile-time block do not end the scope of a runtime variable.
+
+### Module sections
+
+Each `module` declaration in source code opens a *module section*. A single file may contain multiple sections, including sections for different modules, and a single module may span multiple files and multiple sections within each file.
+
+```
+module_section   ::= "module" path module_attributes? ";"
+module_attributes ::= ("@private" | "@local" | "@public" | "@if" "(" expression ")" | generic_params)+
+generic_params   ::= "<" generic_param ("," generic_param)* ">"
+generic_param    ::= TYPE_IDENT | CONST_IDENT
+```
+
+A module section may carry attributes that apply as defaults to every declaration within the section:
+
+* `@private` — declarations are `@private` by default; visible only within the same module.
+* `@local` — declarations are `@local` by default; visible only within the same file.
+* `@public` — declarations are `@public` by default; used to restore public visibility within a file whose other sections declare a more restrictive default.
+* `@if(cond)` — declarations are conditionally compiled under `cond`, evaluated at compile time.
+* `<Ty>`, `<Ty, Tu>`, `<Ty, VALUE>`, ... — opens a *generic module section* in which every supported declaration is parameterized over the listed parameters. A type parameter is a `TYPE_IDENT`; a compile-time value parameter is a `CONST_IDENT`. Declaration kinds that cannot be made generic, such as `faultdef`, may not appear in a generic section.
+
+Multiple attributes may be combined on a single section. Within a section, an individual declaration may override the section default — for example, `@public` on a declaration reverses a section default of `@private`.
+
+The imports declared in a section are visible only within that section. A later section of the same module, even in the same file, does not inherit those imports and must re-import as needed.
+
+Because module sections are not bound to a single file or author, a user may extend an existing module by opening a new section of the same name elsewhere. The new section's declarations join the module under the standard visibility rules, subject to any default attributes the section declares.
+
+### Name spaces
+
+C3 maintains several syntactically distinct *name spaces*. Because the token kind of an identifier encodes its category, different name spaces may share the same textual name without ambiguity:
+
+* *Ordinary identifiers* (`IDENTIFIER`): functions, variables, parameters, and macros.
+* *Type names* (`TYPE_IDENT`): user-defined types.
+* *Constant names* (`CONST_IDENT`): named constants.
+* *Compile-time identifiers* (`CT_IDENT`, `CT_TYPE_IDENT`): compile-time variables and compile-time type variables.
+* *Labels* (`CONST_IDENT` in label position): a name space separate from ordinary identifiers, type names, and constant names; scoped to the enclosing function body.
+* *Struct and union members*: each struct and union has its own name space for its members, disambiguated by the type of the object being accessed.
+
+A declaration in one name space does not conflict with a declaration of the same text in another.
+
+### Scope nesting and shadowing
+
+Scopes nest. An identifier visible in an outer scope may be *shadowed* by a declaration of the same identifier in an inner scope. Within the inner scope, the identifier designates the inner entity; the outer declaration is hidden until the inner scope ends.
+
+```
+fn void f()
+{
+    int x = 1;
+    {
+        int x = 2;   // shadows outer x
+    }
+    // outer x is 1 here again
+}
+```
+
+A local variable may shadow a module-scope declaration of the same name. Shadowing operates within a single scope dimension; a runtime declaration and a compile-time declaration with the same textual name do not interact, as they occupy distinct name spaces (`IDENTIFIER` vs `CT_IDENT`).
+
+### Storage duration and scope
+
+The scope of a local variable (the region in which it is accessible by name) is distinct from its *storage duration* (the span for which its storage persists). A local variable's scope ends at the closing brace of the runtime block in which it is declared, but its storage remains valid for the entire lifetime of the enclosing function call. A pointer to a local variable therefore remains valid anywhere within the same function call, even after the variable's name has gone out of scope. The full rules for storage duration are given in *Variables*.
+
+### Labels
+
+A label names a statement as a target for `break`, `continue`, and `nextcase`. Unlike C, a label is not a separate statement form that prefixes another statement; it is part of the syntax of the statement it names, written as `LABEL:` between the statement's introducing keyword and the rest of the statement. For example:
+
+```
+if FOO: (x > 0) { ... }
+```
+
+A label is a `CONST_IDENT`. The set of statements that may carry a label is fixed: `if`, `while`, `do`, `switch`, and `foreach`. Compile-time control structures do not support labels.
+
+Labels have function scope: a label is visible throughout the entire body of the function or macro in which it appears, from the beginning of the body, and may therefore be referenced before its textual position. A label may not shadow another label in the same function.
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
 
 #### Field access syntax
 
-It is possible to access the index 0-3 with field access syntax. 'x', 'y', 'z', 'w' corresponds to
+Vectors allow access the index 0-3 with field access syntax. 'x', 'y', 'z', 'w' corresponds to
 indices 0-3. Alternatively 'r', 'g', 'b', 'a' may be used.
 
 #### Swizzling
@@ -639,10 +1199,6 @@ Mixing the "rgba" and "xyzw" access name sets is an error. Consequently `foo.rgz
 #### Swizzling assignment
 
 A swizzled vector may be a lvalue if there is no repeat of an index. Example: `foo.zy` is a valid lvalue, but `foo.xxy` is not.
-
-#### Alignment
-
-Alignment of vectors have the same alignment as arrays of the same size and type.
 
 #### Vector operations
 

@@ -59,25 +59,19 @@ a different type provided the number fits in the type.
 ### Constant suffixes
 
 If you want to ensure that a constant is of a certain type, you can either add an explicit cast
-like: `(ushort)345`, or use an integer suffix: `345u16`.
+like: `(ulong)345`, or use an integer suffix: `345ul`.
 
 The following integer suffixes are available:
 
 | suffix |    type |
 |--------|:--------|
-| i8     |   ichar |
-| i16    |   short |
-| i32    |     int |
-| i64    |    long |
-| i128   |  int128 |
-| u8     |    char |
-| u16    |  ushort |
-| u32    |    uint |
+| l      |    long |
+| ll     |  int128 |
 | u      |    uint |
-| u64    |   ulong |
-| u128   | uint128 |
+| ul     |   ulong |
+| ull     | uint128 |
 
-Note how `uint` also has the `u` suffix.
+Suffixes may be uppercase or lowercase.
 
 ## Booleans
 
