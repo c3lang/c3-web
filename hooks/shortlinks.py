@@ -9,7 +9,8 @@ def on_post_build(config, **kwargs):
         'refcard':          {'target': 'standard-library/docs.html',  'title': 'C3 Standard Library Documentation'},
         'lib':              {'target': 'standard-library/docs.html',  'title': 'C3 Standard Library Documentation'},
         'docs':             {'target': 'language-overview/examples/', 'title': 'C3 Documentation Examples'},
-        'compare':          {'target': 'faq/compare-languages/',      'title': 'C3 Comparison with other languages'}
+        'compare':          {'target': 'faq/compare-languages/',      'title': 'C3 Comparison with other languages'},
+        'spec':             {'target': 'implementation-details/specification/', 'title': 'C3 Specification'}
     }
 
     template = """
