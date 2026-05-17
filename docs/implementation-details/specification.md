@@ -670,12 +670,12 @@ union_decl ::= "union" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "{" st
 
 All fields of a union share storage beginning at the same address. The alignment of a union is the maximum alignment requirement of any of its fields; consequently, any member access through a union pointer is correctly aligned regardless of which member is read. The size of a union is the size of its largest field rounded up to the nearest multiple of the union's alignment.
 
-Writing a member of type Ty stores that value's bit pattern in the first `sizeof(Ty)` bytes of the union's storage. Reading a member of type Un interprets the first `sizeof(Un)` bytes of the union's storage as a value of type Un.
+Writing a member of type Ty stores that value's bit pattern in the first `Ty::size` bytes of the union's storage. Reading a member of type Un interprets the first `Un::size` bytes of the union's storage as a value of type Un.
 
 When the most recently written member is of type Ty:
 
-* If `sizeof(Un) ≤ sizeof(Ty)`, all bytes read are part of Ty's written representation; the result is those bytes reinterpreted as type U. The result is fully defined.
-* If `sizeof(Un) > sizeof(Ty)`, the first `sizeof(Ty)` bytes hold Ty's written representation; the bytes in the range `[sizeof(Ty), sizeof(Un))` hold unspecified values, and the result may be any value representable in type Un.
+* If `Un::size ≤ Ty::size`, all bytes read are part of Ty's written representation; the result is those bytes reinterpreted as type U. The result is fully defined.
+* If `Un::size > Ty::size`, the first `Ty::size` bytes hold Ty's written representation; the bytes in the range `[Ty::size, Un::size)` hold unspecified values, and the result may be any value representable in type Un.
 
 A union may therefore be used as a controlled way to reinterpret a bit pattern, provided the member being read is no wider than the member most recently written.
 
@@ -1159,26 +1159,1699 @@ A label is a `CONST_IDENT`. The set of statements that may carry a label is fixe
 
 Labels have function scope: a label is visible throughout the entire body of the function or macro in which it appears, from the beginning of the body, and may therefore be referenced before its textual position. A label may not shadow another label in the same function.
 
+## Declarations
 
+A *declaration* binds an identifier to an entity such as a variable, a constant, a type, a function, a macro, a fault value, or an alias. C3 distinguishes the following kinds of declaration:
+
+- *Variable declarations* — globals, extern globals, thread-local globals, local variables, static local variables, and compile-time variables. See *Variables*.
+- *Constant declarations* — typed and untyped named constants. See *Constants*.
+- *Type declarations* — struct, union, bitstruct, enum, constdef, typedef, and interface declarations. See *Types*.
+- *Function declarations* and *method declarations*. See *Functions and methods*.
+- *Macro declarations*. See *Macros*.
+- *Import declarations* — bringing the entities of another module into the current section. See *Modules*.
+- *Attribute definitions* — introducing user-defined attributes. See *Attributes*.
+- *Alias declarations* and *fault value declarations*, described in this chapter.
+
+Type declarations, function declarations, method declarations, macro declarations, alias declarations, fault value declarations, attribute definitions, and import declarations may appear only at module scope. Variable and constant declarations may appear at module scope or within a function or macro body, with the additional restrictions given in *Variables* and *Constants*. Compile-time variables may appear only within a function or macro body.
+
+Every declaration may carry attributes. The set of attributes recognized for a declaration depends on the declaration kind and is described in *Attributes*.
+
+### Alias declarations
+
+An *alias declaration* introduces an additional name for an existing entity. An alias does not introduce a new type, function, value, module, or macro; it provides an alternative name through which the same entity may be referred. C3 distinguishes three forms of alias declaration, differing in what may be aliased and in the form of the right-hand side.
+
+#### Type aliases
+
+A *type alias* gives an existing type an additional name. The aliased type may be any type expression, including a generic instantiation or a compile-time type expression.
+
+```
+alias_type_decl ::= "alias" TYPE_IDENT generic_decl? attributes? "=" type_expr ";"
+```
+
+A type alias does not introduce a new type and does not have its own method set; references through the alias are equivalent to references through the underlying type's name. A type alias may not independently implement interfaces.
+
+A type alias may itself be generic, by including a `generic_decl` parameter list between the alias name and the `=`. The parameters are in scope on the right-hand side. For example:
+
+```
+alias IntList = List{int};
+alias Stack {Ty} = List{Ty};
+```
+
+#### Module aliases
+
+A *module alias* introduces an alternate name for a module.
+
+```
+module_alias_decl ::= "alias" IDENTIFIER attributes? "=" "module" module_path ";"
+```
+
+A module alias may be used wherever a module path is expected, including in `import` declarations and in qualified-name expressions.
+
+#### Identifier, constant, and macro aliases
+
+The remaining alias forms introduce a new name for an ordinary identifier (a function or global variable), a constant identifier (a named constant or fault value), or an `@`-prefixed identifier (a macro or user-defined attribute):
+
+```
+alias_decl     ::= "alias" alias_name generic_decl? attributes? "=" alias_source ";"
+alias_name     ::= IDENTIFIER | CONST_IDENT | AT_IDENT
+alias_source   ::= (path? IDENTIFIER | path? CONST_IDENT | path? AT_IDENT) generic_parameters?
+```
+
+The lexical kind of `alias_name` must match the lexical kind of `alias_source`:
+
+- An `IDENTIFIER` alias refers to a function, macro or global variable.
+- A `CONST_IDENT` alias refers to a named constant or a fault value.
+- An `AT_IDENT` alias refers to a macro.
+
+The optional `generic_parameters` on the right-hand side instantiates a generic target, producing a non-generic alias. The optional `generic_decl` on the left-hand side declares the alias itself as generic; its parameters are in scope on the right-hand side.
+
+### Fault value declarations
+
+A *faultdef* declaration introduces one or more named values of the built-in type `fault`.
+
+```
+faultdef_decl    ::= "faultdef" fault_definition ("," fault_definition)* ","? ";"
+fault_definition ::= CONST_IDENT attributes?
+```
+
+Each `fault_definition` introduces a distinct value of type `fault`. The values are visible at module scope and obey the standard visibility rules. Each fault value may carry its own attributes. A trailing comma after the last `fault_definition` is permitted.
+
+A faultdef does not introduce a new type — all values declared by `faultdef` have type `fault`, and any fault value from any module is comparable and assignable to a `fault`-typed variable.
+
+
+## Expressions
+
+An *expression* computes a value, possibly with side effects. Some expressions, including calls to functions returning `void`, have no value.
+
+### Operands
+
+An operand denotes an elementary value in an expression. An operand is a literal, a named entity, a parenthesized expression, a compound literal, a type access expression, a compile-time access expression, or a lambda.
+
+```
+operand ::= literal
+          | path? entity_name
+          | "(" expression ")"
+          | compound_literal
+          | type_access_expr
+          | builtin_expr
+          | lambda_expr
+entity_name ::= IDENTIFIER | CONST_IDENT | TYPE_IDENT
+              | CT_IDENT | CT_TYPE_IDENT | HASH_IDENT
+              | AT_IDENT
+              | BUILTIN_CONST | "null" | "true" | "false"
+path        ::= IDENTIFIER ("::" IDENTIFIER)* "::"
+```
+
+Literals are described in *Constants*. A path-prefixed name resolves through the module path; an unprefixed name resolves through the current section's import set as described in *Modules*. The lexical kind of the identifier (`IDENTIFIER`, `CONST_IDENT`, `TYPE_IDENT`, etc.) determines the kind of entity referenced; when more than one entity could match a textual name, ambiguity is resolved by additional path qualification.
+
+A parenthesized expression has the same value, type, and lvalue-ness as the enclosed expression. Parentheses do not introduce a new scope.
+
+### Compound literals
+
+A *compound literal* constructs a value of an aggregate type — struct, union, array, slice, vector, or bitstruct — from a brace-enclosed list of elements. The form follows C99 designated initializers, with three extensions: *range initializers*, *vector swizzles*, and *struct splatting*. C3 is stricter than C99 in one respect: positional and designated elements may not be mixed in a single literal.
+
+```
+compound_literal     ::= "(" type ")" initializer_list
+                       | initializer_list
+initializer_list     ::= "{" "}"
+                       | "{" designated_form ","? "}"
+                       | "{" positional_form ","? "}"
+designated_form      ::= ("..." expression ",")? designated_element ("," designated_element)*
+positional_form      ::= positional_element ("," positional_element)*
+designated_element   ::= designator_path ("=" expression)?
+positional_element   ::= expression
+                       | "..." expression
+designator_path      ::= designator_step+
+designator_step      ::= "." IDENTIFIER
+                       | "[" expression "]"
+                       | "[" expression ".." expression "]"
+```
+
+The parenthesized type prefix is required when the type cannot be inferred from context; otherwise the type is inferred from the surrounding context.
+
+A range designator step `[a..b]` may appear only as the *last* step of a designator path; preceding steps must be `.field` or `[index]`. So `.bar.x[0..1] = 3` is well-formed, but `[0..1].field = 3` is not.
+
+#### Element kinds
+
+An initializer list takes one of two forms:
+
+* A **designated form**, optionally preceded by a single splat, followed by one or more designated elements.
+* A **positional form**, consisting of expressions and splats in any order.
+
+Mixing the two forms in a single literal is a compile error.
+
+In a *positional* list, each expression initializes the corresponding member or position in source order. The number of elements must not exceed the number of positions; unspecified trailing positions are zero-initialized.
+
+In a *designated* list, each element specifies its target by a designator path made of one or more steps:
+
+- `.field` selects a struct, union, or bitstruct member.
+- `[index]` selects an array, slice, or vector position.
+- `[a..b]` selects the inclusive range of positions `[a, b]` of the enclosing array, slice, or vector. The range form may appear only as the last step of the path. The right-hand value is evaluated once and broadcast to each position.
+
+A path may chain steps to reach a nested target: `.outer.inner = expression`, `[0].field = expression`, `.bar.x[0..1] = expression`.
+
+A *vector swizzle initializer* `.xy = expression`, `.xyz = expression`, `.yz = expression`, etc., initializes consecutive components of a vector. The component names must be **ordered and contiguous**: `.xy`, `.yz`, `.xyzw` are valid; `.yx` (reversed) and `.xz` (non-contiguous) are not. A swizzle is lowered to the equivalent range initializer.
+
+A designator may appear without `= expression`, in which case the designated target is set to a default appropriate to its type (for example, `true` for a one-bit bitstruct field). This shorthand is rarely needed.
+
+Designators may appear in any order. Positions not initialized by any element are zero-initialized. If two elements initialize the same position, the one appearing later in the literal supersedes the earlier one.
+
+A union literal contains exactly one designated initializer naming the active member.
+
+#### Splat
+
+A *splat* element has the form `...expression`. Its meaning depends on the surrounding form:
+
+* In a **designated form**, exactly one splat is permitted, and it must precede every designated element. The splatted expression must be of the same type as the initializer. Its values become the defaults for every member or position of the result; subsequent designators override individual targets.
+
+* In a **positional form**, any number of splats may appear in any position. Each splat expands to the elements of its operand in order, contributing them as positional values. For example, if `b` has length 2 and `d` has length 3, then `{ a, ...b, c, ...d }` is equivalent to `{ a, b[0], b[1], c, d[0], d[1], d[2] }`.
+
+Splats may not appear in a literal that mixes positional and designated elements (which is itself forbidden).
+
+The special form `...$vaarg`, valid only inside a macro body, splats the macro's variadic arguments. It is **always** a positional splat regardless of context, expanding each variadic argument as a positional element; using it in an initializer list therefore makes that list a positional form, and any designators in the same list are rejected by the no-mixing rule.
+
+#### Evaluation order
+
+Elements are evaluated in the order they appear in the literal, regardless of the position they initialize. For example, in `{ [1] = foo(), [0] = bar() }` the call `foo()` is evaluated before `bar()`.
+
+### Primary expressions
+
+A *primary expression* is built from an operand by zero or more postfix operations: member access, subscript, slice, function or method call, macro invocation, generic instantiation, optional propagation, and postfix increment or decrement.
+
+```
+primary_expr ::= operand
+               | primary_expr "." access_ident
+               | primary_expr "[" expression "]"
+               | primary_expr "[" range_expr "]"
+               | primary_expr generic_arguments
+               | primary_expr "(" argument_list? ")" trailing_macro_block?
+               | primary_expr "++"
+               | primary_expr "--"
+               | primary_expr "!"
+               | primary_expr "!!"
+               | primary_expr "~"
+access_ident ::= IDENTIFIER | TYPE_IDENT | CONST_IDENT | AT_IDENT | INTEGER
+generic_arguments ::= "{" type_or_value ("," type_or_value)* "}"
+range_expr   ::= range_loc? (".." | ":") range_loc?
+range_loc    ::= "^"? expression
+```
+
+#### Member access
+
+The expression `a.b` accesses the member `b` of the aggregate value or pointer `a`. If `a` has pointer-to-aggregate type, the pointer is implicitly dereferenced. The result has the member's declared type and is addressable if and only if `a` is addressable (or if `a` is a pointer).
+
+The right-hand `access_ident` may be an `IDENTIFIER` (struct field, method, or property), a `TYPE_IDENT` (nested type), a `CONST_IDENT` (nested constant), an `AT_IDENT` (method-style macro), or an integer literal (positional access into a tuple-like aggregate).
+
+#### Subscript
+
+The expression `a[i]` selects the element at index `i`. The operand `a` must be an array, slice, vector, pointer, or a type that overloads the subscript operator. The index `i` must have integer type, or `^expr` to count from the end of the operand (valid for arrays, slices, and vectors of known length).
+
+In safe builds, an out-of-range index traps. In fast builds, the behaviour is undefined.
+
+#### Slicing
+
+The expression `a[i..j]` produces a slice over the inclusive index range `[i, j]` of the operand. The expression `a[i:n]` produces a slice of length `n` starting at index `i`. Either bound may be omitted to mean "from the beginning" or "to the end", and either may be expressed as `^expr` to count from the end. The result has type `S[]` where `S` is the element type of the operand.
+
+The special case `j = i - 1` in the `i..j` form, and the special case `n = 0` in the `i:n` form, both yield a valid empty slice. For example, `a[1..0]` and `a[1:0]` are well-formed and produce an empty slice; the bound `i` may equal the length of the operand in these cases (one past the last element).
+
+#### Generic instantiation
+
+The expression `g{Ty, Tu, value}` instantiates a generic entity `g` with the given type and value arguments. The result is a non-generic entity that may be used directly or further composed with calls or member access. Generic arguments may be types (`TYPE_IDENT`) or compile-time expressions matching the generic's value parameters.
+
+#### Calls
+
+A call invokes a function, a method, or a macro:
+
+```
+argument_list ::= argument ("," argument)* ","?
+argument      ::= expression
+                | "..." expression
+                | IDENTIFIER ":" "..."? expression
+                | "." IDENTIFIER "=" expression
+trailing_macro_block ::= AT_IDENT ("(" parameter_list? ")" )? compound_statement
+```
+
+Arguments may be supplied positionally, by name (`name: expression`), or by struct-field-style designator (`.field = expression`) for arguments of aggregate type. A `...expression` spreads a slice, array, or compile-time list into the variadic part of the parameter list. Named and designated arguments may appear in any order; positional arguments must come before them.
+
+Each argument is converted to the corresponding parameter's declared type using the rules described in *Assignability*.
+
+A macro call may carry a *trailing macro block* — a function-literal-like body attached after the parenthesized argument list. The trailing block becomes available inside the macro under the parameter name introduced after the closing parenthesis. The detailed rules are given in *Macros*.
+
+The result type of a call is the function's, method's, or macro's return type. A call producing an optional propagates that optional status to the surrounding expression (see *Optional propagation*).
+
+#### Postfix `++` and `--`
+
+The expressions `lvalue++` and `lvalue--` increment and decrement `lvalue` by one and yield the value before the modification. The operand must be an addressable expression of integer, floating-point, or pointer type. For pointer operands, the change is by one element.
+
+#### Optional propagation
+
+The postfix operators `~`, `!`, and `!!` operate on optionals:
+
+* `expression~` converts a fault value into an optional carrying that fault as its excuse. The operand must be of type `fault`. The result has type `void?` and represents an optional that fails with the given fault.
+* `expression!` evaluates the operand; if the operand is a successful optional, the result is its underlying value, and if the operand carries a fault, the enclosing function returns immediately with that same fault, propagating the optional. The operand must have optional type and the enclosing function must be allowed to return that optional.
+* `expression!!` evaluates the operand; if the operand is successful, the result is the underlying value, otherwise the program traps. Force-unwrapping should be reserved for cases where the failure carrier is statically known to be unreachable.
+
+### Type access expressions
+
+A type access expression uses `::` to select a member of a type rather than a value:
+
+```
+type_access_expr ::= type "::" access_ident
+```
+
+Examples include `Foo::SIZE` (a named constant on a type), `Foo::typeid` (the type's runtime type identifier — see *Properties of types and values*), and `Foo::alignment`. The set of accessible names depends on the type and is described in *Properties of types and values*.
+
+### Compile-time access expressions
+
+A compile-time access expression denotes a value or type known at compile time:
+
+```
+ct_arg_expr      ::= "$vaarg" ("[" range_expr "]")?
+ct_analyze_expr  ::= ct_analyze_op "(" expression ")"
+ct_defined_expr  ::= "$defined" "(" ct_defined_check ("," ct_defined_check)* ")"
+ct_feature_expr  ::= "$feature" "(" CONST_IDENT ")"
+ct_analyze_op    ::= "$eval" | "$reflect" | "$stringify" | "$expand"
+ct_defined_check ::= expression
+                   | type IDENTIFIER ("=" expression)?
+```
+
+The semantics of these forms are described in *Compile-time evaluation* and *Reflection*. Each operand of `$defined` is either an expression (well-formed if a value of that form would be valid) or a candidate local variable declaration (well-formed if such a declaration would be valid).
+
+### Unary operators
+
+```
+unary_expr ::= unary_op expression
+unary_op   ::= "+" | "-" | "!" | "~" | "*" | "&" | "&&" | "++" | "--" | "(" type ")"
+```
+
+* `+e` performs integer promotion: integer operands narrower than the platform `int` are promoted to `int` (with the corresponding signedness); operands of `int` or wider, and operands of floating-point or vector type, are returned unchanged. The operand must be of numeric or vector type. The result type may therefore differ from the operand type for narrow integers.
+* `-e` is the arithmetic negation of `e`; its operand must be of integer, floating-point, or vector type. Signed integer negation wraps on overflow (it is defined to wrap, not undefined).
+* `!e` is the logical negation of `e`; its operand must be of boolean type.
+* `~e` is the bitwise complement of `e`; its operand must be of integer or vector type.
+* `*p` is the value pointed to by `p`; `p` must be of pointer type, and may not be `void*`.
+* `&v` is the address of `v`; the operand must be addressable (an lvalue), and the result has the type "pointer to the operand's type".
+* `&&e` is a *temporary address*: it materializes the value of `e` in a fresh storage location whose lifetime extends to the end of the enclosing full expression, and yields a pointer to that location. The operand need not be addressable.
+* `++lvalue` and `--lvalue` increment and decrement `lvalue` by one and yield the value after the modification. The operand must be addressable, of integer, floating-point, or pointer type.
+* `(type) expression` is an explicit cast — see *Conversions*.
+
+The unary operators have higher precedence than any binary operator. Postfix operations (member access, subscript, call, optional propagation, postfix `++`/`--`) have higher precedence than the prefix unary operators.
+
+### Binary operators
+
+Binary operators combine two operands and produce a value of a determined type. The table below lists operator categories in **decreasing order of precedence**; operators in the same row have equal precedence. All binary operators are left-associative except where noted.
+
+```
+Precedence     Category               Operators
+-------------- ---------------------- ------------------------------------
+14 (highest)   Primary                literals, names, parenthesised expr
+13             Postfix                . () [] ++ -- !! ! ~
+12             Unary (prefix)         ! - + ~ * & && ++ -- (type)
+11             Multiplicative         *   /   %
+10             Shift                  <<  >>
+ 9             Bitwise                &   |   ^
+ 8             Or-else / Elvis        ?:  ??
+ 7             Additive               +   -   +++
+ 6             Relational             <  <=  >  >=  ==  !=
+ 5             Logical AND            &&  &&&
+ 4             Logical OR             ||  |||
+ 3             Ternary                ? :                      (right-assoc)
+ 2             Assignment             =  +=  -=  *=  /=  %=
+                                      &=  |=  ^=  <<=  >>=    (right-assoc)
+ 1 (lowest)
+```
+
+The compile-time variants `+++`, `&&&`, and `|||` sit at the same precedence levels as their runtime counterparts; they operate on compile-time-known operands (see *Compile-time evaluation*).
+
+This precedence order differs from C in several places:
+
+* Shift binds **tighter** than additive. `a + b >> c` parses as `a + (b >> c)`.
+* Bitwise `&`, `|`, `^` are all at one precedence level, between shift and or-else, **tighter** than relational. `a & b == c` parses as `(a & b) == c`.
+* The or-else operators `??` and `?:` sit between bitwise and additive, **tighter** than additive. `a + b ?? c` parses as `a + (b ?? c)`.
+* Relational and equality share one level (in C they are two levels).
+
+For an operator `op` and operands `a`, `b`, the expression `a op b` is well-typed if `a` and `b` are of types compatible with `op` and with each other, according to the rules below.
+
+#### Arithmetic operators
+
+The arithmetic operators `+`, `-`, `*`, `/`, `%`, when applied to two operands of integer or floating-point type, perform arithmetic at a common type determined by *arithmetic promotion* (see *Properties of types and values*). The operators `+` and `-` are also defined for pointer arithmetic: `p + i` and `p - i` add or subtract an integer-typed offset (in element units), and `p - q` of two pointers to the same element type yields a signed integer count of elements between them.
+
+The arithmetic and bitwise operators are defined elementwise on vector types.
+
+Signed integer overflow in `+`, `-`, `*`, and unary `-` wraps modulo `2ⁿ` where `n` is the operand width. Unsigned overflow wraps in the natural way. Division by zero in `/` or `%` on integer operands traps in safe mode and is undefined behaviour in fast mode. Floating-point division by zero, overflow, and other exceptional cases follow IEEE 754.
+
+#### Shift operators
+
+The operators `<<` and `>>` shift the left operand by the number of positions given by the right operand. Both operands must be of integer type. The right operand is interpreted as an unsigned count; shifting by a count greater than or equal to the bit-width of the left operand's type, or by a negative count, is undefined behaviour. Right shift of a signed integer is an arithmetic shift (sign extending); right shift of an unsigned integer is a logical shift.
+
+#### Bitwise operators
+
+The operators `&`, `|`, `^` perform bitwise AND, OR, and XOR on operands of integer or vector-of-integer type. All three share the same precedence level. The result has the common type of the operands after arithmetic promotion.
+
+#### Or-else and Elvis operators
+
+* `a ?? b` (the *optional-else* operator) evaluates `a`; if `a` is a successful optional, its underlying value is the result. Otherwise `b` is evaluated and is the result. The operand `a` must have optional type; `b` must be assignable to the underlying type of `a` (or itself be an optional with the same underlying type).
+* `a ?: b` (the *Elvis* operator) evaluates `a`; if `a` is truthy, the result is `a` (after assignability conversion); otherwise `b` is evaluated and is the result. Both operands must be of types convertible to a common type.
+
+Both operators short-circuit; `b` is evaluated only when needed.
+
+#### Relational operators
+
+The operators `<`, `<=`, `>`, `>=`, `==`, `!=` compare two operands and produce a value of type `bool`. They share a single precedence level. Comparison is defined for: numeric types (after arithmetic promotion), pointer types (with the usual address ordering), boolean types (with `false < true`), enum types (by ordinal), constdef and typedef types (per their underlying type), `fault` (by identity, for `==`/`!=` only), `typeid` (by identity, for `==`/`!=` only), and vector types (elementwise, yielding a vector of `bool`).
+
+Two pointer values are equal if they point to the same object or are both `null`. Two slices are not directly comparable; use `slice.ptr` and `slice.len` if needed.
+
+#### Logical operators
+
+The operators `&&` and `||` apply to operands of type `bool`. They short-circuit: in `a && b` the operand `b` is evaluated only if `a` is `true`; in `a || b` the operand `b` is evaluated only if `a` is `false`. The result has type `bool`.
+
+### Ternary expression
+
+```
+ternary_expr ::= expression "?" expression ":" expression
+```
+
+The expression `c ? a : b` evaluates `c`; if `c` is `true`, the result is `a`, otherwise `b`. The operand `c` must have type `bool`. The operands `a` and `b` must be of compatible types and convert to a common type. Exactly one of `a` and `b` is evaluated.
+
+### Assignment expressions
+
+```
+assign_expr ::= lvalue assign_op expression
+assign_op   ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<<=" | ">>="
+```
+
+An assignment stores the right-hand value into the left-hand lvalue. The right-hand operand is converted to the type of the lvalue according to the *Assignability* rules. The result of the assignment is the new value of the lvalue. The lvalue must be addressable.
+
+A compound assignment `lvalue op= expression` is equivalent in effect to `lvalue = lvalue op expression`, except that the lvalue is evaluated only once.
+
+A `:=` form is not supported; new bindings are introduced by `var name = expression` or by a typed declaration (see *Variables*).
+
+### Cast expressions
+
+An explicit cast converts a value of one type to another. The grammar of a cast expression is `( type ) expression`.
+
+A cast is permitted between any two types for which a conversion is defined; the list of permitted conversions and their semantics is given in *Casts*. A cast that adds information not present at runtime (for example, downcasting an `any` or an interface to a more specific type) may trap in safe mode if the runtime check fails.
+
+### Constant expressions
+
+A *constant expression* is an expression whose value can be determined at compile time. The expression must not depend on runtime state and may use only operators and operand forms with defined compile-time semantics. The complete rules are described in *Compile-time evaluation*. Constant expressions are required in contexts such as array sizes, the values of named constants, default parameter values, attribute arguments, and the conditions of `$if`, `$for`, and other compile-time control structures.
+
+### Lambda expressions
+
+A *lambda expression* introduces an anonymous function or macro:
+
+```
+lambda_expr       ::= "fn" return_type? fn_parameter_list attributes? lambda_body
+lambda_body       ::= "{" statement* "}"
+                    | "=>" expression
+```
+
+A lambda may capture compile-time values from the enclosing scope but not runtime variables. Its type is a function type. The full rules are given in *Functions and methods*.
+
+### Order of evaluation
+
+Evaluation of an expression is fully sequenced. Every operand is evaluated and its side effects are complete before any operand whose source position lies to its right, except where short-circuiting suppresses evaluation.
+
+The rules are:
+
+1. In a call, the called function, method, or macro expression is evaluated first; arguments are then evaluated in left-to-right source order.
+2. In a binary operator, the left operand is evaluated and its side effects are complete before the right operand is evaluated. The short-circuiting operators (`&&`, `||`, `??`, `?:`) evaluate the right operand only when required.
+3. In an assignment, the left-hand lvalue (including any subexpressions used to compute its address) is evaluated, and its address is fixed, before the right-hand operand is evaluated; the converted right-hand value is then stored.
+4. In a compound literal, elements are evaluated in source order regardless of the position they initialize.
+5. The postfix operators `++` and `--` read the operand, fix the expression's value as the value before modification, and write back the new value before the next operand of the surrounding expression is evaluated.
+6. The ternary expression `c ? a : b` evaluates `c` first; depending on its value, exactly one of `a` and `b` is then evaluated.
+
+Because of these rules, expressions in C3 have no order-of-evaluation undefined behaviour. Constructs that are undefined in C, such as `i = i++ + i++`, have a defined result in C3 determined by strict left-to-right evaluation.
+
+## Statements
+
+A *statement* directs the flow of execution within a function or macro body. Statements compose into sequences within blocks; each statement is terminated either by a semicolon or by the closing delimiter of a structured form.
+
+```
+statement ::= block_statement
+            | local_declaration_statement
+            | constant_declaration_statement
+            | var_statement
+            | expression_statement
+            | if_statement
+            | switch_statement
+            | while_statement
+            | do_statement
+            | for_statement
+            | foreach_statement
+            | break_statement
+            | continue_statement
+            | nextcase_statement
+            | return_statement
+            | defer_statement
+            | assert_statement
+            | asm_block_statement
+            | ct_statement
+            | ";"
+```
+
+### Block statement
+
+A *block statement* groups a sequence of statements into a runtime block scope (see *Blocks and scope*):
+
+```
+block_statement ::= "{" statement* "}"
+```
+
+The statements within a block are executed in source order. The block introduces a new runtime scope; local declarations within the block are visible from their point of declaration to the closing brace.
+
+### Expression statement
+
+An *expression statement* evaluates an expression and discards its value:
+
+```
+expression_statement ::= expression ";"
+```
+
+The expression's side effects are performed. If the expression has a non-`void` type, its value is discarded.
+
+### Local declaration statements
+
+A local declaration statement introduces a local variable, a static or thread-local variable, an inferred-type variable, or a local constant. The full syntax and semantics are in *Variables* and *Constants*.
+
+```
+local_declaration_statement   ::= local_storage? optional_type local_decl_after_type ("," local_decl_after_type)* ";"
+local_storage                 ::= "static" | "tlocal"
+local_decl_after_type         ::= IDENTIFIER attributes? ("=" expression)?
+                                | CT_IDENT ("=" constant_expression)?
+var_statement                 ::= "var" (IDENTIFIER attributes? "=" expression
+                                       | CT_TYPE_IDENT ("=" expression)?
+                                       | CT_IDENT ("=" expression)?) ";"
+constant_declaration_statement ::= "const" type? CONST_IDENT attributes? "=" expression ";"
+```
+
+A `static` local has function-call-independent storage; a `tlocal` local has per-thread storage. The `var` form infers the type from the initializer. A `const` local declares a compile-time constant; its initializer must be a constant expression.
+
+### Conditions
+
+The conditional statements `if`, `while`, `do`, `switch`, `for`, and the `cond` slot of `for_stmt` all accept a *condition*, which may include one or more declarations together with an optional `try` or `catch` unwrap:
+
+```
+condition       ::= condition_repeat ("," (try_unwrap_chain | catch_unwrap))?
+                  | try_unwrap_chain
+                  | catch_unwrap
+condition_repeat ::= decl_or_expression ("," decl_or_expression)*
+decl_or_expression ::= var_decl
+                     | optional_type local_decl_after_type
+                     | expression
+try_unwrap      ::= "try" (type? IDENTIFIER "=")? expression
+try_unwrap_chain ::= try_unwrap ("&&" (try_unwrap | expression))*
+catch_unwrap    ::= "catch" (type? IDENTIFIER "=")? expression ("," expression)*
+```
+
+A condition is treated as true when:
+
+* Every plain expression in `condition_repeat` evaluates to `true` (after assignability conversion to `bool`).
+* Every `try` in a `try_unwrap_chain` produces a successful optional. The unwrapped value is bound to the named identifier (if any), which is in scope for the body of the controlling statement.
+* In a `catch_unwrap`, the captured optional has *failed*; the resulting fault is bound to the named identifier (if any).
+
+The `try` and `catch` unwraps are the principal mechanism for handling optionals in conditional contexts; see *Optionals and faults*.
+
+### If statement
+
+```
+if_statement ::= "if" label? "(" condition ")" (block_statement else_part | statement)
+else_part    ::= "else" (if_statement | block_statement)
+```
+
+The condition is evaluated. If true, the *then* branch is executed; otherwise the *else* branch, if any, is executed. When the *then* branch is a single statement (not a block), an `else` clause is not permitted; in that case use a block.
+
+The optional label has the form `LABEL:` and follows the rules in *Blocks and scope*. A label permits a labelled `break` or `continue` to target this statement.
+
+### Switch statement
+
+```
+switch_statement ::= "switch" label? ("(" condition ")")? attributes? "{" switch_body? "}"
+switch_body      ::= (case_clause | default_clause)+
+case_clause      ::= "case" expression (".." expression)? ":" statement*
+default_clause   ::= "default" ":" statement*
+```
+
+The switch evaluates its condition and selects the first `case` whose value equals the condition, or whose inclusive range `a..b` contains the condition. If no `case` matches, the `default` clause, if present, is selected.
+
+A switch without a condition `switch { ... }` is equivalent to evaluating each case as a boolean expression in source order and selecting the first that is `true`. Such a switch is always lowered to an if-else chain (see below).
+
+Control reaches the end of the switch statement after the selected case executes its statements; case clauses do not fall through automatically. To transfer control to another case, use a `nextcase` statement.
+
+#### Lowering
+
+A switch statement is lowered to one of two forms:
+
+* A **jump table**, in which the switch operand directly indexes into a table of case targets. A jump table is produced only when the operand has integer type and every case value is a compile-time constant.
+* An **if-else chain**, in which each case is tested in source order. This form is used when the switch has no condition, when the operand is neither an integer nor a boolean type, or when any case value is not a compile-time constant. An if-else chain is never further reduced to a jump table.
+
+The attribute `@jump` requests jump-table lowering. A switch carrying `@jump` must satisfy the requirements above; otherwise the compiler rejects the program.
+
+### While and do statements
+
+```
+while_statement ::= "while" label? "(" condition ")" statement
+do_statement    ::= "do" label? block_statement ("while" "(" expression ")")? ";"
+```
+
+A `while` statement evaluates the condition; if true, it executes the body and repeats. A `do` statement executes the body once and then evaluates the trailing condition; if true, it repeats. A `do { ... };` form without a trailing `while` clause is equivalent to `{ ... }` with a label-aware `break` target.
+
+### For statement
+
+```
+for_statement ::= "for" label? "(" for_condition ")" statement
+for_condition ::= init_list? ";" condition? ";" update_list?
+init_list     ::= decl_or_expression ("," decl_or_expression)*
+update_list   ::= expression ("," expression)*
+```
+
+The `init_list` is executed once; declarations within it are scoped to the entire `for` statement (including condition, update, and body). The `condition`, if present, is evaluated before each iteration; the body executes only when the condition is true. The `update_list` is evaluated after each iteration. An absent condition is treated as `true`.
+
+### Foreach statement
+
+```
+foreach_statement ::= ("foreach" | "foreach_r") label? "(" foreach_vars ":" expression ")" statement
+foreach_vars      ::= foreach_var ("," foreach_var)?
+foreach_var       ::= optional_type? "&"? IDENTIFIER
+```
+
+The expression must denote an iterable: an array, slice, vector, or a type with `@operator(len)` and `@operator([])` defined. The loop binds one or two variables for each element of the iterable:
+
+* With one variable, that variable binds the element value (or, if prefixed with `&`, a pointer to the element).
+* With two variables, the first binds the index and the second binds the element (or pointer to the element).
+
+The optional type on a `foreach_var` is the variable's declared type; if omitted, the type is inferred. `foreach_r` iterates in reverse order.
+
+### Break, continue, nextcase
+
+```
+break_statement   ::= "break" CONST_IDENT? ";"
+continue_statement ::= "continue" CONST_IDENT? ";"
+nextcase_statement ::= "nextcase" ((CONST_IDENT ":")? (expression | "default"))? ";"
+```
+
+`break` exits the innermost enclosing `while`, `do`, `for`, `foreach`, or `switch` statement. An optional label names a specific labelled enclosing statement to exit.
+
+`continue` skips to the next iteration of the innermost enclosing `while`, `do`, `for`, or `foreach`. An optional label names a specific labelled enclosing loop. `continue` may not target a `switch`.
+
+`nextcase` transfers control to another case of the innermost enclosing `switch`, or of a labelled enclosing switch if a label is supplied. The forms are:
+
+* `nextcase;` — transfer to the textually following case.
+* `nextcase expression;` — transfer to the case selected by `expression`. In a switch lowered to a jump table or otherwise capable of direct case selection, control is transferred directly to the matching case without re-evaluating the cases. In a switch lowered to an if-else chain, the cases are re-tested against `expression` starting from the first; control transfers to the first matching case. This form may not be used in a switch that has no condition.
+* `nextcase default;` — transfer to the `default` clause.
+
+### Return statement
+
+```
+return_statement ::= "return" expression? ";"
+```
+
+`return` terminates execution of the enclosing function or macro and returns control to the caller. If the function's declared return type is `void`, the operand must be omitted; otherwise it is required and must be assignable to the declared return type. A `return` from a function whose return type is an optional that carries a fault propagates that fault to the caller.
+
+### Defer statement
+
+```
+defer_statement ::= "defer" defer_kind? statement
+defer_kind      ::= "try"
+                  | "catch"
+                  | "(" "catch" IDENTIFIER ")"
+```
+
+A `defer` schedules the given statement to be executed when control leaves the enclosing block, regardless of how that exit occurs — fall-through, `return`, `break`, `continue`, `nextcase`, or fault propagation. Deferred statements within a block run in reverse order of their textual occurrence.
+
+Variants:
+
+* `defer try statement` — runs only when the enclosing block is exited without a fault.
+* `defer catch statement` — runs only when the enclosing block is exited because of a fault.
+* `defer (catch fault_name) statement` — runs on fault exit, binding the fault value to `fault_name` for use inside the deferred statement.
+
+Deferred statements may not `return`, `break`, `continue`, or `nextcase` out of the function, but may execute their own internal control flow.
+
+### Assert statement
+
+```
+assert_statement ::= "assert" "(" expression ("," expression)* ")" ";"
+```
+
+`assert(cond)` evaluates `cond`; if `cond` is `false`, the program traps with a message describing the failed assertion. Additional expressions are evaluated and used to compose the message. Assertions are active in safe builds; in fast builds, the compiler may treat the condition as a hint that may not be relied upon.
+
+### Compile-time control statements
+
+Compile-time control statements direct compilation rather than runtime execution. Each is closed by a matching `$end` keyword. See *Compile-time evaluation* for full semantics.
+
+```
+ct_if_statement     ::= "$if" constant_expression ":" statement* ("$else" statement*)? "$endif"
+ct_switch_statement ::= "$switch" constant_expression? ":" ct_case_clause+ "$endswitch"
+ct_case_clause      ::= ("$case" constant_expression | "$default") ":" statement*
+ct_foreach_statement ::= "$foreach" CT_IDENT ("," CT_IDENT)? ":" expression ":" statement* "$endforeach"
+ct_for_statement    ::= "$for" for_condition ":" statement* "$endfor"
+ct_assert_statement ::= "$assert" constant_expression ("," constant_expression)* ";"
+ct_error_statement  ::= "$error" constant_expression ("," constant_expression)* ";"
+ct_echo_statement   ::= "$echo" constant_expression ";"
+```
+
+`$assert` triggers a compile-time error if the condition is false. `$error` always triggers a compile-time error with the given message. `$echo` emits a compile-time diagnostic. The looping and conditional forms drive code generation at compile time and form compile-time block scopes (see *Blocks and scope*).
+
+### Inline assembly
+
+```
+asm_block_statement ::= "asm" ("(" expression ")" attributes? | attributes? "{" asm_instruction* "}")
+```
+
+An `asm` block embeds platform-specific instructions. The full syntax of instructions and operands is given in *Inline assembly*.
+
+## Functions and methods
+
+A *function* is a named, callable entity with a return type, a parameter list, and an optional body. A *method* is a function declared in a way that associates it with a particular type and is invoked using member-access syntax on receiver values of that type.
+
+### Function declarations and definitions
+
+```
+function_declaration ::= "fn" return_type function_name fn_parameter_list generic_decl? attributes? function_body
+return_type          ::= type "?"? | "void"
+function_name        ::= (type ".")? IDENTIFIER
+fn_parameter_list    ::= "(" parameter_list? ","? ")"
+function_body        ::= compound_statement
+                       | "=>" expression ";"
+                       | "=>" macro_call_with_trailing_block
+                       | ";"
+```
+
+A function declaration introduces a name into module scope and binds it to a function entity. The body takes one of four forms:
+
+* A *compound statement* `{ ... }` defines the function with the given body.
+* A *short body* `=> expression;` defines the function as immediately returning the value of the expression; the function's return type, if not explicitly given, is the type of the expression.
+* A *short body invoking a macro with a trailing block* `=> @macro(args) { ... }` defines the function as a call to a macro whose trailing block is the function's body. The terminating `;` is omitted because the trailing `{ ... }` serves as the statement terminator. For example:
+
+  ```
+  fn void test() => @pool()
+  {
+      return;
+  }
+  ```
+
+* A *forward declaration* `;` introduces the function but does not define it. A forward declaration must carry the `@extern` attribute (or appear in an interface body); the definition must be supplied elsewhere.
+
+The return type may carry the `?` suffix to denote an optional return type, indicating that the function may return either a value of the underlying type or a fault.
+
+If `function_name` is preceded by a type and a `.`, the declaration introduces a method; otherwise it introduces an ordinary function.
+
+### Methods
+
+A method is a function whose name is qualified by a *receiver type*:
+
+```
+fn int Foo.bar(Foo* self, int x) { ... }
+fn String int.to_hex(int value) { ... }
+```
+
+A method may be invoked on a receiver of the receiver type using member-access syntax, in which case the receiver is passed as the first argument: `f.bar(7)` is equivalent to `Foo.bar(&f, 7)` when the first parameter has pointer-to-receiver type, or to `Foo.bar(f, 7)` when the first parameter has value type.
+
+Methods may extend any user-defined type and any built-in numeric, pointer, slice, vector, array, `any`, or `typeid` type. The set of methods visible on a receiver type — its *method set* — is defined in *Properties of types and values*.
+
+The first parameter of a method declaration is the receiver. By convention it is named `self`; the language imposes no specific name. Its declared type must be either the receiver type or a pointer to the receiver type.
+
+### Parameters
+
+```
+parameter_list ::= parameter_decl ("," parameter_decl)*
+parameter_decl ::= parameter (("=" "...") | ("=" expression))?
+parameter      ::= "inline"? type ("..."? IDENTIFIER attributes?
+                                 | "..."? CT_IDENT
+                                 | (HASH_IDENT | "&" IDENTIFIER) attributes?
+                                 | attributes?)
+                 | "..."
+                 | HASH_IDENT attributes?
+                 | "&" IDENTIFIER attributes?
+                 | IDENTIFIER "..."? attributes?
+                 | CT_IDENT
+                 | CT_IDENT "..."
+```
+
+The principal parameter forms are:
+
+* `type name` — an ordinary by-value parameter of the given type.
+* `type name = expression` — a parameter with a default value. The default expression is evaluated at the call site whenever no argument is supplied for this parameter.
+* `type ... name` — a *typed variadic* parameter; the name binds a slice `type[]` over the variadic arguments. A function may declare at most one variadic parameter, and it must be the last positional parameter.
+* `...` — an *any-typed variadic* parameter; accepts any number of arguments, each converted to `any`. Inside the function the variadic argument is accessed as `$vaarg`.
+* `inline type name` — an *inline parameter*, used on a method receiver to indicate that subtype dispatch follows the parameter's inline-member chain (see *Properties of types and values*).
+* `type name attributes?` — a parameter with attributes that modify how the parameter is passed (e.g., `@in`, `@out`, `@noalias`); see *Attributes*.
+
+A parameter name may be omitted in a function declaration that has no body; the declared types alone determine the function's type. Names are required in a definition.
+
+The parameter forms involving `HASH_IDENT`, `&IDENTIFIER`, `CT_IDENT`, and untyped identifiers are valid only in macro definitions; their semantics are described in *Macros*.
+
+### Default arguments
+
+A function parameter may carry a default value, written as `= expression`. The expression must be a constant expression and is evaluated at the call site whenever the corresponding argument is omitted. Default arguments are matched positionally: once a parameter with a default begins the trailing portion of the parameter list, every subsequent positional parameter must also have a default.
+
+The special form `= ...` indicates that the parameter defaults to the value of the surrounding variadic argument pack and is valid only in macro-style contexts.
+
+### Argument splatting
+
+At the call site, an argument of the form `...expression` *splats* a slice, array, or vector into the argument list, expanding it into a sequence of positional arguments. Splats may appear at any position in the argument list, including before, between, and after other positional arguments, and may also appear in the variadic portion of the parameter list. Each splat operand contributes its elements in order to the positional argument sequence; the resulting expanded sequence must match the function's parameter list according to the usual rules.
+
+### Function attributes
+
+A function declaration may carry attributes that affect linkage, inlining, calling convention, or visible properties of the function. Some commonly used attributes are:
+
+* `@extern` — declares an externally linked function with no body.
+* `@export` — exports the function from a static or dynamic library.
+* `@inline` / `@noinline` — request, respectively, that the function be inlined or not inlined at call sites.
+* `@noreturn` — declares that the function never returns to its caller.
+* `@naked` — declares that the function body is a bare sequence of instructions, with no compiler-generated prologue or epilogue; typically used together with inline assembly.
+* `@pure` — declares that the function has no observable side effects (and may be assumed to be safely callable in contracts).
+* `@deprecated` — emits a diagnostic at use sites.
+* `@callconv("name")` — selects an alternative calling convention provided by the target.
+
+The complete set of attributes and their semantics is given in *Attributes*.
+
+### Function types and function pointers
+
+A function type has the form `fn return_type fn_parameter_list`. A value of function type is a *function pointer* and may be assigned, passed, stored, and called like any other first-class value:
+
+```
+alias UnaryOp = fn int(int);
+fn int square(int x) => x * x;
+fn void main()
+{
+    UnaryOp op = &square;
+    int y = op(5);
+}
+```
+
+Function types compare by structural identity: two function types are the same if their return types, parameter types in order, and attributes agree. The unary `&` operator applied to a function name yields a function pointer of the corresponding type.
+
+### Lambdas
+
+A *lambda* is an expression introducing an anonymous function:
+
+```
+lambda_expr ::= "fn" optional_type? fn_parameter_list attributes? lambda_body
+lambda_body ::= compound_statement
+              | "=>" expression
+```
+
+A lambda evaluates to a function pointer. The return type may be omitted when it can be inferred from the body. A lambda has no access to runtime variables of the enclosing scope; only compile-time values of the enclosing scope are available within its body.
+
+### Methods on built-in types
+
+Methods may extend any built-in numeric, pointer, slice, vector, array, `any`, `typeid`, or `fault` type. Such methods become available through member-access syntax wherever the declaring module is imported:
+
+```
+fn int int.doubled(int self) => self * 2;
+
+fn void main()
+{
+    int x = 5;
+    int y = x.doubled();   // 10
+}
+```
+
+A method declared on a built-in type does not modify the type itself; it adds an entry to the method set visible within the module's import graph.
+
+### Operator overloading
+
+Methods declared with operator-overload attributes — `@operator(+)`, `@operator([])`, `@operator(len)`, and so on — extend the corresponding operator for the receiver type. The list of overloadable operators and the signatures of their methods are given in *Properties of types and values*.
+
+### Calling
+
+A function call evaluates the function expression, then the arguments in left-to-right order, then transfers control to the function with the argument values bound to the corresponding parameters. The return value of the call has the function's declared return type. Order-of-evaluation rules are given in *Expressions*.
+
+If the function returns an optional (`Ty?`) and the call expression is used in a context that does not consume the optional status, the optional must be handled either by `try` / `catch` unwrapping (see *Statements*), by the postfix `!` (rethrow) or `!!` (force-unwrap), or by the operator `??` (optional-else).
+
+## Macros
+
+A *macro* is a callable entity defined by source text that is expanded inline at each call site, with arguments bound according to a parameter list. Unlike a function call, a macro expansion is not a runtime call: the macro's body is integrated into the caller's body, and variables and labels introduced by the macro are hygienic (do not leak into the caller's scope, and do not capture from it except through declared parameters).
+
+### Macro declarations
+
+```
+macro_declaration    ::= "macro" return_type? macro_name "(" macro_params ")" generic_decl? attributes? function_body
+macro_name           ::= (type ".")? (IDENTIFIER | AT_IDENT)
+macro_params         ::= parameter_list? (";" trailing_block_param)?
+trailing_block_param ::= AT_IDENT ("(" parameter_list? ")")?
+```
+
+The `function_body` non-terminal is the same as for functions; see *Functions and methods*.
+
+The return type is optional. When omitted, it is inferred from the body's `return` expressions; all `return` paths within the body must agree on a single type.
+
+A macro's name is either an `IDENTIFIER` or an `AT_IDENT`. The macro **must** use an `AT_IDENT` name if any of the following holds:
+
+* it declares one or more expression (`#`) parameters,
+* it declares a trailing-block parameter, or
+* it declares a raw variadic parameter (the `...` form described below).
+
+This rule lets each call site signal — by the leading `@` — that the call may exhibit non-function-like behaviour (lazy expression binding, insertion of a caller-supplied block, or raw access to a variadic argument pack). The presence of compile-time (`$`) parameters alone does *not* require an `AT_IDENT` name.
+
+The attribute `@safemacro` placed on a macro declaration overrides the rule above: a macro carrying `@safemacro` may use an ordinary `IDENTIFIER` name even when it uses one of the features that would otherwise require `AT_IDENT`. This is provided for cases where the author has determined that the macro behaves like an ordinary function from the caller's perspective.
+
+If `macro_name` is qualified by a receiver type (`Foo.bar`, `Foo.@bar`), the declaration introduces a *macro method*, invocable through member-access syntax on values of the receiver type. The semantics parallel ordinary methods (*Functions and methods*).
+
+### Macro parameters
+
+A macro parameter binds an argument from the call site to a name visible within the macro body. The principal parameter forms are:
+
+* `type name` — a *typed parameter*. The argument expression is evaluated once at expansion time, converted to `type`, and the result is bound to `name`.
+* `name` — an *untyped parameter*. The type is inferred from the argument; otherwise the parameter behaves as a typed parameter.
+* `#name` — an *expression parameter*. The argument expression is bound to `name` *without* being evaluated. Each textual use of `name` within the macro body re-evaluates the expression in the *caller's* lexical context. Use of `#` parameters requires an `AT_IDENT` macro name (unless overridden by `@safemacro`).
+* `$name` (a `CT_IDENT`) — a *compile-time value parameter*. The argument must be a constant expression; the parameter is a compile-time variable in the body.
+* `$Name` (a `CT_TYPE_IDENT`) — a *compile-time type parameter*. The argument must be a type; the parameter denotes that type within the body.
+
+A parameter may carry attributes (see *Attributes*). A trailing parameter may have a default value `= expression`, with the same rules as function defaults (*Functions and methods*).
+
+### Variadic parameters
+
+A macro may declare a single variadic parameter as its last positional parameter, in one of three forms:
+
+* `type... name` — a *typed slice variadic*. The arguments are collected into a slice `type[]` bound to `name`.
+* `name...` — an *untyped slice variadic*. The arguments are collected into a slice of `any[]`; each element preserves its original type when accessed through `$Typefrom` and related forms.
+* `...` — a *raw variadic*. The arguments are not collected into a slice; instead, they are accessible only through the compile-time accessors below.
+
+The typed and untyped slice forms are also available for ordinary functions. The raw form is unique to macros, and its use requires an `AT_IDENT` macro name (unless overridden by `@safemacro`).
+
+### Compile-time access to variadic arguments
+
+Within the body of a macro declared with `...` (a raw vaarg), the following compile-time accessors are valid:
+
+* `$vaarg.len` — the number of variadic arguments, as a compile-time constant.
+* `$vaarg[i]` — the `i`-th variadic argument; `i` must be a compile-time constant integer.
+* `...$vaarg` — splats all variadic arguments, in source order, into the surrounding call or compound literal. See *Expressions*.
+* `$stringify($vaarg[i])` — the textual form of the `i`-th argument as a string literal.
+* `$Typefrom($vaarg[i])` — the type of the `i`-th argument.
+
+### Trailing-block parameters
+
+A macro may declare a *trailing-block parameter* after a semicolon in the parameter list. The block parameter is an `AT_IDENT` optionally followed by a parameter list:
+
+```
+macro @foreach(a; @body(index, value))
+{
+    for (int i = 0; i < a.len; i++)
+    {
+        @body(i, a[i]);
+    }
+}
+```
+
+At the call site, the trailing block is supplied as a compound statement following the closing parenthesis of the macro call, optionally preceded by the names that bind the block's parameters:
+
+```
+@foreach(items; int i, T v)
+{
+    io::printfn("items[%d] = %s", i, v);
+};
+```
+
+Within the macro body, the trailing block is invoked using the `AT_IDENT` name, like a nested macro: `@body(i, a[i])`. Each invocation expands the supplied block with the named arguments.
+
+A macro that declares a trailing-block parameter must have an `AT_IDENT` name.
+
+### Macro body forms
+
+The macro body has the same forms as a function body: a compound statement, a short `=> expression;` body, or a short body invoking another macro with a trailing block. See *Functions and methods*.
+
+A macro that produces a value uses the same `return expression;` syntax as a function and may be invoked in any context in which an expression of the macro's return type is valid; a macro with return type `void`, or with no `return` paths, is invoked as a statement.
+
+### Constant folding
+
+A macro is *constant-folded* at a given call site when the expansion reduces to a single compile-time constant. The conditions are:
+
+* The body contains exactly one runtime statement, and that statement is a `return`.
+* The returned expression evaluates to a compile-time constant.
+
+Any number of compile-time statements (`$if`, `$for`, `$foreach`, `$switch`, `$assert`, and so on) may appear in the body without affecting constant folding, since they are evaluated during compilation and do not contribute runtime statements.
+
+The attribute `@const` placed on a macro asserts that the macro folds to a compile-time constant for every valid call. The compiler verifies the assertion against the body and, if it does not hold, reports the specific construct that prevents folding.
+
+A constant-folded macro call may appear in any context that requires a compile-time constant — array sizes, the condition of `$if`, the value of a named constant, attribute arguments, and so on.
+
+### Invocation
+
+A macro is invoked using the same syntax as a function call. If the macro's name is an `AT_IDENT`, the call site uses that same form:
+
+```
+@swap(a, b);
+int s = @sum(1, 2, 3);
+```
+
+If the macro's name is an `IDENTIFIER`, the call uses the bare name:
+
+```
+int y = square(3);
+```
+
+Argument expressions are bound to parameters according to the parameter form: typed and untyped parameters bind to values at expansion, while `#`, `$`, and `$T` parameters bind expressions, compile-time values, and types respectively. Argument evaluation order at the call site follows the rules in *Expressions*.
+
+### Hygiene
+
+Identifiers introduced inside a macro body — local variables, labels, parameter names — are renamed during expansion so that they do not collide with identifiers in the caller's scope. Conversely, the macro body does not implicitly see the caller's local variables; access to caller-side names is possible only through `#`, `$`, and `$Name` parameters, which establish the binding explicitly.
+
+### Recursion
+
+A macro may invoke itself or other macros. The maximum depth of macro expansion is bounded by the implementation's `macro-recursion-depth` setting; exceeding the limit is a compile-time error.
+
+
+## Compile-time evaluation
+
+C3 supports a significant subset of the language at compile time. Compile-time evaluation drives conditional compilation, generic instantiation, the bodies of macros, the conditions of `$if` and `$assert`, the sizes of arrays, the values of named constants, and the arguments of attributes. This chapter describes the compile-time expression and value forms, the compile-time control structures, and the built-in compile-time operators.
+
+### Constant expressions
+
+A *constant expression* is an expression whose value is determined by the compiler at compile time. The result is a value of a definite type, available wherever a constant is required.
+
+The following expressions are constant:
+
+* Integer, floating-point, character, boolean, and string literals.
+* The constants `null`, `true`, `false`.
+* The result of any operator from *Expressions* applied to constant operands — including arithmetic, bitwise, shift, comparison, logical, optional-else, Elvis, ternary, and cast — together with the compile-time-only operators `+++`, `&&&`, `|||` described below.
+* References to global constants whose initializer is itself a constant expression.
+* Compile-time variables and compile-time type variables (see below).
+* A compound literal whose elements are constant expressions.
+* A member access on a compile-time-known aggregate.
+* A call to a macro that folds to a constant (see *Macros*).
+* The compile-time analysis expressions `$eval`, `$stringify`, `$defined`, `$feature`, `$Typeof`, `$Typefrom`, and `$reflect`.
+* A `$vaarg` access, when the corresponding macro argument is itself a constant expression.
+* Type-access expressions of the form `Type::typeid`, `Type::alignment`, `Type::size`, and similar (see *Properties of types and values*).
+
+A constant expression is required in the following contexts:
+
+* The size of an array type (`T[N]`).
+* The condition of `$if`, `$switch`, and `$assert`.
+* The value of a named constant declaration.
+* An argument to an attribute.
+* The offsets and widths of bitstruct members.
+* The value of a `$case` clause within `$switch`.
+
+### Compile-time variables and types
+
+A *compile-time value variable* has a `CT_IDENT` name (`$name`). It holds a value known at compile time and may be reassigned within its compile-time block scope.
+
+A *compile-time type variable* has a `CT_TYPE_IDENT` name (`$Name`). It denotes a type known at compile time.
+
+Compile-time variables may be declared inside function or macro bodies, in compile-time control structures, and in macro parameter lists. They obey compile-time block scope as described in *Blocks and scope*. They may not be declared at module scope.
+
+A compile-time variable has no runtime existence: no storage is reserved, and its address may not be taken. References to compile-time variables in generated code are replaced by the variable's value at the point of reference.
+
+### Compile-time operators
+
+Three operator variants are reserved for compile-time evaluation:
+
+* `+++` — *compile-time concatenation*. Joins two compile-time-known arrays, slices, or strings into a new compile-time value.
+
+  ```
+  int[2] $a = { 1, 2 };
+  int[3] $b = $a +++ 3;       // { 1, 2, 3 }
+  ```
+
+* `&&&` — *compile-time short-circuit AND*. Evaluates the right operand only when the left is `true`. Unlike runtime `&&`, the right operand is not even type-checked when the left is `false`; this allows referring to entities that may not exist on all paths.
+
+* `|||` — *compile-time short-circuit OR*. The dual of `&&&`: the right operand is not type-checked when the left is `true`.
+
+The `&&&` and `|||` operators are typically used together with `$defined` to guard the use of an entity by the existence of that entity:
+
+```
+$if $defined(@feature) &&& @feature():
+    // body referencing @feature
+$endif
+```
+
+The above is well-formed whether or not `@feature` exists; with ordinary `&&`, the call to `@feature()` would be type-checked even when `$defined` returns `false` and would produce a compile error.
+
+### Compile-time control flow
+
+The compile-time control structures direct *what code the compiler generates* rather than runtime execution. Their syntax is given in *Statements*; the semantics below specify what the compiler does at each form.
+
+#### `$if` and `$else`
+
+The condition is a constant boolean expression. If the condition is `true`, the body of the `$if` branch is compiled as part of the surrounding program; if `false`, the body is discarded and the `$else` branch (if present) is compiled instead. Discarded branches are not generated and are not subject to ordinary type checking — they need only be syntactically well-formed.
+
+A declaration introduced within the selected branch enters the enclosing scope; declarations within a discarded branch do not.
+
+#### `$switch`
+
+The switch operand is a constant expression. Each `$case` value is a constant expression. The compiler selects the first matching `$case` (or `$default` if none matches), compiles its body, and discards the remaining cases.
+
+If the operand is omitted (`$switch:`), each `$case` is a boolean constant expression; the compiler selects the first `$case` whose expression is `true`.
+
+#### `$for`
+
+The compiler unrolls the loop: the body is generated once per iteration, with the loop variables (which are compile-time variables) bound to compile-time-constant values for that iteration. The control expressions are evaluated at compile time.
+
+Each unrolled iteration produces an independent compile-time block scope. Declarations introduced in one iteration do not collide with the corresponding declarations of another iteration.
+
+#### `$foreach`
+
+`$foreach` unrolls over a compile-time-known sequence: a compile-time array, slice, string, or other iterable available at compile time, including the member lists exposed by reflection. With one loop variable, the variable binds the element; with two, the first binds the index and the second binds the element.
+
+### Compile-time diagnostics
+
+The compile-time diagnostic statements take a sequence of comma-separated arguments and do not require enclosing parentheses:
+
+```
+$assert FOO > 0, "Invalid foo";
+$error "Unsupported configuration";
+$echo "Building with verbose mode";
+```
+
+* `$assert condition, message?, ...` — evaluates `condition` at compile time; if `false`, emits a compile-time error. The optional message expressions are evaluated at compile time and composed into the diagnostic.
+* `$error message, ...` — unconditionally emits a compile-time error with the given message. Typically used in a discarded branch to flag unsupported configurations.
+* `$echo message` — emits a compile-time informational diagnostic. No runtime effect.
+
+### Compile-time analysis builtins
+
+* `$defined(check, ...)` — yields `true` when every operand is well-formed in the current scope. Each operand is either a candidate expression or a candidate local variable declaration (`type IDENTIFIER ("=" expression)?`). See *Expressions*.
+* `$feature(NAME)` — yields `true` when the build-system feature flag named `NAME` is enabled.
+* `$eval(string)` — parses the compile-time string `string` as the name of an entity (a variable, function, or other named declaration), optionally qualified by a module path, and yields a reference to that entity in the current scope. The string may not contain an arbitrary expression; it names something already declared.
+* `$stringify(expression)` — yields the source text of `expression` as a compile-time string. The expression is not evaluated.
+* `$Typeof(expression)` — yields the type of `expression` without evaluating it.
+* `$Typefrom(value)` — yields a type. The operand is either a compile-time `typeid` value or a compile-time string giving the name of a type.
+* `$vaarg`, `$vaarg.len`, `$vaarg[i]`, `...$vaarg` — accessors for the raw variadic arguments of a macro; see *Macros*.
+
+The semantics of `$reflect` and the family of reflective accessors are described in *Reflection*.
+
+### Top-level conditional compilation
+
+The `@if(condition)` attribute attached to a top-level declaration is the module-scope analogue of `$if`: a declaration carrying `@if(cond)` is compiled only when `cond` evaluates to `true`. A module section attribute `@if(condition)` applies the same effect to every declaration in the section (see *Blocks and scope*).
+
+When `@if`-conditional declarations refer to one another, the evaluation order is consistent with module-level dependency resolution: a declaration that depends on another `@if`-conditional declaration sees the result of evaluating that dependency's condition.
+
+### Compile-time execution of macros
+
+A macro call evaluates at compile time when invoked from a constant-expression context, provided the macro folds to a constant under the rules in *Macros*. The result is the constant value produced by the macro's `return` statement. Ordinary functions do not execute at compile time; only macros and the compile-time builtins above are usable in constant-expression contexts.
+
+### Source-text inclusion
+
+The following top-level and statement-level compile-time directives bring source text into the current translation unit:
+
+* `$include("path")` — includes the contents of the named file at the current point in the source, as if its text had appeared there directly. Valid only at the top level. Requires trust level `include` or higher.
+* `$exec("command", args?, stdin?)` — executes an external program at compile time and includes its standard output as source text. Requires trust level `full`.
+* `$expand(string)` — parses the compile-time string `string` as C3 source and inserts the resulting statements at the directive's location. When `$expand` appears at module scope, the string is parsed as a sequence of top-level declarations; when it appears inside a function or macro body, the string is parsed as a sequence of statements within the current scope.
+* `$embed("path")` — embeds the contents of the named file as a compile-time byte-array value rather than as source text.
+
+The trust level is configured by the build system; see *Modules*.
+
+## Reflection
+
+C3 provides compile-time access to the structure, identity, and properties of types, values, and declarations. Reflection in C3 is fully compile-time: every reflective query produces a constant expression or a compile-time-known value, and may be used wherever a constant is required.
+
+### Type identity
+
+Every type has a runtime *type identifier* of type `typeid`. The `typeid` of a type `Ty` is obtained as `Ty::typeid`. Two `typeid` values compare equal with `==` if and only if they identify the same type.
+
+The type `typeid` is a built-in opaque type whose size and alignment equal the platform pointer width (see *Properties of types and values*).
+
+A `typeid` value is itself a constant expression when its operand is a static type name; it is a runtime value when produced by `$Typeof(expr)` on an `any` or interface value, or by similar runtime queries on dynamic dispatch results.
+
+### Type-property access
+
+Every type supports a fixed set of compile-time accessors selected through the `::` operator. Some are defined for every type; others are restricted to specific kinds of type. Accessing a property that is not defined for the receiver's kind is a compile-time error.
+
+```
+type_access_expr ::= type "::" access_ident
+```
+
+Some accessors yield values; others yield types or compile-time-only entities such as member lists.
+
+The accessors defined for every type are:
+
+* `Ty::typeid` — the type's `typeid` value.
+* `Ty::size` — the size of the type in bytes.
+* `Ty::alignment` — the alignment of the type in bytes.
+* `Ty::kind` — the type's `TypeKind` value (an enum defined in `std::core::types`).
+* `Ty::name` — the type's simple name as a compile-time string.
+* `Ty::qname` — the type's fully qualified name (with module path) as a compile-time string.
+* `Ty::has_equals` — `true` if `==` and `!=` are defined on the type.
+* `Ty::is_ordered` — `true` if `<`, `<=`, `>`, `>=` are defined on the type.
+* `Ty::methods` — a compile-time array of strings giving the names of methods declared on the type.
+
+The accessors below are restricted to the type kinds for which they make sense; using them on an unsupported kind is a compile-time error.
+
+* `Ty::min` / `Ty::max` — the minimum and maximum representable values; defined for integer and floating-point types.
+* `Ty::nan` / `Ty::inf` — NaN and infinity values; defined for floating-point types.
+* `Ty::len` — the length of an array, vector, or enum-like type. For arrays and vectors it is the number of elements; for enums and constdefs it is the number of declared constants.
+* `Ty::members` — a compile-time list of member descriptors. Defined for struct, union, bitstruct, and enum types. Each element is a reflective reference equivalent to `$reflect` applied to that member. Because the list is untyped at runtime, it may be iterated only at compile time.
+* `Ty::inner` — the inner `typeid` of a composite type:
+  * Array — the element type.
+  * Vector — the element type.
+  * Pointer — the pointee type.
+  * Bitstruct — the backing type.
+  * Enum — the backing integer type.
+  * Typedef — the underlying type.
+* `Ty::parent` — for typedef, constdef, bitstruct, and struct types, the typeid of the `inline` member; for struct, the typeid of the inlined substruct member, if any.
+* `Ty::is_substruct` — defined for struct; `true` if the struct has an `inline` member.
+* `Ty::params` — defined for function pointer types; a compile-time array of parameter descriptors (each with `.name` and `.type`).
+* `Ty::returns` — defined for function pointer types; the return type as a `typeid`.
+* `Ty::cname` — the external (mangled) name of the type as a compile-time string; not defined for built-in types.
+* `Ty::from_ordinal(i)` — defined for enum and constdef; produces the value with the given ordinal.
+* `Ty::lookup_field(field, value)` — defined for enum; returns an optional containing the first value whose associated field equals `value`, or a fault if none matches.
+* `Ty::values` — defined for enum and constdef; a compile-time array of the declared values.
+* `Ty::get_tag(name)` / `Ty::has_tag(name)` — query user-defined tags attached to the type.
+
+### Reflective references and member queries
+
+The accessor `Ty::members` yields a compile-time list of *reflective references*: opaque compile-time-only handles describing each member. A reflective reference supports a fixed set of property accesses:
+
+* `.name` — the member's source name as a string.
+* `.qname` — the qualified name as a string.
+* `.type` — the member's type as a `typeid`.
+* `.offset` — the member's offset within its enclosing aggregate.
+* `.alignment` — the member's alignment.
+* `.kind` — the member's `TypeKind`.
+* `.get_tag(name)` / `.has_tag(name)` — user-defined tags attached to the member.
+
+Reflective references may be iterated using `$foreach` (see *Statements*); they are usable only at compile time.
+
+### Compile-time reflection of expressions
+
+The built-in `$reflect(expression)` yields a reflective reference describing the given expression. The set of accessors available depends on what the expression refers to:
+
+* For a variable or constant: `.name`, `.qname`, `.cname`, `.type`, `.alignment`, `.kind`, `.get_tag`/`.has_tag`.
+* For a function or macro: `.name`, `.qname`, `.cname`, `.params`, `.returns`, `.get_tag`/`.has_tag`.
+* For a type: the same accessors as `Type::accessor` above.
+
+A program may check whether a particular accessor is available for an expression by combining `$defined` with `$reflect`:
+
+```
+$if $defined($reflect(x).some_property):
+    ...
+$endif
+```
+
+### Type queries on values
+
+* `$Typeof(expression)` — the static type of `expression`, as a type usable in type contexts. The expression is not evaluated.
+
+  ```
+  Foo f;
+  $Typeof(f) g = f;       // g has type Foo
+  ```
+
+* `$Typefrom(value)` — the type denoted by a compile-time `typeid` value or by a compile-time string giving the type's name.
+
+  ```
+  $Typefrom("float") x = 12.0;
+  $Typefrom(int::typeid) y = 12;
+  ```
+
+* `$stringify(expression)` — the source text of `expression` as a compile-time string. For an `#expression` macro parameter, `$stringify` produces the text of the *argument* passed for the parameter, not the parameter's own name.
+
+### Dynamic reflection through `any` and interfaces
+
+A value of type `any` or an interface type carries a runtime `typeid` accessible as `.type`. This `typeid` may be compared against static `typeid` values, used as the operand of a switch, or passed to functions for runtime dispatch.
+
+```
+any a = some_value();
+switch (a.type) {
+    case int.typeid:   ...
+    case String.typeid: ...
+    default:           ...
+}
+```
+
+The pointer to the underlying storage is accessible as `.ptr`. Combining `.type` with `.ptr` enables runtime reflection on heterogeneous values.
+
+### TypeKind
+
+The enumeration `TypeKind`, defined in `std::core::types`, enumerates the kinds of type that may appear in `Ty::kind` and reflection results. Members include `SIGNED_INT`, `UNSIGNED_INT`, `FLOAT`, `BOOL`, `POINTER`, `STRUCT`, `UNION`, `ENUM`, `CONSTDEF`, `VECTOR`, `ARRAY`, `SLICE`, `BITSTRUCT`, `INTERFACE`, `ANY`, `TYPEID`, `FAULT`, `FUNC`, and `TYPEDEF`, among others. The full enumeration is part of the standard library.
+
+### Restrictions
+
+Reflection is a compile-time facility. Reflective references, member lists, and type-property values that are not themselves runtime types (such as `Ty::members`) may not be assigned to runtime variables, returned from runtime code, or stored in runtime data structures. Compile-time iteration (`$foreach`) and conditional logic (`$if`) are the mechanisms for traversing reflective data.
+
+Method introspection through `Ty::methods` is subject to the ordering caveat that methods are registered into the compiler's type tables after the types themselves; reflective queries on the method set are guaranteed consistent only when performed inside a function body.
+
+## Attributes
+
+An *attribute* is a piece of metadata attached to a declaration or, in a few cases, to a statement. Attributes influence compilation in ways that range from the purely informational (deprecation diagnostics) to the structural (layout, linkage, calling convention). Some attributes have a single canonical meaning fixed by the language; others may be combined and composed into named compounds via *attribute definitions*.
+
+### Attribute syntax
+
+An attribute is written `@name` or `@name(argument-list)`. The lexical kind of the name is `AT_IDENT`. Multiple attributes may be attached to a single declaration; they are written one after another at the position the declaration's grammar permits attributes.
+
+```
+attributes ::= attribute attribute*
+attribute  ::= AT_IDENT ("(" expression_list? ")")?
+```
+
+Each declaration form specifies the precise position where its attribute list may appear (see *Declarations*, *Functions and methods*, *Variables*, *Types*). The arguments of an attribute are constant expressions; their kinds and number depend on the specific attribute. Most attributes accept zero or one argument; the attributes `@link`, `@tag`, and `@wasm` accept additional arguments as described in their entries below.
+
+### Built-in attributes
+
+The attributes recognized by the language are grouped below by purpose. Unless noted otherwise, an attribute is valid on the declaration forms for which it is meaningful and ignored or rejected on others.
+
+#### Visibility
+
+* `@public` — the declaration is visible to importers (the default for module-level declarations).
+* `@private` — the declaration is visible only within the same module.
+* `@local` — the declaration is visible only within the same file.
+* `@builtin` — the declaration is visible without qualification across all modules; reserved for standard-library declarations.
+
+The first three may also appear on a module section to set the default visibility for all declarations in the section (see *Blocks and scope*).
+
+#### Linkage and storage
+
+* `@export` — the declaration is exported as a public symbol when building a library.
+* `@weaklink` — emits the symbol with weak linkage rather than global linkage. A reference to a weak-linked symbol that is unresolved at link time resolves to `null` instead of producing a link error.
+* `@weak` — like `@weaklink`, but additionally: if a non-weak definition of the same symbol exists in the same compilation, the non-weak definition supersedes the weak one. For example, given
+
+  ```
+  fn void test() @weak { }
+
+  fn void test()
+  {
+      io::printn("test");
+  }
+  ```
+
+  a call to `test()` invokes the non-`@weak` definition.
+* `@link(library)` — adds the named library to the link command.
+* `@section(name)` — places the declaration in the named object-file section.
+* `@cname(name)` — overrides the symbol's external name with the given string.
+* `@nostrip` — prevents the symbol from being removed by dead-code stripping.
+
+#### Inlining, calling, and control flow
+
+* `@inline` / `@noinline` — request, respectively, that calls to this function be inlined or not.
+* `@callconv(name)` — selects a calling convention; valid names depend on the target.
+* `@naked` — the function has no compiler-generated prologue or epilogue; typically used with inline assembly.
+* `@noreturn` — the function never returns to its caller; reaching its textual end is an error.
+* `@pure` — the function has no observable side effects and may be assumed safe to call in contracts.
+* `@maydiscard` / `@nodiscard` — explicitly allow or forbid discarding the return value at call sites.
+* `@finalizer` — registers the function to be called at program shutdown.
+* `@init` — registers the function to be called at program startup, before `main`.
+
+#### Initialization and layout
+
+* `@noinit` — suppresses default zero-initialization of a variable; the variable's initial value is indeterminate.
+* `@mustinit` — applied to a type; declares that variables of the type may not opt out of initialization.
+* `@constinit` — applied to a typedef; permits implicit conversion of literal values to the typedef's name.
+* `@safeinfer` — applied to a local variable declared with `var`; opts into type inference for a runtime local. The `var` form is otherwise reserved for compile-time variables and macro parameters; `var x @safeinfer = expression;` permits its use for a runtime local whose type is inferred from the initializer.
+* `@align(n)` — raises the alignment of a type, variable, or function to at least `n` (a power of two).
+* `@packed` — sets all field alignments of a struct or bitstruct to 1; eliminates inter-field padding.
+* `@compact` — uses the smallest possible layout consistent with field requirements.
+* `@nopadding` — requires that the layout introduce no padding bytes; declarations that would require padding are rejected.
+* `@overlap` — permits a struct's fields to overlap (advanced; see the standard library).
+* `@bigendian` / `@littleendian` — fixes the byte order of a bitstruct's backing storage.
+* `@obfuscate` — applied to an enum or fault declaration; omits member-name information from reflection and runtime introspection. Useful for size-sensitive builds.
+
+#### Macros and compile-time
+
+* `@safemacro` — overrides the `AT_IDENT` naming requirement for a macro that uses features (raw vaargs, expression parameters, trailing-block parameters) that would otherwise require it.
+* `@const` — emitted on a macro; asserts that the macro folds to a compile-time constant for every valid call. The compiler verifies the assertion and reports any non-constant construct that prevents folding.
+* `@if(condition)` — conditional compilation. The declaration is compiled only when `condition` (a constant boolean expression) is `true`.
+* `@tag(name, value)` — attaches a user-defined tag accessible through reflection (`Ty::get_tag(name)`).
+
+#### Operator overloading
+
+`@operator(op)` declares a method as the implementation of operator `op` on the receiver type. The accepted operator forms are:
+
+* Arithmetic: `+`, `-`, `*`, `/`, `%`, and their assignment forms `+=`, `-=`, `*=`, `/=`, `%=`.
+* Bitwise: `&`, `|`, `^`, and their assignment forms `&=`, `|=`, `^=`.
+* Shift: `<<`, `>>`, and their assignment forms `<<=`, `>>=`.
+* Unary bitwise: `~`.
+* Comparison: `==` and `<`. The other relational and equality operators are derived from these and may not themselves be overloaded.
+* Subscript: `[]` (read), `[]=` (write), and `&[]` (reference). The reference form returns a pointer to the element.
+* Length: `len` — overloads the value queried by `Ty::len` and by `foreach` length calculations.
+
+Increment, decrement, the dot operator, and the comparisons `!=`, `<=`, `>`, `>=` are not directly overloadable. Increment and decrement are derived from `+=` and `-=`; the missing comparisons are derived from `==` and `<`.
+
+Two variants of `@operator` exist for binary operators where the operand order matters:
+
+* `@operator_r(op)` — declares the right-hand-side variant: applies when the receiver appears on the right of the operator and the left-hand operand is of another type. Not valid for operators where this would be meaningless.
+* `@operator_s(op)` — declares the *symmetric* variant: applies for either order of operands. Not valid for asymmetric operators (in particular, not for `<`).
+
+The required signatures for each form are given in *Properties of types and values*.
+
+#### Switch lowering
+
+* `@jump` — applied to a switch statement; requires that the switch be lowered to a jump table. The switch must satisfy the requirements for jump-table lowering described in *Statements*.
+
+#### Diagnostics and optimization hints
+
+* `@deprecated` / `@deprecated(message)` — emits a compile-time diagnostic at each use of the declaration. An optional string message is included in the diagnostic.
+* `@allow_deprecated` — applied to a function; suppresses `@deprecated` diagnostics for declarations referenced inside that function.
+* `@unused` / `@used` — suppress or force diagnostics about an unused or unreferenced declaration.
+* `@noalias` — applied to a pointer parameter; declares that the parameter does not alias any other parameter or accessible memory for the duration of the call. The compiler may use this assumption for optimization; violating it is undefined behaviour.
+* `@nosanitize(check)` — opts the function out of the named runtime sanitizer; `check` is a string such as `"address"`, `"memory"`, or `"thread"`. The set of recognized checks is implementation-defined and may grow over time.
+* `@format(index)` — marks a parameter (identified by its 1-based index) as a printf-style format string. The function must have an `args...` (typed variadic) parameter; the format string parameter must be of type `String`. Format mismatches diagnosed by the compiler.
+
+#### Testing and benchmarking
+
+* `@test` — marks the declaration as a test function, run by the test harness. See *Testing and benchmarking*.
+* `@benchmark` — marks the declaration as a benchmark function, run by the benchmark harness.
+
+#### Platform-specific
+
+* `@wasm` / `@wasm(name)` / `@wasm(module, name)` — applied to a function, acts as `@export` for the WebAssembly target. The one-argument form sets the exported name; the two-argument form additionally sets the WebAssembly module name (the import or export module).
+* `@winmain` — designates a function as the Windows GUI entry point.
+
+#### Interface methods
+
+* `@dynamic` — marks a method as participating in dynamic dispatch through an interface. A type's `@dynamic` methods constitute its interface implementation as described in *Types*.
+* `@optional` — marks an interface method as not required for every implementor.
+
+#### Type modifiers
+
+A small number of `@`-prefixed forms appear in type positions rather than on declarations, and so are not strictly attributes in the grammatical sense; they are listed here for reference.
+
+* `@simd` — applied to a vector type, requests *SIMD alignment* (a power-of-two alignment derived from the vector's total byte size) in every context, including struct fields and array elements. A `@simd` vector must have a power-of-two length. The contrasting plain vector has element-natural alignment when embedded in a struct or array. See *Types*.
+
+#### Import attributes
+
+A small subset of attributes appears on `import` declarations rather than on entity declarations.
+
+* `@public` — re-export the imported module's private declarations into the importing context (see *Modules*).
+* `@norecurse` — prevents the import from being recursive. By default, importing a module also imports all of its submodules; `@norecurse` limits the import to the named module only (see *Modules*).
+
+### Attribute definitions
+
+An *attribute definition* introduces a user-defined attribute that expands to one or more built-in attributes. It is a top-level declaration:
+
+```
+attrdef_decl ::= "attrdef" AT_IDENT ("(" parameter_list? ")")? ("=" attribute_list)? ";"
+attribute_list ::= attribute ("," attribute)*
+```
+
+An attribute defined by `attrdef` may have parameters; the parameters are substituted into the expansion when the attribute is applied at a use site.
+
+```
+attrdef @MyAttribute       = @noreturn, @inline;
+attrdef @MyCname(x)        = @cname(x);
+attrdef @TagFoo(value)     = @tag("foo", value);
+attrdef @MyAttributeEmpty;
+```
+
+A use of a user-defined attribute is equivalent to the textual substitution of its expansion at the use site. The two function declarations below are equivalent:
+
+```
+fn void foo() @MyAttribute { ... }
+fn void foo() @noreturn @inline { ... }
+```
+
+A user-defined attribute with no expansion is permitted and is used purely for tagging — typically combined with `@tag` for reflection.
+
+User-defined attributes may not be applied to themselves and may not be mutually recursive.
+
+## Contracts
+
+A *contract* is a pre- or post-condition attached to a function or macro that a compiler may use for static analysis, for runtime checking, and for optimization. Contracts are written inside documentation comments delimited by `<* ... *>` (see *Lexical elements*).
+
+Contract analysis is **optional in the language**. A conforming compiler may ignore contracts entirely; one may evaluate them statically and reject programs at compile time; or it may insert runtime checks. Regardless of whether the compiler verifies a contract, *violating* a contract is **unspecified behaviour**: the compiler is permitted to optimize as if every contract holds. Safe builds typically lower contract conditions to runtime assertions.
+
+This permissive policy lets simple C3 compilers omit contract analysis entirely while still letting more sophisticated compilers exploit contracts for static checking and optimization. The language does not specify which interpretation a particular compiler must use, but the existence of a contract on a declaration is well-defined and observable through tooling.
+
+### Contract syntax
+
+A doc comment preceding a function or macro declaration may contain *contract clauses*. Each clause begins with a contract keyword (a `@`-prefixed identifier) and may extend over one or more lines until the next clause keyword or the closing `*>`.
+
+```
+contract_block    ::= "<*" contract_clause* "*>"
+contract_clause   ::= require_clause
+                    | ensure_clause
+                    | param_clause
+                    | pure_clause
+                    | return_clause
+                    | deprecated_clause
+require_clause    ::= "@require" expression ("," expression)* (":" string_literal)?
+ensure_clause     ::= "@ensure"  expression ("," expression)* (":" string_literal)?
+param_clause      ::= "@param" ("[" param_mode "]")? IDENTIFIER (":" string_literal)?
+param_mode        ::= "&"? ("in" | "out" | "inout")
+pure_clause       ::= "@pure"
+return_clause     ::= "@return?" return_fault ("," return_fault)* (":" string_literal)?
+return_fault      ::= path? CONST_IDENT
+                    | path? IDENTIFIER "!"
+deprecated_clause ::= "@deprecated" (":" string_literal)?
+```
+
+Text within the doc comment that does not begin a contract clause is ordinary documentation, preserved for documentation tooling but not interpreted by the language.
+
+### Preconditions: `@require`
+
+A `@require` clause introduces one or more boolean expressions evaluated at the start of each call. Each expression must evaluate to `true`; the optional trailing string is the message included in a contract-violation diagnostic.
+
+```
+<*
+ @require foo > 0, foo < 1000 : "foo out of range"
+*>
+fn int test_foo(int foo)
+{
+    return foo * 10;
+}
+```
+
+Within a `@require` expression, the parameters of the function are in scope. The expression must be free of side effects.
+
+### Postconditions: `@ensure`
+
+An `@ensure` clause introduces boolean expressions evaluated immediately before the function returns. Within an `@ensure` expression, the keyword `return` denotes the value being returned (where the return type is non-`void`); the parameters of the function are in scope and refer to their values on *entry* to the function.
+
+```
+<*
+ @require foo != null
+ @ensure return > foo.x
+*>
+fn uint check_foo(Foo* foo)
+{
+    return abs(foo.x) + 1;
+}
+```
+
+The expression must be free of side effects.
+
+### Parameter annotations: `@param`
+
+A `@param` clause annotates a single named parameter with access-mode constraints. The annotations apply primarily to pointer parameters and describe whether the function reads, writes, or both reads and writes through the pointer, and optionally whether the pointer is required to be non-null.
+
+| Annotation  | Read through pointer | Write through pointer | Non-null required |
+|------------:|:---:|:---:|:---:|
+| (none)      | yes | yes | no |
+| `[in]`      | yes | no  | no |
+| `[out]`     | no  | yes | no |
+| `[inout]`   | yes | yes | no |
+| `[&in]`     | yes | no  | yes |
+| `[&out]`    | no  | yes | yes |
+| `[&inout]`  | yes | yes | yes |
+
+When the `&` prefix is present, the parameter is required to be non-null on entry; a null argument is a contract violation. The clause may carry a trailing string used as the diagnostic message:
+
+```
+<*
+ @param [&in] data : "data must be a valid, non-null buffer"
+*>
+fn void process(char* data) { ... }
+```
+
+A conforming compiler may, but need not, statically verify that the function body respects the declared access mode. Violation is unspecified behaviour.
+
+### Purity: `@pure`
+
+A `@pure` clause declares that the function neither reads from nor writes to global state. A pure function may call other pure functions but may not call functions known to be impure.
+
+At a call site within a pure function, an otherwise-impure call may be marked `@pure` to assert that the call is, for the purposes of the surrounding contract, pure. The compiler may use the declared purity for optimization. As with `@param`, the compiler is not required to verify purity, and violations are unspecified behaviour.
+
+### Fault declarations: `@return?`
+
+The `@return?` clause lists the fault values that the function may propagate through an optional return type. Each entry is one of:
+
+* A fault constant (a `CONST_IDENT`, optionally module-qualified) — adds that specific fault to the set the function may return.
+* A function or macro name followed by `!` — *inherits* the `@return?` set of the named entity. Every fault that the referenced function or macro declares it may propagate is added to this function's set.
+
+```
+<*
+ @return? io::EOF, test! : "Returns EOF if it runs out of tokens"
+*>
+fn String parse(String input) { ... }
+```
+
+In the example, `parse` declares `io::EOF` directly and additionally inherits every fault from `test`'s own `@return?` clause.
+
+In the current implementation, the compiler statically checks that no fault is *directly* raised within the function — for example, by an expression of the form `return io::EOF~;` — unless that fault appears in the declared `@return?` set. This check is limited by what static analysis can determine: faults that arise from indirect calls or through dynamic dispatch are not generally tracked. A conforming compiler is not required to enforce `@return?` at compile time or at runtime; as with all contracts, violation is unspecified behaviour.
+
+### Deprecation: `@deprecated`
+
+A `@deprecated` clause within a contract block is an alternative to the `@deprecated` attribute (see *Attributes*) and has the same effect: a compile-time diagnostic is emitted at each use of the declaration. The clause may carry a message as a trailing string:
+
+```
+<*
+ @deprecated : "Use parse_v2 instead"
+*>
+fn String parse(String input) { ... }
+```
+
+The contract form is provided so that deprecation information may live alongside the declaration's other documentation. A declaration may carry either the contract clause or the attribute form, but not both.
+
+### Macros and contracts
+
+Macros may carry the same contract clauses as functions. Because macros are expanded inline, contract conditions are particularly useful for constraining macro arguments in ways that cannot be expressed through the parameter list alone. The compile-time builtin `$defined` is the principal mechanism for testing argument well-formedness from within a contract:
+
+```
+<*
+ @require $defined(a + b) : "operands must support +"
+*>
+macro add(a, b) => a + b;
+```
+
+The `@require` clause is evaluated at compile time when the macro is instantiated, allowing the constraint to be enforced before the macro body is processed.
+
+### Runtime evaluation
+
+When the compiler chooses to lower a contract clause to a runtime check, it inserts the equivalent of an `assert` statement at the appropriate point: at the function's entry for `@require`, immediately before each `return` for `@ensure`, and at the call site for `@pure`-related and `@param`-related checks. The form of the resulting diagnostic is implementation-defined; the program traps on contract violation.
+
+In a non-safe build, the compiler may elide all such runtime checks, leaving only the static-analysis effect of the contract.
+
+## Generics
+
+C3 supports generic types, functions, and macros through *parameterization* by types and compile-time values. A parameterized declaration is *instantiated* at the point of use by supplying concrete arguments for the parameters; each unique parameterization produces a distinct entity that is compiled, type-checked, and reachable independently.
+
+### Forms of parameterization
+
+A parameter list `<param ("," param)*>` introduces one or more parameters of these kinds:
+
+* A *type parameter* (`TYPE_IDENT`) names a type that is supplied at instantiation. Within the parameterized scope, the parameter is usable wherever a type is valid.
+* A *value parameter* (`CONST_IDENT`) names a compile-time-constant value supplied at instantiation. The value's type must be an integer, boolean, enum, or fault type. Within the parameterized scope, the parameter is usable wherever a compile-time constant of the appropriate type is valid.
+
+A parameter list may appear in two positions:
+
+* On a **module section**, immediately after the module path: `module vector <Ty, Tu>;`. This form is purely a shorthand: every declaration inside the section receives the same parameter list, exactly as if it had been written individually.
+* On an **individual declaration** — a type, function, or macro — between the declared name and the rest of the form: `struct Foo <Ty> { ... }`, `fn Ty add(Ty a, Ty b) <Ty> { ... }`.
+
+The two forms are equivalent. The following are interchangeable:
+
+```
+module my_module <Ty>;
+
+struct MyStruct { Ty a, b; }
+
+fn Ty square(Ty t) { return t * t; }
+```
+
+```
+module my_module;
+
+struct MyStruct <Ty> { Ty a, b; }
+
+fn Ty square(Ty t) <Ty> { return t * t; }
+```
+
+### Grouping of parameterized declarations
+
+Within a single module, two parameterized declarations belong to the **same generic unit** when they share the *number* of parameters *and* the *names* of those parameters. Members of the same generic unit are instantiated *together*: a use of one member triggers instantiation of every other member of the unit.
+
+```
+module abc;
+
+// Generic unit 1: parameterized by <Test>
+fn Test test1(Test a) <Test> { return a + 1; }
+struct Foo <Test> { Test a; }
+fn Foo test2(Test b) <Test> { return (Foo) { .a = b }; }
+
+// Generic unit 2: parameterized by <Test2> — a different parameter name
+fn Test2 test3(Test2 a) <Test2> { return a * a; }
+
+fn void main()
+{
+    Foo{int} a;        // Instantiates Foo, test1, and test2 for <int>.
+                       // Does not instantiate test3, which is in a different unit.
+}
+```
+
+A use of any member of the unit causes every member of that unit to be instantiated for the same argument tuple. This differs from C++, where each template is individually instantiated on demand; in C3, sibling members of a generic unit are kept in lock-step.
+
+Declarations in *different* modules do not group, even if their parameter names and counts agree.
+
+### Instantiation
+
+A parameterized entity is *instantiated* by supplying type or value arguments inside curly braces:
+
+```
+generic_arguments ::= "{" type_or_value ("," type_or_value)* "}"
+type_or_value     ::= type | constant_expression
+```
+
+For a parameterized type the result is a type; for a parameterized function or macro the result is a callable entity:
+
+```
+Foo {int, double} g;
+test {int, double} (1.0, &g);
+```
+
+Each distinct argument tuple yields a separate instantiation. Two instantiations with structurally equal argument tuples are the same entity.
+
+The argument count must match the parameter count of the targeted unit; each type parameter must be supplied a type and each value parameter a compile-time constant of one of the permitted kinds.
+
+### Aliases
+
+A non-parameterized alias may name a specific instantiation of a parameterized entity:
+
+```
+alias FooFloat   = Foo {float};
+alias test_float = test {float, double};
+```
+
+An alias itself may be parameterized using its own parameter list; the alias parameters are then in scope on the right-hand side and may be passed to instantiations there:
+
+```
+alias List <Ty> = std::collections::list::List {Ty};
+```
+
+The `<Ty>` after the alias name declares the alias as generic. The `{Ty}` on the right-hand side instantiates the underlying parameterized entity. A form such as `alias List {Ty} = ...` is *not* permitted: the curly-brace form denotes instantiation of an existing parameterized entity, not the introduction of a new parameter.
+
+A parameterized alias is rarely useful in practice, since a use of the alias's name with arguments resolves through to the underlying entity in the same way; the alias adds no abstraction over the original.
+
+### Constraints on parameters
+
+The accepted set of parameter kinds is fixed: type parameters and value parameters of integer, boolean, enum, or fault type. The language imposes no further constraint at the parameter list itself. Additional constraints are expressed through *contracts* (see *Contracts*) using compile-time predicates such as `$defined`, `$Typeof`, and the type-property accessors:
+
+```
+<*
+ @require $defined((Tu)1)
+ @require Ty.kindof == TypeKind.SIGNED_INT
+*>
+module vector <Ty, Tu>;
+```
+
+A failed contract on a parameterized declaration produces a diagnostic at the point of instantiation; the diagnostic identifies the violated `@require` clause and the parameter values that caused the failure.
+
+Contracts placed on the module section and on individual parameterized type declarations combine and are evaluated together for the generic unit. Contracts on generic functions and macros are checked only when those functions or macros are themselves invoked: a contract that constrains a function's type parameter does not propagate to instantiations of a sibling generic type in the same unit.
+
+### Methods on parameterized types
+
+A method declared on a parameterized type is itself implicitly parameterized over the type's parameters; the parameters are in scope within the method's signature and body:
+
+```
+struct Foo <Ty>
+{
+    Ty value;
+}
+
+fn Ty Foo.add(self, Ty other) => self.value + other;
+```
+
+`Foo.add` is part of `Foo`'s generic unit and is instantiated alongside `Foo` for each argument tuple.
+
+A method may also be declared on a *specific* instantiation of a parameterized type. In that case the parameters are not in scope; the method applies only to that one instantiation:
+
+```
+fn int Foo {int} .doubled(self) => self.value * 2;
+```
+
+This method is available on `Foo{int}` only.
+
+### Visibility, name resolution, and ordering
+
+Visibility rules in *Modules* apply unchanged to parameterized declarations. The compiler instantiates a parameterized declaration only when it is referenced; errors that depend on the parameter values, including unresolved references inside a method body or a contract that fails to hold, are reported at the point of instantiation.
+
+### Identity and ABI
+
+Two instantiations are the same entity if and only if their argument tuples are component-wise equal: types compared by type identity (see *Properties of types and values*), and values compared by constant-expression equality. Instantiations with different argument tuples are independent entities with independent symbol identities and may have different sizes, alignments, and ABIs.
+
+A parameterized declaration is not itself a runtime value; only its instantiations are. A function pointer cannot bind to a parameterized function — it must bind to a specific instantiation.
 
 ---
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+IN PROGRESS >>
 
 ---
 
