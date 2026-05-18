@@ -303,12 +303,13 @@ Declares that a global variable or function should appear in a specific section.
 
 ### `@tag(name, value)`
 
-*Used for: function, macro, user defined type, struct/union/bitstruct member*
+*Used for: function, macro, user-defined type, struct/union/bitstruct member, global, local variables*
 
 Adds a compile time tag to a type, function or member which can be retrieved
-at compile time using reflection: `.has_tagof` and `.tagof`.
-Example: `Foo.has_tagof("bar")` will return true if `Foo` has a tag "bar".
-`Foo.tagof("bar")` will return the value associated with that tag.
+at compile time using reflection: `.has_tag(..)` and `.get_tag(...)`.
+Example: `Foo.has_tag("bar")` will return true if `Foo` has a tag "bar".
+`Foo.get_tag("bar")` will return the value associated with that tag. For variables and members, access
+it using `$reflect`: `$reflect(my_global).has_tag("bar")`.
 
 ### `@test`
 
