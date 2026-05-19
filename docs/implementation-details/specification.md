@@ -2,7 +2,7 @@
 title: C3 Specification
 description: C3 Specification
 search:
-  exclude: true
+exclude: true
 ---
 
 # C3 Specification
@@ -592,7 +592,15 @@ A pointer holds the address of an object of the pointed-to type, or the literal 
 
 The literal `null` converts implicitly to any pointer type. The type `void*` is a *wildcard pointer*: it converts implicitly to and from any other pointer type.
 
-Pointer arithmetic is supported on pointers to non-`void` types and follows the same rules as C.
+Pointer arithmetic follows the same rules as C: `p + i` advances `p` by `i` elements (each `T::size` bytes), `p - i` retreats by the same amount, and `p - q` for two pointers to the same element type yields a signed integer count of elements between them.
+
+Pointer arithmetic on `void*` is supported and treats the element size as 1, identical to pointer arithmetic on `char*`.
+
+Subscripting a pointer is equivalent to pointer arithmetic followed by a dereference. The index may be negative; pointer subscripting is never bounds-checked.
+
+A pointer of any type may be converted losslessly to `iptr` or `uptr` and back.
+
+A `void*` may not be directly dereferenced or subscripted; it must first be cast to a non-`void` pointer type.
 
 ### Array types
 
@@ -608,6 +616,8 @@ The expression must be a compile-time constant expression of integer type denoti
 The length is part of the type, so `int[3]` and `int[4]` are distinct. An array is a value: assignment, parameter passing, and return copy the elements.
 
 A pointer to an array, `type[N]*`, implicitly converts to a pointer to the first element, `type*`.
+
+An array must have at least one element; `Type[0]` is not a valid type.
 
 ### Slice types
 
@@ -640,7 +650,37 @@ The `@simd` attribute declares a *SIMD aligned vector*. A SIMD aligned vector mu
 
 Arithmetic and bitwise operations on a vector are applied elementwise. A scalar value used with a vector is widened by replication.
 
+A vector must have at least one element, as an example `int[<0>]` is not a valid type.
+
 A vector implicitly converts to the corresponding array type and vice versa.
+
+#### Field access and swizzling
+
+The elements of a vector at indices 0, 1, 2, 3 may be referred to by the field names `x`, `y`, `z`, `w`, or by the alternate set `r`, `g`, `b`, `a`. A single field access denotes the corresponding element value: for a vector `v`, `v.x` is the element at index 0, `v.r` is also the element at index 0, and so on. Field-name indices beyond the vector's length are an error.
+
+A *swizzle expression* concatenates several such field names to form a new vector whose elements are the corresponding elements of the source. The width of the result equals the number of field names in the swizzle:
+
+```
+int[<4>] v = { 10, 20, 30, 40 };
+int[<2>] a = v.xz;          // { 10, 30 }
+int[<9>] b = v.xxxzzzyyy;   // { 10, 10, 10, 30, 30, 30, 20, 20, 20 }
+```
+
+There is no restriction on the ordering of the field names within a swizzle, and the same field may be repeated. The two field name sets (`xyzw` and `rgba`) may not be mixed within a single swizzle: `v.rgz` is an error.
+
+A swizzle expression is an lvalue when no index is repeated; assigning to such an lvalue writes the corresponding source elements. For example, `v.zy = e` is well-formed when `e` is a 2-element vector; `v.xxy = e` is not, because index 0 appears twice on the left.
+
+#### Increment and decrement
+
+The unary `++` and `--` operators applied to a vector are applied elementwise. For a vector `v`, `v++` returns the original vector and replaces each element with its incremented value; `++v` returns the incremented vector and stores it back into `v`. The operators are valid for vectors of integer element type.
+
+#### Enum vectors
+
+A vector whose element type is an `enum` is an *enum vector*. An enum vector supports the accessor `.ordinal`, which produces a vector of the enum's backing integer type holding the ordinal of each element. The static method `Ty::from_ordinal`, when invoked on an integer vector, returns an enum vector of `Ty` whose elements correspond to the supplied ordinals.
+
+#### Vector size limit
+
+A compiler may impose a maximum total bit width on a vector. The limit is at least as wide as the largest SIMD vector supported by the target. A typical limit is 4096 bits. For the purpose of this limit, a boolean vector is counted as 8 bits per element.
 
 ### Struct types
 
@@ -652,6 +692,8 @@ struct_decl ::= "struct" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "{" 
 
 (The full grammar of `struct_union_body` is given in *Declarations*.)
 
+A struct must declare at least one member. A flexible array member (see below) does not by itself satisfy this requirement: a struct that contains a flexible array member must also declare at least one preceding member.
+
 Field access uses dot notation. The dot operator also applies to a single level of pointer-to-struct: if `p` is of type `St*` and `f` is a field of `St`, then `p.f` denotes the field of the pointee.
 
 A field may be declared `inline`. Such a field designates an *inline member*: values of the struct then implicitly convert to the type of that field, and methods of that type are accessible through the enclosing struct. See *Properties of types and values*.
@@ -660,6 +702,12 @@ Anonymous nested structs and unions are permitted, following C99 conventions.
 
 Layout attributes (`@align`, `@packed`, `@compact`, `@nopadding`) control storage representation. See *Attributes*.
 
+#### Flexible array member
+
+The last field of a struct may be declared as an array with no specified length, of the form `Ty[]`. Such a field is a *flexible array member*: it contributes no size to the struct itself (the struct's size is that of the preceding fields plus any required tail padding for alignment), but the storage of an instance may extend past the struct's declared size to hold elements of the array. The number of elements is determined by the size of the allocation rather than by the type.
+
+A struct containing a flexible array member may not be embedded as a field of another struct, used as an element of an array, or copied by value; a value of such a struct is meaningful only through a pointer to underlying storage of sufficient size.
+
 ### Union types
 
 A union type is declared like a struct, but its fields share storage:
@@ -667,6 +715,8 @@ A union type is declared like a struct, but its fields share storage:
 ```
 union_decl ::= "union" TYPE_IDENT ("(" type ("," type)* ")")? attributes? "{" struct_union_body "}"
 ```
+
+A union must declare at least one member.
 
 All fields of a union share storage beginning at the same address. The alignment of a union is the maximum alignment requirement of any of its fields; consequently, any member access through a union pointer is correctly aligned regardless of which member is read. The size of a union is the size of its largest field rounded up to the nearest multiple of the union's alignment.
 
@@ -689,7 +739,7 @@ A bitstruct type is a struct whose fields occupy specified bit ranges within a b
 bitstruct_decl ::= "bitstruct" TYPE_IDENT ("(" type ("," type)* ")")? ":" type attributes? "{" bitstruct_body "}"
 ```
 
-The backing type is either an integer type or a character array. Each field of a bitstruct must be an integer type or `bool`; each field specifies a single bit position or an inclusive bit range within the backing storage.
+The backing type is either an integer type, a character array, or a typedef whose underlying type is one of these. Each field of a bitstruct must be an integer type or `bool`; each field specifies a single bit position or an inclusive bit range within the backing storage.
 
 A bitstruct field is not addressable.
 
@@ -732,6 +782,8 @@ fault_decl ::= "faultdef" CONST_IDENT ("," CONST_IDENT)* attributes? ";"
 ```
 
 Each declared name is a value of type `fault`. Fault values are used as the *excuse* of an empty optional and are described further under *Optionals and faults*.
+
+The `fault` type has the alignment, size, and underlying representation of `uptr`. The zero fault value — the absence of a fault — may be produced implicitly by casting from `null` or from `{}`. An optional constructed from the zero fault value carries the fault state but holds no useful underlying value; subsequent operations on it propagate the fault and produce unspecified underlying values.
 
 ### Optional types
 
@@ -876,7 +928,7 @@ Alignment depends on the platform and the ABI compiled for. However, some types 
 * **Array types**: the alignment of the element type.
 * **Slice types**: `max(alignof(void*), alignof(sz))`, equal to the pointer alignment on all supported platforms.
 * **Plain vector types** (ABI — embedded in struct or array, or passed as argument): the alignment of the element type, identical to the corresponding array type.
-* **Plain vector types** (alloca — as a local or global variable): same as the *SIMD aligned vector type* 
+* **Plain vector types** (alloca — as a local or global variable): same as the *SIMD aligned vector type*
 * **Struct types**: the maximum alignment of any field. Fields are laid out in declaration order with padding inserted between adjacent fields as needed; trailing padding is added after the last field so that the total size is a multiple of the struct's alignment.
 * **Union types**: the maximum alignment of any field. The size of a union is the size of its largest field, rounded up to the nearest multiple of the union's alignment. Fields share storage at the same address with no inter-field padding.
 * **Bitstruct types**: the alignment of the backing type, unless overridden by `@align`.
@@ -974,12 +1026,12 @@ The traversal rules are:
 * **Integer and float constants**: succeed if the constant value fits in the target type.
 * **Widening casts**: if the cast source type is directly compatible with the target (see below), the check succeeds; otherwise the inner expression is checked recursively.
 * **All other expressions** (identifiers, calls, subscripts, etc.): succeed only if the expression's own type is *compatible* with the target type U:
-    * Both types are identical.
-    * Both are signed integers, and the source is no wider than U.
-    * Both are unsigned integers, and the source is no wider than U.
-    * Both are floats, and the source is no wider than U.
-    * The source is an unsigned integer and U is a signed integer of **strictly** greater width.
-    * Any other combination — including any signed-to-unsigned conversion — fails and requires an explicit cast.
+  * Both types are identical.
+  * Both are signed integers, and the source is no wider than U.
+  * Both are unsigned integers, and the source is no wider than U.
+  * Both are floats, and the source is no wider than U.
+  * The source is an unsigned integer and U is a signed integer of **strictly** greater width.
+  * Any other combination — including any signed-to-unsigned conversion — fails and requires an explicit cast.
 
 ### Substruct conversions
 
@@ -1629,6 +1681,8 @@ expression_statement ::= expression ";"
 
 The expression's side effects are performed. If the expression has a non-`void` type, its value is discarded.
 
+If the expression is a call to a function or macro whose return type is an optional, or to one that carries the `@nodiscard` attribute, discarding the result is a compile-time error. A function or macro that returns an optional but whose result is intended to be safely discardable may carry `@maydiscard` to suppress this check.
+
 ### Local declaration statements
 
 A local declaration statement introduces a local variable, a static or thread-local variable, an inferred-type variable, or a local constant. The full syntax and semantics are in *Variables* and *Constants*.
@@ -1645,6 +1699,10 @@ constant_declaration_statement ::= "const" type? CONST_IDENT attributes? "=" exp
 ```
 
 A `static` local has function-call-independent storage; a `tlocal` local has per-thread storage. The `var` form infers the type from the initializer. A `const` local declares a compile-time constant; its initializer must be a constant expression.
+
+The initializer expression of a `static` or `tlocal` local follows the same rules as the initializer of a global variable of the same form: it must be evaluable to a constant at program-image construction time. Initializers that depend on runtime values are not permitted on `static` or `tlocal` locals.
+
+An initializer expression may reference the *address* of the variable being declared, but may not depend on its value. For example, `void* a = &a;` is well-formed, while `int a = a + 1;` is not: the right-hand side reads `a` before it has been initialized.
 
 ### Conditions
 
@@ -1682,6 +1740,10 @@ The condition is evaluated. If true, the *then* branch is executed; otherwise th
 
 The optional label has the form `LABEL:` and follows the rules in *Blocks and scope*. A label permits a labelled `break` or `continue` to target this statement.
 
+When the then-clause is not a compound statement, it must appear on the same source line as the closing parenthesis of the condition. A non-compound then-clause on a separate line is a syntax error.
+
+An if statement may be labelled and exited by a labelled `break`. An unlabelled `break` may not exit an if statement; it would otherwise be ambiguous between the enclosing if and any surrounding loop or switch.
+
 ### Switch statement
 
 ```
@@ -1695,7 +1757,9 @@ The switch evaluates its condition and selects the first `case` whose value equa
 
 A switch without a condition `switch { ... }` is equivalent to evaluating each case as a boolean expression in source order and selecting the first that is `true`. Such a switch is always lowered to an if-else chain (see below).
 
-Control reaches the end of the switch statement after the selected case executes its statements; case clauses do not fall through automatically. To transfer control to another case, use a `nextcase` statement.
+Control reaches the end of the switch statement after the selected case executes its statements; case clauses with at least one statement do not fall through automatically. A `case` (or `default`) clause whose statement list is *empty*, however, falls through to the next clause: the selected case executes the statements of the next clause that has any. Successive empty clauses chain together, so `case A: case B: case C: do_something();` runs `do_something()` for any of `A`, `B`, or `C`.
+
+To transfer control to another case explicitly, use a `nextcase` statement.
 
 #### Lowering
 
@@ -1705,6 +1769,15 @@ A switch statement is lowered to one of two forms:
 * An **if-else chain**, in which each case is tested in source order. This form is used when the switch has no condition, when the operand is neither an integer nor a boolean type, or when any case value is not a compile-time constant. An if-else chain is never further reduced to a jump table.
 
 The attribute `@jump` requests jump-table lowering. A switch carrying `@jump` must satisfy the requirements above; otherwise the compiler rejects the program.
+
+#### Exhaustive switches
+
+A switch is *exhaustive* when control is guaranteed to enter exactly one of its clauses for every possible value of the operand. The two cases that produce this guarantee are:
+
+* the switch has a `default` clause, or
+* the switch operand has enum type and the switch's case clauses cover every value of the enum.
+
+If a switch is exhaustive and every clause exits the switch through a `return`, `nextcase`, `break` targeting an outer construct, or other jump (rather than falling out of the switch body normally), the code following the switch is unreachable.
 
 ### While and do statements
 
@@ -1734,12 +1807,22 @@ foreach_vars      ::= foreach_var ("," foreach_var)?
 foreach_var       ::= optional_type? "&"? IDENTIFIER
 ```
 
-The expression must denote an iterable: an array, slice, vector, or a type with `@operator(len)` and `@operator([])` defined. The loop binds one or two variables for each element of the iterable:
+The expression must be of an *iterable* type. The following are natively iterable:
 
-* With one variable, that variable binds the element value (or, if prefixed with `&`, a pointer to the element).
-* With two variables, the first binds the index and the second binds the element (or pointer to the element).
+* arrays, slices, vectors, pointers to arrays, and pointers to vectors;
+* any type that overloads `len` and `[]` (iteration by value);
+* any type that overloads `len` and `&[]` (iteration by reference).
 
-The optional type on a `foreach_var` is the variable's declared type; if omitted, the type is inferred. `foreach_r` iterates in reverse order.
+The loop binds one or two variables:
+
+* With one variable, that variable binds the element value. If the variable name is prefixed with `&`, the binding is by reference and has pointer-to-element type instead.
+* With two variables, the first binds the loop index and the second binds the element (with the same `&`-reference convention as the single-variable form).
+
+The optional type on a foreach variable is the variable's declared type; if omitted, the type is inferred from the iterable's element type. A mismatched type triggers an implicit conversion; failure to convert is a compile-time error.
+
+The index, when present, has type `sz` by default. An explicit type on the index variable causes a direct cast of the running index to that type at each iteration. The cast may truncate the visible index value but does not affect the iteration itself, and modifying the index variable inside the body has no effect on which element is bound next.
+
+`foreach_r` iterates in reverse: it starts with the last element and proceeds toward the first. For `foreach_r`, the running index begins at `len - 1` and decreases.
 
 ### Break, continue, nextcase
 
@@ -1756,7 +1839,7 @@ nextcase_statement ::= "nextcase" ((CONST_IDENT ":")? (expression | "default"))?
 `nextcase` transfers control to another case of the innermost enclosing `switch`, or of a labelled enclosing switch if a label is supplied. The forms are:
 
 * `nextcase;` — transfer to the textually following case.
-* `nextcase expression;` — transfer to the case selected by `expression`. In a switch lowered to a jump table or otherwise capable of direct case selection, control is transferred directly to the matching case without re-evaluating the cases. In a switch lowered to an if-else chain, the cases are re-tested against `expression` starting from the first; control transfers to the first matching case. This form may not be used in a switch that has no condition.
+* `nextcase expression;` — transfer to the case selected by `expression`. In a switch lowered to a jump table or otherwise capable of direct case selection, control is transferred directly to the matching case without re-evaluating the cases. In a switch lowered to an if-else chain, the cases are re-tested against `expression` starting from the first; control transfers to the first matching case. This form may not be used in a switch that has no condition. When both the `nextcase` operand and every case value are compile-time constants, the operand must match one of the cases; a `nextcase` operand that matches no case is a compile-time error. When either side is non-constant, no compile-time check is performed; the operand is evaluated and matched at runtime.
 * `nextcase default;` — transfer to the `default` clause.
 
 ### Return statement
@@ -1786,13 +1869,36 @@ Variants:
 
 Deferred statements may not `return`, `break`, `continue`, or `nextcase` out of the function, but may execute their own internal control flow.
 
+A defer body may not itself be a `defer` statement. However, if the body is a compound statement, that compound may contain any number of inner defer statements.
+
+A defer body may not contain a `break`, `continue`, `return`, or rethrow that would exit the defer body itself. Such constructs are valid only when fully contained within the defer body (for example, a `break` inside a loop introduced by the defer body).
+
+When the surrounding scope exits through `return`, the return expression is evaluated *before* the deferred statements run. The returned value, including any side effects of the return expression, is fixed before any defer body executes. For example:
+
+```c3
+int a = 0;
+defer a++;
+return a;
+// Is equivalent to
+int a = 0;
+int temp = a;
+a++;
+return temp;
+```
+
+Deferred statements are run on regular exits from the enclosing scope only. A non-regular exit — `longjmp`, a panic, a signal-driven termination, or any other mechanism that bypasses normal control flow — does not run pending defers.
+
 ### Assert statement
 
 ```
 assert_statement ::= "assert" "(" expression ("," expression)* ")" ";"
 ```
 
-`assert(cond)` evaluates `cond`; if `cond` is `false`, the program traps with a message describing the failed assertion. Additional expressions are evaluated and used to compose the message. Assertions are active in safe builds; in fast builds, the compiler may treat the condition as a hint that may not be relied upon.
+`assert(cond)` evaluates `cond`; if `cond` is `false`, the program is terminated by calling a panic function. With no message expression, the standard library's `panic` function is called. With a message and additional format arguments, `panicf` is called with the message as a format string. If `panicf` is not available (for example, when compiling without the standard library), the format arguments are discarded and `panic` is called with the message alone.
+
+The condition is required to be present; the message and any format arguments are optional. The message must be a compile-time constant string; the format arguments are arbitrary expressions.
+
+Assertions are active in safe builds. In fast builds, the compiler may treat the condition as a hint (an assume directive); reaching a program point where the asserted condition is false is then undefined behaviour.
 
 ### Compile-time control statements
 
@@ -1814,10 +1920,19 @@ ct_echo_statement   ::= "$echo" constant_expression ";"
 ### Inline assembly
 
 ```
-asm_block_statement ::= "asm" ("(" expression ")" attributes? | attributes? "{" asm_instruction* "}")
+asm_block_item  ::= asm_label | asm_instruction
+asm_label       ::= CONST_IDENT ":"
+asm_instruction ::= asm_mnemonic (asm_arg ("," asm_arg)*)? ";"
+asm_mnemonic    ::= (IDENTIFIER | "int") ("." IDENTIFIER)?
 ```
 
 An `asm` block embeds platform-specific instructions. The full syntax of instructions and operands is given in *Inline assembly*.
+
+The structured form accepts a sequence of labels and instructions in a common grammar that abstracts over the underlying processor.
+
+A label has the form `NAME:`, where `NAME` is a `CONST_IDENT`. Labels may be jump targets for other instructions within the same `asm` block; they have no visibility outside the block.
+
+An instruction consists of a mnemonic followed by zero or more comma-separated arguments and a terminating semicolon. The mnemonic is either an `IDENTIFIER` or the keyword `int` (permitted as a mnemonic so that the x86 `int` instruction may be written naturally), optionally followed by a `.suffix` to select an instruction variant — for example, `vmov.f32` or `cvt.u32`.
 
 ## Functions and methods
 
@@ -2194,6 +2309,14 @@ The switch operand is a constant expression. Each `$case` value is a constant ex
 
 If the operand is omitted (`$switch:`), each `$case` is a boolean constant expression; the compiler selects the first `$case` whose expression is `true`.
 
+`$switch` selects one of its `$case` clauses based on a compile-time-constant cond. The following rules apply:
+
+* The operand and case values are constant expressions. When the operand is a type, every case value must also be a type.
+* If the operand is omitted (`$switch:`), each `$case` is a boolean constant expression; the first case whose expression is `true` is selected.
+* A `$case` clause with no statements falls through to the next clause. Successive empty clauses chain together, and the first non-empty clause encountered supplies the statements that are processed.
+* Only the selected clause is processed by the compiler; the statements of the other clauses are not semantically checked.
+* `$switch` does not support ranged cases, `break`, or `nextcase`.
+
 #### `$for`
 
 The compiler unrolls the loop: the body is generated once per iteration, with the loop variables (which are compile-time variables) bound to compile-time-constant values for that iteration. The control expressions are evaluated at compile time.
@@ -2433,12 +2556,12 @@ The first three may also appear on a module section to set the default visibilit
 #### Inlining, calling, and control flow
 
 * `@inline` / `@noinline` — request, respectively, that calls to this function be inlined or not.
-* `@callconv(name)` — selects a calling convention; valid names depend on the target.
+* `@callconv(name)` — selects a calling convention. The argument is a compile-time string; the recognized values are implementation dependent, but will at least contain `"cdecl"`. The default is `"cdecl"`. If more than one `@callconv` is applied to a function or call, the last takes precedence.
 * `@naked` — the function has no compiler-generated prologue or epilogue; typically used with inline assembly.
 * `@noreturn` — the function never returns to its caller; reaching its textual end is an error.
 * `@pure` — the function has no observable side effects and may be assumed safe to call in contracts.
 * `@maydiscard` / `@nodiscard` — explicitly allow or forbid discarding the return value at call sites.
-* `@finalizer` / `@finalizer(priority)` — registers the function to be called at program shutdown. The optional priority argument is an integer; lower values run earlier than higher values. 
+* `@finalizer` / `@finalizer(priority)` — registers the function to be called at program shutdown. The optional priority argument is an integer; lower values run earlier than higher values.
 * `@init` / `@init(priority)` — registers the function to be called at program startup, before main. The optional priority argument has the same convention as @finalizer.
 
 #### Initialization and layout
@@ -2483,6 +2606,15 @@ Two variants of `@operator` exist for binary operators where the operand order m
 
 The required signatures for each form are given in *Properties of types and values*.
 
+Each overload form imposes signature requirements on the declaring method:
+
+* `[]` — takes one parameter (the index, of integer type) and returns the element type.
+* `&[]` — takes one parameter (the index, of integer type) and returns a pointer to the element type. When both `[]` and `&[]` are defined, the return of `&[]` must be a pointer to the return of `[]`.
+* `[]=` — takes two parameters (the index, of integer type, and the new element value); the return type is `void`. The value parameter's type must match the return type of `[]`.
+* `len` — takes no parameters; the return type must be an integer type.
+
+The arithmetic, bitwise, shift, comparison, and unary overload forms follow the natural signature of their operator: each binary overload takes one parameter (the right-hand operand, after the receiver), each unary overload takes none, and the return type is the type of the operator's result.
+
 #### Switch lowering
 
 * `@jump` — applied to a switch statement; requires that the switch be lowered to a jump table. The switch must satisfy the requirements for jump-table lowering described in *Statements*.
@@ -2508,7 +2640,7 @@ The required signatures for each form are given in *Properties of types and valu
 
 #### Interface methods
 
-* `@dynamic` — marks a method as participating in dynamic dispatch through an interface. A type's `@dynamic` methods constitute its interface implementation as described in *Types*.
+* `@dynamic` — marks a method as participating in dynamic dispatch through an interface. A type's `@dynamic` methods constitute its interface implementation as described in *Types*. `@dynamic` may not be applied to methods of `any` or to methods of an interface itself; only methods of concrete user-defined types may carry it.
 * `@optional` — marks an interface method as not required for every implementor.
 
 #### Type modifiers
@@ -3106,7 +3238,25 @@ if (catch excuse = foo)
 io::printfn("foo = %s", foo);
 ```
 
+When the condition of an `if` is a `catch` unwrap binding one or more optionals, the `else` branch implicitly unwraps each bound optional. Reaching the `else` branch means that the catch did not match, so each operand is known to be in the success state in that branch:
+
+```
+int? a = foo();
+int? b = bar();
+if (catch excuse = a, b)
+{
+  return excuse~;
+}
+else
+{
+  int x = a + b;          // a and b are implicitly unwrapped
+}
+```
+
+
 The same unwrapping applies after the rethrow operator: a statement of the form `int x = foo!;` both rethrows the fault and binds the unwrapped value to `x`. Subsequent references to `foo` in the same scope continue to be optional.
+
+
 
 ### `void?` and statement-level optionals
 
@@ -3608,1157 +3758,3 @@ The behavioural classes above can be read as a contract between the language and
 * The language assumes the never-defined operations do not occur; programs that rely on any particular outcome from them have no guaranteed behaviour.
 
 A portable C3 program treats every category listed under "always undefined" or "trap in safe mode" as a bug to be removed, regardless of which build mode is currently in use.
-
-
----
-
-
-More resources:
-
----
-
-#### Field access syntax
-
-Vectors allow access the index 0-3 with field access syntax. 'x', 'y', 'z', 'w' corresponds to
-indices 0-3. Alternatively 'r', 'g', 'b', 'a' may be used.
-
-#### Swizzling
-
-It is possible to form new vectors by combining field access names of individual elements. For example
-`foo.xz` constructs a new vector with the fields from the elements with index 0 and 2 from the vector "foo". There is
-no restriction on ordering, and the same field may be repeated. The width of the vector is the same as the number of
-elements in the swizzle. Example: `foo.xxxzzzyyy` would be a vector of width 9.
-
-Mixing the "rgba" and "xyzw" access name sets is an error. Consequently `foo.rgz` would be invalid as "rg" is from the "rgba" set and "z" is from the "xyzw" set.
-
-#### Swizzling assignment
-
-A swizzled vector may be a lvalue if there is no repeat of an index. Example: `foo.zy` is a valid lvalue, but `foo.xxy` is not.
-
-#### Vector operations
-
-Vectors support the same arithmetics and bit operations as its underlying type, and will perform the operation element-wise. Vector operations ignore overloads on the underlying type.
-
-Example:
-
-```c3
-int[<2>] a = { 1, 3 };
-int[<2>] b = { 2, 7 };
-
-int[<2>] c = a * b;
-// Equivalent to
-int[<2>] c = { a[0] * b[0], a[1] * b[1] };
-```
-
-Vectors support `++` and `--` operators, which will be applied to each element. For example, given the `int` vector `int[<2>] x = { 1, 2 }`, the expression `x++` will return the vector `{ 1, 2 }` and update the vector `x` to `{ 2, 3 }`
-
-#### Enum vector "ordinal"
-
-Enum vectors support `.ordinal`, which will return the ordinal of all elements. Note that the `.from_ordinal` method of enums may take a vector and then return an enum vector.
-
-#### Vector limits
-
-Vectors may have a compiler defined maximum bit width. This will be at least as big as the largest supported SIMD vector. A typical value is 4096 bits. For the purpose of calculating max with, boolean vectors are considered to be 8 bits wide per element.
-### Simd vectors
-
-TODO
-
-#### Alignment
-
-TODO
-
-#### Size
-
-TODO
-
-#### Elements
-
-TODO
-
-### Array types
-
-An array has the alignment of its elements. An array must have at least one element.
-
-### Slice types
-
-The slice consist of a pointer, followed by an sz length, having the alignment of pointers.
-
-### Pointer types
-
-A pointer is an address to memory.
-
-```text
-pointer_type       ::= type "*"
-```
-
-#### Pointee type
-
-The type of the memory pointed to is the **pointee type**. It may be any runtime type. In the case of a `void*` the pointee type is unknown.
-
-#### Deref
-
-Dereferencing a pointer will return the value in the memory location interpreted as the **pointee type**.
-
-### Pointer arithmetics
-
-An `sz` or `usz` offset may be added to a pointer resulting in a new pointer of the same type. This will offset the underlying address by the offset times the pointee size. An example: the size of a `long` is 8 bytes. Adding `3` to a pointer to a long consequently increases the address by 24 (3 * 8).
-
-#### Subscripting
-
-Subscripting a pointer is equal to performing pointer arithmetics by adding the index, followed by a deref.
-Subscripts on pointers may be negative and will never do bounds checks.
-
-#### `iptr` and `uptr`
-
-A pointer may be losslessly cast to an `iptr` or `uptr`. An `iptr` or `uptr` may be cast to a pointer of any type.
-
-#### The wildcard pointer `void*`
-
-The `void*` may implicitly cast into any other pointer type. The `void*` pointer implicitly casts into any other pointer.
-
-A void* pointer may never be directly dereferenced or subscripted, it must first be cast to non-void pointer type.
-
-#### Pointer arithmetic on `void*`
-
-Performing pointer arithmetics on void* will assume that the element size is 1.
-
-### Struct types
-
-A struct may not have zero members.
-
-#### Alignment
-
-A non-packed struct has the alignment of the member that has the highest alignment. A packed struct has alignment 1. See [align attribute](#attributes) for details on changing the alignment.
-
-#### Flexible array member
-
-The last member of a struct may be a flexible array member. This is a placeholder for an unknown length array. A struct must have at least one other member other than the flexible array member.
-
-The syntax of the flexible array member is the same as arrays of inferred length: `Type[*]`. The member will contribute to alignment as if it was a one element array.
-
-#### Struct memory layout and size
-
-The members of a struct is laid out in memory in order of declaration. Each member will be placed at the first offset aligned to the type of the member. This may cause padding to occur between members.
-
-Finally, the end of the struct will be padded so that the size is a multiple of its alignment.
-
-#### Inline
-TODO
-
-### Union types
-
-A union may not have zero members.
-
-#### Alignment
-
-A union has the alignment of the member that has the highest alignment. See [align attribute](#attributes) for details on changing the alignment.
-
-#### Union size
-
-The size of a union is the size of its largest member, padded so that the size is a multiple of its alignment.
-
-### Bitstruct type
-
-#### Container type
-The container type is restricted to integer types and char arrays, or typedefs based on such types.
-
-
-
-### Fault type
-
-#### Alignment
-Alignment is the same as that of the `uptr` type.
-
-#### Size
-Size is the same as that of the `uptr` type.
-
-#### Representation
-In underlying representation, the fault matches that of an `uptr`.
-
-#### Faultdef
-`faultdef` will create unique instances of the `fault` type.
-
-#### Zero value
-The zero fault type can be created implicitly casting from `null` or `{}`.
-
-#### Assigning a zero value fault
-An optional empty constructed from a zero value fault, will behave as if it was a result with an undefined value. Performing operations on an undefined value will in itself give an undefined value.
-
-### Enum type
-TODO
-
-### Typeid type
-
-The `typeid` type is a built-in type that represents a unique identifier for a type. In its underlying representation, it matches that of an `iptr`.
-### Associated values
-TODO
-### Ordinal
-TODO
-### Inline
-
-### Const enum type
-TODO
-### Value
-TODO
-### Inline
-TODO
-
-### Typedef
-TODO
-### Underlying type
-TODO
-### Inline
-TODO
-
-### Alias
-TODO
-
-### Interface
-TODO
-#### Inheritance
-TODO
-#### Implementing interface
-TODO
-#### Method lookup
-TODO
-
-## Declarations
-
-TODO
-
-## Expressions
-
-TODO
-
-### Assignment expression
-
-```
-assignment_expr    ::= unary_expr assignment_op expr
-assignment_op      ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "<<=" | ">>=" | "&=" | "^=" | "|="
-```
-
-## Statements
-
-TODO
-```
-stmt                ::= compound_stmt | non_compound_stmt
-non_compound_stmt   ::= assert_stmt | if_stmt | while_stmt | do_stmt | foreach_stmt | foreach_r_stmt
-                       | for_stmt | return_stmt | break_stmt | continue_stmt | var_stmt
-                       | declaration_stmt | defer_stmt | nextcase_stmt | asm_block_stmt
-                       | ct_echo_stmt | ct_error_stmt | ct_assert_stmt | ct_if_stmt | ct_switch_stmt
-                       | ct_for_stmt | ct_foreach_stmt | expr_stmt | ct_assign_stmt
-```
-
-### Compile time assign statements
-
-#### Type assign statement
-
-This assigns a new type to a compile time type variable. The value of the expression is the type assigned.
-
-### Asm block statement
-
-An asm block is either a string expression or a brace enclosed list of asm statements.
-
-```
-asm_block_stmt      ::= "asm" ("(" constant_expr ")" | "{" asm_stmt* "}")
-asm_stmt            ::= asm_instr asm_exprs? ";"
-asm_instr           ::= ("int" | IDENTIFIER) ("." IDENTIFIER)
-asm_expr            ::= CT_IDENT | CT_CONST_IDENT | "&"? IDENTIFIER | CONST_IDENT | FLOAT_LITERAL
-                        | INTEGER | "(" expr ")" | "[" asm_addr "]"
-asm_addr            ::= asm_expr (additive_op asm_expr asm_addr_trail?)?
-asm_addr_trail      ::= "*" INTEGER (additive_op INTEGER)? | (shift_op | additive_op) INTEGER
-```
-
-TODO
-
-### Assert statement
-
-The assert statement will evaluate the expression and call the panic function if it evaluates
-to false.
-
-```
-assert_stmt        ::= "assert" "(" expr ("," assert_message)? ")" ";"
-assert_message     ::= constant_expr ("," expr)*
-```
-
-#### Conditional inclusion
-
-`assert` statements are only included in "safe" builds. They may turn into **assume directives** for
-the compiler on "fast" builds.
-
-#### Assert message
-
-The assert message is optional. It can be followed by an arbitrary number of expressions, in which case
-the message is understood to be a format string, and the following arguments are passed as values to the
-format function.
-
-The assert message must be a compile time constant. There are no restriction on the format argument expressions.
-
-#### Panic function
-
-If the assert message has no format arguments or no assert message is included,
-then the regular panic function is called. If it has format arguments then `panicf` is called instead.
-
-In the case the `panicf` function does not exist (for example, compiling without the standard library),
-then the format and the format arguments will be ignored and the `assert` will be treated
-as if no assert message was available.
-
-### Break statement
-
-A break statement exits a `while`, `for`, `do`, `foreach` or `switch` scope. A labelled break
-may also exit a labelled `if`.
-
-```
-break_stmt         ::= "break" label? ";"
-```
-
-#### Break labels
-
-If a break has a label, then it will instead exit an outer scope with the label.
-
-#### Unreachable code
-
-Any statement following break in the same scope is considered unreachable.
-
-### Compile time echo statement
-
-During parsing, the compiler will output the text in the statement when it is semantically checked.
-The statement will be turned into a NOP statement after checking.
-
-```
-ct_echo_stmt       ::= "$echo" constant_expr ";"
-```
-
-#### The message
-
-The message must be a compile time constant string.
-
-### Compile time assert statement
-
-During parsing, the compiler will check the compile time expression
-and create a compile time error with the optional message. After
-evaluation, the `$assert` becomes a **NOP** statement.
-
-```
-ct_assert_stmt     ::= "$assert" constant_expr (":" constant_expr) ";"
-```
-
-#### Evaluated expression
-
-The checked expression must evaluate to a boolean compile time constant.
-
-#### Error message
-
-The second parameter, which is optional, must evaluate to a constant string.
-
-### Compile time error statement
-
-During parsing, when semantically checked this statement will output
-a compile time error with the message given.
-
-```
-ct_error_stmt      ::= "$error" constant_expr ";"
-```
-
-#### Error message
-
-The parameter must evaluate to a constant string.
-
-### Compile time if statement
-
-If the cond expression is true, the then-branch is processed by the compiler. If it
-evaluates to false, the else-branch is processed if it exists.
-
-```
-ct_if_stmt         ::= "$if" constant_expr ":" stmt* ("$else" stmt*)? "$endif"
-```
-
-#### Cond expression
-
-The cond expression must be possible to evaluate to true or false at compile time.
-
-#### Scopes
-
-The "then" and "else" branches will add a compile time scope that is exited when reaching `$endif`.
-It adds no runtime scope.
-
-#### Evaluation
-
-Statements in the branch not picked will not be semantically checked.
-
-### Compile time switch statement
-
-```
-ct_switch_stmt     ::= "$switch" (ct_expr_or_type)? ":"
-ct_case_stmt       ::= ("$default" | "$case" ct_expr_or_type) ":" stmt*
-```
-
-#### No cond expression switch
-
-If the cond expression is missing, evaluation will go through each case until one case expression
-evaluates to true.
-
-#### Type expressions
-
-If a cond expression is a type, then all case statement expressions must be types as well.
-
-#### Ranged cases
-
-Compile time switch does not support ranged cases.
-
-#### Fallthrough
-
-If a case clause has no statements, then when executing the case, rather than exiting the switch,
-the next case clause immediately following it will be used. If that one should also be missing statements,
-the procedure will be repeated until a case clause with statements is encountered,
-or the end of the switch is reached.
-
-#### Break and nextcase
-
-Compile time switches do not support `break` nor `nextcase`.
-
-#### Evaluation of statements
-
-Only the case which is first matched has its statements processed by the compiler. All other statements
-are ignored and will not be semantically checked.
-
-### Continue statement
-
-A continue statement jumps to the cond expression of a `while`, `for`, `do` or `foreach`
-
-```
-continue_stmt      ::= "continue" label? ";"
-```
-
-#### Continue labels
-
-If a `continue` has a label, then it will jump to the cond of the while/for/do in the outer scope
-with the corresponding label.
-
-#### Unreachable code
-
-Any statement following `continue` in the same scope is considered unreachable.
-
-### Declaration statement
-
-A declaration statement adds a new runtime or compile time variable to the current scope. It is available after the
-declaration statement.
-
-```
-declaration_stmt   ::= const_declaration | local_decl_storage? optional_type decls_after_type ";"
-local_decl_storage ::= "tlocal" | "static"
-decls_after_type   ::= local_decl_after_type ("," local_decl_after_type)*
-decl_after_type    ::= CT_IDENT ("=" constant_expr)? | IDENTIFIER opt_attributes ("=" expr)?
-```
-
-#### Thread local storage
-
-Using `tlocal` allocates the runtime variable as a **thread local** variable. In effect this is the same as declaring
-the variable as a global `tlocal` variable, but the visibility is limited to the function. `tlocal` may not be
-combined with `static`.
-
-The initializer for a `tlocal` variable must be a valid global init expression.
-
-#### Static storage
-
-Using `static` allocates the runtime variable as a function **global** variable. In effect this is the same as declaring
-a global, but visibility is limited to the function. `static` may not be combined with `tlocal`.
-
-The initializer for a `static` variable must be a valid global init expression.
-
-#### Scopes
-
-Runtime variables are added to the runtime scope, compile time variables to the compile time scope. See **var statements
-**.
-
-#### Multiple declarations
-
-If more than one variable is declared, no init expressions are allowed for any of the variables.
-
-#### No init expression
-
-If no init expression is provided, the variable is **zero initialized**.
-
-#### Opt-out of zero initialization
-
-Using the @noinit attribute opts out of **zero initialization**.
-
-#### Prevent opt-out of zero initialization
-
-Using the @mustinit attribute disables the use of the @noinit attribute.
-
-#### Self referencing initialization
-
-An init expression may refer to the **address** of the same variable that is declared, but not the **value** of the
-variable.
-
-Example:
-
-```c3
-void* a = &a;  // Valid
-int a = a + 1; // Invalid
-```
-
-### Defer statement
-
-The defer statements are executed at (runtime) scope exit, whether through `return`, `break`, `continue` or rethrow.
-
-```
-defer_stmt         ::= "defer" ("try" | "catch")? stmt
-```
-
-#### Defer in defer
-
-The defer body (statement) may not be a defer statement. However, if the body is a compound statement then
-this may have any number of defer statements.
-
-#### Static and tlocal variables in defer
-
-Static and tlocal variables are allowed in a defer statement. Only a single variable is instantiated regardless of
-the number of inlining locations.
-
-#### Defer and return
-
-If the `return` has an expression, then it is evaluated before the defer statements (due to exit from the current
-function scope),
-are executed.
-
-Example:
-
-```c3
-int a = 0;
-defer a++;
-return a;
-// This is equivalent to
-int a = 0;
-int temp = a;
-a++;
-return temp;
-```
-
-#### Defer and jump statements
-
-A defer body may not contain a `break`, `continue`, `return` or rethrow that would exit the statement.
-
-#### Defer execution
-
-Defer statements are executed in the reverse order of their declaration, starting from the last declared
-defer statement.
-
-#### `defer try`
-
-A `defer try` type of defer will only execute if the scope is left through normal fallthrough, `break`,
-`continue` or a `return` with a result.
-
-It will not execute if the exit is through a rethrow or a `return` with an optional value.
-
-#### `defer catch`
-
-A `defer catch` type of defer will only execute if the scope is left through a rethrow or a `return` with an optional
-value
-
-It will not execute if the exit is a normal fallthrough, `break`, `continue` or a `return` with a result.
-
-#### Non-regular returns - longjmp, panic and other errors
-
-Defers will not execute when doing `longjmp` terminating through a `panic` or other error. They
-are only invoked on regular scope exits.
-
-### Expr statement
-
-An expression statement evaluates an expression.
-
-```
-expr_stmt          ::= expr ";"
-```
-
-#### No discard
-
-If the expression is a function or macro call either returning an optional *or* annotated `@nodiscard`, then
-the expression is a compile time error. A function or macro returning an optional can use the `@maydiscard`
-attribute to suppress this error.
-
-### If statement
-
-An if statement will evaluate the cond expression, then execute the first statement (the "then clause") in the if-body
-if it evaluates to "true", otherwise execute the else clause. If no else clause exists, then the
-next statement is executed.
-
-```
-if_stmt            ::= "if" (label ":")? "(" cond_expr ")" if_body
-if_body            ::= non_compound_stmt | compound_stmt else_clause? | "{" switch_body "}"
-else_clause        ::= "else" (if_stmt | compound_stmt)
-
-```
-
-#### Scopes
-
-Both the "then" clause and the else clause open new scopes, even if they are non-compound statements.
-The cond expression scope is valid until the exit of the entire statement, so any declarations in the
-cond expression are available both in then and else clauses. Declarations in the "then" clause is not available
-in the else clause and vice versa.
-
-#### Special parsing of the "then" clause
-
-If the then-clause isn't a compound statement, then it must follow on the same row as the cond expression.
-It may not appear on a consecutive row.
-
-#### Break
-
-It is possible to use labelled break to break out of an if statement. Note that an unlabelled `break` may not
-be used.
-
-#### If-try
-
-The cond expression may be a try-unwrap chain. In this case, the unwrapped variables are
-scoped to the "then" clause only.
-
-#### If-catch
-
-The cond expression may be a catch-unwrap. The unwrap is scoped to the "then" clause only.
-If one or more variables are in the catch, then the "else" clause have these variables
-implicitly unwrapped.
-
-Example:
-
-```c3
-int? a = foo();
-int? b = foo();
-if (catch a, b)
-{
-    // Do something
-}
-else
-{
-    int x = a + b; // Valid, a and b are implicitly unwrapped.
-}
-```
-
-#### If-catch implicit unwrap
-
-If an if-catch's "then"-clause will jump out of the outer scope in all code paths and
-the catch is on one or more variables, then this variable(s) will be implicitly unwrapped in the outer scope
-after the if-statement.
-
-Example:
-
-```c3
-int? a = foo();
-if (catch a)
-{
-  return;
-}
-int x = a; // Valid, a is implicitly unwrapped.
-```
-
-### Nextcase statement
-
-Nextcase will jump to another `switch` case.
-
-```
-nextcase_stmt      ::= "nextcase" ((label ":")? (expr | "default"))? ";"
-```
-
-#### Labels
-
-When a nextcase has a label, the jump is to the switch in an outer scope with the corresponding label.
-
-#### No expression jumps
-
-A `nextcase` without any expression jumps to the next case clause in the current switch. It is not possible
-to use no expression `nextcase` with labels.
-
-#### Jumps to default
-
-Using `default` jumps to the default clause of a switch.
-
-#### Missing case
-
-If the switch has constant case values, and the nextcase expression is constant, then the value of
-the expression must match a case clause. Not matching a case is a compile time error.
-
-If one or more cases are non-constant and/or the nextcase expression is non-constant, then no compile time check is
-made.
-
-#### Variable expression
-
-If the nextcase has a non-constant expression, or the cases are not all constant, then first the nextcase expression
-is evaluated. Next, execution will proceed *as if* the switch was invoked again, but with the nextcase expression as the
-switch cond expression. See **switch statement**.
-
-If the switch does not have a cond expression, nextcase with an expression is not allowed.
-
-#### Unreachable code
-
-Any statement in the same scope after a `nextcase` are considered **unreachable**.
-
-### Switch statement
-
-```
-switch_stmt        ::= "switch" (label ":")? ("(" cond_expr ")")? switch body
-switch_body        ::= "{" case_clause* "}"
-case_clause        ::= default_stmt | case_stmt
-default_stmt       ::= "default" ":" stmt*
-case_stmt          ::= "case" label? expr (".." expr)? ":" stmt*
-```
-
-#### Regular switch
-
-If the cond expression exists and all case statements have constant expression, then first the
-cond expression is evaluated, next the case corresponding to the expression's value will be jumped to
-and the statement will be executed. After reaching the end of the statements and a new case clause *or* the
-end of the switch body, the execution will jump to the first statement after the switch.
-
-#### If-switch
-
-If the cond expression is missing or the case statements are non-constant expressions, then each case clause will
-be evaluated in order after the cond expression has been evaluated (if it exists):
-
-1. If a cond expression exists, calculate the case expression and execute the case if it is matching the
-   cond expression. A default statement has no expression and will always be considered matching the cond expression
-   reached.
-2. If no con expression exists, calculate the case expression and execute the case if the expression evaluates to
-   "true" when implicitly converted to boolean. A default statement will always be considered having the "true" result.
-
-#### Any-switch
-
-If the cond expression is an `any` type, the switch is handled as if switching was done over the `type`
-field of the `any`. This field has the type of [typeid](#typeid-type), and the cases follows the rules
-for [switching over typeid](#switching-over-typeid).
-
-If the cond expression is a variable, then this variable is implicitly converted to a pointer with
-the pointee type given by the case statement.
-
-Example:
-
-```c3
-any a = abc();
-switch (a)
-{
-    case int:
-        int b = *a;   // a is int*
-    case float:
-        float z = *a; // a is float*
-    case Bar:
-        Bar f = *a;   // a is Bar*
-    default:
-        // a is not unwrapped
-}
-```
-
-#### Ranged cases
-
-Cases may be ranged. The start and end of the range must both be constant integer values. The start must
-be less or equal to the end value. Using non-integers or non-constant values is a compile time error.
-
-#### Fallthrough
-
-If a case clause has no statements, then when executing the case, rather than exiting the switch, the next case clause
-immediately following it will be executed. If that one should also be missing statement, the procedure
-will be repeated until a case clause with statements is encountered (and executed), or the end of the switch is reached.
-
-#### Exhaustive switch
-
-If a switch case has a default clause *or* it is switching over an enum and there exists a case for each enum value
-then the switch is exhaustive.
-
-#### Break
-
-If an unlabelled break, or a break with the switch's label is encountered,
-then the execution will jump out of the switch and proceed directly after the end of the switch body.
-
-#### Unreachable code
-
-If a switch is exhaustive and all case clauses end with a jump instruction, containing no break statement out
-of the current switch, then the code directly following the switch will be considered **unreachable**.
-
-#### Switching over typeid
-
-If the switch cond expression is a typeid, then case declarations may use only the type name after the case,
-which will be interpreted as having an implicit `.typeid`. Example: `case int:` will be interpreted as if
-written `case int.typeid`.
-
-#### Nextcase without expression
-
-Without a value `nextcase` will jump to the beginning of the next case clause. It is not allowed to
-put `nextcase` without an expression if there are no following case clauses.
-
-#### Nextcase with expression
-
-Nextcase with an expression will evaluate the expression and then jump *as if* the switch was entered with
-the cond expression corresponding to the value of the nextcase expression. Nextcase with an expression cannot
-be used on a switch without a cond expression.
-
-#### Do statement
-
-The do statement first evaluates its body (inner statement), then evaluates the cond expression.
-If the cond expression evaluates to true, jumps back into the body and repeats the process.
-
-```
-do_stmt            ::= "do" label? compound_stmt ("while" "(" cond_expr ")")? ";"
-```
-
-#### Unreachable code
-
-The statement after a `do` is considered unreachable if the cond expression cannot ever be false
-and there is no `break` out of the do.
-
-#### Break
-
-`break` will exit the do with execution continuing on the following statement.
-
-#### Continue
-
-`continue` will jump directly to the evaluation of the cond, as if the end of the statement had been reached.
-
-#### Do block
-
-If no `while` part exists, it will only execute the block once, as if it ended with `while (false)`, this is
-called a "do block"
-
-### For statement
-
-The `for` statement will perform the (optional) init expression. The cond expression will then be tested. If
-it evaluates to `true` then the body will execute, followed by the incr expression. After execution will
-jump back to the cond expression and execution will repeat until the cond expression evaluates to `false`.
-
-```
-for_stmt           ::= "for" label? "(" init_expr ";" cond_expr? ";" incr_expr ")" stmt
-init_expr          ::= decl_expr_list?
-incr_expr          ::= expr_list?
-```
-
-#### Init expression
-
-The init expression is only executed once before the rest of the for loop is executed.
-Any declarations in the init expression will be in scope until the for loop exits.
-
-The init expression may optionally be omitted.
-
-#### Incr expression
-
-The incr expression is evaluated before evaluating the cond expr every time except for the first one.
-
-The incr expression may optionally be omitted.
-
-#### Cond expression
-
-The cond expression is evaluated every loop. Any declaration in the cond expression is scoped to the
-current loop, i.e. it will be reinitialized at the start of every loop.
-
-The cond expression may optionally be omitted. This is equivalent to setting the cond expression to
-always return `true`.
-
-#### Unreachable code
-
-The statement after a `for` is considered unreachable if the cond expression cannot ever be false, or is
-omitted and there is no `break` out of the loop.
-
-#### Break
-
-`break` will exit the `for` with execution continuing on the following statement after the `for`.
-
-#### Continue
-
-`continue` will jump directly to the evaluation of the cond, as if the end of the statement had been reached.
-
-#### Equivalence of `while` and `for`
-
-A `while` loop is functionally equivalent to a `for` loop without init and incr expressions.
-
-### `foreach` and `foreach_r` statements
-
-The `foreach` statement will loop over a sequence of values. The `foreach_r` is equivalent to
-`foreach` but the order of traversal is reversed.
-`foreach` starts with element `0` and proceeds step by step to element `len - 1`.
-`foreach_r` starts starts with element `len - 1` and proceeds step by step to element `0`.
-
-```
-foreach_stmt       ::= "foreach" label? "(" foreach_vars ":" expr ")" stmt
-foreach_r_stmt     ::= "foreach_r" label? "(" foreach_vars ":" expr ")" stmt
-foreach_vars       ::= (foreach_index ",")? foreach_var
-foreach_var        ::= type? "&"? IDENTIFIER
-```
-
-#### Break
-
-`break` will exit the foreach statement with execution continuing on the following statement after.
-
-#### Continue
-
-`continue` will cause the next iteration to commence, as if the end of the statement had been reached.
-
-#### Iteration by value or reference
-
-Normally iteration are by value. Each element is copied into the foreach variable. If `&`
-is added before the variable name, the elements will be retrieved by reference instead, and consequently
-the type of the variable will be a pointer to the element type instead.
-
-#### Foreach variable
-
-The foreach variable may omit the type. In this case the type is inferred. If the type differs from the element
-type, then an implicit conversion will be attempted. Failing this is a compile time error.
-
-#### Foreach index
-
-If a variable name is added before the foreach variable, then this variable will receive the index of the element.
-For `foreach_r` this mean that the first value of the index will be `len - 1`.
-
-The index type defaults to `sz`.
-
-If an optional type is added to the index, the index will be converted to this type. The type must be an
-integer type. The conversion happens as if the conversion was a direct cast. If the actual index value
-would exceed the maximum representable value of the type, this does not affect the actual iteration, but
-may cause the index value to take on an incorrect value due to the cast.
-
-For example, if the optional index type is `char` and the actual index is `256`, then the index value would show `0`
-as `(char)256` evaluates to zero.
-
-Modifying the index variable will not affect the foreach iteration.
-
-#### Foreach support
-
-Foreach is natively supported for any slice, array, pointer to an array, vector and pointer to a vector.
-These types support both iteration by value and reference.
-
-In addition, a type with **operator overload** for `len` and `[]` will support iteration by value,
-and a type with **operator overload** for `len` and `&[]` will support iteration by reference.
-
-### Return statement
-
-The return statement evaluates its expression (if present) and returns the result.
-
-```
-return_stmt        ::= "return" expr? ";"
-```
-
-#### Jumps in return statements
-
-If the expression should in itself cause an implicit return, for example due to the rethrow operator `!`, then this
-jump will happen before the return.
-
-An example:
-
-    return foo()!;
-    // is equivalent to:
-    int temp = foo()!;
-    return temp;
-
-#### Empty returns
-
-An empty return is equivalent to a return with a void type. Consequently constructs like `foo(); return;`
-and `return (void)foo();`
-are equivalent.
-
-#### Unreachable code
-
-Any statement directly following a return in the same scope are considered unreachable.
-
-### While statement
-
-The while statement evaluates the cond expression and executes the statement if it evaluates to true.
-After this the cond expression is evaluated again and the process is repeated until cond expression returns false.
-
-```
-while_stmt         ::= "while" label? "(" cond_expr ")" stmt
-```
-
-#### Unreachable code
-
-The statement after a while is considered unreachable if the cond expression cannot ever be false
-and there is no `break` out of the while.
-
-#### Break
-
-`break` will exit the while with execution continuing on the following statement.
-
-#### Continue
-
-`continue` will jump directly to the evaluation of the cond, as if the end of the statement had been reached.
-
-### Var statement
-
-A var statement declares a variable with inferred type, or a compile time type variable. It can be used both
-for runtime and compile time variables. The use for runtime variables is limited to macros.
-
-```
-var_stmt           ::= "var" IDENTIFIER | CT_IDENT | CT_TYPE_IDENT ("=" expr)? ";"
-```
-
-#### Inferring type
-
-In the case of a runtime variable, the type is inferred from the expression. Not providing an expression
-is a compile time error. The expression must resolve to a runtime type.
-
-For compile time variables, the expression is optional. The expression may resolve to a runtime or compile time type.
-
-#### Scope
-
-Runtime variables will follow the runtime scopes, identical to behaviour in a declaration statement. The compile
-time variables will follow the compile time scopes which are delimited by scoping compile time
-statements (`$if`, `$switch`,
-`$foreach` and `$for`).
-
-## Macros
-TODO
-
-## Attributes
-
-Attributes are modifiers attached to modules, variables, type declarations etc.
-
-| name            | used with                                                                         |
-|-----------------|-----------------------------------------------------------------------------------|
-| `@align`        | fn, const, variables, user-defined types, struct member                           |
-| `@benchmark`    | module, fn                                                                        |
-| `@bigendian`    | bitstruct only                                                                    |
-| `@builtin`      | macro, fn, global, constant                                                       |
-| `@callconv`     | fn, call                                                                          |
-| `@deprecated`   | fn, macro, interface, variables, constants, user-defined types, struct member     |
-| `@dynamic`      | fn                                                                                |
-| `@export`       | fn, globals, constants, struct, union, enum, faultdef                             |
-| `@cname`        | fn, globals, constants, user-defined types, faultdef                              |
-| `@if`           | all except local variables and calls                                              |
-| `@inline`       | fn, call                                                                          |
-| `@interface`    | fn                                                                                |
-| `@littleendian` | bitstruct only                                                                    |
-| `@local`        | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| `@maydiscard`   | fn, macro                                                                         |
-| `@mustinit`     | variables                                                                         |
-| `@naked`        | fn                                                                                |
-| `@nodiscard`    | fn, macro                                                                         |
-| `@noinit`       | user-defined types
-| `@noinline`     | fn, call                                                                          |
-| `@noreturn`     | fn, macro                                                                         |
-| `@nostrip`      | fn, globals, constants, struct, union, enum, faultdef                             |
-| `@obfuscate`    | enum, faultdef                                                                    |
-| `@operator`     | fn, macro                                                                         |
-| `@optional`     | interface methods                                                                 |
-| `@overlap`      | bitstruct only                                                                    |
-| `@packed`       | struct, union                                                                     |
-| `@priority`     | initializer/finalizer                                                             |
-| `@private`      | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| `@public`       | module, fn, macro, globals, constants, user-defined types, attributes and aliases |
-| `@pure`         | call                                                                              |
-| `@reflect`      | fn, globals, constants, user-defined types                                        |
-| `@section`      | fn, globals, constants                                                            |
-| `@test`         | module, fn                                                                        |
-| `@unused`       | all except call and initializer/finalizers                                        |
-| `@used`         | all except call and initializer/finalizers                                        |
-| `@weak`         | fn, globals, constants                                                            |
-| `@winmain`      | fn                                                                                |
-
-#### `@deprecated`
-
-Takes an optional constant string.
-If the node is in use, print the deprecation and add the optional string if present.
-
-#### `@optional`
-
-Marks an *interface* method as optional, and so does not need to be implemented by
-a conforming type.
-
-#### `@winmain`
-
-Marks a `main` function as a win32 winmain function, which is the entrypoint for a windowed
-application on Windows. This allows the main function to take a different set of
-arguments than usual.
-
-#### `@callconv`
-
-`@callconv` can be used with a function or a call. It takes a constant string which is either "veccall", "stdcall" or "cdecl". If more than one `@callconv`
-is applied to a function or call, the last one takes precedence.
-
-By default, the call convention is "cdecl".
-
-### User defined attributes
-
-User defined attributes group a list of attributes.
-
-```
-attribute_decl     ::= "attrdef" AT_TYPE_IDENT ("(" parameters ")")? attribute* "=" "{" attribute* "}" ";"
-```
-
-#### Empty list of attributes
-
-The list of attributes may be empty.
-
-#### Parameter arguments
-
-Arguments given to user defined attributes will be passed on to the attributes in the list.
-
-#### Expansion
-
-When a user defined attribute is encountered, its list of attributes is
-copied and appended instead of the user defined attribute. Any argument passed to
-the attribute is evaluated and passed as a constant by the name of the parameter
-to the evaluation of the attribute parameters in the list.
-
-#### Nesting
-
-A user defined attribute can contain other user defined attributes. The definition
-may not be cyclic.
-
-## Methods
-
-#### Operator overloading
-
-`@operator` overloads may only be added to user defined types (typedef, unions, struct, enum and fault).
-
-##### Indexing operator (`[]`)
-
-This requires a return type and a method parameter, which is the index.
-
-##### Reference indexing operator (`&[]`)
-
-This requires a return type and a method parameter, which is the index. If `[]` is implemented,
-it should return a pointer to `[]`.
-
-##### Assigning index operator (`=[]`)
-
-This has a void return type, and index should match that of `[]` and `&[]`. Value should match that
-of `[]` and be the pointee of the result of `&[]`.
-
-##### Len operator (`len`)
-
-This must have an integer return type.
-
-#### Dynamic methods
-
-`@dynamic` may be used on methods for any type except `any` and interfaces.
-
-## Built-in functions
-
-## Modules
-
-Module paths are hierarchal, with each sub-path appended with '::' + the name:
-
-```
-path               ::= PATH_SEGMENT ("::" PATH_SEGMENT)
-```
-
-Each module declaration starts its own **module section**. All imports and all `@local` declarations
-are only visible in the current **module section**.
-
-```
-module_section     ::= "module" path opt_generic_params? attributes? ";"
-generic_param      ::= TYPE_IDENT | CONST_IDENT
-opt_generic_params ::= "{" generic_param ("," generic_param)* "}"
-```
-
-Any visibility attribute defined in a **module section** will be the default visibility in all
-declarations in the section.
-
-If the `@benchmark` attribute is applied to the **module section** then all function declarations
-will implicitly have the `@benchmark` attribute.
-
-If the `@test` attribute is applied to the **module section** then all function declarations
-will implicitly have the `@test` attribute.
-
-## Generic modules
-TODO
-
-## Program initialization
-TODO
-
-## Optionals and faults
-TODO
