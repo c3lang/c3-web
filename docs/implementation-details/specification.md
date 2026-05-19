@@ -2438,8 +2438,8 @@ The first three may also appear on a module section to set the default visibilit
 * `@noreturn` — the function never returns to its caller; reaching its textual end is an error.
 * `@pure` — the function has no observable side effects and may be assumed safe to call in contracts.
 * `@maydiscard` / `@nodiscard` — explicitly allow or forbid discarding the return value at call sites.
-* `@finalizer` — registers the function to be called at program shutdown.
-* `@init` — registers the function to be called at program startup, before `main`.
+* `@finalizer` / `@finalizer(priority)` — registers the function to be called at program shutdown. The optional priority argument is an integer; lower values run earlier than higher values. 
+* `@init` / `@init(priority)` — registers the function to be called at program startup, before main. The optional priority argument has the same convention as @finalizer.
 
 #### Initialization and layout
 
@@ -2848,10 +2848,772 @@ Two instantiations are the same entity if and only if their argument tuples are 
 
 A parameterized declaration is not itself a runtime value; only its instantiations are. A function pointer cannot bind to a parameterized function — it must bind to a specific instantiation.
 
+## Modules
+
+A *module* is the unit of namespace, visibility, and compilation in C3. Every top-level declaration belongs to exactly one module. Modules may be spread across multiple files, may be nested hierarchically, and may import declarations from other modules.
+
+### Module names and hierarchy
+
+A module name is a path of one or more lowercase identifiers separated by `::`:
+
+```
+module_path ::= IDENTIFIER ("::" IDENTIFIER)*
+```
+
+Each component must consist of lowercase ASCII letters, digits, and underscores, and must be no longer than 31 characters. The full module name, including the `::` separators between components, must not exceed 127 characters in total. A nested module such as `foo::bar::baz` is the submodule `baz` of `foo::bar`, which is in turn the submodule `bar` of `foo`.
+
+A C3 source file in a normal build begins with a `module` declaration naming the module to which its top-level declarations belong:
+
+```
+module foo::bar;
+```
+
+A source file with no `module` declaration belongs entirely to an *implicit module* whose name is the file's stem in lowercase, with characters outside the identifier alphabet replaced by underscore. A file using the implicit module name must contain no `module` declaration.
+
+### Module sections
+
+Each `module` declaration opens a *module section*. Multiple sections may appear in one file — for the same module or for different modules — and a single module may span multiple sections and multiple files. The full grammar and the section's attribute defaults (visibility, `@if`, generic parameters) are described in *Blocks and scope*.
+
+A section's imports and any attribute defaults apply only within that section. A subsequent section, even of the same module in the same file, must re-declare any imports it needs.
+
+### Visibility
+
+Each declaration has one of three visibilities:
+
+* **public** — visible everywhere the declaration's module is in scope through `import`. Public is the default for module-level declarations.
+* **private** (`@private`) — visible only within the declaration's own module.
+* **local** (`@local`) — visible only within the same source file.
+
+A module section may declare a default visibility (`@private` or `@local`) that applies to every declaration within the section unless an individual declaration overrides it with an explicit `@public`.
+
+A declaration's visibility may be overridden at an importer's request: writing `import lib @public` makes the private declarations of `lib` accessible in the importer's section. Declarations marked `@local` are never accessible across files and cannot be re-exported by `import @public`.
+
+### Linker visibility and exports
+
+Visibility (`@public`, `@private`, `@local`) controls source-level access. *Linker visibility* — whether a symbol is exposed to other translation units and to external linkers — is a separate concern controlled by the attributes `@export`, `@weak`, `@weaklink`, and `@cname`, described in *Attributes*. By default, source-level public declarations have linker linkage suitable for use within the C3 program but are not exported as library symbols; `@export` opts a declaration into being a library export.
+
+### Imports
+
+An `import` declaration brings the declarations of another module into the current section's name space.
+
+```
+import_declaration ::= "import" import_item ("," import_item)* ";"
+import_item        ::= module_path import_attr*
+import_attr        ::= "@public" | "@norecurse"
+```
+
+A bare `import lib;` is *recursive*: it imports `lib` and all of its submodules, so that names declared in `lib`, `lib::sub`, `lib::sub::deep`, and so on become available without further imports. To import only a specific module without its submodules, append `@norecurse`:
+
+```
+import lib @norecurse;
+import lib1 @norecurse, lib2;
+```
+
+To gain access to the private declarations of an imported module, append `@public`:
+
+```
+import internals @public;
+```
+
+`@public` may not be used to access `@local` declarations, which are never visible across files.
+
+It is a compile-time error if the compiler cannot locate an imported module, or any submodule reached through a recursive import. Inside a module section carrying `@if`, this check is suppressed unless the `@if` condition evaluates to `true`.
+
+### Implicit imports
+
+Every section implicitly imports:
+
+* The standard-library module `std::core` and its submodules. The names declared there are available without any explicit `import`.
+* Every other module whose path shares the same top-level component as the current module. Within a module `foo::abc`, the modules `foo`, `foo::cde`, and so on are implicitly imported.
+
+Implicit imports may be supplemented with explicit ones; an explicit `import` of an implicitly-imported module is permitted and harmless.
+
+### Name resolution
+
+Inside a section, an unqualified name resolves through the following name spaces in order:
+
+1. The current section's declarations.
+2. Other sections of the same module.
+3. Declarations imported by the section's `import` declarations.
+4. Implicitly-imported modules.
+
+When more than one entity matches an unqualified name, the reference is ambiguous and must be qualified. A name is qualified by prefixing it with a module path: `foo::bar` denotes the declaration `bar` in module `foo`. Only as many leading path components as necessary to disambiguate the name need be supplied.
+
+Type names, ordinary identifiers, constant identifiers, and attribute identifiers each form a distinct name space (see *Blocks and scope*); a name in one space does not conflict with the same text in another. Qualification by module path applies uniformly to all of them.
+
+For most ordinary use, types may be referred to by their unqualified name when unambiguous, while functions, macros, constants, and variables typically need at least the submodule prefix. This convention is enforced by the language only to the extent of resolving ambiguity; otherwise it is stylistic.
+
+### Module aliases
+
+A module alias (declared by `alias name = module path;`, see *Declarations*) may stand in place of a module path in `import` declarations and in qualified-name expressions:
+
+```
+alias mc = module my::collection;
+
+import mc;          // equivalent to import my::collection
+mc::Map m;          // equivalent to my::collection::Map
+```
+
+### Source-text inclusion
+
+A module may incorporate text from outside its source files through three compile-time directives:
+
+* `$include("path")` — splices the contents of the named file into the current source at the directive's position, as if its text had been written there. Valid only at the top level of a module section. Requires the build to be run at trust level `include` or higher.
+* `$exec("command", args?, stdin?)` — runs the named external program and splices its standard output into the source. Requires trust level `full`.
+* `$embed("path")` — embeds the named file's contents as a compile-time byte-array value, not as source text. Requires `include` trust level.
+
+The trust level is set by the build invocation and defaults to forbidding both forms. A failed trust check is a compile-time error.
+
+### Project structure and the compiler's view
+
+The C3 compiler is invoked on a set of source files; the build system tells the compiler which files belong to which modules. There is no fixed mapping between file names and module names beyond the single-file fallback above. A module may be implemented in any number of files arranged in any directory structure permitted by the build system.
+
+The visibility, import, and alias rules described above are evaluated independently of the on-disk layout: only the `module` declarations in the source files determine the module structure as seen by the compiler.
+
+## Optionals and faults
+
+C3 represents recoverable error conditions through *optional* types — types of the form `Ty?` whose values are either a successful instance of `Ty` or a *fault*. A function that may fail returns an optional; callers use a small set of operators and conditional forms to handle the two cases. Optionals are first-class types in the language; they participate in expressions, propagate through arithmetic and calls, and integrate with the type system rather than being a library construct.
+
+### Faults
+
+A *fault* is a value of the built-in type `fault`. Fault values are introduced into a module by `faultdef` declarations:
+
+```
+faultdef IO_ERROR, NOT_FOUND, ACCESS_DENIED;
+```
+
+Each `faultdef` introduces one or more named fault values. Two fault values compare equal under `==` and `!=` if and only if they are the same declared fault. Faults have no inherent ordering and no associated payload; a program that needs to attach data to a fault typically wraps the fault in a richer return type.
+
+The literal `null` denotes "no fault" — the absence-of-fault value carried by a successful optional. The literal may be used in fault comparisons (`@catch(x) == null`) and as a fault assignment.
+
+Fault declarations follow the rules for ordinary top-level declarations and may carry attributes, visibility modifiers, and contracts (see *Declarations*).
+
+### Optional types
+
+The type `Ty?` denotes an *optional* `T`: a value that is either a successful instance of `Ty` or a fault. An optional `void?` carries only the fault status. Types of the form `Ty??` are not permitted: the underlying type of an optional may not itself be optional.
+
+The optional type carries the same memory representation as `Ty`; the success/fault status is tracked alongside the value and does not change `Ty`'s size or alignment. An optional is well-formed only when accompanied by a definite success/fault state; uninitialized optional variables follow the zero-initialization rules (the zero state is a successful zero value, not a fault, for most underlying types).
+
+A value of type `Ty` is implicitly convertible to `Ty?` as a successful optional. A fault value is converted to an optional through the postfix `~` operator: `excuse~` produces an optional whose underlying type is inferred from context, carrying `excuse` as its fault.
+
+```
+fn int? get_value(bool ok)
+{
+    if (ok) return 42;          // implicit success
+    return IO_ERROR~;           // explicit fault
+}
+```
+
+### Propagation through expressions
+
+An optional value in an expression makes the surrounding expression's type optional. Arithmetic, calls, and other operators applied to optional operands produce optional results that propagate the fault.
+
+Evaluation of such an expression is *conditional*. If any subexpression evaluates to a faulty optional, the remaining subexpressions are not evaluated and the surrounding expression takes that fault as its value, in left-to-right order:
+
+```
+int? c = foo() + bar();      // if foo() is faulty, bar() is not called.
+abc(foo(), bar());           // if foo() is faulty, bar() is not called and abc is not invoked.
+```
+
+Function arguments may not themselves be declared with an optional type. A faulty optional supplied as an argument always triggers the conditional-call propagation above.
+
+### Function return types
+
+A function may declare an optional return type:
+
+```
+fn int? read_byte(...);
+fn void? close_file(...);
+```
+
+A call to such a function produces an optional value that must be consumed: it may not be assigned to a non-optional variable, passed as a non-optional argument, or returned from a non-optional function without going through one of the handling forms below.
+
+A function with return type `void?` returns no value but may return a fault. Statement-level uses of such a function — `close_file()!;`, `close_file()!!;`, or a `catch` form — must be present whenever the call appears in a non-optional context.
+
+### Handling optionals
+
+#### Rethrow: postfix `!`
+
+The postfix `!` operator unwraps an optional. If the optional is successful, the result is the underlying value of type `Ty`. If the optional is faulty, the enclosing function returns immediately, propagating the fault to its own caller. The enclosing function must therefore itself have an optional return type compatible with the fault being propagated.
+
+```
+fn int? double_byte()
+{
+    int x = read_byte()!;       // returns the fault on failure
+    return x * 2;
+}
+```
+
+The expression `e!` is equivalent to:
+
+```
+if (catch excuse = e) return excuse~;
+// e is unwrapped
+```
+
+#### Force unwrap: postfix `!!`
+
+The postfix `!!` operator unwraps an optional, trapping (terminating the program with a diagnostic) if the optional is faulty. `!!` is intended for cases where the programmer asserts that the optional cannot be faulty at that point; it is not a substitute for proper handling.
+
+#### Optional-else: `??`
+
+The binary `??` operator yields the underlying value of a successful optional, or evaluates and returns a default expression if the optional is faulty:
+
+```
+int v = read_byte() ?? 0;
+```
+
+The right operand is evaluated only when the optional is faulty. The result type is the common type of the left operand's underlying type and the right operand. The right operand may itself be an optional, in which case `??` may be chained.
+
+#### `try` and `catch` in conditions
+
+The conditional forms in *Statements* permit `try` and `catch` unwraps. `try` extracts the underlying value of a successful optional; `catch` extracts the fault of a faulty optional:
+
+```
+if (try x = read_byte())
+{
+    // x : int, the optional was successful
+}
+
+if (catch excuse = read_byte())
+{
+    // excuse : fault, the optional was faulty
+}
+```
+
+A `try` condition may chain multiple unwraps with `&&`:
+
+```
+if (try a = read_byte() && try b = read_byte())
+{
+    // a, b are both unwrapped int
+}
+```
+
+A `catch` condition may bind several optionals; the binding refers to the first one that is in the fault state.
+
+#### Implicit unwrapping
+
+After a `catch` branch that exits the surrounding scope through `return`, `break`, `continue`, or rethrow, the compiler statically determines that the original optional variable cannot be in the fault state in the code that follows. The variable is then implicitly *unwrapped*: within the unwrapped scope, references to it have the underlying non-optional type.
+
+```
+int? foo = unreliable_function();
+if (catch excuse = foo)
+{
+    return excuse~;
+}
+// foo is implicitly unwrapped to int from here to the end of the scope.
+io::printfn("foo = %s", foo);
+```
+
+The same unwrapping applies after the rethrow operator: a statement of the form `int x = foo!;` both rethrows the fault and binds the unwrapped value to `x`. Subsequent references to `foo` in the same scope continue to be optional.
+
+### `void?` and statement-level optionals
+
+A `void?` value carries only the fault status. A `void?` may not be stored in a variable: there is no value content to retain, and the fault status alone is too ephemeral to be a useful target for assignment. The compiler rejects declarations such as `void? x = close_file();`.
+
+`void?` calls are consumed at the statement level by one of the handling forms:
+
+```
+close_file()!;
+close_file()!!;
+if (catch e = close_file()) { ... }
+close_file() ?? do_recovery();
+```
+
+### Faults and function-pointer types
+
+A function-pointer type whose return type is optional matches another such type if and only if the underlying return types match. The set of faults a function may return is not part of the function-pointer type. Consequently, the set of possible faults at a call site is determined statically only for direct calls; for calls through function pointers or interface methods, the program must handle any fault propagated through the optional return.
+
+### `@return?` and contract checking
+
+The `@return?` contract clause (see *Contracts*) documents the faults a function may return. A conforming compiler is not required to enforce `@return?` either at compile time or at runtime; current implementations check only direct fault raising visible through static analysis (`return excuse~;` and the `!` operator on calls with known fault sets).
+
+## Built-in functions and intrinsics
+
+The language reserves the namespace of identifiers beginning with `$$` for compiler use. Within that namespace, two categories are distinguished:
+
+* **Built-in compile-time constants**, listed below, are required of every conforming compiler. Each yields a value, of the specified type, at the point where the identifier appears.
+* **Intrinsic functions** (other `$$`-prefixed callables) are not specified by this document. A conforming compiler may provide any number of them, none of them, or different ones across versions. User code reaches intrinsic functionality through the standard library, which exposes stable wrappers (such as `mem::copy`) over whatever intrinsics a given compiler supplies.
+
+### Built-in compile-time constants
+
+A conforming compiler provides the following constants. Source-location values describe the textual location of the reference; inside an expanded macro body, all such values except `$$LINE_RAW` describe the location of the call site rather than the macro source.
+
+* `$$FILE` — the basename of the current source file, as a string.
+* `$$FILEPATH` — the full path of the current source file, as a string.
+* `$$LINE` — the line number of the reference, as an integer constant.
+* `$$LINE_RAW` — the line number of the reference *before* macro expansion, as an integer constant.
+* `$$FUNC` — the unqualified name of the enclosing function, as a string.
+* `$$FUNCTION` — a reflective reference (in the sense of *Reflection*) to the enclosing function.
+* `$$MODULE` — the qualified name of the enclosing module, as a string.
+* `$$DATE` — the date of compilation, as a string of the form `Mon Jan  1 2025`.
+* `$$TIME` — the time of compilation, as a string of the form `12:34:56`.
+* `$$BENCHMARK_NAMES` — in a benchmark build, an array of strings giving the names of the benchmark functions; otherwise an empty array.
+* `$$BENCHMARK_FNS` — in a benchmark build, an array of function pointers to the benchmark functions, in the same order as `$$BENCHMARK_NAMES`; otherwise an empty array.
+* `$$TEST_NAMES` — in a test build, an array of strings giving the names of the test functions; otherwise an empty array.
+* `$$TEST_FNS` — in a test build, an array of function pointers to the test functions, in the same order as `$$TEST_NAMES`; otherwise an empty array.
+
+### Intrinsic functions
+
+Intrinsic functions in the `$$` namespace — for example `$$trap`, `$$memcpy`, `$$sqrt` — are implementation details shared between a compiler and its standard library. The C3 language does not specify which intrinsic functions a compiler provides, nor their signatures or semantics; a conforming compiler may provide a different set, or none at all, while still implementing the language and its standard library faithfully.
+
+User code accesses the underlying functionality through the stable, module-qualified names provided by the standard library, rather than by referencing intrinsic functions directly.
+
+## Inline assembly
+
+C3 provides two forms of inline assembly: an *assembly string*, in which a compile-time string is passed verbatim to the backend, and an *assembly block*, in which a small structured grammar lets the compiler infer register clobbers and operand directions across a sequence of instructions.
+
+```
+asm_statement   ::= asm_string_form | asm_block_form
+asm_string_form ::= "asm" "(" constant_expression ")" attributes? ";"
+asm_block_form  ::= "asm" attributes? "{" asm_instruction* "}"
+```
+
+The current grammar covers a subset of x86, aarch64, and riscv; other targets may have no inline-assembly support. The instruction set accepted in the structured form is a work in progress and may be extended in later language versions.
+
+### Assembly strings
+
+The string form takes a single compile-time string and passes it without further processing to the backend assembler. The string is responsible for any assembler directives, syntax, and operand referencing required by that backend; the compiler performs no operand substitution.
+
+```
+int x = 0;
+asm("nop");
+int y = x;
+```
+
+The string form is appropriate for self-contained, parameter-free fragments such as fence or no-op instructions, or for forwarding to backend-specific facilities not yet covered by the structured form.
+
+### Assembly blocks
+
+The structured form accepts a sequence of instructions in a common grammar that abstracts over the underlying processor. Each instruction consists of an instruction mnemonic followed by zero or more comma-separated arguments and a terminating semicolon:
+
+```
+asm_instruction ::= IDENTIFIER (asm_arg ("," asm_arg)*)? ";"
+asm_arg         ::= IDENTIFIER
+                  | CONST_IDENT
+                  | INTEGER_LITERAL
+                  | "$" IDENTIFIER
+                  | "&" IDENTIFIER
+                  | "[" asm_address "]"
+                  | "(" expression ")"
+asm_address     ::= asm_arg ( "+" asm_arg ( "*" CONST_INTEGER )? )* ( "+" CONST_INTEGER )?
+```
+
+The six argument forms are:
+
+1. An identifier or constant identifier (`FOO`, `x`) — a C3-level name in scope at the assembly block. The compiler resolves the name and chooses a suitable operand encoding.
+2. An integer literal (`1`, `0xFF`) — an immediate operand.
+3. A register reference `$name` (always lowercase, e.g. `$eax`, `$r7`) — a target-specific machine register.
+4. An address-of expression `&name` — the address of the named C3 variable.
+5. An indirect address `[addr]`, optionally with an index and offset `[addr + index * const + offset]` — a memory operand.
+6. A parenthesized expression `(expr)` — any C3 expression, evaluated before the assembly block runs; its value is used as the operand.
+
+A complete example:
+
+```
+int aa = 3;
+int g;
+int* gp = &g;
+int* xa = &aa;
+sz asf = 1;
+asm
+{
+    movl x, 4;                   // Move 4 into the variable x
+    movl [gp], x;                // Move the value of x into the address in gp
+    movl x, 1;                   // Move 1 into x
+    movl [xa + asf * 4 + 4], x;  // Move x into the address at xa[asf + 1]
+    movl $eax, (23 + x);         // Move 23 + x into EAX
+    movl x, $eax;                // Move EAX into x
+    movq [&z], 33;               // Move 33 into the memory address of z
+}
+```
+
+Inside an `asm` block the compiler infers register clobbers and per-operand input/output direction from the instructions used. Operand types are checked against the requirements of each instruction.
+
+### Interaction with surrounding code
+
+An `asm` block is a statement (see *Statements*). Variables in scope at the block may be referenced as operands by name; doing so is equivalent to passing them through compiler-chosen operands of the appropriate kind. Register references `$name` bypass C3-level analysis and refer directly to the named hardware register.
+
+The `@naked` function attribute (see *Attributes*) suppresses the compiler-generated prologue and epilogue around a function body; combined with `asm` blocks, it permits writing functions whose entire body is assembly.
+
+## C interoperability
+
+C3 follows the platform C ABI. A C3 function may call a C function without intermediate stubs, and a C function may call a C3 function whose external symbol is known. This chapter describes the language-level facilities for declaring foreign symbols, naming exported symbols, and the points where C3 and C semantics differ.
+
+### Declaring foreign functions
+
+A function definition introduced by the `extern` keyword has no body and refers to a function defined in another translation unit, typically a C library:
+
+```
+extern fn void puts(char*);
+
+fn void main()
+{
+    puts("Hello, world!");
+}
+```
+
+The function signature is given in C3 syntax; the compiler treats the call as it would any other function call but uses the platform C ABI for argument passing, return value, and stack handling. The name `puts` here is both the C3-side identifier and the external symbol name; both are looked up at link time.
+
+The `extern` keyword may be applied to function and global variable declarations. The form does not introduce a new linkage attribute; it changes the declaration from "definition" to "external reference".
+
+### Renaming foreign symbols
+
+When the C3-side name should differ from the external symbol name, the `@cname` attribute selects the external name explicitly:
+
+```
+extern fn void foo_puts(char*) @cname("puts");
+
+fn void main()
+{
+    foo_puts("Hello, world!");        // Calls C "puts"
+}
+```
+
+`@cname` may be applied to extern declarations, to exported C3-side definitions, or to any declaration whose external linker name should differ from the source-level identifier. The argument must be a compile-time string and must form a valid identifier for the target's symbol table.
+
+### Exporting C3 functions to C
+
+A C3 function with linker-visible linkage may be called from C using its external symbol. To make a C3 function callable as a stable, name-stable C symbol, attach `@export` (with or without an explicit external name) and ensure the function's signature uses types whose layout matches a C declaration on the other side:
+
+```
+module foo;
+
+fn int square(int x) @export
+{
+    return x * x;
+}
+
+fn int square2(int x) @export("square")
+{
+    return x * x;
+}
+```
+
+A bare `@export` exports the function under a symbol derived from the module-qualified name (e.g. `foo__square` for `square` in module `foo`). An `@export("name")` exports the function under the named symbol exactly. The C side may then declare and call the function in the usual way:
+
+```
+extern int square(int);
+
+void test()
+{
+    printf("%d\n", square(11));
+}
+```
+
+Because C3 namespaces symbols by module under bare `@export`, an exported function whose C-side name must be unprefixed should use the explicit `@export("name")` form.
+
+### Type correspondence
+
+The following table summarises the correspondence between C and C3 types under the platform C ABI. Unless noted otherwise, the types are identical in size, alignment, and ABI representation.
+
+| C type            | C3 type                          |
+|-------------------|----------------------------------|
+| `signed char`     | `ichar`                          |
+| `unsigned char`   | `char`                           |
+| `short`           | `short`                          |
+| `unsigned short`  | `ushort`                         |
+| `int`             | `CInt` (platform-defined alias)  |
+| `unsigned int`    | `CUInt`                          |
+| `long`            | `CLong`                          |
+| `unsigned long`   | `CULong`                         |
+| `long long`       | `CLongLong`                      |
+| `unsigned long long` | `CULongLong`                   |
+| `float`           | `float`                          |
+| `double`          | `double`                         |
+| `void*`           | `void*`                          |
+| `T*`              | `T*`                             |
+| `T[N]` (as argument) | `T[N]*` (see Arrays below)    |
+
+C3's fixed-width integer types (`int`, `long`, etc.) have a size determined by the language rather than the platform. The `C`-prefixed aliases (`CInt`, `CLong`, ...) name the platform's C integer types and should be used whenever interoperating with a C declaration.
+
+### Arrays in C signatures
+
+In C, an array parameter decays to a pointer. C3 has no such decay rule: a fixed array in a C3 signature represents the array as a value (typically passed as if by struct).
+
+To call a C function whose declaration uses an array parameter, the C3-side declaration should use a pointer type:
+
+```
+// C: void test(int a[]);
+extern fn void test(int* a);
+
+// C: void test2(int b[4]);
+extern fn void test2(int[4]* b);
+```
+
+A pointer to a fixed array (`int[4]*`) is implicitly convertible to a pointer to the array's first element (`int*`), so the C3-side declaration may also use the latter form when the function takes a pointer-to-element rather than pointer-to-array.
+
+### Other differences from C
+
+* **Bitstructs.** A bitstruct (see *Types*) appears to C code as its backing integer type. C bit-fields cannot be expressed directly in a C3 declaration; an equivalent C3 bitstruct must be constructed manually with the correct layout for the target.
+* **Enum size.** C compilers assume that an enum has the size of `int` (`CInt`). When passing enums across the boundary, ensure the C3 enum's backing type is `CInt`.
+* **Atomic types.** C's `_Atomic` qualifier has no direct C3 counterpart; C3 provides generic atomic types in the standard library that are not ABI-compatible with C atomics.
+* **`const` and `volatile` qualifiers.** C3 has no type qualifiers `const` or `volatile`. The C `const` qualifier on parameters is informational and does not affect ABI; the C `volatile` qualifier has no C3 equivalent at the type level, but `@volatile_load` and `@volatile_store` (see the standard library) provide the same access semantics.
+* **Pass-by-value arrays.** A C3 function that passes a fixed array by value is ABI-equivalent to a C function that passes a struct containing the array, not to a function with an array-typed parameter.
+
+### External symbol resolution
+
+An `extern` declaration must be matched by a definition in another translation unit at link time. A program that fails to resolve an `extern` symbol is ill-formed. The mechanism by which external libraries are made available to the linker — search paths, library names, link order — is part of the build system and the system linker, not of the language.
+
+## Program initialization and execution
+
+A C3 program is a collection of modules linked together with a single distinguished entry point. This chapter describes how a program is started, how its global state is initialized, how user-supplied initializer and finalizer functions interact with the entry point, and how the program terminates.
+
+### Entry point
+
+A program declares its entry point with a function named `main` at module scope. The compiler accepts several forms:
+
+```
+fn void main()                                 { ... }
+fn int  main()                                 { ... }
+fn void main(String[] args)                    { ... }
+fn int  main(String[] args)                    { ... }
+fn void main(int argc, char** argv)            { ... }
+fn int  main(int argc, char** argv)            { ... }
+```
+
+A `void`-returning `main` exits with status `0` on normal return; an `int`-returning `main` exits with the returned value.
+
+The forms taking `String[] args` provide command-line arguments as a slice of strings; the C-style form taking `int argc, char** argv` mirrors the C entry-point signature and is intended for direct interoperation with the platform's startup conventions. The argument slice's lifetime extends for the entire run of the program.
+
+A program has exactly one `main`. On a target whose system requires a different entry-point shape (for example, Windows `WinMain`), the `@winmain` attribute (see *Attributes*) selects that platform-specific shape; on other targets the attribute has no effect.
+
+### Global initialization
+
+Global variables and constants are initialized before `main` is entered. Initialization proceeds in three stages, in order:
+
+1. *Static constant initialization.* Every named constant whose initializer is a constant expression takes its value as part of the program image. Such constants are available from the moment execution begins.
+2. *Static variable initialization.* Each global variable receives its initializer's value. Initializers are evaluated in an order consistent with their dependencies: if one global's initializer reads another, the dependee is initialized first. Globals with no dependency relationship may be initialized in any order. A global with no explicit initializer is zero-initialized unless it carries `@noinit` (see *Attributes*), in which case its initial contents are indeterminate.
+3. *Initializer functions.* After all globals have their initial values, every function declared with the `@init` attribute is invoked. `@init` accepts an optional priority argument; functions with a lower priority value run before those with a higher one. The relative order of `@init` functions sharing the same priority is unspecified.
+
+`main` is entered after stage 3 completes. Any global that is read before its stage-2 initialization runs holds its zero value (or, with `@noinit`, an indeterminate value).
+
+Globals with thread-local storage (`tlocal`) follow the same staged process for each thread independently: stage 2 and stage 3 are performed for each newly-created thread before that thread executes any user code.
+
+### Program termination
+
+A program terminates in one of the following ways:
+
+* `main` returns. The return value of an `int`-returning `main` is the program's exit status; a `void`-returning `main` yields exit status `0`.
+* A call to a function declared `@noreturn` exits the program (typically through a runtime trap, a system-call wrapper, or an explicit exit function).
+* A trap from a contract violation, sanitizer check, or `$$trap`-derived runtime check terminates the program with an implementation-defined exit status.
+
+Before the process exits through `main` return, every function declared with the `@finalizer` attribute is invoked. `@finalizer` accepts an optional priority argument with the same convention as `@init`: lower priority values run earlier. The relative order of finalizers sharing the same priority is unspecified. Every finalizer is guaranteed to run if termination occurs through a normal return from `main`; finalizers are *not* guaranteed to run when the program exits through a trap or `@noreturn` call.
+
+### Static and thread-local storage lifetime
+
+A static local (`static` storage in a function) is initialized on first entry to its declaring function. Subsequent entries see the value left by the previous execution. The variable's storage persists for the entire program lifetime.
+
+A thread-local variable (`tlocal` storage) has independent storage per thread. Initialization follows the staged global model above, re-run for each thread the program creates. The storage is released when the thread terminates.
+
+### Module-section evaluation order
+
+Within a translation unit, the order of declarations does not affect initialization order: dependencies between global initializers are resolved by analysis, not by source order. Two globals with mutually-dependent initializers are a compile-time error.
+
+Across translation units and modules, the same dependency-based ordering applies. Programs that rely on a specific initialization order between independent globals are not portable.
+
+## Testing and benchmarking
+
+C3 supports test and benchmark functions as a built-in feature of the language. The attributes `@test` and `@benchmark` mark functions for execution by the test and benchmark drivers; the compiler reflects the set of marked functions through compile-time constants that the standard-library driver uses to discover and invoke them.
+
+### Test functions
+
+A function declared with the `@test` attribute is a *test function*. The function's signature must be:
+
+```
+fn void IDENTIFIER()
+```
+
+A test function takes no arguments and returns `void`. A clean return counts as a passed test; a runtime trap encountered during execution — from a contract violation, a failed `assert`, an unhandled fault, or any other source — counts as a failure. The standard-library test driver records the test's outcome and reports it.
+
+A test function is compiled into the program only when the compiler is invoked in a *test build* (the precise invocation depends on the build system). In a non-test build, the function and any other declarations whose only references are from test code are omitted entirely from the compiled program.
+
+### Benchmark functions
+
+A function declared with the `@benchmark` attribute is a *benchmark function*. Its signature requirements parallel those of test functions:
+
+```
+fn void IDENTIFIER()
+```
+
+Benchmark functions are compiled into the program only in a *benchmark build*. The standard-library benchmark driver determines how each benchmark is timed and reported.
+
+### Section-level application
+
+`@test` and `@benchmark` may also be applied to an entire module section (see *Blocks and scope*). When a section carries one of these attributes, every function declared within the section is treated as if it carried the same attribute individually. This is the usual way of grouping a body of tests or benchmarks without repeating the attribute on each declaration:
+
+```
+module my_module @test;
+
+fn void test_first() { ... }
+fn void test_second() { ... }
+```
+
+Both functions are test functions, and both are subject to the linkage filtering described above.
+
+### Discovery through compile-time constants
+
+The compiler exposes the set of marked functions through the compile-time array constants from *Built-in functions and intrinsics*:
+
+* `$$TEST_NAMES` — an array of strings naming each `@test` function. Available only in test builds; in other builds the array is empty.
+* `$$TEST_FNS` — an array of function pointers to the `@test` functions, in the same order as `$$TEST_NAMES`.
+* `$$BENCHMARK_NAMES` — the analogous array of `@benchmark` function names. Available only in benchmark builds.
+* `$$BENCHMARK_FNS` — the array of `@benchmark` function pointers.
+
+The standard library uses these arrays to implement the test and benchmark drivers; user code generally need not refer to them directly.
+
+### Effect on compilation
+
+`@test` and `@benchmark` are linkage filters in addition to being run-time markers. Outside the corresponding build mode:
+
+* The marked function itself is removed from compilation.
+* Code that is reachable *only* from marked functions is likewise removed.
+* References to marked functions from non-marked code are a compile-time error.
+
+This rule lets a project keep its tests and benchmarks alongside the production code without paying any compilation cost or binary-size cost in non-test, non-benchmark builds.
+
+A function may carry both `@test` and `@benchmark` only when no build mode includes both; in practice the two are mutually exclusive in standard usage.
+
+### Visibility and module scope
+
+`@test` and `@benchmark` functions follow ordinary visibility rules: they may be `@public`, `@private`, or `@local`, and may be declared inside any module. Tests defined in a `@private` or `@local` scope are still discoverable by the test driver, since discovery is by symbol-table inspection at compile time rather than by source-level reference. Visibility affects what the test body itself may access, not whether the test is enumerated.
+
+## Run-time behaviour
+
+This chapter consolidates the run-time behaviour of C3 programs: what is well-defined, what is implementation-defined, what is unspecified, and what is undefined. It also describes the two principal build modes (safe and fast), the traps used to enforce contracts and bounds, and the optional sanitizer machinery.
+
+### Categories of behaviour
+
+C3 distinguishes four categories of run-time behaviour. Throughout this specification:
+
+* **Well-defined behaviour** — the result is fully determined by the language; every conforming compiler produces the same observable outcome.
+* **Implementation-defined behaviour** — the result is determined by the compiler in a way that the compiler's documentation must describe. Different compilers may differ; a given compiler is consistent.
+* **Unspecified behaviour** — the result is one of a set of permitted outcomes, chosen by the compiler without obligation to document the choice. A program must not depend on which outcome occurs.
+* **Undefined behaviour (UB)** — the language treats the operation as a precondition that the program promises not to violate, in the same way as an unchecked contract: the compiler is permitted to assume the operation does not occur and to optimize the surrounding code on that basis (including deleting branches that lead to it as unreachable). If the operation nevertheless is reached and the compiler has not optimized it away, the run-time result is itself unspecified — the program may trap, may produce arbitrary values, may resume execution at an unrelated location, may corrupt memory, or may appear to behave correctly.
+
+The remainder of this chapter classifies specific operations.
+
+### Build modes
+
+A C3 implementation provides at minimum two build modes, controlled by the build invocation:
+
+* **Safe** — runtime checks are inserted for the categories listed under *Traps* below. A failed check terminates the program with a diagnostic. Contracts (see *Contracts*) are typically lowered to runtime asserts. In safe mode, the operations that would otherwise be undefined behaviour become well-defined traps.
+* **Fast** — runtime checks are elided. Operations that would have trapped in safe mode are *undefined behaviour* in fast mode; the compiler may assume they do not occur and may optimize accordingly.
+
+A program that runs cleanly in safe mode is not guaranteed to behave the same in fast mode if it relies on an operation that trapped in safe mode. Programs intended to be portable across build modes must avoid the undefined-behaviour categories below.
+
+The standard library may expose additional intermediate modes; the behavioural categories above are the language-level minimum.
+
+### Operations that are well-defined
+
+The following operations have fully defined run-time behaviour in every build mode:
+
+* **Signed integer overflow.** Arithmetic on signed integers wraps modulo `2ⁿ`, where `n` is the operand width. This contrasts with C, where signed overflow is UB.
+* **Unsigned integer overflow.** Arithmetic on unsigned integers wraps in the natural way (no value is invalid for an unsigned type).
+* **Order of evaluation.** Sub-expressions evaluate strictly left-to-right with all side effects completed before the next operand is evaluated (see *Expressions*). C-style "unsequenced side effect" UB does not arise.
+* **Default initialization.** A variable without an explicit initializer is zero-initialized unless it carries `@noinit`. A zero-initialized object has the bit pattern all-zero in every byte.
+* **Pointer comparison.** Two pointers may always be compared for equality with `==` and `!=`. Two pointers to the same allocation may be compared for ordering with `<`, `<=`, `>`, `>=`.
+* **Optional propagation.** A faulty optional propagates through any expression that does not handle it, in left-to-right order (see *Optionals and faults*). When multiple subexpressions could supply a fault, the propagation point is determined by the order in which the language requires the subexpressions to be evaluated.
+* **Order of struct fields.** Fields of a struct are laid out in declaration order. The offset of each field is at least the offset of the preceding field plus the preceding field's size (after any padding required by alignment).
+
+### Operations that trap in safe mode and are undefined in fast mode
+
+The following operations are *checked* in safe mode (they trap the program with a diagnostic and terminate execution) and are *undefined* in fast mode:
+
+* **Array and slice indexing out of bounds.** An index `i` for an array or slice of length `n` is in bounds when `0 <= i < n`. An out-of-bounds index traps in safe mode and is UB in fast mode.
+* **Pointer dereference of a null pointer.** `*p` or `p[i]` when `p == null` traps in safe mode and is UB in fast mode.
+* **Integer division and remainder by zero.** `a / 0` and `a % 0` on integer operands trap in safe mode and are UB in fast mode.
+* **Contract violations.** A failed `@require`, `@ensure`, or other contract clause traps in safe mode and is UB in fast mode (see *Contracts*).
+* **`assert` failure.** A failed `assert` statement traps in safe mode. In fast mode, the compiler may treat the asserted condition as a hint and optimize accordingly; reaching a program point where the asserted condition is false is UB.
+
+### Operations that are always undefined
+
+The following operations are undefined behaviour in every build mode; no implementation is required to detect them. A program containing them is ill-formed in the sense that the language imposes no constraint on its execution.
+
+* **Dereferencing a dangling pointer** (a pointer whose target has been deallocated or whose underlying object's lifetime has ended).
+* **Concurrent unsynchronized access** to the same memory location from multiple threads where at least one access is a write (a *data race*; see *Concurrency* below).
+* **Reaching `$$unreachable()`** or any other declared-unreachable program point.
+* **Returning from a `@noreturn` function.**
+* **Violating the `@noalias` contract on a parameter.** The compiler treats `@noalias`-marked pointer parameters as designating disjoint memory regions and may reorder, fuse, or eliminate accesses on that basis. If two such parameters in fact alias, the resulting behaviour typically manifests as silent data corruption, stale reads, or skipped writes; no diagnostic is required.
+* **Calling a `void`-returning function through a function pointer typed to return a value, or vice versa.**
+
+### Operations whose category depends on the build mode
+
+A few operations are classified differently in safe and fast builds without being safe-mode traps in the strict sense above:
+
+* **Shift by an out-of-range count.** `a << b` and `a >> b` are well-defined when `0 <= b < bit_width(a)`. Outside that range, the operation is *unspecified*. In safe mode the unspecified-ness is resolved by trapping the program; in fast mode it remains unspecified — the operation may produce any value, but does not invoke UB-style optimizations against surrounding code.
+* **Reading uninitialized memory** of a variable declared `@noinit` before that memory has been written. The read is implementation-defined in safe mode (the compiler may, for example, fill with a recognizable bit pattern on entry to a function for diagnostic purposes) and undefined behaviour in fast mode.
+
+### Implementation-defined operations
+
+The following operations have outcomes determined by the compiler and must be documented:
+
+* The actual sizes and alignments of platform-dependent types (`uptr`, `iptr`, `CInt`, `CLong`, etc.).
+* The byte order of multi-byte primitive types (controllable for bitstructs through `@bigendian`/`@littleendian`).
+* The set of `$$` intrinsics provided (see *Built-in functions and intrinsics*).
+* The set of sanitizer checks recognized by `@nosanitize` (see *Attributes*).
+* The form of any diagnostic printed when a safe-mode trap occurs.
+* The exit status used when a trap terminates the program.
+
+### Unspecified operations
+
+The following operations have outcomes drawn from a permitted set, with no requirement that the choice be the same on different runs or different compilers:
+
+* The relative order of initializer functions sharing a priority value (see *Program initialization and execution*).
+* The relative order of finalizer functions sharing a priority value.
+* The amount of padding inserted between fields of a struct or union to satisfy alignment, where the layout is not otherwise pinned by `@packed`, `@compact`, or related attributes.
+* The result of a shift by an out-of-range count in fast mode (see *Operations whose category depends on the build mode*).
+
+### Traps
+
+A *trap* terminates the program at a defined point with an implementation-defined diagnostic. Traps are produced by:
+
+* Failed safe-mode checks (the list above).
+* `$$trap()` and any wrapper such as the standard library's `unreachable` macro.
+* Sanitizer checks that fire (when sanitizers are enabled).
+* Uncaught language-level conditions such as a `!!` force-unwrap on a faulty optional.
+
+The exact diagnostic is implementation-defined. A trap is not catchable from within the program; once a trap fires, the program runs no further user code (in particular, finalizers are not guaranteed to run — see *Program initialization and execution*).
+
+### Sanitizers
+
+A compiler may provide *sanitizers* — additional run-time checks beyond the safe-mode minimum. Sanitizers are enabled at build time by mechanisms outside the language. A function may opt out of a specific sanitizer through the `@nosanitize(name)` attribute (see *Attributes*).
+
+The standard sanitizer categories conventionally recognized are `"address"` (memory-safety errors), `"memory"` (uninitialized reads), and `"thread"` (data races). A given implementation may support a subset, a superset, or none.
+
+### Concurrency
+
+C3 adopts the memory model of C11 and C++11. The two language families share the same formal model — the same six memory orderings (`relaxed`, `consume`, `acquire`, `release`, `acq_rel`, `seq_cst`), the same *sequenced-before* / *synchronizes-with* / *happens-before* relations, and the same definition of a data race. C3 atomic operations interoperate with C atomic operations on the same memory location.
+
+A *data race* occurs when two memory accesses to the same location
+
+* are performed by different threads,
+* are not ordered by *happens-before*,
+* are not both atomic accesses, and
+* at least one of them is a write.
+
+A program containing a data race has undefined behaviour, in the sense defined above.
+
+C3 does not provide an atomic type qualifier analogous to C's `_Atomic`. Atomic types and operations are provided by the standard library; each operation takes a memory-ordering argument drawn from the six orderings named above. The standard library also exposes fences (the analogue of `atomic_thread_fence`) for separating synchronization from data access.
+
+Synchronization between threads is achieved exclusively through atomic operations, library-provided mutual-exclusion primitives, and any platform-level mechanisms exposed by the standard library. The language defines no other inter-thread visibility guarantees: in particular, ordinary loads and stores carry no implicit synchronization, and only the relations established by atomic operations and synchronization primitives provide *happens-before* across threads.
+
+### Summary
+
+The behavioural classes above can be read as a contract between the language and the program:
+
+* The language guarantees the well-defined outcomes regardless of build mode.
+* The language traps the safe-mode-checked operations in safe mode and reserves the right to optimize aggressively against them in fast mode.
+* The language assumes the never-defined operations do not occur; programs that rely on any particular outcome from them have no guaranteed behaviour.
+
+A portable C3 program treats every category listed under "always undefined" or "trap in safe mode" as a bug to be removed, regardless of which build mode is currently in use.
+
+
 ---
 
 
-IN PROGRESS >>
+More resources:
 
 ---
 
