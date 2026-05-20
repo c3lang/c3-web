@@ -37,6 +37,8 @@ c3c compile ./hello.c3
 3. Unzip executable and standard lib.
 4. Run `./c3c`.
 
+!!! note "The binary is not signed"
+    You need to approve it with: `xattr -d com.apple.quarantine c3c`, or go to the security settings, approve it, then run it again.
 
 
 ## Installing on Ubuntu
