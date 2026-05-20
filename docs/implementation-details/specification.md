@@ -1875,7 +1875,7 @@ A defer body may not contain a `break`, `continue`, `return`, or rethrow that wo
 
 When the surrounding scope exits through `return`, the return expression is evaluated *before* the deferred statements run. The returned value, including any side effects of the return expression, is fixed before any defer body executes. For example:
 
-```c3
+```
 int a = 0;
 defer a++;
 return a;
