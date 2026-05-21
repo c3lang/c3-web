@@ -77,7 +77,7 @@ Are all comparisons supported, either because the type has is built-in or added 
 
 *Only available for structs.*
 
-True is a struct has an inline member.
+True if a struct has an inline member.
 
 #### `len`
 
