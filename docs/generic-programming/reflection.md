@@ -9,9 +9,9 @@ C3 allows both compile time and runtime reflection.
 
 During compile time, some type information is available in the form of compile time constants associated with each type.
 
-Runtime type information is also available by retrieving a `typeid` from a runtime object (such as from an object of type `any` via `<runtime_obj>.type` most commonly) and then comparing the properties of the returned runtime `typeid` against the corresponding properties (if any) of the compile time equivalent `<type>.typeid`. Note however that run time `typeid`s currently have [a much smaller set of available properties](../language-overview/types.md#typeid-fields). 
+Runtime type information is also available by retrieving a `typeid` from a runtime object (such as from an object of type `any` via `<runtime_obj>.type` most commonly) and then comparing the properties of the returned runtime `typeid` against the corresponding properties (if any) of the compile time equivalent `<Type>::typeid`. Note however that run time `typeid`s currently have [a much smaller set of available properties](../language-overview/types.md#typeid-fields). 
 
-See [the documentation about the `any` type](../language-overview/types.md#the-any-type) for more information if you want or need runtime reflection. Such runtime info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <type>.typeid`) to implement runtime polymorphism.
+See [the documentation about the `any` type](../language-overview/types.md#the-any-type) for more information if you want or need runtime reflection. Such runtime info can be switched on or conditionally checked (e.g. via `<runtime_obj>.type == <Type>::typeid`) to implement runtime polymorphism.
 
 Compile time information about types is accessed using `::`, e.g. `MyType::size`.
 
@@ -239,7 +239,7 @@ sz x = Foo::size;
 Returns the typeid for the given type. `alias`s will return the typeid of the underlying type. The typeid size is the same as that of an `iptr`.
 
 ```c3
-typeid x = Foo.typeid;
+typeid x = Foo::typeid;
 ```
 
 #### `values`
@@ -252,7 +252,7 @@ enum FooEnum
     BAR,
     BAZ
 }
-String x = FooEnum.values[1].description; // "BAR"
+String x = FooEnum::values[1].description; // "BAR"
 ```
 
 ## Compile time functions

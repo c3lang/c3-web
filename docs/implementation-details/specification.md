@@ -125,7 +125,7 @@ A comment does not begin inside a character, string, or byte literal, nor inside
 
 ### Doc contracts
 
-A *doc contract* begins with `<*` and ends with `*>`. Doc contracts do not nest. Unlike comments, a doc contract is not discarded during lexical translation: it is a token and is semantically significant. Its internal structure and meaning are specified in *Contracts*.
+A *doc contract* is a block comment of the form `<* text *>`. Doc contracts do not nest. The text between `<*` and `*>` is optionally parsed using the contract grammar specified in *Contracts*. A conforming compiler may instead treat a doc contract as a regular block comment and discard its contents during lexical translation; in that case the contract has no effect on the program. When a doc contract is parsed, its tokens enter the token stream as specified in *Contracts*.
 
 ### Identifiers
 
@@ -137,6 +137,7 @@ CONST_IDENT      ::= "_"* UC_LETTER UC_ALPHANUM_*
 TYPE_IDENT       ::= "_"* UC_LETTER UC_ALPHANUM_* LC_LETTER ALPHANUM_*
 CT_IDENT         ::= "$" IDENTIFIER
 CT_CONST_IDENT   ::= "$" CONST_IDENT
+CT_TYPE_IDENT    ::= "$" TYPE_IDENT
 CT_BUILTIN       ::= "$$" IDENTIFIER
 CT_BUILTIN_CONST ::= "$$" CONST_IDENT
 AT_IDENT         ::= "@" IDENTIFIER
@@ -642,7 +643,16 @@ vector_type ::= type "[<" expression ">]"
               | type "[<" "*" ">]"
 ```
 
-The element type must be a boolean, integer, floating-point, or pointer type. The length must be a compile-time constant expression of integer type; the form `type[<*>]` is permitted where the length can be inferred from an initializer.
+The element type must be one of:
+
+* `bool`,
+* an integer type,
+* a floating-point type,
+* a pointer type,
+* an enum type,
+* a typedef whose underlying type is one of the above.
+
+The length must be a compile-time constant expression of integer type; the form `type[<*>]` is permitted where the length can be inferred from an initializer.
 
 A plain vector such as `int[<3>]` has the same size and ABI representation as the corresponding array type (`int[3]`): element alignment, no padding. When used in arithmetic or bitwise expressions, the operations are applied elementwise using SIMD instructions where available.
 
@@ -653,6 +663,8 @@ Arithmetic and bitwise operations on a vector are applied elementwise. A scalar 
 A vector must have at least one element, as an example `int[<0>]` is not a valid type.
 
 A vector implicitly converts to the corresponding array type and vice versa.
+
+It is possible to take the address of a single element. Vectors can be sliced.
 
 #### Field access and swizzling
 
@@ -704,7 +716,7 @@ Layout attributes (`@align`, `@packed`, `@compact`, `@nopadding`) control storag
 
 #### Flexible array member
 
-The last field of a struct may be declared as an array with no specified length, of the form `Ty[]`. Such a field is a *flexible array member*: it contributes no size to the struct itself (the struct's size is that of the preceding fields plus any required tail padding for alignment), but the storage of an instance may extend past the struct's declared size to hold elements of the array. The number of elements is determined by the size of the allocation rather than by the type.
+The last field of a struct may be declared as an array with no specified length, of the form `Ty[*]`. Such a field is a *flexible array member*: it contributes no size to the struct itself (the struct's size is that of the preceding fields plus any required tail padding for alignment), but the storage of an instance may extend past the struct's declared size to hold elements of the array. The number of elements is determined by the size of the allocation rather than by the type.
 
 A struct containing a flexible array member may not be embedded as a field of another struct, used as an element of an array, or copied by value; a value of such a struct is meaningful only through a pointer to underlying storage of sufficient size.
 
@@ -1533,6 +1545,34 @@ Precedence     Category               Operators
 ```
 
 The compile-time variants `+++`, `&&&`, and `|||` sit at the same precedence levels as their runtime counterparts; they operate on compile-time-known operands (see *Compile-time evaluation*).
+
+
+Although the precedence table determines the parse of every well-formed expression, certain combinations of operators are nevertheless rejected as ambiguous to read. The three operator groups below are subject to the check:
+
+* *Group 1* — binary bitwise operators: `&`, `|`, `^`.
+* *Group 2* — relational and equality operators: `==`, `!=`, `<`, `<=`, `>`, `>=`.
+* *Group 3* — shift operators: `<<`, `>>`.
+
+If the operands of a binary expression with an operator in one of these groups are themselves binary expressions with an operator from the *same* group, the program is ill-formed. Parentheses must be used to make the intended grouping explicit.
+
+The check applies one level deep on each side of the offending operator. A subexpression separated from the operator by an operator outside the group is not subject to the check.
+
+An exception applies in *Group 1* only: chaining the *same* bitwise operator on both sides is permitted, since the result is invariant under associativity. The other two groups have no such exception.
+
+Examples:
+```
+// Well-formed
+a & b == 3                    // & is group 1, == is group 2 — different groups
+a == b << 4                   // == is group 2, << is group 3 — different groups
+a & b & c                     // same operator in group 1 — permitted exception
+// Ill-formed
+a & b | c                     // & and | both in group 1, different operators
+a == b != c                   // both in group 2
+a << b << c                   // same shift operator, but group 3 has no exception
+a < b == c                    // both in group 2
+```
+
+The rule is purely syntactic and does not depend on the types or values of the operands; it is checked after parsing and before further semantic analysis. Parenthesising either side suppresses the diagnostic: `(a & b) | c` and `a & (b | c)` are both well-formed.
 
 This precedence order differs from C in several places:
 
