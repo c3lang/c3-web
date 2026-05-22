@@ -3113,7 +3113,7 @@ When more than one entity matches an unqualified name, the reference is ambiguou
 
 Type names, ordinary identifiers, constant identifiers, and attribute identifiers each form a distinct name space (see *Blocks and scope*); a name in one space does not conflict with the same text in another. Qualification by module path applies uniformly to all of them.
 
-For most ordinary use, types may be referred to by their unqualified name when unambiguous, while functions, macros, constants, and variables typically need at least the submodule prefix. This convention is enforced by the language only to the extent of resolving ambiguity; otherwise it is stylistic.
+Imported ordinary and constant identifiers must be qualified with at least with the closest submodule path. Identifiers marked with `@builtin` is exempt from this rule. Type identifiers may be used unqualified when unambiguous.
 
 ### Module aliases
 
