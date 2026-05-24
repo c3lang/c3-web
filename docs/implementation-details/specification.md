@@ -1414,7 +1414,7 @@ primary_expr ::= operand
                | primary_expr "!"
                | primary_expr "!!"
                | primary_expr "~"
-access_ident ::= IDENTIFIER | TYPE_IDENT | CONST_IDENT | AT_IDENT | INTEGER
+access_ident ::= IDENTIFIER | CT_IDENT | CONST_IDENT | AT_IDENT | eval_expression
 generic_arguments ::= "{" type_or_value ("," type_or_value)* "}"
 range_expr   ::= range_loc? (".." | ":") range_loc?
 range_loc    ::= "^"? expression
@@ -1424,7 +1424,11 @@ range_loc    ::= "^"? expression
 
 The expression `a.b` accesses the member `b` of the aggregate value or pointer `a`. If `a` has pointer-to-aggregate type, the pointer is implicitly dereferenced. The result has the member's declared type and is addressable if and only if `a` is addressable (or if `a` is a pointer).
 
-The right-hand `access_ident` may be an `IDENTIFIER` (struct field, method, or property), a `TYPE_IDENT` (nested type), a `CONST_IDENT` (nested constant), an `AT_IDENT` (method-style macro), or an integer literal (positional access into a tuple-like aggregate).
+The right-hand `access_ident` may be an `IDENTIFIER` (struct field, method, or property), a `CONST_IDENT` (nested constant), an `AT_IDENT` (method-style macro), an `eval_expression` or a `CT_IDENT`.
+
+In the case of an `eval_expression`, the resolved string expression will be resolved to an `IDENTIFIER`, `CONST_IDENT` or `AT_IDENT`.
+
+In the case of a `CT_IDENT`, two cases exist: (1), the identifier contains a string. In this case behaviour is identical to using `eval($ident)`. (2) the identifier contains a reflected member. In this case it is as if on was to use `eval($ident.name)`, except it also will work on anonymous inner structs and unions that do not have a name. 
 
 #### Subscript
 
