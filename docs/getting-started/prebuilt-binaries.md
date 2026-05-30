@@ -7,29 +7,23 @@ description: Installing C3 Compiler Binary
 # Prebuilt binaries
 - [Installing on Windows](#installing-on-windows)
 - [Installing on Mac Arm64](#installing-on-mac-arm64)
-- [Installing on Ubuntu](#installing-on-ubuntu)
-- [Installing on Debian](#installing-on-debian) 
-- [Installing on Arch](#installing-on-arch-linux) 
+- [Installing on Linux](#installing-on-linux)
+
+!!! note "Nightly builds"
+    Nightly (prerelease) builds are available at the [latest-prerelease-tag](https://github.com/c3lang/c3c/releases/tag/latest-prerelease-tag) release page.
 
 ## Installing on Windows
-1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-windows.zip) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-windows-debug.zip). 
-2. Unzip it into a folder
-
-### Optional: set c3c as a global environment variable
-
-3. copy the folder
-4. navigate to `C:\Program Files`
-5. paste the folder here
-6. navigate inside the folder you've pasted
-7. copy the path of the folder
-8. search for "edit the system environment variables" on your computer
-9. click on the "environment variables" button on the bottom right
-10. under "user variables" double click on "path"
-11. click on "new" and paste the path to the folder
-12. run `c3c` anywhere on your computer!
+1. [Download and run the installer](https://github.com/c3lang/c3c/releases/latest/download/c3-windows-setup.exe) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-windows-setup-debug.exe) - it installs the compiler and adds it to your `PATH` automatically.
+2. Run `c3c` anywhere on your computer!
 ```bash
 c3c compile ./hello.c3
 ```
+
+### Manual installation (zip)
+If you prefer not to use the installer:
+1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-windows.zip) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-windows-debug.zip).
+2. Unzip it into a folder of your choice.
+3. Add the folder to your `PATH` environment variable manually.
 
 ## Installing on Mac Arm64
 1. Make sure you have XCode with command line tools installed.
@@ -41,31 +35,22 @@ c3c compile ./hello.c3
     You need to approve it with: `xattr -d com.apple.quarantine c3c`, or go to the security settings, approve it, then run it again.
 
 
-## Installing on Ubuntu
-1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-linux.tar.gz) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-debug.tar.gz).
+## Installing on Linux
+1. [Download the static C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-static.tar.gz) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-debug.tar.gz).
 2. Unpack executable and standard lib.
 3. Run `./c3c`.
 
-## Installing on Debian
-1. [Download the C3 compiler](https://github.com/c3lang/c3c/releases/latest/download/c3-linux.tar.gz) or the [debug build](https://github.com/c3lang/c3c/releases/latest/download/c3-linux-debug.tar.gz).
-2. Unpack executable and standard lib.
-3. Run `./c3c`.
+The static build is self-contained and works across all major Linux distributions without requiring any additional dependencies.
 
-## Installing on Arch Linux
-There is an AUR package for the c3c compiler : [c3c-git](https://aur.archlinux.org/packages/c3c-git).
-
-You can use your AUR package manager:
+### on Arch Linux
+c3c is available in the [official Arch Linux extra repository](https://archlinux.org/packages/extra/x86_64/c3c/):
 ```bash
-paru -S c3c-git
-# or yay -S c3c-git
-# or aura -A c3c-git
+pacman -S c3c
 ```
 
-Or clone it manually:
+For the nightly build, use the AUR package [c3c-git](https://aur.archlinux.org/packages/c3c-git):
 ```bash
-git clone https://aur.archlinux.org/c3c-git.git
-cd c3c-git
-makepkg -si
+yay -S c3c-git
 ```
 
 ## Troubleshooting
