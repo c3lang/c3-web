@@ -39,28 +39,28 @@ alias Callback = fn void();
 Callback a = null; // Ok!
 fn Callback getCallback() { /* ... */ } // Ok!
 
-// fn fn void() getCallback() { /* ... */ } - ERROR!
+// fn fn void() getCallback() { /* ... */ } - ERROR! You have to alias `f  void()` part.
 // fn void() a = null; - ERROR!
 ```
 
 ### Compile time properties
 
-Types have built-in type properties available through `::property` syntax. The following properties 
+Types have built-in type properties available through `<Type>::property` syntax. The following properties 
 are common to all C3 runtime types:
 
-1. `alignment` - The standard alignment of the type in bytes. For example `int::alignment` will typically be 4.
-2. `kind` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
-3. `cname` - Returns a string with the extern name of the type, rarely used.
-4. `name` - Returns a string with the unqualified name of the type.
-5. `qname` - Returns a string with the qualified (using the full path) name of the type.
-6. `size` - Returns the storage size of the type in bytes.
-7. `typeid` - Returns a runtime typeid for the type.
-8. `methods` - Returns the methods implemented for a type.
-9. `get_tag(tagname)` - Returns true if the type has a particular tag.
-10. `has_tag(tagname)` - Retrieves the tag defined on the type.
-11. `has_equals` - True if the type implements `==`
-12. `is_ordered` - True if the type implements comparisons.
-13. `is_substruct` - True if the type has an inline member.
+1. `<Type>::alignment` - The standard alignment of the type in bytes. For example `int::alignment` will typically be 4.
+2. `<Type>::kind` - The category of type, e.g. `TypeKind.POINTER` `TypeKind.STRUCT` (see std::core::types).
+3. `<Type>::cname` - Returns a string with the extern name of the type, rarely used.
+4. `<Type>::name` - Returns a string with the unqualified name of the type.
+5. `<Type>::qname` - Returns a string with the qualified (using the full path) name of the type.
+6. `<Type>::size` - Returns the storage size of the type in bytes.
+7. `<Type>::typeid` - Returns a runtime typeid for the type.
+8. `<Type>::methods` - Returns the methods implemented for a type.
+9. `<Type>::get_tag(tagname)` - Returns true if the type has a particular tag.
+10. `<Type>::has_tag(tagname)` - Retrieves the tag defined on the type.
+11. `<Type>::has_equals` - True if the type implements `==`
+12. `<Type>::is_ordered` - True if the type implements comparisons.
+13. `<Type>::is_substruct` - True if the type has an inline member.
 
 ## Basic types
 
@@ -96,8 +96,8 @@ Integer types are either signed or unsigned.
 
 Integer types (except for `bool`) also have the following type properties:
 
-1. `max` The maximum value for the type.
-2. `min` The minimum value for the type.
+1. `<IntType>::max` The maximum value for the type. (To assign -1 to an unsigned variable, use this.)
+2. `<IntType>::min` The minimum value for the type.
 
 #### Integer arithmetics
 
@@ -151,7 +151,7 @@ Conversion is always done so that the character string has the correct ordering 
 
 ### Base64 and hex data literals
 
-Base64 encoded values work like TwoCC/FourCC/EightCC, in that it is laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `'00 00 11'x` encodes to the same value as `x'000011'`.
+Base64 encoded values work like TwoCC/FourCC/EightCC, in that it is laid out in byte order in memory. It uses the format `b64'<base64>'`. Hex encoded values work as base64 but with the format `x'<hex>'`. In data literals any whitespace is ignored, so `x'00 00 11'` encodes to the same value as `x'000011'`.
 
 In our case we could encode `b64'Rk9PQkFSMTE='` as `'FOOBAR11'`.
 
@@ -197,10 +197,10 @@ String baz = "pushq %rax;\naddq $1, %rax;\npopq %rax;";
 
 On top of the regular properties, floating point types also have the following properties:
 
-1. `max` The maximum value for the type.
-2. `min` The minimum value for the type.
-3. `inf` Infinity.
-4. `nan` Float NaN.
+1. `<FloatingType>::max` The maximum value for the type.
+2. `<FloatingType>::min` The minimum value for the type.
+3. `<FloatingType>::inf` Infinity.
+4. `<FloatingType>::nan` Float NaN.
 
 ### Floating point constants
 
@@ -240,8 +240,7 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 
 #### Pointer type properties
 
-In addition to the standard properties, pointers also have the `inner` 
-property. It returns the type of the object pointed to as a `typeid`.
+In addition to the standard properties, pointers also have the `::inner` property. It returns the type of the object pointed to as a type `typeid`.
 
 ### Optional
 
@@ -303,12 +302,12 @@ and each value defined by `faultdef` is globally unique. This is true even when 
 
 #### Fault description
 
-The fault type only has one field: `description`, which returns the name of the fault, namespaced with the last module path, e.g. `"io::EOF"`.
+The fault type only has one field: `<fault>.description`, which returns the name of the fault in string literal, namespaced with the last module path, e.g. `"io::EOF"`.
 
 ### The `typeid` type
 
-The `typeid` holds the runtime representation of a type. Using `<typename>.typeid` a type may be converted to its unique runtime id,
-e.g. `typeid a = Foo.typeid;`. The value itself is pointer-sized.
+The type `typeid` holds the runtime representation of a type. Using `<Type>::typeid` a type may be converted to its unique runtime id,
+e.g. `typeid a = Foo::typeid;`. The value itself is pointer-sized.
 
 #### Typeid fields
 
@@ -321,12 +320,12 @@ String b = int::typeid.name; // "int"
 
 However, at runtime only a few are available:
 
-1. `size` - always supported.
-2. `kind` - always supported.
-3. `parent` - supported on distinct and struct types, returning the inline member type.
-4. `inner` - supported on types implementing it.
-5. `names` - supported on enum types.
-6. `len` - supported on arrays, vectors and enums.
+1. `<typeid>.size` - always supported.
+2. `<typeid>.kind` - always supported.
+3. `<typeid>.parent` - supported on distinct and struct types, returning the inline member type.
+4. `<typeid>.inner` - supported on types implementing it.
+5. `<typeid>.names` - supported on enum types.
+6. `<typeid>.len` - supported on arrays, vectors and enums.
 
 ### The `any` type
 
@@ -342,7 +341,7 @@ fn void main()
     int* w = (int*)y;                // Returns the pointer to x
     double* z_bad = (double*)y;      // Don't do this!
     double*? z = anycast(y, double); // The safe way to get a value
-    if (y.type == int.typeid)
+    if (y.type == int::typeid)
     {
         // Do something if y contains an int*
     }
@@ -377,7 +376,7 @@ fn void test(any z)
     }
     // Finally, if we just want to deal with the case
     // where it is a single specific type:
-    if (z.type == int.typeid)
+    if (z.type == int::typeid)
     {
         // This is safe here:
         int* a = (int*)z;
@@ -424,8 +423,8 @@ If you don't want the child type detected as the parent type, a `typedef` can be
 
 At runtime, `any` gives you access to two fields:
 
-1. `some_any.type` - returns the underlying pointee typeid of the contained value.
-2. `some_any.ptr` - returns the raw `void*` pointer to the contained value.
+1. `<some_any>.type` - returns the underlying pointee typeid of the contained value.
+2. `<some_any>.ptr` - returns the raw `void*` pointer to the contained value.
 
 #### Advanced use of `any`
 
@@ -434,15 +433,15 @@ The standard library has several helper macros to manipulate `any` types:
 1. `anycast(some_any, Type)` returns a pointer to `Type*` or `TYPE_MISMATCH` if types don't match.
 2. `any_make(ptr, some_typeid)` creates an `any` to a given `typeid` using a `void*`.
 3. `some_any.retype_to(some_typeid)` changes the type of an `any` to the given typeid.
-4. `some_any.as_inner()` retypes the type of the `any` to the "inner" (see the `inner` type property) of the current type.
+4. `some_any.as_inner()` retypes the type of the `any` to the "inner" (see the `<Type>::inner` type property) of the current type.
 
 ```c3
 void* some_ptr = foo();
 // Essentially (any)(int*)(some_ptr)
-any some_int = any_make(some_ptr, int.typeid);
+any some_int = any_make(some_ptr, int::typeid);
 
-// Same as any_make(some_int.ptr, uint.type)
-any some_uint = some_int.retype_to(uint.typeid);   
+// Same as any_make(some_int.ptr, uint::typeid)
+any some_uint = some_int.retype_to(uint::typeid);   
 
 typedef SomeType = int;
 
@@ -526,8 +525,8 @@ fn void main()
 
 Function pointer types also support:
 
-1. `paramsof` - Returns a list of `ReflectedParam` for each parameter.
-2. `returns` - This returns the return type.
+1. `<FnType>::paramsof` - Returns a list of `ReflectedParam` for each parameter.
+2. `<FnType>::returns` - This returns the return type.
 
 ### Typedef - Distinct type definitions
 
@@ -593,8 +592,8 @@ Vectors are normally stored and passed as arrays to prevent SIMD alignment overh
 
 In addition to the normal properties, typedef also supports:
 
-1. `inner` - Returns the type this is based on as a `typeid`.
-2. `parentof` - If this is an inline typedef, return the same as `inner`.
+1. `<DefedType>::inner` - Returns the type this is based on as a `typeid`.
+2. `<DefedType>::parentof` - If this is an inline typedef, return the same as `::inner`.
 
 ### Generic types
 ```c3
