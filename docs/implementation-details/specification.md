@@ -762,7 +762,7 @@ By default, fields of a bitstruct may not overlap. The `@overlap` attribute perm
 An enum type is a finite ordered set of named values, optionally backed by an integer type and optionally carrying associated values:
 
 ```
-enum_decl ::= "enum" TYPE_IDENT ("(" type ("," type)* ")")? (":" "inline"? integer_type? enum_param_list?)? attributes? "{" enum_body "}"
+enum_decl ::= "enum" TYPE_IDENT ("(" type ("," type)* ")")? (":" type? enum_param_list?)? attributes? "{" enum_body "}"
 ```
 
 Each enum value has an *ordinal*: its position in the declaration, beginning at zero. Ordinals are consecutive; an enum type defines no gaps.
