@@ -2272,6 +2272,8 @@ Within the body of a macro declared with `...` (a raw vaarg), the following comp
 * `$stringify($vaarg[i])` — the textual form of the `i`-th argument as a string literal.
 * `$Typefrom($vaarg[i])` — the type of the `i`-th argument.
 
+For `$vaarg[i]` expressions, the '^' form also exists, like for regular indexing: `$vaarg[^i]` will return the vaarg at index `$vaarg.len - i`.
+
 ### Trailing-block parameters
 
 A macro may declare a *trailing-block parameter* after a semicolon in the parameter list. The block parameter is an `AT_IDENT` optionally followed by a parameter list:
