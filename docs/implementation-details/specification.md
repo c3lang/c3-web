@@ -1083,7 +1083,9 @@ When the target is a **floating-point** type, the non-simple forms are:
 * Binary `/` — integer division and floating-point division produce different values.
 * Unary `-` — same corner case as for integer targets.
 
-A ternary expression `cond ? a : b` is non-simple if either branch `a` or `b` is non-simple. All other expressions are simple, including identifiers, literals, function calls, member access, subscripts, comparisons, logical operators, assignment expressions, bitwise `&`, `|`, `^`, the operators `%`, `??`, and (for integer targets) `/`, and the unary operators `+`, `!`, `++`, `--`, `*` (dereference), and `&` (address-of).
+A binary expression bitwise `|`, `&`, `^`, the operators `%`, `??`, and (for integer targets) `/` are simple as long as their sub expressions are simple.
+
+A ternary expression `cond ? a : b` is non-simple if either branch `a` or `b` is non-simple. Binary expressions bitwise `&`, `|`, `^`, All other expressions are simple, including identifiers, literals, function calls, member access, subscripts, comparisons, logical operators, assignment expressions and the unary operators `+`, `!`, `++`, `--`, `*` (dereference), and `&` (address-of).
 
 Within simple expressions, the widening conversion itself is further restricted by signedness:
 
