@@ -757,6 +757,77 @@ A bitstruct field is not addressable.
 
 By default, fields of a bitstruct may not overlap. The `@overlap` attribute permits overlapping ranges. Endianness of the underlying storage follows the host system by default, but may be set explicitly with `@bigendian` or `@littleendian`.
 
+#### Storage bit positions
+
+The backing storage offers `8 * sizeof(backing)` *storage bit positions*, numbered from `0` upward. Storage bit position `n` lives at memory offset `n / 8`, at bit position `n % 8` of that byte, where bit `0` is the byte's least-significant bit.
+
+A field declared at `bits start..end` occupies **exactly** the storage bit positions `start..end` — no others — regardless of endianness, backing type, or field size. A write to the field never touches any storage bit outside this range; adjacent fields placed in the unused bit positions of a partial byte are preserved across writes.
+
+The mapping from the field's *value bits* (numbered LSB-first on the value) to its storage bit positions depends on the backing type and the endianness annotation, as described below.
+
+#### Integer backing
+
+The integer is stored in memory in the declared byte order. When that order differs from the host's, the integer is byteswapped on every load and store; the in-memory bytes therefore match the declared order on every host.
+
+Bit positions index the loaded (post-byteswap) integer LSB-first: value bit `i` of a field at `start..end` resides at integer bit `start + i`.
+
+#### `char[N]` backing
+
+The `N` bytes lie at memory offsets `0..N-1` directly; no byteswap is applied to the array.
+
+A field at `start..end` of size `S = end - start + 1` may span several memory bytes. For each memory byte `b` that the field touches, the field's bits within byte `b` occupy positions `lo_b..hi_b` (LSB-first within the byte). These positions are fixed by the declaration, independent of endianness:
+
+| byte `b`          | `lo_b`        | `hi_b`                                          |
+|-------------------|---------------|-------------------------------------------------|
+| `start / 8`       | `start % 8`   | `7` (or `end % 8` if also the last byte)        |
+| intermediate      | `0`           | `7`                                             |
+| `end / 8`         | `0`           | `end % 8`                                       |
+
+Let `cnt_b = hi_b - lo_b + 1` be the number of field bits in byte `b`. The endianness annotation determines which value bits go into each byte:
+
+- **Little-endian byte order** (`@littleendian`, no annotation on a little-endian host, or `@littleendian` on a big-endian host): the first touched byte holds the value's least-significant bits, the last touched byte holds the most-significant bits. Byte `b` receives `cnt_b` value bits starting at value position `(sum of cnt_b' for all bytes b' before b)`, placed LSB-first into byte positions `lo_b..hi_b`.
+
+- **Big-endian byte order** (`@bigendian`, no annotation on a big-endian host, or `@bigendian` on a little-endian host): the order is reversed. The first touched byte holds the value's most-significant bits, the last touched byte holds the least-significant bits. Byte `b` receives `cnt_b` value bits starting at value position `S - (sum of cnt_b' for all bytes b' up to and including b)`, placed LSB-first into byte positions `lo_b..hi_b`.
+
+The no-spill rule from *Storage bit positions* applies in both orderings: a write to a field touches only the storage bit positions in its declared range, even when the field's size is not a multiple of 8 and the bytes it spans contain bits belonging to other fields.
+
+#### Examples
+
+A 16-bit field that covers the full lower half of a four-byte backing:
+bitstruct A : char[4] @bigendian    { ushort v : 0..15; }
+bitstruct B : char[4] @littleendian { ushort v : 0..15; }
+// A.v = 0xABCD  →  memory [AB CD 00 00]
+// B.v = 0xABCD  →  memory [CD AB 00 00]
+
+A 15-bit field that leaves bit 7 of byte 1 untouched:
+bitstruct C : char[4] @bigendian    { ushort v : 0..14; }
+bitstruct D : char[4] @littleendian { ushort v : 0..14; }
+// C.v = 0x7FFF  →  memory [FF 7F 00 00]
+// D.v = 0x7FFF  →  memory [FF 7F 00 00]
+
+A 12-bit field that occupies the low nibble of byte 1:
+bitstruct E : char[3] @bigendian    { uint v : 0..11; }
+bitstruct F : char[3] @littleendian { uint v : 0..11; }
+// E.v = 0xABC   →  memory [AB 0C 00]
+// F.v = 0xABC   →  memory [BC 0A 00]
+
+The no-spill rule in action — a sub-byte field adjacent to another field shares the same byte, and updates to one field do not disturb the other:
+bitstruct G : char[2] @bigendian
+{
+ushort a : 0..14;
+bool   b : 15;
+}
+// g.b = true; g.a = 0;        // g.b is still true
+// g.b = true; g.a = 0x7FFF;   // g.b is still true
+
+#### Integer and `char[N]` backings are not interchangeable
+
+Identical bit declarations on an integer backing and a `char[N]` backing do not in general produce the same in-memory bytes when the field does not cover the entire backing storage.
+
+The integer backing stores the whole container in the declared byte order: a 16-bit field at bits `0..15` of `int @bigendian` lives at memory offsets `2..3` (the low-bit end of a big-endian-stored `int`). The same field at bits `0..15` of `char[4] @bigendian` lives at memory offsets `0..1` (the bottom of the declared byte range). The two backings agree byte-for-byte only when the field covers the full backing storage.
+
+Programs that need a specific wire format should choose one backing — typically `char[N]` when the bit positions are meant to address memory bytes directly — and use it consistently.
+
 ### Enum types
 
 An enum type is a finite ordered set of named values, optionally backed by an integer type and optionally carrying associated values:
