@@ -142,8 +142,8 @@ macro @for_each(list; @body(it))
 // C3 Macro
 macro sz @offset($Type, #field)
 {
-    $Type* t = null;
-    return (sz)(iptr)&t.#field;
+    $Type* $t = null;
+    return (sz)(iptr)&$t.$eval($stringify(#field));
 }
 ```
 
