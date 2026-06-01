@@ -2172,26 +2172,23 @@ The first parameter of a method declaration is the receiver. By convention it is
 ```
 parameter_list ::= parameter_decl ("," parameter_decl)*
 parameter_decl ::= parameter (("=" "...") | ("=" expression))?
-parameter      ::= "inline"? type ("..."? IDENTIFIER attributes?
-                                 | "..."? CT_IDENT
-                                 | (HASH_IDENT | "&" IDENTIFIER) attributes?
-                                 | attributes?)
+parameter      ::= type "..."? (IDENTIFIER | CT_IDENT) attributes?
                  | "..."
-                 | HASH_IDENT attributes?
+                 | type? HASH_IDENT attributes?
                  | "&" IDENTIFIER attributes?
                  | IDENTIFIER "..."? attributes?
-                 | CT_IDENT
-                 | CT_IDENT "..."
+                 | CT_IDENT "..."?
+                 | CT_TYPE_IDENT
 ```
 
 The principal parameter forms are:
 
 * `type name` — an ordinary by-value parameter of the given type.
 * `type name = expression` — a parameter with a default value. The default expression is evaluated at the call site whenever no argument is supplied for this parameter.
-* `type ... name` — a *typed variadic* parameter; the name binds a slice `type[]` over the variadic arguments. A function may declare at most one variadic parameter, and it must be the last positional parameter.
+* `type ... name` — a *typed variadic* parameter; the name binds a slice `type[]` over the variadic arguments. A function may declare at most one variadic parameter, and any following parameters must have default values.
+* `name...` - an *untyped variadic* parameter, the name binds to an `any[]`, arguments will implicitly be passed by pointer.
 * `...` — an *any-typed variadic* parameter; accepts any number of arguments, each converted to `any`. Inside the function the variadic argument is accessed as `$vaarg`.
-* `inline type name` — an *inline parameter*, used on a method receiver to indicate that subtype dispatch follows the parameter's inline-member chain (see *Properties of types and values*).
-* `type name attributes?` — a parameter with attributes that modify how the parameter is passed (e.g., `@in`, `@out`, `@noalias`); see *Attributes*.
+* `type name attributes?` — a parameter with attributes that modify how the parameter is passed (e.g., `@noalias` `@noalias`); see *Attributes*.
 
 A parameter name may be omitted in a function declaration that has no body; the declared types alone determine the function's type. Names are required in a definition.
 
