@@ -1,5 +1,5 @@
 ---
-title: Enums
+title: Bitstructs
 description: Learn how C3 bitstructs work
 ---
 
