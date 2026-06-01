@@ -1053,6 +1053,71 @@ Before arithmetic, the operands of an arithmetic operation are *promoted* accord
 
 The arithmetic promotion width is the width of a C `int` on the target platform. This is currently 32 bits on all supported target platforms.
 
+#### Operators on typedef and constdef types
+
+A `typedef` or `constdef` declares a named type that is distinct from its underlying type. Operator resolution for such a type proceeds in this order:
+
+1. Check for an overload declared on the top-level operand type.
+2. If no overload applies, check whether the type may be flattened to its inner type for this operator.
+3. If neither applies, the operation is ill-formed.
+
+##### Overload lookup is not transitive
+
+Operator overload lookup is performed only for the top-level operand type. Overloads declared on an inner typedef or constdef are not considered after flattening.
+
+For example:
+
+```c3
+typedef Inner = fault;
+typedef Outer = inline Inner;
+
+fn Inner Inner.add(Inner self, Inner other) @operator(+) => self;
+```
+
+For `outer1 + outer2`, where both operands have type `Outer`, the compiler first checks for an overload on `Outer`. If none exists, it falls through to the built-in fallback rules. The operation is then checked on the recursively flattened inner type, `fault`, without invoking the overload declared on `Inner`.
+
+##### Non-assignment binary operators
+
+For a non-assignment binary operator with no applicable overload, typedef and constdef operands are recursively flattened to their inner types when checking whether the built-in operator exists.
+
+This flattening does not require `inline`.
+
+```c3
+typedef Bar = int;
+typedef Foo = inline int;
+```
+
+Both `Bar + Bar` and `Foo + Foo` are well-formed if `int + int` is well-formed. The expression uses the built-in semantics of the flattened inner type, including arithmetic promotion and maximum-type selection.
+
+This applies to the built-in arithmetic, bitwise, shift, and comparison operators.
+
+##### Compound assignment operators
+
+For a compound assignment operator:
+
+```c3
++= -= *= /= %= &= |= ^= <<= >>=
+```
+
+with no applicable overload, fallback flattening is more restrictive. The left-hand type may be flattened only through typedef or constdef declarations whose inner or backing type is declared `inline`.
+
+```c3
+typedef Foo = inline int;
+typedef Bar = int;
+```
+
+`Foo += 1` is well-formed through the built-in integer operation.
+
+`Bar += 1` is ill-formed unless `Bar` declares a suitable overload.
+
+The `inline` marker therefore controls whether a named typedef or constdef participates implicitly in mutating arithmetic. A non-inline typedef or constdef may still be used in non-assignment binary expressions through flattening, but is not mutated through compound assignment without an overload or explicit conversion.
+
+##### Struct inline members
+
+Structs with `inline` members are not flattened by these arithmetic fallback rules. The struct `inline` member feature provides member forwarding and conversions to the inline-member type; it does not make the enclosing struct inherit the member type's built-in arithmetic operators.
+
+To use arithmetic through an inline member, the program must explicitly access or convert to that member type first.
+
 ### Maximum type
 
 When two operands of different numeric types appear in an operation that returns a single value, a *maximum type* is computed:
