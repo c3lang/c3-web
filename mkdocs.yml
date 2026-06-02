@@ -95,6 +95,7 @@ hooks:
   - hooks/latest_version.py # gets the "latest" version from `c3lang/c3c`
   - hooks/shortlinks.py
   - hooks/deprioritize_blog.py
+  - hooks/generate_combined_docs.py
   # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:
