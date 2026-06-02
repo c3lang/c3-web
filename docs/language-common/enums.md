@@ -102,7 +102,7 @@ test(State.RUNNING); // Uses enum constant.
 ### Enum to and from ordinal
 
 You can convert an enum to its ordinal with `.ordinal`, and convert it
-back with `EnumName.from_ordinal(...)`:
+back with `EnumName::from_ordinal(...)`:
 
 ```c3
 fn void store_enum(State s)
@@ -112,7 +112,7 @@ fn void store_enum(State s)
 
 fn State read_enum()
 {
-    return State.from_ordinal(read_int_from_file());
+    return State::from_ordinal(read_int_from_file());
 }
 ```
 
