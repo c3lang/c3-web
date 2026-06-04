@@ -4,7 +4,7 @@ description: Project Configuration
 ---
 # Customizing A Project
 
-This is a description of the configuration options in `project.json`:
+This is a description of the configuration options in `project.json5` or `project.json`:
 <br/>
 (you can see the full list executing `c3c --list-project-properties`)
 
