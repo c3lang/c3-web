@@ -120,8 +120,8 @@ nav:
       - Introduction: getting-started/introduction.md
       - Getting Started:
         - Hello World: getting-started/hello-world.md
-        - How to compile: getting-started/compile.md
-        - Prebuilt Binaries: getting-started/prebuilt-binaries.md
+        - Building C3 from source: getting-started/compile.md
+        - Download C3: getting-started/prebuilt-binaries.md
         - Project Setup: getting-started/projects.md
         - Roadmap: getting-started/roadmap.md
         - Design Goals: getting-started/design-goals.md

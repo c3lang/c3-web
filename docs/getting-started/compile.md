@@ -6,105 +6,118 @@ description: Build C3 From Source
 !!! note "Want To Download Pre-Built C3 Binaries?"
     [Download C3](../getting-started/prebuilt-binaries.md), available on Mac, Windows and Linux.
 
-For other platforms it should be possible to compile it on any platform LLVM can compile to. You will need `git` and `CMake` installed.
+Building C3 from source is straightforward as the CMake configuration can automatically download the [pre-compiled LLVM binaries](https://github.com/c3lang/llvm-for-c3).
+You will need `git`, `CMake`, and a C compiler (such as Clang, GCC, or MSVC) installed on your system.
 
-## 1. Install LLVM
+!!! tip "Faster Builds"
+    For faster compilation, you can compile in parallel by appending the `-j` flag (e.g., `cmake --build build -j`). Alternatively, if you have [Ninja](https://ninja-build.org/) installed, you can generate Ninja build files by adding `-G Ninja` to the configuration step (e.g., `cmake -B build -S . -G Ninja ...`).
 
-See the [LLVM documentation](https://llvm.org/docs/GettingStarted.html) on how to set up LLVM for development. 
-- On MacOS, installing through Homebrew or MacPorts works fine.
-- Using apt-get on Linux should work fine as well. 
-- For Windows you can download suitable pre-compiled LLVM binaries from [here](https://github.com/c3lang/llvm-for-c3/releases).
+## Compiling on Linux
 
-## 2. Clone the C3 compiler source code from Github
+1. Install the required build dependencies using your distribution's package manager:
+    - **Ubuntu / Debian:** `sudo apt-get install cmake git clang libcurl4-openssl-dev`
+    - **Fedora:** `sudo dnf install cmake clang git libcurl-devel`
+    - **Arch Linux:** `sudo pacman -S curl clang cmake git`
+    - **Void Linux:** `sudo xbps-install git cmake clang libcurl-devel`
+2. Clone the compiler repository:
+    ```bash
+    git clone https://github.com/c3lang/c3c.git
+    cd c3c
+    ```
+3. Configure and build the compiler:
+    ```bash
+    cmake -B build -S . -DC3_FETCH_LLVM=ON -DCMAKE_BUILD_TYPE=Release
+    cmake --build build
+    ```
+4. Run the compiled compiler to verify:
+    ```bash
+    ./build/c3c compile resources/examples/hash.c3
+    ```
 
-This should be as simple as doing:
+## Compiling on macOS
 
+First, ensure you have the Xcode Command Line Tools installed by running:
 ```bash
-git clone https://github.com/c3lang/c3c.git
+xcode-select --install
 ```
 
-... from the command line.
+### Using Homebrew
 
-## 3. Build the compiler
+1. Install CMake:
+    ```bash
+    brew install cmake
+    ```
+2. Clone the compiler repository:
+    ```bash
+    git clone https://github.com/c3lang/c3c.git
+    cd c3c
+    ```
+3. Configure and build the compiler:
+    ```bash
+    cmake -B build -S . -DC3_FETCH_LLVM=ON -DCMAKE_BUILD_TYPE=Release
+    cmake --build build
+    ```
 
-Create the build directory:
+!!! info "Building via Homebrew Formula"
+    You can also compile the latest development version (`master` branch) directly using Homebrew by running `brew install c3c --HEAD`. To upgrade it later, use `brew reinstall c3c`. If you need to customize the compilation settings, you can do so by editing the formula script (using `brew edit c3c`).
 
-```bash
-MyMachine:c3c$ mkdir build
-MyMachine:c3c$ cd build/
-```
+### Using MacPorts
 
-Use CMake to set up:
+If you are using MacPorts, you can either let CMake fetch LLVM automatically or use the MacPorts LLVM package.
 
-```bash
-MyMachine:c3c/build$ cmake ../
-```
-
-Build the compiler:
-
-```bash
-MyMachine:c3c/build$ make
-```
-
-## 4. Test it out
-
-```bash
-MyMachine:c3c/build$ ./c3c compile-run ../resources/testfragments/helloworld.c3
-```
-
-# Building via Docker
-
-You can build `c3c` using either an Ubuntu 18.04 or 20.04 container:
-
-```bash
-./build-with-docker.sh 18
-```
-
-Replace `18` with `20` to build through Ubuntu 20.04.
-
-For a release build specify:
-```bash
-./build-with-docker.sh 20 Release
-```
-
-A `c3c` executable will be found under `bin/`.
-
-# Building on Mac using Homebrew
-
-1. Install CMake: `brew install cmake`
-2. Install LLVM 17+: `brew install llvm`
-3. Clone the C3C github repository: `git clone https://github.com/c3lang/c3c.git`
-4. Enter the C3C directory `cd c3c`.
-5. Create a build directory `mkdir build`
-6. Change directory to the build directory `cd build`
-7. Set up CMake build for debug: `cmake ..`
-8. Build: `cmake --build .`
-
-
-# Building on Mac using MacPorts 
-
-`c3c` may be built on Mac systems not supported by Homebrew
-using the **[cmake][]**, **[llvm-17][]** and **[clang-17][]**
-ports from **[MacPorts][]**.
-
-
+To build using automatic LLVM fetching:
 1. Install CMake: `sudo port install cmake`
-2. Install LLVM 17: `sudo port install llvm-17`
-3. Install clang 17: `sudo port install clang-17`
-4. Clone the C3C github repository: `git clone https://github.com/c3lang/c3c.git`
-5. Enter the C3C directory `cd c3c`.
-6. Create a build directory `mkdir build`
-7. Change directory to the build directory `cd build`
-8. ❗️Important before you run cmake❗️<br/>
-   Set **LLVM_DIR** to the directory with the llvm-17 macport .cmake files<br/>
-   `export LLVM_DIR=/opt/local/libexec/llvm-17/lib/cmake/llvm` 
-9. Set up CMake build for debug: `cmake ..`
-10. Build: `cmake --build .`
+2. Clone the repository and build:
+    ```bash
+    git clone https://github.com/c3lang/c3c.git
+    cd c3c
+    cmake -B build -S . -DC3_FETCH_LLVM=ON -DCMAKE_BUILD_TYPE=Release
+    cmake --build build
+    ```
 
+To build using the LLVM installed via MacPorts:
+1. Install the required ports: `sudo port install cmake llvm-17 clang-17`
+2. Clone the repository: `git clone https://github.com/c3lang/c3c.git` and enter the directory.
+3. Configure pointing to the MacPorts LLVM directory and build:
+    ```bash
+    export LLVM_DIR=/opt/local/libexec/llvm-17/lib/cmake/llvm
+    cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+    cmake --build build
+    ```
+*See also discussion [#1701](https://github.com/c3lang/c3c/discussions/1701) for details.*
 
-See also discussion [#1701](https://github.com/c3lang/c3c/discussions/1701)
+## Compiling on Windows
 
-[MacPorts]: https://ports.macports.org/
-[cmake]: https://ports.macports.org/port/cmake
-[llvm-17]: https://ports.macports.org/port/llvm-17
-[clang-17]: https://ports.macports.org/port/clang-17
+1. Install Visual Studio 2022 (VS17) with the "Desktop development with C++" workload, or install the [standalone Build Tools](https://aka.ms/vs/stable/vs_BuildTools.exe).
+2. Install [Git](https://git-scm.com/install/windows) and [CMake](https://cmake.org/download/).
+3. Clone the compiler repository:
+    ```bash
+    git clone https://github.com/c3lang/c3c.git
+    cd c3c
+    ```
+4. Configure and build the compiler:
+    ```bash
+    cmake --preset windows-vs-2022-release -D C3_FETCH_LLVM=ON
+    cmake --build --preset windows-vs-2022-release
+    ```
+The resulting executable will be located in `build\Release\c3c.exe`.
+
+For a debug build, configure and build with the debug preset instead:
+```bash
+cmake --preset windows-vs-2022-debug -D C3_FETCH_LLVM=ON
+cmake --build --preset windows-vs-2022-debug
+```
+
+## Docker and NixOS
+
+A script is provided to build C3 inside an Ubuntu Docker container:
+```bash
+./build-with-docker.sh
+```
+
+For NixOS users, enter the development shell and configure CMake with the required flags:
+```bash
+nix develop
+cmake -B build -S . $C3_CMAKE_FLAGS
+cmake --build build
+```
