@@ -76,7 +76,7 @@ plugins:
       type: datetime
   - print-site: # print-site must be at the bottom of the plugin list
       add_cover_page: false
-      add_to_navigation: true
+      add_to_navigation: false
       print_page_title: 'Single Page Docs'
       print_page_basename: 'all'
       # Table of contents
@@ -174,7 +174,6 @@ nav:
       - Implementation Details:
         - Grammar: implementation-details/grammar.md
         - Specification: implementation-details/specification.md
-      - "📖 Standard Library": standard-library/docs.html
 
       - FAQ:
         - FAQ: faq/index.md
@@ -187,5 +186,10 @@ nav:
         - get-involved/index.md
       - Thank You:
         - thank-you/index.md
+
+  - Single Page Docs: all/
+
+  - "📖 Standard Library": standard-library/docs.html
+
   - Blog:
     - blog/index.md
