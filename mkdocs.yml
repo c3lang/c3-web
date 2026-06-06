@@ -123,8 +123,6 @@ nav:
         - Building C3 from source: getting-started/compile.md
         - Download C3: getting-started/prebuilt-binaries.md
         - Project Setup: getting-started/projects.md
-        - Roadmap: getting-started/roadmap.md
-        - Design Goals: getting-started/design-goals.md
       - Language Overview:
         - Examples: language-overview/examples.md
         - Type System: language-overview/types.md
@@ -176,13 +174,15 @@ nav:
       - Implementation Details:
         - Grammar: implementation-details/grammar.md
         - Specification: implementation-details/specification.md
-      - Standard Library: standard-library/docs.html
+      - "📖 Standard Library": standard-library/docs.html
 
       - FAQ:
         - FAQ: faq/index.md
         - All Features: faq/allfeatures.md
         - Comparison: faq/compare-languages.md
         - Rejected Ideas: faq/rejected-ideas.md
+        - Roadmap: getting-started/roadmap.md
+        - Design Goals: getting-started/design-goals.md
       - Get Involved:
         - get-involved/index.md
       - Thank You:
