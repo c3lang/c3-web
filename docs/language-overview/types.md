@@ -39,7 +39,7 @@ alias Callback = fn void();
 Callback a = null; // Ok!
 fn Callback getCallback() { /* ... */ } // Ok!
 
-// fn fn void() getCallback() { /* ... */ } - ERROR! You have to alias `f  void()` part.
+// fn fn void() getCallback() { /* ... */ } - ERROR!
 // fn void() a = null; - ERROR!
 ```
 
@@ -56,8 +56,8 @@ are common to all C3 runtime types:
 6. `<Type>::size` - Returns the storage size of the type in bytes.
 7. `<Type>::typeid` - Returns a runtime typeid for the type.
 8. `<Type>::methods` - Returns the methods implemented for a type.
-9. `<Type>::get_tag(tagname)` - Returns true if the type has a particular tag.
-10. `<Type>::has_tag(tagname)` - Retrieves the tag defined on the type.
+9. `<Type>::has_tag(tagname)` - Returns true if the type has a particular tag.
+10. `<Type>::get_tag(tagname)` - Retrieves the value associated with the tag.
 11. `<Type>::has_equals` - True if the type implements `==`
 12. `<Type>::is_ordered` - True if the type implements comparisons.
 13. `<Type>::is_substruct` - True if the type has an inline member.
@@ -96,7 +96,7 @@ Integer types are either signed or unsigned.
 
 Integer types (except for `bool`) also have the following type properties:
 
-1. `<IntType>::max` The maximum value for the type. (To assign -1 to an unsigned variable, use this.)
+1. `<IntType>::max` The maximum value for the type.
 2. `<IntType>::min` The minimum value for the type.
 
 #### Integer arithmetics
@@ -164,9 +164,9 @@ char[*] hello_world_hex = x"4865 6c6c 6f20 776f 726c 6421";
 
 ### String literals, and raw strings
 
-Regular string literals is text enclosed in `" ... "` just like in C. C3 also offers another type of literal: *raw strings*.
+Regular string literals are text enclosed in `" ... "` just like in C. C3 also offers another type of literal: *raw strings*.
 
-Raw strings uses text between \` \`. Inside of a raw string, no escapes are available, and it can span across multiple lines. To write a \` double the character:
+Raw strings use text between \` \`. Inside of a raw string, no escapes are available, and it can span across multiple lines. To write a \` double the character:
 
 ```c3
 String foo = `C:\foo\bar.dll`;
@@ -280,7 +280,7 @@ To learn more about the Optional type and error handling in C3, read the page on
 ### The `fault` type 
 
 When an [Optional](../language-common/optionals-essential.md#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault have the special property that together with the `~` suffix it creates an Empty value:
+normal value. A fault has the special property that together with the `~` suffix it creates an Empty value:
 
 ```c3
 int? x = IO_ERROR~; // 'IO_ERROR~' is an Optional Empty.
@@ -593,7 +593,7 @@ Vectors are normally stored and passed as arrays to prevent SIMD alignment overh
 In addition to the normal properties, typedef also supports:
 
 1. `<DefedType>::inner` - Returns the type this is based on as a `typeid`.
-2. `<DefedType>::parentof` - If this is an inline typedef, return the same as `::inner`.
+2. `<DefedType>::parent` - If this is an inline typedef, return the same as `::inner`.
 
 ### Generic types
 ```c3
