@@ -213,3 +213,6 @@ This mandatory option should be one of:
 In addition to constants, any values starting with `$` will be assumed to be environment variables.
 
 For example `"$HOME"` would on Unix-like systems (e.g. Linux, the BSDs, Mac) return the home directory. For strings that start with `$` but *should not* be interpreted as an environment variable you need to escape it with a backslash (`\`). For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
+
+!!! tip "JSON5 Support"
+    `project.json5` is also supported if comments are needed.
