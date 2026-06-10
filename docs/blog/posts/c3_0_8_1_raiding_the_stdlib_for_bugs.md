@@ -284,3 +284,5 @@ Fernando López Guevara, Manu Linares and plapinski
 Check out the [documentation](../../getting-started/introduction.md) or [download it and try it out](../../getting-started/prebuilt-binaries.md).
 
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
+
+Discuss this article on [Reddit](https://www.reddit.com/r/programming/s/nl6mlLdMo7).
