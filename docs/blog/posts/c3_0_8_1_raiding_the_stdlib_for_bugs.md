@@ -14,7 +14,7 @@ Outside of compiler development, there's also been significant progress on the s
 
 ## Language changes
 
-### Access refected fields using `a.$field` and `a.$field = b`. 
+### Access reflected fields using `a.$field` and `a.$field = b`. 
 
 Previously, you could mutate and access fields on a struct by using `$field.get(struct_value)` and `$field.set(struct_value, new_field_value)`. This is replaced by a much more streamlined `struct_value.$field` and `struct_value.$field = new_field_value` with the old variants deprecated:
 
