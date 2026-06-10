@@ -13,7 +13,7 @@ search:
 
 ### C3 Is Feature Stable
 
-The C3 `0.7.x` series can be run in production with the same general caveats for using any pre-`1.0` software.
+The C3 `0.8.x` series can be run in production with the same general caveats for using any pre-`1.0` software.
 
 While we strive to have zero bug count, there are still bugs being 
 found. This means that anyone using it in production would need to stay
@@ -31,9 +31,8 @@ The intended roadmap has one major `0.1` release per year:
 
 | Date       |  Release  |
 |------------|-----------|
-| 2026-06-01 |    0.8    |
-| 2027-04-01 |    0.9    |
-| 2028-04-01 |    1.0    |
+| 2027-06-01 |    0.9    |
+| 2028-06-01 |    1.0    |
 
 </div>
 
