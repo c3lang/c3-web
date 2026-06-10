@@ -221,7 +221,7 @@ typedef MyId = int;
 fn void main()
 {
 	MyInt x = 27;
-	MyId y = 3;
+	MyId y = (MyId)3;
 	int a = x;
 	// int b = y; <- This doesn't work
 

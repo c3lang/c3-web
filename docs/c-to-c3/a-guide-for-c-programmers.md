@@ -334,7 +334,7 @@ fn void get_by_id(MyId id)
 
 fn void test()
 {
-    MyId valid = 7;
+    MyId valid = (MyId)7; 
     int invalid = 7;
     get_by_id(valid); // allowed
     get_by_id(invalid); // not allowed
