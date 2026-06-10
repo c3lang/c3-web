@@ -96,6 +96,7 @@ hooks:
   - hooks/shortlinks.py
   - hooks/deprioritize_blog.py
   - hooks/generate_combined_docs.py
+  - hooks/grammar_sync.py
   # - hooks/clean_html.py # just for working offline and having a pretty html
 
 markdown_extensions:
