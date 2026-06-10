@@ -232,7 +232,7 @@ Fernando López Guevara, Manu Linares and plapinski
 - Parsing a malformed hex float would not correctly get reported.
 - Parsing an integer with trailing space would incorrectly be reported as an error.
 - `String.escape` used the incorrect default for stripping quotes.
-- mem::equals would not correctly compare slices of with element size > 1.
+- mem::equals would not correctly compare slices with element size > 1.
 - `AsciiCharset.contains` incorrectly handled char > 127.
 - Reuse of recently freed DynamicArenaAllocator allocations failed.
 - Crash in codegen in some cases when RHS of a `&&` or `||` was unreachable at lowering.
