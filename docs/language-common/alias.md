@@ -114,6 +114,15 @@ alias int_max_foo = generic_foo::max_foo {int};
 alias double_max_foo = generic_foo::max_foo {double};
 ```
 
+An alias can also be declared as generic itself, with the parameter list placed after the alias name:
+
+```c3
+alias Pair<Type> = Type[2];
+
+Pair{int} coords = { 10, 20 };
+Pair{double} point = { 1.5, 2.5 };
+```
+
 For more information, see the chapter on [generics](../generic-programming/generics.md).
 
 ## Function pointer default arguments and named parameters

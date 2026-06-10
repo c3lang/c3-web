@@ -39,6 +39,12 @@ fn Type square(Type t) <Type>
 }
 ```
 
+Aliases can be individual generic declarations too:
+
+```c3
+alias Pair<Type> = Type[2];
+```
+
 ### Parameter types
 
 Generic parameters may be types or int, bool and enum constants. In the case of types, they are written as if it was a regular type alias, e.g `Type`. Constant parameters are written as if they were constant aliases, e.g. `MY_CONST`, `COUNT` etc.
