@@ -163,9 +163,9 @@ fn void demo_enum(Height h)
 
 Enums are always namespaced.
 
-Enums support various reflection properties: `.values` returns an array with all enums. `.len` or `.elements` returns the number
-of enum values, `.inner` returns the storage type. `.names` returns an array with the names of all enums. `.associated`
-returns an array of the typeids of the associated values for the enum.
+Enums support various reflection properties: `values` returns an array with all enums. `len` returns the number
+of enum values, `inner` returns the storage type. `names` returns an array with the names of all enums. `members`
+returns a list of member references to the associated values for the enum. `lookup_field(field_name, value)` performs a lookup to find the enum from an associated value.
 
 ```c3
 enum State : uint
