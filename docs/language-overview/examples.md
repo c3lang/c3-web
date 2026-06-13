@@ -439,9 +439,9 @@ fn int get_last_element(int* array, int length)
 
 Read more about contracts [here](../language-common/contracts.md).
 
-## Struct Methods
+## Type Methods
 
-It's possible to namespace functions with a union, struct or enum type to enable "dot syntax" calls:
+It's possible to namespace functions with a type to enable "dot syntax" calls:
 
 ```c3
 struct Foo
