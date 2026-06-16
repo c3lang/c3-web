@@ -92,7 +92,7 @@ However, it should be noted that the compiler might not detect whether the annot
 fn void lying_func(int* i)
 {
     int* b = i;
-    *b = 1; // Circumvent checks!
+    *b = 2; // Circumvent checks!
 }
 
 fn void test()
