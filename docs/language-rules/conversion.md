@@ -12,7 +12,7 @@ C3 differs in some crucial respects when it comes to number conversions and prom
 - Widening `float` conversions are only conditionally allowed<sup>*</sup>.
 - Narrowing conversions require a cast<sup>*</sup>.
 - Widening `int` conversions are only conditionally allowed<sup>*</sup>.
-- In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value  isconsidered true.
+- In conditionals `float` to `bool` *do not* require a cast, any non-zero `float` value  is considered true.
 - Implicit conversion to `bool` only occurs in conditionals or when the value is enclosed in `()` e.g. `bool x = (1.0)` or `if (1.0) { ... }`
 
 C3 uses two's complement arithmetic for all integer math.
