@@ -75,7 +75,7 @@ the project file (e.g. `"linker-search-paths" = ["../mylibs/", "/extra-libs/"]`)
 - Bitstructs will be seen as its backing type, when used from C. 
 - C bit fields must be manually converted to a C3 bitstruct with the correct layout for each target platform.
 - C assumes the enum size is `CInt`
-- C3 uses fixed integer sizes, this means that `int` and `CInt` does not *need* to be the same though in practice on 32/64 bit machines, `long` is usually the *only* type that differs in size between C and C3.
+- C3 uses fixed integer sizes, this means that `int` and `CInt` do not *need* to be the same, though in practice on 32/64 bit machines `long` is usually the *only* type that differs in size between C and C3.
 - Atomic types are not supported by C3.
     - In C3 there are generic Atomic types instead.
 - There are no `volatile` and `const` **qualifiers** like in C. 

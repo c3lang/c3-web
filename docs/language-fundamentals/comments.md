@@ -53,6 +53,9 @@ The following was extracted:
 | `@deprecated` | `@deprecated [<description>]`                                      |
 | `@pure      ` | `@pure`                                                            |
 
+\*`[<ref>]` is an optional mutability description e.g. `[&in]`\
+\*`[<description>]` denotes that a description is optional.
+
 ### Fault inheritance
 
 It is possible to reference the faults of another function or macro by using the syntax `@return? some_func!`. This will include all faults returned by `some_func`. This can be combined with other faults.
@@ -69,6 +72,3 @@ fn TriangleKind? get_triangle_kind(Triangle* triangle)
 ```
 
 See [Contracts](../language-common/contracts.md) for information regarding `@require`, `@ensure`, `@const`, `@pure`.
-
-\*`[<ref>]` is an optional mutability description e.g. `[&in]`
-\*`[<description>]` denotes that a description is optional.
