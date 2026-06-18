@@ -2,8 +2,8 @@
 title: Macros
 description: Macros
 ---
-The macro capabilities of C3 reache across several constructs:
-macros, [generic functions, generic modules](../generic-programming/generics.md), and [compile time variables](../generic-programming/compiletime.md#compile-time-values)
+The macro capabilities of C3 reach across several constructs:
+macros, [generic functions, generic modules](../generic-programming/generics.md), [compile time variables](../generic-programming/compiletime.md#compile-time-values)
 (prefixed with `$`), macro compile time execution (using `$if`, `$for`, `$foreach`, `$switch`) and attributes.
 
 ## A quick comparison of C and C3 macros

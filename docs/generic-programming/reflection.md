@@ -252,7 +252,7 @@ enum FooEnum
     BAR,
     BAZ
 }
-String x = FooEnum::values[1].description; // "BAR"
+String x = FooEnum::values[1].description; // "BAZ"
 ```
 
 ## Compile time functions
@@ -407,7 +407,7 @@ $Typefrom(int::typeid) i = 12;
 
 ## Expression values through `$reflect`
 
-`$reflect` give access to different properties depending on the expression. To determine at compile time that some information is available use `$define($reflect(x).some_property)`.
+`$reflect` gives access to different properties depending on the expression. To determine at compile time that some information is available use `$define($reflect(x).some_property)`.
 
 ### `alignment`
 

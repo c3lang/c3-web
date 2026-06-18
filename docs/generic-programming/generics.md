@@ -194,7 +194,7 @@ fn void main()
 
 ### Methods on generic types
 
-Adding methods to a generic type extends it with the method for all generic, allowing the use of the generic parameters associated with creating the type:
+Methods can be added to generic types, extending all instantiations of the type and allowing the methods to access the type's generic parameters:
 
 ```c3
 module foo;

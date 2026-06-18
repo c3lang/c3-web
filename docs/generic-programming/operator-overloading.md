@@ -178,7 +178,7 @@ struct Foo
     int a;
 }
 
-fn Foo Foo.add(self, Foo other) @operator(+) => { .a = self.a + other. a };
+fn Foo Foo.add(self, Foo other) @operator(+) => { .a = self.a + other.a };
 fn Foo Foo.add_self(&self, Foo other) @operator(+=)
 {
     self.a += other.a;

@@ -3,7 +3,7 @@ title: Functions
 description: Functions
 ---
 
-C3 has both regular functions and mmethods. Methods are functions namespaced using type names, and allow invocation using the dot syntax.
+C3 has both regular functions and methods. Methods are functions namespaced using type names, and allow invocation using the dot syntax.
 
 ## Regular functions
 

@@ -387,7 +387,7 @@ fn void main()
 }
 ```
 
-This elminates redundancy when print debugging. This code could be refined to be better, such as by making `@show` handle [Optionals](../language-common/optionals-essential.md#what-is-an-optional) correctly, but the simple version above is less distracting. However, as you can see, code can be annoted for temporary print debugging very easily by using `$stringify` based expression macros. 
+This eliminates redundancy when print debugging. This code could be refined to be better, such as by making `@show` handle [Optionals](../language-common/optionals-essential.md#what-is-an-optional) correctly, but the simple version above is less distracting. However, as you can see, temporary print debugging can be added very easily using `$stringify`-based expression macros. 
 
 ### `$Typeof`
 
