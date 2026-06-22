@@ -242,56 +242,26 @@ Pointers mirror C: `Foo*` is a pointer to a `Foo`, while `Foo**` is a pointer to
 
 In addition to the standard properties, pointers also have the `::inner` property. It returns the type of the object pointed to as a type `typeid`.
 
-### Optional
-
-An [Optional type](../language-common/optionals-essential.md#what-is-an-optional) is created by taking a type and appending `~`.
-An Optional type behaves like a tagged union, containing either the
-Result or an Empty, which also carries a [fault](#the-fault-type) type.
-
-Once extracted, a `fault` can be converted to another `fault`.
-
-```c3
-faultdef MISSING;   // define a fault
-
-int? i;
-i = 5;              // Assigning a real value to i.
-i = io::EOF~;       // Assigning an optional result to i.
-fault b = MISSING;  // Assign a fault to b
-b = @catch(i);      // Assign the Excuse in i to b (EOF)
-```
-
-Only variables, expressions and function returns may be Optionals.
-Function and macro parameters in their definitions may not be optionals.
-
-```c3
-fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
-int? x = 0; // ✅ Ok!
-fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn parameter
-```
-
-An Optional value can use the special `if-try` and `if-catch` to unwrap its result or its Empty,
-it is also possible to implicitly return if it is Empty using `!` and panic with `!!`.
-
-To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](../language-common/optionals-essential.md).
-
-!!! note
-    If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::collections.
-
 ### The `fault` type 
 
-When an [Optional](../language-common/optionals-essential.md#what-is-an-optional) does not contain a result, it is Empty, but contains a `fault` which explains why there was no
-normal value. A fault has the special property that together with the `~` suffix it creates an Empty value:
+`fault` type is like error code names in C, all in upper case name. `fault`s are defined by `faultdef`. Like other type related definitions,`faultdef` must come at global scope.
 
 ```c3
-int? x = IO_ERROR~; // 'IO_ERROR~' is an Optional Empty.
-fault y = IO_ERROR; // Here IO_ERROR is just a regular
-                    // value, since it isn't followed by '~'
-```
+faultdef MY_ERR1, EOF, NOT_FOUND, PARSE_ERROR, IO_ERROR;
 
-A new `fault` value can only be defined using the `faultdef` statement:
+fault x = MY_ERR1;
+fault y = x;
+fault z = ERROR2; // Compile error: undefined fault
 
-```c3
-faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
+fn fault some_function()
+{
+    return EOF;
+}
+
+fn void other function()
+{
+    faultdef NEW_ERROR; // Compile error, `faultdef` must be at global scope
+}
 ```
 
 Like the [typeid type](#the-typeid-type), a `fault` is pointer sized
@@ -303,6 +273,119 @@ and each value defined by `faultdef` is globally unique. This is true even when 
 #### Fault description
 
 The fault type only has one field: `<fault>.description`, which returns the name of the fault in string literal, namespaced with the last module path, e.g. `"io::EOF"`.
+
+```c3
+module aa;
+import std::io;
+
+faultdef AA, BB;
+
+fn void print_fault()
+{
+    fault x = BB;
+    io::printfn("Error: %s", x); // prints "aa::BB"
+}
+```
+
+### Optional
+
+An [Optional type](../language-common/optionals-essential.md#what-is-an-optional) behaves like a tagged union, containing either a value or a fault.
+
+Optional type is marked as `?` at the end of any type, like `int?` or `char[]*?`. Optional value must be assigned by either a value of the type or a `fault` with `~`.
+
+```c3
+faultdef AA, BB, CC;
+
+int? x = 3;
+int? x = AA; // Compile error, ? must be attached to be an optional
+int? x = AA~; // a `fault` optional
+```
+
+Variables, expressions and return types may be Optionals, but parameters may not be optionals.
+
+```c3
+fn Foo*? getFoo() { /* ... */ } // ✅ Ok!
+int? x = 0; // ✅ Ok!
+fn void processFoo(Foo*? f) { /* ... */ } // ❌ fn parameter
+```
+
+An optional is in a superimposed (uncertain) state and it must be `unwrapped` to see whether it's a normal value or a fault.
+
+There are several ways to unwrap an optional variable. 
+
+When you expect a normal value, use `if (try)`, and when you expect a fault, use `if (catch)`.
+
+```c3
+fn int? fallable_function() { ... }
+
+fn void test1()
+{
+    int? x = fallable_function(); // x is in uncertain state
+    if (try x) // unwrap x to a normal value
+    {
+        io::printfn("%d", x); // OK
+    }
+    // here x is still optional
+    int y = x; // Compile error, optional `int?` cannot be assigned to normal `int`
+}
+
+fn void test2()
+{
+    int? x = fallable_function(); // x is in uncertain state
+    if (catch err = x) // unwrap x to a fault
+    {
+        // err is unwrapped fault
+        io::printfn("%s", err); // OK
+        fault y = err; // OK.
+        // x is optional here
+    }
+    else
+    {
+        // x is unwrapped value here
+        int z = x; // OK.
+    }
+    // here x is still optional
+    int y = x; // Compile error, optional `int?` cannot be assigned to normal `int`
+}
+
+fn void? test3() // returns optional
+{
+    int? x = fallable_function();
+    if (catch err = x) // unwrap x to a fault
+    {
+        // err is unwrapped fault
+        io::printfn("%s", err); // OK
+        fault y = err; // OK.
+        // x is optional here
+        return err~; // rethrow as an optional
+    }
+    // x is unwrapped value here, when `if (catch)` block ends with `return`, `continue` or `break`
+    int z = x; // OK.
+}
+```
+
+There are three operators to unwrap an optional.
+* `!` rethrow operator, meaning 'or return optional'
+* `!!` panic operator, meaning 'or panic'
+* `??` or_else operator, meaning 'or else'
+
+```c3
+fn int? fallable() { ... }
+
+fn void? test()
+{
+    int? x = fallable();
+    int y = fallable()!; // assign int value or rethrow optional
+    int z = fallable()!!; // assign int value or panic print stacktrace
+    int w = fallable() ?? -1; // asign int value or else -1 as a default value
+}
+```
+
+To learn more about the Optional type and error handling in C3, read the page on [Optionals and error handling](../language-common/optionals-essential.md).
+
+!!! note
+    If you want a more regular "optional" value, to store in structs, then you can use the generic `Maybe` type in std::collections.
+
 
 ### The `typeid` type
 
