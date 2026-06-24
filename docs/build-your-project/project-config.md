@@ -102,7 +102,7 @@ This is a description of the configuration options in `project.json`:
   // Enable sanitizer: none, address, memory, thread.
   "sanitize": "none",
   // Features enabled for all targets.
-  "features": "",
+  "features": [ "", ""],
 }
 ```
         
