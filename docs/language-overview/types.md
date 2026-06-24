@@ -244,7 +244,7 @@ In addition to the standard properties, pointers also have the `::inner` propert
 
 ### Optional
 
-An [Optional type](../language-common/optionals-essential.md#what-is-an-optional) is created by taking a type and appending `~`.
+An [Optional type](../language-common/optionals-essential.md#what-is-an-optional) is created by taking a type and appending `?`.
 An Optional type behaves like a tagged union, containing either the
 Result or an Empty, which also carries a [fault](#the-fault-type) type.
 
