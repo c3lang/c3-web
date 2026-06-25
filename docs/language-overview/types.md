@@ -454,8 +454,7 @@ any some_inner_int = any_val.as_inner();
 
 ### Array types
 
-Arrays are indicated by `[size]` after the type, e.g. `int[4]`. Slices use the `type[]`. For initialization the wildcard `type[*]` can be used to infer the size
-from the initializer. See the chapter on [arrays](../language-common/arrays.md).
+Arrays are indicated by `[size]` after the type, e.g. `int[4]`. For initialization, the wildcard `Type[*]` can be used to infer the size from the initializer. See the chapter on [arrays](../language-common/arrays.md). Slices use `Type[]`, and please note that this differs from the meaning in C (where `Type[]` would be an array of unknown or inferred length).
 
 ### Vector types
 
