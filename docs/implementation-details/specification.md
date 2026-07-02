@@ -2842,7 +2842,7 @@ A small subset of attributes appears on `import` declarations rather than on ent
 An *attribute definition* introduces a user-defined attribute that expands to one or more built-in attributes. It is a top-level declaration:
 
 ```
-attrdef_decl ::= "attrdef" AT_IDENT ("(" parameter_list? ")")? ("=" attribute_list)? ";"
+attrdef_decl ::= "attrdef" AT_TYPE_IDENT ("(" parameter_list? ")")? attribute_list? ("=" attribute_list)? ";" 
 attribute_list ::= attribute ("," attribute)*
 ```
 
