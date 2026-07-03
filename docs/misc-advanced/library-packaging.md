@@ -5,7 +5,7 @@ description: Library Packaging
 
 *Note that the library system is in early alpha. Everything below is subject to change.*
 
-C3 allows convenient packaging of C3 source files optionally with  statically or dynamically linked libraries.
+C3 allows convenient packaging of C3 source files optionally with statically or dynamically linked libraries.
 To use such a library, simply pass the path to the library directory and add the library you wish to link to.
 The compiler will resolve any dependencies to other libraries and only compile those that are in use.
 
@@ -20,18 +20,18 @@ In the top of the library resides the `manifest.json` file which has the followi
 ```json
 {
   "provides" : "my_lib",
-  "execs" : [],
+  "exec" : [],
   "targets" : {
     "macos-x64" : {
-      "linkflags" : [],
+      "link-args" : [],
       "dependencies" : [],
-      "linked-libs" : ["my_lib_static", "Cocoa.framework", "c"]
+      "linked-libraries" : ["my_lib_static", "Cocoa.framework", "c"]
     },
     "windows-x64" : {
-      "linkflags" : ["/stack:65536"],
+      "link-args" : ["/stack:65536"],
       "dependencies" : ["ms_my_extra"],
-      "linked-libs" : ["my_lib_static", "kernel32"],
-      "execs" : [],
+      "linked-libraries" : ["my_lib_static", "kernel32"],
+      "exec" : []
     }
   }
 }
@@ -41,7 +41,7 @@ In the example above, this library supports two targets: **macos-x64** and **win
 
 We see that if we use the **windows-x64** target it will also load the **ms_my_extra** library. We also see that the linker would have a special argument on that platform.
 
-Both targets expect `my_lib_static` to be available for linking. If this library provides this static or dynamic library it will be in the target sub-directories, so it likely has the path `windows-x64/my_lib_static.lib` or `macos-z64/libmy_lib_static.a`.
+Both targets expect `my_lib_static` to be available for linking. If this library provides this static or dynamic library it will be in the target sub-directories, so it likely has the path `windows-x64/my_lib_static.lib` or `macos-x64/libmy_lib_static.a`.
 
 ### Source code
 
@@ -58,4 +58,3 @@ invoked when a library is used. This requires running the compiler at **full tru
 ## How to – automatically – export libraries
 
 *This feature is not implemented yet. The documentation for this feature will materialize once it is finished.*
-
