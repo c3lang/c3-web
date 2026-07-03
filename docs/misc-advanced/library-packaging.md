@@ -58,3 +58,44 @@ invoked when a library is used. This requires running the compiler at **full tru
 ## How to – automatically – export libraries
 
 *This feature is not implemented yet. The documentation for this feature will materialize once it is finished.*
+
+## Manifest Reference
+
+The full list of supported keys can be viewed in your terminal at any time by running `c3c --list-manifest-properties`. Below is the complete reference of these properties.
+
+??? info "Global Manifest Properties"
+
+    | Property | Type | Description |
+    | :--- | :--- | :--- |
+    | `provides` | String | The library name. |
+    | `targets` | Object | The map of supported platforms. |
+    | `dependencies` | Array | List of C3 libraries to also include. |
+    | `sources` | Array | Paths to library sources for targets, such as interface files. |
+    | `c-sources` | Array | Set the C sources to be compiled. |
+    | `c-include-dirs`| Array | Set the include directories for C sources. |
+    | `cc` | String | Set C compiler (defaults to 'cc'). |
+    | `cflags` | Array | C compiler flags. |
+    | `exec` | Array | Scripts run for all platforms. |
+    | `linklib-dir` | String | Set the directory where to find linked libraries. |
+    | `wincrt` | String | Windows CRT linking: `none`, `static`, `dynamic`. |
+    | `vendor` | Object | Vendor specific extensions, ignored by `c3c`. |
+
+??? info "Target-Specific Properties"
+
+    | Property | Type | Description |
+    | :--- | :--- | :--- |
+    | `sources` | Array | Additional library sources to be compiled for this target. |
+    | `sources-override` | Array | Paths to library sources for this target, overriding global settings. |
+    | `c-sources` | Array | Additional C sources to be compiled for the target. |
+    | `c-sources-override` | Array | C sources to be compiled, overriding global settings. |
+    | `c-include-dirs` | Array | C source include directories for the target. |
+    | `c-include-dirs-override` | Array | Additional C source include directories for the target, overriding global settings. |
+    | `cc` | String | Set C compiler (defaults to 'cc'). |
+    | `cflags` | Array | Additional C compiler flags for the target. |
+    | `cflags-override` | Array | C compiler flags for the target, overriding global settings. |
+    | `dependencies` | Array | List of C3 libraries to also include for this target. |
+    | `exec` | Array | Scripts to also run for the target. |
+    | `linked-libraries` | Array | Libraries linked by the linker for this target, overriding global settings. |
+    | `link-args` | Array | Linker arguments for this target. |
+    | `wincrt` | String | Windows CRT linking: `none`, `static`, `dynamic`. |
+    | `vendor` | Object | Vendor specific extensions, ignored by `c3c`. |
