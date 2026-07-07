@@ -58,7 +58,8 @@ switch (i)
 }
 ```
 
-It's also possible to use `nextcase` with an expression, to jump to an arbitrary case or between labeled switch statements:
+It's also possible to use `nextcase` with an expression or `default`, to jump
+to an arbitrary case, the `default` case, or between labeled switch statements:
 
 ```c3
 switch MAIN: (enum_var)
@@ -143,6 +144,13 @@ switch
         baz();
 }
 ```
+
+### Nextcase for runtime evaluation switch
+
+For runtime evaluation switch statements, `nextcase` still jumps to the next
+case. A `nextcase` with an expression however is only possible when the
+`switch` has a conditional (f.e. `switch (true)`), it will pick the first match
+from the top of the switch statement.
 
 ## Jumptable switches with `@jump`
 
