@@ -98,7 +98,7 @@ of the target.
 - 8 character literals, e.g. `'FOOBAR11'` converts to a ulong.
 
 The 4 character literals correspond to the layout of [FourCC](https://en.wikipedia.org/wiki/FourCC)
-codes. It will also correctly arrange unicode characters in memory. E.g. `Char32 smiley = '\u1F603'`
+codes. It will also correctly arrange unicode characters in memory. E.g. `Char32 smiley = '\U0001F603'`
 
 ## Floating point types
 
@@ -120,8 +120,8 @@ floating point by adding a suffix:
 
 | Suffix           | type       |
 | ---------------- | ----------:|
-| `f32` *or* `f`   | `float`    |
-| `f64`            | `double`   |
+| `f` *or* `F`     | `float`    |
+| `d` *or* `D`     | `double`   |
 
 ## Arrays
 
