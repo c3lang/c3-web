@@ -71,8 +71,6 @@ h = f + x;  // => Error. Narrowing is not allowed because float f is wider than 
 Unlike C, implicit widening will only happen on "simple expressions":
 if the expression is a primary expression, or a unary operation on a primary expression.
 
-For assignment, special rules hold. For an assignment to a binary expression, *if* its two subexpressions are "simple expressions" and the binary expression is `+`, `-`, `/`, `*`, allow an implicit promotion of the two sub expressions.
-
 ```c3
 int a = ...
 short b = ...
@@ -80,7 +78,7 @@ char c = ...
 long d = a; // Valid - simple expression.
 int e = (int)(d + (a + b)); // Error
 int f = (int)(d + ~b); // Valid
-long g = a + b; // Valid
+long g = a + b; // Error
 ```
 
 As a rule of thumb, if there is more than one possible conversion, then an explicit cast is needed.
