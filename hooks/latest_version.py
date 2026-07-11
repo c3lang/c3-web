@@ -11,7 +11,7 @@ def on_config(config):
     except Exception as e:
         print(f"Could not fetch latest version: {e}")
     
-    config['extra']['latest_version'] = config['extra'].get('latest_version', '0.8.1')
+    config['extra']['latest_version'] = config['extra'].get('latest_version', '0.8.2')
     return config
 
 def on_page_markdown(markdown, page, config, files):
