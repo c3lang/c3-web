@@ -25,7 +25,7 @@ alias Foo = List{int};
 
 fn void main()
 {
-	typeid t = List{String}::generic_args[0].cname; //String::typeid
+	typeid t = List{String}::generic_args[0]; //String::typeid
 	String name = Foo::generic_qname; // "std::collections::list::List"
 	bool x = Foo::is_generic(List); // true
 	bool y = int::is_generic(List); // false
@@ -75,7 +75,7 @@ fn void foo(Foo* f)
 
 ### Asm stack alignment
 
-Previous to 0.8.2, all asm blocks would be stack aligned, which didn't match C behaviour. This is now fixed. Stack alignment is now opt-in by using `@align`:
+Before 0.8.2, all asm blocks would be stack aligned, which didn't match C behaviour. This is now fixed. Stack alignment is now opt-in by using `@align`:
 
 ```c3
 asm // Unaligned
@@ -164,7 +164,7 @@ Hade and Manu Linares
 - `untypedlist` was not detected as invalid in enum associated value type or as a pointer #3342.
 - Regression using non-posix libc.
 - Crash with an optional struct recursively defined with a function type. #3358
-- Denormal results were not handle correctly by `String.to_double()`.
+- Denormal results were not handled correctly by `String.to_double()`.
 - A float literal with an uppercase 'F' suffix would be a `double` instead of a `float`.
 - Json serialization would not correctly handle unicode and `\v`. #3353
 - Semantic checking was incorrect in the case of `&a - &b` where one or both are optional and the result isn't assigned.
