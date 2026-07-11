@@ -1,5 +1,5 @@
 ---
-title: "C3 0.8.2 A modest improvement
+title: "C3 0.8.2 A modest improvement"
 date: 2026-07-10
 tags: ["release", "language-features", "compiler"]
 author: "Christoffer Lernö"
