@@ -59,7 +59,7 @@ It's now possible to annotate more than in/inout/out on parameters:
 
 1. `own` signifies that the function will in some way retain the variable beyond the scope of the function. 
 2. `drop` means that the pointer and the data pointed to will be invalid when the function returns.
-3. `init` means that the data in pointed to will be initialized by the function.
+3. `init` means that the data pointed to will be initialized by the function.
 
 This can be used by the compiler for static analysis and also documents the function or macro.
 
