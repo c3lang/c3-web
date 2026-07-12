@@ -69,12 +69,21 @@ fn uint check_foo(Foo* foo)
 
 ## Parameter annotations
 
-`@param` supports `[in]` `[out]` and `[inout]`. These are only applicable
-for pointer arguments. `[in]` disallows writing to the variable,
-`[out]` disallows reading from the variable. Without an annotation,
-pointers may both be read from and written to without checks. If an `&` is placed
-in front of the annotation (e.g. `[&in]`), then this means the pointer must be non-null
-and is checked for `null`.
+`@param` supports `[in]`, `[out]`, `[inout]`, `[own]`, `[drop]` and `[init]`.
+These are only applicable for pointer arguments.
+
+`[in]` disallows writing to the variable, `[out]` disallows reading from the
+variable. Without an annotation, pointers may both be read from and written to
+without checks. If an `&` is placed in front of the annotation (e.g. `[&in]`),
+then this means the pointer must be non-null and is checked for `null`.
+
+`[own]` signifies that the function will in some way retain the variable beyond
+the scope of the function, `[drop]` means that the pointer and the data pointed
+to will be invalid when the function returns, and `[init]` means that the data
+pointed to will be initialized by the function.
+
+These annotations can be used by the compiler for static analysis and also
+documents the function or macro.
 
 | Type          | readable? | writable? | use as "in"? | use as "out"? | use as "inout"? |
 |---------------|:---------:|:---------:|:------------:|:-------------:|:---------------:|
@@ -83,7 +92,9 @@ and is checked for `null`.
 | `out`         |    No     |    Yes    |      No      |      Yes      |        No       |
 | `inout`       |    Yes    |    Yes    |     Yes      |      Yes      |       Yes       |
 
-However, it should be noted that the compiler might not detect whether the annotation is correct or not! This program might compile, even though it's strictly incorrect.
+However, it should be noted that the compiler might not detect whether the
+annotation is correct or not! This program might compile, even though it's
+strictly incorrect.
 
 ```c3
 <*
@@ -115,7 +126,8 @@ fn void bad_func(int* i)
 }
 ```
 
-\* *The spec allows a barebones compiler to completely ignore contracts. Using such a compiler even this check might be ignored.*
+\* *The spec allows a barebones compiler to completely ignore contracts.
+   Using such a compiler even this check might be ignored.*
 
 ### Pure in detail
 
