@@ -313,10 +313,11 @@ it using `$reflect`: `$reflect(my_global).has_tag("bar")`.
 
 ### `@test`
 
-*Used for: function*
+*Used for: module, function*
 
-Marks the function as a test function. Will be added to the list of test functions when the tests are run,
-otherwise the function will not be included in the compilation.
+Marks the function or all functions inside the module section, as a test
+function. They will be added to the list of test functions when the tests are
+run, otherwise the function(s) will not be included in the compilation.
 
 ### `@unused`
 
