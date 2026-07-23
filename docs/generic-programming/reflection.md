@@ -147,7 +147,7 @@ This property returns the methods associated with a type as a constant array of 
     **Warning!**
 
     Methods are generally registered *after* types are registered, which means that the use of
-    "methodsof" may return inconsistent results depending on where in the resolution cycle it is invoked.
+    "methods" may return inconsistent results depending on where in the resolution cycle it is invoked.
     It is always safe to use inside a function.
 
 #### `nan` / `inf`
