@@ -32,11 +32,11 @@ int z @if($defined(x) && Y > 3);
 ```c
 // C Macro
 #define M(x) ((x) + 2)
-#define UInt32 unsigned int
+#define Int32 int
 
 // Use:
 int y = M(foo() + 2);
-UInt32 b = y;
+Int32 b = y;
 ```
 
 ```c3
@@ -45,11 +45,11 @@ macro m(x)
 {
     return x + 2;
 }
-alias UInt32 = uint;
+alias Int32 = int;
 
 // Use:
 int y = m(foo() + 2);
-UInt32 b = y;
+Int32 b = y;
 ```
 
 ### Dynamic scoping
