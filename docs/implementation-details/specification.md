@@ -938,6 +938,10 @@ An interface value has the same representation as `any`: a pointer paired with a
 
 Any user-defined type — struct, union, bitstruct, enum, constdef, or typedef — may implement one or more interfaces. The interface list is given in parentheses after the type name in the type declaration, and each non-optional method must be provided as a `@dynamic` method. Aliases may not implement interfaces, as they introduce no new type. A value of an implementing type implicitly converts to the interface type. Conversion from an interface to a concrete type, or from `any` to an interface, is explicit and may fail at runtime.
 
+#### Implementation limits
+
+An interface must support extending 127 interfaces. A type must support implementing 127 interfaces.
+
 ### The any type
 
 The type `any` is a runtime-tagged reference: it pairs a pointer with a `typeid` identifying the type of the pointee. Its size is twice the pointer width; its alignment is the pointer alignment.
