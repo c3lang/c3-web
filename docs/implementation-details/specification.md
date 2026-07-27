@@ -2150,7 +2150,7 @@ A function declaration introduces a name into module scope and binds it to a fun
   }
   ```
 
-* A *forward declaration* `;` introduces the function but does not define it. A forward declaration must carry the `@extern` attribute (or appear in an interface body); the definition must be supplied elsewhere.
+* A *forward declaration* introduces the function but does not define it. Forward declarations are only allowed in `.c3i` files or in regular files with the `extern` prefix, placed before `fn`. The definition must be supplied elsewhere, or be provided by a library.
 
 The return type may carry the `?` suffix to denote an optional return type, indicating that the function may return either a value of the underlying type or a fault.
 
