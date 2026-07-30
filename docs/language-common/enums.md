@@ -25,6 +25,11 @@ an enum like `State` is a separate namespace by default, just like C++'s class `
 Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](bitstructs.md#bitstructs-as-bit-masks).
 
 ### Enum associated values
+!!! note
+
+    Every enum value also exposes a built-in description property containing the identifier of the enum member.
+    
+    If an associated value is also named description, it shadows the built-in property.
 
 It is possible to associate each enum value with one or more static values.
 ```c3
@@ -133,8 +138,9 @@ user-defined types:
 2. `inner` returns the type of the ordinal as a `typeid`.
 3. `lookup_field(field_name, value)` lookup an enum by associated value.
 4. `names` returns a list containing the names of all enums.
-5. `from_ordinal(value)` convert an integer to an enum.
-6. `values` return a list containing all the enum values of an enum.
+5. `description` returns the identifier of the enum member.
+6. `from_ordinal(value)` convert an integer to an enum.
+7. `values` return a list containing all the enum values of an enum.
 
 ## Constdef
 
