@@ -113,12 +113,40 @@ finalizer is a "best effort" attempt by the OS. During abnormal termination it i
 
 The function must be a void function taking no arguments.
 
+### `@feat`
+
+*Used for: any top-level declaration, module section*
+
+Conditionally compiles the declaration based on the compiler's feature flags.
+
+```c3
+fn void foo_win32() @feat(WIN32)
+{
+    // Only compiled when the WIN32 feature flag is set.
+}
+
+int b @feat(NO_LIBC);
+```
+
+The argument is a *feature-list*: one or more feature identifiers (`CONST_IDENT`) combined with `&`, `|`, `!`, and parentheses. A comma at the top level is treated as `|`, so `@feat(POSIX, WIN32)` matches when either flag is set. Repeating the attribute is treated as `&`, so `@feat(POSIX) @feat(BIG_ENDIAN)` matches only when both are set. Negation is also permitted: `@feat(POSIX | !WIN32)`.
+
+The compiler provides a large set of built-in feature flags for platform and target selection (`WIN32`, `MACOS`, `LINUX`, `POSIX`, `BIG_ENDIAN`, and many more); additional flags may be supplied through the build system.
+
 ### `@if`
 
-*Used for: all declarations*
+*Used for: declarations inside a generic module, and methods of generic types*
 
-Conditionally includes the declaration in the compilation. It takes a constant compile time value argument, if this
-value is `true` then the declaration is retained, on false it is removed.
+Conditionally includes a parameterized declaration at instantiation time based on a compile-time boolean condition. The condition may refer to the declaration's generic parameters:
+
+```c3
+module container <Ty>;
+
+Ty first_element @if(Ty.kindof == TypeKind.SIGNED_INT);
+```
+
+`@if` is not available on non-parameterized top-level declarations; use `@feat` for feature-flag-based conditional compilation.
+
+**NOTE: Previous to 0.8.3, this was available for all top-level declarations.**
 
 ### `@init`
 

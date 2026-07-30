@@ -195,7 +195,61 @@ macro long @fib(long $n)
 
 It is important to remember that if we had replaced `$n` with `n` the compiler would have complained. `n <= 1` is not considered to be a constant expression, even if the actual argument to the macro was a constant. This limitation is deliberate, to offer control over what is compiled out and what isn't.
 
-### Conditional compilation at the top level using `@if`
+### Conditional compilation at the top level using `@feat`, 0.8.3+
+
+At the top level (where globals are declared; such as functions, variables, etc), conditional compilation is controlled by using the `@feat` attribute:
+
+```c3
+fn void foo_win32() @feat(WIN32)
+{
+    // ...
+}
+
+module foo::os @feat(POSIX);
+
+struct Config @feat(NO_LIBC)
+{
+    int b;
+}
+```
+
+The argument to `@feat` is a *feature-list* built from feature identifiers combined with `&`, `|`, `!`, and parentheses. Commas at the top level are treated as `|`; the attribute may be applied more than once to combine expressions with `&`:
+
+```c3
+fn void posix_or_wasm() @feat(POSIX, WASM)      { /* ... */ }
+fn void posix_and_be() @feat(POSIX) @feat(BIG_ENDIAN)  { /* ... */ }
+fn void posix_not_mac() @feat(POSIX | !MACOS)   { /* ... */ }
+```
+
+Only feature identifiers and the operators above are permitted inside `@feat` – general compile-time expressions are not accepted.
+
+#### `@feat` on module sections
+
+`@feat` may be applied to a module section, in which case every declaration in the section is subject to the same feature-list test:
+
+```c3
+module network::linux @feat(LINUX);
+
+// Every declaration in this section is compiled only when LINUX is set.
+```
+
+#### `@if` in generic declarations, 0.8.3+
+
+For generics, the `@if` attributes allow you to conditionally include a declaration at instantiation based on a condition that may refer to the generic parameters:
+
+```c3
+struct Container <Ty>
+{
+    Ty first;
+    Ty last @if(Ty.kindof == TypeKind.SIGNED_INT);
+}
+```
+
+Here the `last` field is present only when `Container` is instantiated with a signed integer element type.
+
+`@if` is *not* available on ordinary top-level declarations that carry no generic parameters; those use `@feat`.
+
+### Conditional compilation at the top level using `@if` - 0.8.2 and earlier
 
 At the top level (where globals are declared; such as functions, variables, etc), conditional compilation is controlled by appending `@if` attributes onto declarations:
 
@@ -346,6 +400,8 @@ Convert any compile time string into code at compile time.
 ### `$feat`
 
 Check if a given feature is enabled. Features are passed using `-D <FEATURE_NAME>` on the command line.
+
+**NOTE: In 0.8.2 and earlier, use `$feature` instead.**
 
 ### `$include`
 

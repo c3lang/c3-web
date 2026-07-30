@@ -310,8 +310,9 @@ help you get things working.
 
 **Q:** How do I conditionally compile based on compiler flags?
 
-**A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key
-in the project file.
+**A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key in the project file.
+
+**NOTE: On 0.8.2 and earlier, use `$feature` as the name.
 
 You can then test for them using `$feat(FLAG_NAME)` or with `@feat`:
 

@@ -15,6 +15,10 @@ macros, [generic functions, generic modules](../generic-programming/generics.md)
 #if defined(x) && Y > 3
 int z;
 #endif
+
+#ifdef FOO
+int w;
+#endif
 ```
 
 ```c3
@@ -24,7 +28,7 @@ $if $defined(x) && Y > 3:
 $endif
 
 // or
-int z @if($defined(x) && Y > 3);
+int w @feat(FOO);
 ```
 
 
@@ -194,9 +198,9 @@ macro @check(#expr)
 
 Scripting languages usually have unbounded top level evaluation. The flexibility of this style of meta programming has a trade-off in making the code more challenging to understand.
 
-In C3, top level compile time evaluation is limited to `@if` attributes to conditionally enable or disable declarations and a handful of other somewhat limited compile time evaluation features (e.g. `$assert`, etc). This makes the code easier to read, but comes at the cost of expressive power. However, C3 makes this tradeoff for a reason:
+In C3, top level compile time evaluation is limited to `@feat` for feature-flag-based gating, `@if` for parameter-dependent declarations inside generic modules, and a handful of other constrained compile time evaluation features (e.g. $assert). This makes the code easier to read, but comes at the cost of expressive power. However, C3 makes this tradeoff for a reason:
 
-Preventing top level compile time evaluation helps prevent lots of declarations from popping into existence seemingly by magic, which is a common source of codebase intelligibility degrading over time in C and C++. By restricting the system to only either including or removing those declarations that are or aren't applicable, via `@if`, C3 makes it so that you still get conditional compilation and macros but with much less bewildering "magic". This also allows IDE's to effectively work with C3 source code despite its extensive macro system.
+Preventing top level compile time evaluation helps prevent lots of declarations from popping into existence seemingly by magic, which is a common source of codebase intelligibility degrading over time in C and C++. By restricting the system to only either including or removing those declarations that are or aren't applicable, via @feat and — in generic contexts — @if, C3 makes it so that you still get conditional compilation and macros but with much less bewildering "magic". This also allows IDE's to effectively work with C3 source code despite its extensive macro system.
 
 In effect, top level declarations become always *visible* in C3, regardless of whether they are included or removed, whereas in C and C++ unbounded invisible declarations may occur, causing code to become increasingly opaque and riddled with seemingly indecipherable "magic" and numerous variables and constants seemingly coming from nowhere.
 

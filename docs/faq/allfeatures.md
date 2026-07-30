@@ -179,11 +179,11 @@ attribute groups using `attrdef` (e.g. `attrdef MyAttribute(usz align) = { @alig
 groups certain attributes. Empty attribute groups are permitted.
 
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
-`@callconv`, `@deprecated`, `@dynamic`, `@export`,
-`@cname`, `@if`, `@inline`, `@interface`,
+`@callconv`, `@cname`, `@deprecated`, `@dynamic`, `@export`, `@feat`,
+`@if`, `@inline`,
 `@littleendian`, `@local`, `@maydiscard`, `@mustinit`, `@naked`,
 `@nodiscard`, `@noinit`, `@noreturn`, `@nostrip`,
-`@obfuscate`, `@operator`, `@overlap`, `@priority`,
+`@obfuscate`, `@operator`, `@optional`, `@overlap`, `@priority`,
 `@private`, `@public`, `@pure`, `@reflect`,
 `@section`, `@test`, `@used`, `@unused`.
 
@@ -246,21 +246,22 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Added
 
-1. `@if(cond)` to conditionally include a struct/union field, a user-defined type, etc.
-2. Compile time variables with `$` prefix, e.g. `$foo`.
-3. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
-4. `$for` and `$foreach` to loop over compile time variables and data.
-5. `$Typeof` determines an expression type without evaluating it.
-6. Type properties may be accessed at compile time.
-7. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects.
-8. `$error` emits an error if encountered.
-9. `$embed` includes a file as binary data.
-10. `$include` includes a file as text.
-11. `$exec` includes the output of a program as code.
-12. `$expand` takes a compile time string and turns it code.
-13. `$eval` takes a string and turns it into an identifier.
-14. Compile time constant values are always compile time folded for arithmetic operations and casts.
-15. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
+1. `@feat(FLAG)` to conditionally include a struct/union field, a user-defined type, function, or global based on the compiler's feature flags.
+2. `@if(cond)` inside a generic module, to conditionally include a member of the generic based on the generic parameters.
+3. Compile time variables with `$` prefix, e.g. `$foo`.
+4. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
+5. `$for` and `$foreach` to loop over compile time variables and data.
+6. `$Typeof` determines an expression type without evaluating it.
+7. Type properties may be accessed at compile time.
+8. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects.
+9. `$error` emits an error if encountered.
+10. `$embed` includes a file as binary data.
+11. `$include` includes a file as text.
+12. `$exec` includes the output of a program as code.
+13. `$expand` takes a compile time string and turns it code.
+14. `$eval` takes a string and turns it into an identifier.
+15. Compile time constant values are always compile time folded for arithmetic operations and casts.
+16. `$$FUNCTION` returns the current function as an identifier, as if its name had been written in place of `$$FUNCTION`.
 
 ### Changed
 
@@ -272,7 +273,7 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 ### Removed
 
-1. Top level `#if...#endif` does not have a counterpart. Use `@if` instead.
+1. Top level `#if...#endif` does not have a counterpart. Use `@feat` instead (or, for gating on the parameters of a generic module, `@if`).
 2. No `#include` directives, `$include` will include text, but normally C3 code will use `import` to access code from other modules.
 
 ## Macros
