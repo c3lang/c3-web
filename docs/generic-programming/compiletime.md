@@ -343,7 +343,7 @@ Execute a script at compile time and include the result in the source code.
 
 Convert any compile time string into code at compile time.
 
-### `$feature`
+### `$feat`
 
 Check if a given feature is enabled. Features are passed using `-D <FEATURE_NAME>` on the command line.
 

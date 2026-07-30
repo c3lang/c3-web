@@ -180,7 +180,7 @@ The language revision to use.
 #### `features`
 
 This is a list of upper-case constants that can be tested for
-in the source code using `$feature(NAME_OF_FEATURE)`.
+in the source code using `$feat(NAME_OF_FEATURE)`.
 
 #### `warnings`
 

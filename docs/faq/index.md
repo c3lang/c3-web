@@ -313,14 +313,14 @@ help you get things working.
 **A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key
 in the project file.
 
-You can then test for them using `$feature(FLAG_NAME)`:
+You can then test for them using `$feat(FLAG_NAME)` or with `@feat`:
 
 ```c3
-int my_var @if($feature(USE_MY_VAR));
+int my_var @feat(USE_MY_VAR);
 
 fn int test()
 {
-    $if $feature(USE_MY_VAR):
+    $if $feat(USE_MY_VAR):
         return my_var;
     $else
         return 0;

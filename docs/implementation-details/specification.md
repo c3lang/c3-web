@@ -184,7 +184,7 @@ The following compile-time keywords, each beginning with `$`, are reserved:
 $assert     $case       $default    $defined    $echo
 $else       $embed      $endfor     $endforeach $endif
 $endswitch  $error      $eval       $exec       $expand
-$feature    $for        $foreach    $if         $include
+$feat       $for        $foreach    $if         $include
 $reflect    $stringify  $switch     $Typefrom   $Typeof
 $vaarg
 ```
@@ -962,7 +962,7 @@ Because it is compile-time only, only compile-time variables may have this type.
 
 ### Generic type instantiation
 
-A type may be parameterized by a generic module. Such a type is instantiated by writing the type name followed by a brace-delimited list of type and constant arguments:
+A type may be parameterized by a list of type or compile-time value parameters. Such a type is instantiated by writing the type name followed by a brace-delimited list of type and constant arguments:
 
 ```
 generic_instantiation ::= type_name "{" generic_arg ("," generic_arg)* "}"
@@ -1300,7 +1300,7 @@ Each `module` declaration in source code opens a *module section*. A single file
 
 ```
 module_section   ::= "module" path module_attributes? ";"
-module_attributes ::= ("@private" | "@local" | "@public" | "@if" "(" expression ")" | generic_params)+
+module_attributes ::= ("@private" | "@local" | "@public" | "@feat" "(" feat_expr ")" | generic_params)+
 generic_params   ::= "<" generic_param ("," generic_param)* ">"
 generic_param    ::= TYPE_IDENT | CONST_IDENT
 ```
@@ -1310,8 +1310,8 @@ A module section may carry attributes that apply as defaults to every declaratio
 * `@private` — declarations are `@private` by default; visible only within the same module.
 * `@local` — declarations are `@local` by default; visible only within the same file.
 * `@public` — declarations are `@public` by default; used to restore public visibility within a file whose other sections declare a more restrictive default.
-* `@if(cond)` — declarations are conditionally compiled under `cond`, evaluated at compile time.
-* `<Ty>`, `<Ty, Tu>`, `<Ty, VALUE>`, ... — opens a *generic module section* in which every supported declaration is parameterized over the listed parameters. A type parameter is a `TYPE_IDENT`; a compile-time value parameter is a `CONST_IDENT`. Declaration kinds that cannot be made generic, such as `faultdef`, may not appear in a generic section.
+* `@feat(features)` — the section is compiled only when the feature-list is satisfied by the compiler's active feature set (see *Top-level conditional compilation*).
+* `<Ty>`, `<Ty, Tu>`, `<Ty, VALUE>`, ... — a shorthand adding the listed parameter list to every declaration in the section that supports parameterization. A type parameter is a `TYPE_IDENT`; a compile-time value parameter is a `CONST_IDENT`. Declaration kinds that cannot be parameterized, such as `faultdef`, are permitted in the section but are unaffected by the parameter list. See *Generics*.
 
 Multiple attributes may be combined on a single section. Within a section, an individual declaration may override the section default — for example, `@public` on a declaration reverses a section default of `@private`.
 
@@ -1639,7 +1639,7 @@ A compile-time access expression denotes a value or type known at compile time:
 ct_arg_expr      ::= "$vaarg" ("[" range_expr "]")?
 ct_analyze_expr  ::= ct_analyze_op "(" expression ")"
 ct_defined_expr  ::= "$defined" "(" ct_defined_check ("," ct_defined_check)* ")"
-ct_feature_expr  ::= "$feature" "(" CONST_IDENT ")"
+ct_feature_expr  ::= "$feat" "(" CONST_IDENT ")"
 ct_analyze_op    ::= "$eval" | "$reflect" | "$stringify" | "$expand"
 ct_defined_check ::= expression
                    | type IDENTIFIER ("=" expression)?
@@ -2430,7 +2430,7 @@ The following expressions are constant:
 * A compound literal whose elements are constant expressions.
 * A member access on a compile-time-known aggregate.
 * A call to a macro that folds to a constant (see *Macros*).
-* The compile-time analysis expressions `$eval`, `$stringify`, `$defined`, `$feature`, `$Typeof`, `$Typefrom`, and `$reflect`.
+* The compile-time analysis expressions `$eval`, `$stringify`, `$defined`, `$feat`, `$Typeof`, `$Typefrom`, and `$reflect`.
 * A `$vaarg` access, when the corresponding macro argument is itself a constant expression.
 * Type-access expressions of the form `Type::typeid`, `Type::alignment`, `Type::size`, and similar (see *Properties of types and values*).
 
@@ -2529,7 +2529,7 @@ $echo "Building with verbose mode";
 ### Compile-time analysis builtins
 
 * `$defined(check, ...)` — yields `true` when every operand is well-formed in the current scope. Each operand is either a candidate expression or a candidate local variable declaration (`type IDENTIFIER ("=" expression)?`). See *Expressions*.
-* `$feature(NAME)` — yields `true` when the build-system feature flag named `NAME` is enabled.
+* `$feat(NAME)` — yields `true` when the build-system feature flag named `NAME` is enabled. The same feature set is consulted by the `@feat` attribute (see *Top-level conditional compilation*).
 * `$eval(string)` — parses the compile-time string `string` as the name of an entity (a variable, function, or other named declaration), optionally qualified by a module path, and yields a reference to that entity in the current scope. The string may not contain an arbitrary expression; it names something already declared.
 * `$stringify(expression)` — yields the source text of `expression` as a compile-time string. The expression is not evaluated.
 * `$Typeof(expression)` — yields the type of `expression` without evaluating it.
@@ -2540,9 +2540,54 @@ The semantics of `$reflect` and the family of reflective accessors are described
 
 ### Top-level conditional compilation
 
-The `@if(condition)` attribute attached to a top-level declaration is the module-scope analogue of `$if`: a declaration carrying `@if(cond)` is compiled only when `cond` evaluates to `true`. A module section attribute `@if(condition)` applies the same effect to every declaration in the section (see *Blocks and scope*).
+Two attributes conditionally compile top-level declarations: `@feat`, which selects on the compiler's *feature flags*, and `@if`, which selects on a compile-time expression evaluated at instantiation time.
 
-When `@if`-conditional declarations refer to one another, the evaluation order is consistent with module-level dependency resolution: a declaration that depends on another `@if`-conditional declaration sees the result of evaluating that dependency's condition.
+#### The `@feat` attribute
+
+`@feat(<feature-list>)` includes the annotated declaration only when the feature-list evaluates to true against the compiler's active feature set. Each feature is a `CONST_IDENT`. The feature-list has the grammar:
+
+```
+feat_expr ::= feat_term ("|" feat_term)*
+feat_term ::= feat_atom ("&" feat_atom)*
+feat_atom ::= "!"? CONST_IDENT | "(" feat_expr ")"
+```
+
+Commas at the top level of a feature-list are treated as `|` — the two forms `@feat(POSIX, WIN32)` and `@feat(POSIX | WIN32)` are equivalent. Only `&`, `|`, `!`, and parenthesised grouping are permitted; no other operators are recognised inside a `@feat`.
+
+An `@feat` attribute may be applied more than once to the same declaration or module section. When repeated, the individual attributes combine as if joined by `&`:
+
+* `@feat(POSIX, WIN32)` — matches when the target has either the `POSIX` feature or the `WIN32` feature.
+* `@feat(POSIX) @feat(BIG_ENDIAN)` — matches only when the target has **both** the `POSIX` and `BIG_ENDIAN` features.
+* `@feat(POSIX | !WIN32)` — matches when the target has `POSIX` or does not have `WIN32`.
+* `@feat(POSIX & BIG_ENDIAN)` — equivalent to `@feat(POSIX) @feat(BIG_ENDIAN)`.
+
+The set of active feature flags is determined by the compiler and the build invocation. The compiler exposes a number of predeclared feature flags for the target platform — including flags such as `POSIX`, `WIN32`, `MACOS`, `LINUX`, `BIG_ENDIAN`, and others documented alongside the platform target. Additional feature flags may be supplied through the build system using `-D`.
+
+Because feature flags are known before compilation begins, a declaration excluded by `@feat` is pruned at any point in the pipeline before or during compilation; its body is not required to be well-formed.
+
+Applying `@feat` to a module section (see *Blocks and scope*) applies the same test to every declaration in the section.
+
+#### The `@if` attribute
+
+`@if(condition)` is permitted on parameterized declarations — declarations that carry generic parameters, either directly, by being a method of a generic type, or through the shorthand on their enclosing module section (see *Generics*) — and is evaluated at instantiation time. The condition is a compile-time boolean expression that may refer to the declaration's generic parameters. When the condition is false, the declaration is omitted from the instantiation; when true, it participates as an ordinary declaration.
+
+```c3
+
+struct Foo <Ty>
+{
+    Ty t;
+}
+
+fn Ty Foo.foo(self) @if(Ty.kindof == TypeKind.SIGNED_INT);
+{
+    return self.t
+}
+```
+
+The method `Foo.foo` is present only in instantiations of `Foo` whose type parameter is a signed integer.
+
+`@if` is *not* available on ordinary top-level declarations that carry no generic parameters; such declarations use `@feat` instead.
+
 
 ### Compile-time execution of macros
 
@@ -2767,7 +2812,8 @@ The first three may also appear on a module section to set the default visibilit
 
 * `@safemacro` — overrides the `AT_IDENT` naming requirement for a macro that uses features (raw vaargs, expression parameters, trailing-block parameters) that would otherwise require it.
 * `@const` — emitted on a macro; asserts that the macro folds to a compile-time constant for every valid call. The compiler verifies the assertion and reports any non-constant construct that prevents folding.
-* `@if(condition)` — conditional compilation. The declaration is compiled only when `condition` (a constant boolean expression) is `true`.
+* `@feat(features)` — conditional compilation on the compiler's feature flags. The declaration is included only when the feature-list evaluates to true against the target's active feature set; see *Compile-time evaluation* for the feature-list grammar and repetition rules. 
+* `@if(condition)` — conditional compilation. The declaration is compiled only when `condition` (a constant boolean expression) is `true`. The attribute is only valid on generic declarations.
 * `@tag(name, value)` — attaches a user-defined tag accessible through reflection (`Ty::get_tag(name)`).
 
 #### Operator overloading
@@ -3189,7 +3235,7 @@ A source file with no `module` declaration belongs entirely to an *implicit modu
 
 ### Module sections
 
-Each `module` declaration opens a *module section*. Multiple sections may appear in one file — for the same module or for different modules — and a single module may span multiple sections and multiple files. The full grammar and the section's attribute defaults (visibility, `@if`, generic parameters) are described in *Blocks and scope*.
+Each `module` declaration opens a *module section*. Multiple sections may appear in one file — for the same module or for different modules — and a single module may span multiple sections and multiple files. The full grammar and the section's attribute defaults (visibility, `@feat`, generic parameters) are described in *Blocks and scope*.
 
 A section's imports and any attribute defaults apply only within that section. A subsequent section, even of the same module in the same file, must re-declare any imports it needs.
 
@@ -3234,7 +3280,7 @@ import internals @public;
 
 `@public` may not be used to access `@local` declarations, which are never visible across files.
 
-It is a compile-time error if the compiler cannot locate an imported module, or any submodule reached through a recursive import. Inside a module section carrying `@if`, this check is suppressed unless the `@if` condition evaluates to `true`.
+It is a compile-time error if the compiler cannot locate an imported module, or any submodule reached through a recursive import. Inside a module section excluded by a `@feat` attribute, this check is suppressed.
 
 ### Implicit imports
 
