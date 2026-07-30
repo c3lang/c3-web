@@ -2811,7 +2811,7 @@ The arithmetic, bitwise, shift, comparison, and unary overload forms follow the 
 * `@unused` / `@used` — suppress or force diagnostics about an unused or unreferenced declaration.
 * `@noalias` — applied to a pointer parameter; declares that the parameter does not alias any other parameter or accessible memory for the duration of the call. The compiler may use this assumption for optimization; violating it is undefined behaviour.
 * `@nosanitize(check)` — opts the function out of the named runtime sanitizer; `check` is a string such as `"address"`, `"memory"`, or `"thread"`. The set of recognized checks is implementation-defined and may grow over time.
-* `@format(index)` — marks a parameter (identified by its 1-based index) as a printf-style format string. The function must have an `args...` (typed variadic) parameter; the format string parameter must be of type `String`. Format mismatches diagnosed by the compiler.
+* `@format(index)` — marks a parameter as a printf-style format string. The function must have an `args...` (typed variadic) parameter directly following the format string; the format string parameter must be of type `String`. Format mismatches diagnosed by the compiler.
 
 #### Testing and benchmarking
 
