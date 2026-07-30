@@ -73,6 +73,12 @@ This attribute will ensure that the macro is always compile time
 folded (to a constant). Otherwise, a compile time error will
 be issued.
 
+### `@constinit`
+
+*Used for: constdef, typedef*
+
+This attribute allows a typedef or constdef to be initialized from a literal without an explicit cast.
+
 ### `@deprecated`
 
 *Used for: types, function, macro, global, const, member*
@@ -322,6 +328,12 @@ functions.
 *Used for: any declaration*
 
 Adds additional reflection information. Has no effect currently.
+
+### `@safemacro`
+
+*Used for: macros*
+
+Allows a macro to drop the `@` name prefix, even if it normally would be required to have one.
 
 ### `@section(name)`
 
