@@ -26,6 +26,12 @@ the alignment. If setting a smaller alignment than default is
 desired, then use `@packed` (which sets the alignment to 1 for all members)
 and then `@align`.
 
+### `@allow_deprecated`
+
+*Used for: functions*
+
+This attribute suppresses detection of `@deprecated` for the function's parameters and body.
+
 ### `@benchmark`
 
 *Used for: function*
@@ -58,6 +64,16 @@ Valid arguments are `"veccall"`, `"cdecl"`, `"stdcall"`. Any function without an
     On Windows, many calls are tagged `stdcall` in the C
     headers. However, this calling convention is only ever used on 32-bit Windows,
     and is a no-op on 64-bit Windows.
+
+### `@cname`
+
+*Used for: function, global, const, enum, union, struct, faultdef*
+
+Sets the external (linkage) name of this declaration.
+
+!!! caution
+Do not confuse this with [`@export`](#export), which is required
+to export a function or global.
 
 ### `@compact`
 
@@ -100,24 +116,6 @@ Marks this declaration as an export, this ensures it is never removed and expose
 The attribute takes an optional string value, which is the external name. This acts as if `@cname` had been
 added with that name.
 
-### `@cname`
-
-*Used for: function, global, const, enum, union, struct, faultdef*
-
-Sets the external (linkage) name of this declaration.
-
-!!! caution
-    Do not confuse this with [`@export`](#export), which is required
-    to export a function or global.
-
-### `@finalizer`
-
-*Used for: function*
-
-Make this function run at shutdown. See [`@init`](#init) for the optional priority. Note that running a
-finalizer is a "best effort" attempt by the OS. During abnormal termination it is not guaranteed to run.
-
-The function must be a void function taking no arguments.
 
 ### `@feat`
 
@@ -137,6 +135,21 @@ int b @feat(NO_LIBC);
 The argument is a *feature-list*: one or more feature identifiers (`CONST_IDENT`) combined with `&`, `|`, `!`, and parentheses. A comma at the top level is treated as `|`, so `@feat(POSIX, WIN32)` matches when either flag is set. Repeating the attribute is treated as `&`, so `@feat(POSIX) @feat(BIG_ENDIAN)` matches only when both are set. Negation is also permitted: `@feat(POSIX | !WIN32)`.
 
 The compiler provides a large set of built-in feature flags for platform and target selection (`WIN32`, `MACOS`, `LINUX`, `POSIX`, `BIG_ENDIAN`, and many more); additional flags may be supplied through the build system.
+
+### `@finalizer`
+
+*Used for: function*
+
+Make this function run at shutdown. See [`@init`](#init) for the optional priority. Note that running a
+finalizer is a "best effort" attempt by the OS. During abnormal termination it is not guaranteed to run.
+
+The function must be a void function taking no arguments.
+
+### `@format`
+
+*Used for: functions and macros*
+
+Declares that this function or macro takes a formatting string followed by parameters, and enables compile time checking of the parameters. The argument of `@format` is the zero indexed position of the formatting string. 
 
 ### `@if`
 
@@ -169,6 +182,12 @@ The function must be a void function taking no arguments.
 *Used for: function, call*
 
 Declares a function to always be inlined or if placed on a call, that the call should be inlined.
+
+### `@jump`
+
+*Used for: switch statements*
+
+Turns `switch`es to guaranteed jump tables, which in some cases may be more efficient.
 
 ### `@link`
 
@@ -278,7 +297,7 @@ also transitively applies to any dependencies the declaration might have.
 Removes any string values that would identify the declaration in some way. Mostly this is used
 on faults and enums to remove the stored names.
 
-### `@operator`
+### `@operator`, `@operator_s`, `operator_r`
 
 *Used for: method, macro method*
 
@@ -316,6 +335,12 @@ This alignment can be overridden with [`@align`](#alignalignment).
 
 Sets the visibility to "private", which means it is visible in the same module, but not from other modules.
 
+### `@public`
+
+*Used for: any declaration*
+
+Sets the visibility to "public", which means it is visible from other modules if its module is included. This is the default visibility.
+
 ### `@pure`
 
 *Used for: call*
@@ -340,6 +365,12 @@ Allows a macro to drop the `@` name prefix, even if it normally would be require
 *Used for: function, const, global*
 
 Declares that a global variable or function should appear in a specific section.
+
+### `@simd`
+
+*Used for: vector types*
+
+Turns a vector type into a type matching C SIMD types for the purpose of storage and ABI lowering. Usually it will not offer any additional speed over using regular vector types, and are mostly for conforming to C functions that explicitly use SIMD types.
 
 ### `@tag(name, value)`
 
