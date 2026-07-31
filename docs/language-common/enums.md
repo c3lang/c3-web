@@ -28,7 +28,7 @@ Standard enums are always backed by an ordinal value running from zero and up, w
 
 It is possible to associate each enum value with one or more static values.
 ```c3
-enum State : int (String desc)
+enum State : int (String label)
 {
     WAITING    { "waiting" },
     RUNNING    { "running" },
@@ -38,7 +38,7 @@ enum State : int (String desc)
 fn void main()
 {
     State process = State.RUNNING;
-    io::printfn("%s", process.desc);
+    io::printfn("%s", process.label);
 }
 ```
 
@@ -50,7 +50,7 @@ struct Position
     int y;
 }
 
-enum State : int (String desc, bool active, Position pos)
+enum State : int (String label, bool active, Position pos)
 {
     WAITING    { "waiting", false, { 1, 2} },
     RUNNING    { "running", true,  {12,22} },
@@ -62,7 +62,7 @@ fn void main()
     State process = RUNNING;
     if (process.active)
     {
-        io::printfn("Process is: %s", process.desc);
+        io::printfn("Process is: %s", process.label);
         io::printfn("Position x: %d", process.pos.x);
     }
 }
@@ -78,7 +78,7 @@ switch (process)
     case RUNNING: // State.RUNNING is inferred
         io::printfn("Position x: %d", process.pos.x);
     default:
-        io::printfn("Process is: %s", process.desc);
+        io::printfn("Process is: %s", process.label);
 }
 
 fn void test(State s) { ... }
@@ -133,8 +133,9 @@ user-defined types:
 2. `inner` returns the type of the ordinal as a `typeid`.
 3. `lookup_field(field_name, value)` lookup an enum by associated value.
 4. `names` returns a list containing the names of all enums.
-5. `from_ordinal(value)` convert an integer to an enum.
-6. `values` return a list containing all the enum values of an enum.
+5. `description` returns the identifier of the enum member.
+6. `from_ordinal(value)` convert an integer to an enum.
+7. `values` return a list containing all the enum values of an enum.
 
 ## Constdef
 
