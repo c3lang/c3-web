@@ -25,15 +25,10 @@ an enum like `State` is a separate namespace by default, just like C++'s class `
 Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](bitstructs.md#bitstructs-as-bit-masks).
 
 ### Enum associated values
-!!! note
-
-    Every enum value also exposes a built-in description property containing the identifier of the enum member.
-    
-    If an associated value is also named description, it shadows the built-in property.
 
 It is possible to associate each enum value with one or more static values.
 ```c3
-enum State : int (String description)
+enum State : int (String label)
 {
     WAITING    { "waiting" },
     RUNNING    { "running" },
@@ -43,7 +38,7 @@ enum State : int (String description)
 fn void main()
 {
     State process = State.RUNNING;
-    io::printfn("%s", process.description);
+    io::printfn("%s", process.label);
 }
 ```
 
@@ -55,7 +50,7 @@ struct Position
     int y;
 }
 
-enum State : int (String desc, bool active, Position pos)
+enum State : int (String label, bool active, Position pos)
 {
     WAITING    { "waiting", false, { 1, 2} },
     RUNNING    { "running", true,  {12,22} },
@@ -67,7 +62,7 @@ fn void main()
     State process = RUNNING;
     if (process.active)
     {
-        io::printfn("Process is: %s", process.desc);
+        io::printfn("Process is: %s", process.label);
         io::printfn("Position x: %d", process.pos.x);
     }
 }
@@ -83,7 +78,7 @@ switch (process)
     case RUNNING: // State.RUNNING is inferred
         io::printfn("Position x: %d", process.pos.x);
     default:
-        io::printfn("Process is: %s", process.desc);
+        io::printfn("Process is: %s", process.label);
 }
 
 fn void test(State s) { ... }
