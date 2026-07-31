@@ -28,7 +28,7 @@ Standard enums are always backed by an ordinal value running from zero and up, w
 
 It is possible to associate each enum value with one or more static values.
 ```c3
-enum State : int (String description)
+enum State : int (String desc)
 {
     WAITING    { "waiting" },
     RUNNING    { "running" },
@@ -38,7 +38,7 @@ enum State : int (String description)
 fn void main()
 {
     State process = State.RUNNING;
-    io::printfn("%s", process.description);
+    io::printfn("%s", process.desc);
 }
 ```
 
