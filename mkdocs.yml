@@ -74,6 +74,16 @@ plugins:
       post_url_format: "{slug}"
   - git-revision-date-localized:
       type: datetime
+  - rss:
+      feed_title: 'The C3 blog'
+      match_path: "^blog/posts/.*"
+      image: "assets/logo.png"
+      length: 20
+      date_from_meta:
+        as_creation: date
+      categories:
+        - categories
+        - tags
   - print-site: # print-site must be at the bottom of the plugin list
       add_cover_page: false
       add_to_navigation: false

@@ -10,6 +10,7 @@ dependencies = [
     "mkdocs-material>=9.7.6",
     "mkdocs-minify-plugin>=0.8.0",
     "mkdocs-print-site-plugin>=2.8",
+    "mkdocs-rss-plugin>=1.19.0",
     "pymdown-extensions>=10.21.2",
 ]
 
