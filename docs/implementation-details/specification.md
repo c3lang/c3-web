@@ -525,7 +525,14 @@ ct_var_decl ::= "var" CT_IDENT ("=" expression)? ";"
               | type CT_IDENT ("=" expression)? ";"
 ```
 
-A compile-time value variable may be untyped (`var $x`), typed by the `var` form with the type inferred from the initializer, or typed explicitly by giving a type in place of `var`. A compile-time type variable may not be given an explicit type.
+A compile-time value variable may be introduced in one of three forms:
+
+* `var $name;` or `var $name = expr;` — the variable is *untyped*; if an initializer is supplied, the variable takes that value.
+* `Type $name = expr;` — the initializer must be of the given type after implicit conversion; the variable then takes that converted value.
+
+In neither form does the declaration bind a fixed type to the variable. Compile-time value variables are *dynamically typed*: a subsequent assignment may hold a value of any type, without regard to the type used at declaration or in any prior assignment. The `Type` in the declaration constrains only the initializer, not the variable's type across its lifetime.
+
+A compile-time type variable may not be given an explicit type.
 
 An initializer is optional. If present, it must be a constant expression for a value variable, or denote a type for a type variable.
 
@@ -2445,7 +2452,14 @@ A constant expression is required in the following contexts:
 
 ### Compile-time variables and types
 
-A *compile-time value variable* has a `CT_IDENT` name (`$name`). It holds a value known at compile time and may be reassigned within its compile-time block scope.
+A *compile-time value variable* has a `CT_IDENT` name (`$name`). It holds a value known at compile time and may be reassigned within its compile-time block scope. Compile-time value variables are dynamically typed: each assignment may bind a value of any type, independent of the variable's previous type. The following is well-formed:
+
+```
+int $foo = 1;
+$foo = "test"; // $foo now holds a compile-time string
+```
+
+The type given in the declaration (`int` above) applies only to the initializer; it does not restrict subsequent assignments.
 
 A *compile-time type variable* has a `CT_TYPE_IDENT` name (`$Name`). It denotes a type known at compile time.
 
