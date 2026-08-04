@@ -2461,6 +2461,13 @@ $foo = "test"; // $foo now holds a compile-time string
 
 The type given in the declaration (`int` above) applies only to the initializer; it does not restrict subsequent assignments.
 
+This is essential for compile-time constructions whose result type varies with the operation. For example, the compile-time append operator `+++` produces a new array one element longer than its left operand:
+
+```
+int[3] $foo = { 1, 2, 3 };
+$foo = $foo +++ 4; // $foo now has type int[4]
+```
+
 A *compile-time type variable* has a `CT_TYPE_IDENT` name (`$Name`). It denotes a type known at compile time.
 
 Compile-time variables may be declared inside function or macro bodies, in compile-time control structures, and in macro parameter lists. They obey compile-time block scope as described in *Blocks and scope*. They may not be declared at module scope.
