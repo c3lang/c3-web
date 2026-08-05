@@ -43,9 +43,8 @@ state.*
 
 ## C3 Background
 
-C3 is an evolution of C, a minimalistic language designed for systems 
-programming, enabling the same paradigms and retaining the same syntax 
-as far as possible.
+C3 is an evolution of C, a general-purpose language designed for native software development. 
+It preserves the paradigms and syntax of C as far as possible while adding modern features for building everything from systems software to applications.
 
 C3 started as an experimental fork of the [C2 language](http://www.c2lang.org/) 
 by [Bas van den Berg](https://github.com/bvdberg). 

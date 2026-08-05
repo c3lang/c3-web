@@ -9,7 +9,7 @@ search:
     [Download C3](prebuilt-binaries.md), available on Mac, Windows and Linux.
 
 
-C3 is an evolution of C and a minimalist systems programming language.
+C3 is a general-purpose systems programming language for building native software.
 
 ### 🦺 Ergonomics **and** Safety
 - Optionals to safely and quickly handle errors and null.
