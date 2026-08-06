@@ -1,7 +1,8 @@
 ---
 title: "Imports and modules"
 date: 2022-05-16
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8417-imports_and_modules](https://c3.handmade.network/blog/p/8417-imports_and_modules)*

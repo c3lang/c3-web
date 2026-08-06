@@ -1,7 +1,8 @@
 ---
 title: "Some guidelines to new syntax design"
 date: 2023-09-11
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8778-some_guidelines_to_new_syntax_design](https://c3.handmade.network/blog/p/8778-some_guidelines_to_new_syntax_design)*

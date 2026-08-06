@@ -1,7 +1,8 @@
 ---
 title: "Thoughts on numeric literal type inference rules for a C-like programming language"
 date: 2020-05-03
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://dev.to/lerno/thoughts-on-numeric-literal-type-inference-rules-for-a-c-like-programming-language-4fpb](https://dev.to/lerno/thoughts-on-numeric-literal-type-inference-rules-for-a-c-like-programming-language-4fpb)*

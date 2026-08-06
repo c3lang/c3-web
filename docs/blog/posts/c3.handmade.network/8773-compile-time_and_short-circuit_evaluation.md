@@ -1,7 +1,8 @@
 ---
 title: "Compile-time and short-circuit evaluation"
 date: 2023-08-30
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8773-compile-time_and_short-circuit_evaluation](https://c3.handmade.network/blog/p/8773-compile-time_and_short-circuit_evaluation)*

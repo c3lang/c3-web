@@ -1,7 +1,8 @@
 ---
 title: "An early 0.6.8 release"
 date: 2025-03-01
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8996-an_early_0.6.8_release](https://c3.handmade.network/blog/p/8996-an_early_0.6.8_release)*

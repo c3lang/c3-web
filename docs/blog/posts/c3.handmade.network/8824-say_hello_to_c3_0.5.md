@@ -1,7 +1,8 @@
 ---
 title: "Say hello to C3 0.5"
 date: 2023-11-21
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8824-say_hello_to_c3_0.5](https://c3.handmade.network/blog/p/8824-say_hello_to_c3_0.5)*

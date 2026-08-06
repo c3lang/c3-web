@@ -1,7 +1,8 @@
 ---
 title: "A zoo of casts"
 date: 2020-07-14
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://dev.to/lerno/a-zoo-of-casts-4bob](https://dev.to/lerno/a-zoo-of-casts-4bob)*

@@ -1,7 +1,8 @@
 ---
 title: "Implementing \"defer\""
 date: 2020-07-27
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://dev.to/lerno/implementing-defer-3l76](https://dev.to/lerno/implementing-defer-3l76)*

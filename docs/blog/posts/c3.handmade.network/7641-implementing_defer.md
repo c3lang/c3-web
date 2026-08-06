@@ -1,7 +1,8 @@
 ---
 title: "Implementing \"defer\""
 date: 2021-02-23
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7641-implementing_defer](https://c3.handmade.network/blog/p/7641-implementing_defer)*

@@ -1,7 +1,8 @@
 ---
 title: "Gradual improvements: C3 0.7.2"
 date: 2025-06-02
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/9028-gradual_improvements__c3_0.7.2](https://c3.handmade.network/blog/p/9028-gradual_improvements__c3_0.7.2)*

@@ -2,7 +2,8 @@
 title: "C3 0.7.9 - New generics and new optional syntax"
 date: 2026-01-29
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: c3-0-7-9-new-generics-and-new-optional-syntax
 ---
 

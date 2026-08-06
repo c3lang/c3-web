@@ -1,7 +1,8 @@
 ---
 title: "More splat and bug fixes: C3 0.6.5 is released"
 date: 2024-12-14
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8979-more_splat_and_bug_fixes__c3_0.6.5_is_released](https://c3.handmade.network/blog/p/8979-more_splat_and_bug_fixes__c3_0.6.5_is_released)*

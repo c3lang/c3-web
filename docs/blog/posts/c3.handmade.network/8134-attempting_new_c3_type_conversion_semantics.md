@@ -1,7 +1,8 @@
 ---
 title: "Attempting new C3 type conversion semantics"
 date: 2021-10-04
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8134-attempting_new_c3_type_conversion_semantics](https://c3.handmade.network/blog/p/8134-attempting_new_c3_type_conversion_semantics)*

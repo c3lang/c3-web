@@ -2,7 +2,8 @@
 title: "C3 0.7.10 - Constdef finally takes shape"
 date: 2026-02-26
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: c3-0-7-10-constdef-finally-takes-shape
 ---
 

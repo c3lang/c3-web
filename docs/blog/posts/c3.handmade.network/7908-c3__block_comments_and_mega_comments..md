@@ -1,7 +1,8 @@
 ---
 title: "C3: Block comments and mega comments."
 date: 2021-06-23
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7908-c3__block_comments_and_mega_comments.](https://c3.handmade.network/blog/p/7908-c3__block_comments_and_mega_comments.)*

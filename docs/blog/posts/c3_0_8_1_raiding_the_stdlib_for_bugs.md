@@ -2,7 +2,8 @@
 title: "C3 0.8.1 Raiding the stdlib for bugs"
 date: 2026-06-10
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: 0_8_1_raiding_the_stdlib_for_bugs
 ---
 

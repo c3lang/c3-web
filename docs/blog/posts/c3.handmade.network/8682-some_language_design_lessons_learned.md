@@ -1,7 +1,8 @@
 ---
 title: "Some language design lessons learned"
 date: 2023-04-03
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8682-some_language_design_lessons_learned](https://c3.handmade.network/blog/p/8682-some_language_design_lessons_learned)*

@@ -1,7 +1,8 @@
 ---
 title: "\"auto\" is a language design smell"
 date: 2022-11-16
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8587-auto_is_a_language_design_smell](https://c3.handmade.network/blog/p/8587-auto_is_a_language_design_smell)*

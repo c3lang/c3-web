@@ -1,7 +1,8 @@
 ---
 title: "Do you know why your language will fail?"
 date: 2022-02-10
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8341-do_you_know_why_your_language_will_fail](https://c3.handmade.network/blog/p/8341-do_you_know_why_your_language_will_fail)*

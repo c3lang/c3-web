@@ -1,7 +1,8 @@
 ---
 title: "C3: Operator overloading is coming in 0.7.1"
 date: 2025-04-14
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/9016-c3__operator_overloading_is_coming_in_0.7.1](https://c3.handmade.network/blog/p/9016-c3__operator_overloading_is_coming_in_0.7.1)*

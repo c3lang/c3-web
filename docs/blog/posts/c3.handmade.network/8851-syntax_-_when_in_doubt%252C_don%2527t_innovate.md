@@ -1,7 +1,8 @@
 ---
 title: "Syntax - when in doubt, don't innovate"
 date: 2024-01-17
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8851-syntax_-_when_in_doubt%252C_don%2527t_innovate](https://c3.handmade.network/blog/p/8851-syntax_-_when_in_doubt%252C_don%2527t_innovate)*

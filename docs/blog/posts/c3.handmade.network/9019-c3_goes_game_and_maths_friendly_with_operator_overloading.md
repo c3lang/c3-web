@@ -1,7 +1,8 @@
 ---
 title: "C3 goes game and maths friendly with operator overloading"
 date: 2025-04-21
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/9019-c3_goes_game_and_maths_friendly_with_operator_overloading](https://c3.handmade.network/blog/p/9019-c3_goes_game_and_maths_friendly_with_operator_overloading)*

@@ -1,7 +1,8 @@
 ---
 title: "Optional syntax"
 date: 2022-07-17
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8460-optional_syntax](https://c3.handmade.network/blog/p/8460-optional_syntax)*

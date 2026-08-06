@@ -3,7 +3,8 @@ title: "C3 Language at 0.7.6: Shebang, generic inference and lengthof()"
 date: 2025-10-04
 readingTime: "5 min"
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: c3-language-at-0-7-6-shebang,-generic-inference-and-lengthof()
 ---
 

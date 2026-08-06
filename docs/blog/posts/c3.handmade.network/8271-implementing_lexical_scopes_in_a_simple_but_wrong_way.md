@@ -1,7 +1,8 @@
 ---
 title: "Implementing lexical scopes in a simple but wrong way"
 date: 2021-12-20
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8271-implementing_lexical_scopes_in_a_simple_but_wrong_way](https://c3.handmade.network/blog/p/8271-implementing_lexical_scopes_in_a_simple_but_wrong_way)*

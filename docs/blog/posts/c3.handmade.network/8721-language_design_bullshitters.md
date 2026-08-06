@@ -1,7 +1,8 @@
 ---
 title: "Language design bullshitters"
 date: 2023-05-31
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8721-language_design_bullshitters](https://c3.handmade.network/blog/p/8721-language_design_bullshitters)*

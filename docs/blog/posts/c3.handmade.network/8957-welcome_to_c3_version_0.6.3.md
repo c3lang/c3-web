@@ -1,7 +1,8 @@
 ---
 title: "Welcome to C3 version 0.6.3"
 date: 2024-10-03
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8957-welcome_to_c3_version_0.6.3](https://c3.handmade.network/blog/p/8957-welcome_to_c3_version_0.6.3)*

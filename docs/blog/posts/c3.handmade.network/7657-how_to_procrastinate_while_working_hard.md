@@ -1,7 +1,8 @@
 ---
 title: "How to procrastinate while working hard"
 date: 2021-03-02
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/7657-how_to_procrastinate_while_working_hard](https://c3.handmade.network/blog/p/7657-how_to_procrastinate_while_working_hard)*

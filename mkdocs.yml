@@ -72,8 +72,8 @@ plugins:
       blog_toc: true
       pagination_per_page: 10
       post_url_format: "{slug}"
-  - git-revision-date-localized:
-      type: datetime
+  # - git-revision-date-localized:
+  #     type: datetime
   - rss:
       feed_title: 'The C3 blog'
       match_path: "^blog/posts/.*"

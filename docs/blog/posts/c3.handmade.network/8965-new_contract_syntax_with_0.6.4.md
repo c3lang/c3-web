@@ -1,7 +1,8 @@
 ---
 title: "New contract syntax with 0.6.4"
 date: 2024-11-09
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8965-new_contract_syntax_with_0.6.4](https://c3.handmade.network/blog/p/8965-new_contract_syntax_with_0.6.4)*

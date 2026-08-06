@@ -1,7 +1,8 @@
 ---
 title: "The problem with untyped literals"
 date: 2021-09-29
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8100-the_problem_with_untyped_literals](https://c3.handmade.network/blog/p/8100-the_problem_with_untyped_literals)*

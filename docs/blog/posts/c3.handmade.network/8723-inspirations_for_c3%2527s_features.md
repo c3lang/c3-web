@@ -1,7 +1,8 @@
 ---
 title: "Inspirations for C3's features"
 date: 2023-06-10
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8723-inspirations_for_c3%2527s_features](https://c3.handmade.network/blog/p/8723-inspirations_for_c3%2527s_features)*

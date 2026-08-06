@@ -1,7 +1,8 @@
 ---
 title: "Some C3 Advent of Code"
 date: 2021-12-04
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8241-some_c3_advent_of_code](https://c3.handmade.network/blog/p/8241-some_c3_advent_of_code)*

@@ -1,7 +1,8 @@
 ---
 title: "Promotion strategies with typed literals"
 date: 2021-10-02
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8108-promotion_strategies_with_typed_literals](https://c3.handmade.network/blog/p/8108-promotion_strategies_with_typed_literals)*

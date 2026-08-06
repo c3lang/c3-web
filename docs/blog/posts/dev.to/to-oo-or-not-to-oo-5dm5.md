@@ -1,7 +1,8 @@
 ---
 title: "To OO or not to OO"
 date: 2020-01-18
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://dev.to/lerno/to-oo-or-not-to-oo-5dm5](https://dev.to/lerno/to-oo-or-not-to-oo-5dm5)*

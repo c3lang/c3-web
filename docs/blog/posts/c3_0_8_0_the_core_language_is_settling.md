@@ -2,7 +2,8 @@
 title: "C3 0.8.0 The Core Language Is Settling"
 date: 2026-05-14
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: 0_8_0_the_core_language_is_settling
 ---
 

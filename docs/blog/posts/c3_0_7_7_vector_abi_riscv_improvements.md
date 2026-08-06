@@ -2,7 +2,8 @@
 title: "C3 Language at 0.7.7: Vector ABI, RISCV improvements and more"
 date: 2025-10-30
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: c3-language-at-0-7-7-vector-abi,-riscv-improvements-and-more
 ---
 0.7.7 is a major advance in C3 usability with vector ABI changes. It also contains several small quality-of-life additions, such as the ability to splat structs into an initializer, and implicit subscript dereferencing. Fairly few bugs were discovered during this development cycle, which is why the fixed bugs are unusually low.

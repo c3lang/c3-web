@@ -2,7 +2,8 @@
 title: "Jingle bells, C3 0.7.8 "
 date: 2025-12-05
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: jingle-bells,-c3-0-7-8-
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "Regarding programming forums and such"
 date: 2024-02-14
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8863-regarding_programming_forums_and_such](https://c3.handmade.network/blog/p/8863-regarding_programming_forums_and_such)*

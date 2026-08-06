@@ -1,7 +1,8 @@
 ---
 title: "Let's kill off half the builtins in 0.8.0"
 date: 2026-05-09
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 ### Goodbye $sizeof, $alignof and all the rest

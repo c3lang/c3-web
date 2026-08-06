@@ -1,7 +1,8 @@
 ---
 title: "The case against a C alternative"
 date: 2022-08-07
-author: "Christoffer Lernö"
+authors:
+  - lerno
 ---
 
 *Originally from: [https://c3.handmade.network/blog/p/8486-the_case_against_a_c_alternative](https://c3.handmade.network/blog/p/8486-the_case_against_a_c_alternative)*
