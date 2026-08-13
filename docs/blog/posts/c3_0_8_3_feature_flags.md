@@ -2,7 +2,8 @@
 title: "C3 0.8.3 Feature flags"
 date: 2026-08-13
 tags: ["release", "language-features", "compiler"]
-author: "Christoffer Lernö"
+authors:
+  - lerno
 slug: c3_0_8_3_feature_flags
 ---
 
