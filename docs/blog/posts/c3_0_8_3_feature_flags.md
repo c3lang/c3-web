@@ -115,6 +115,8 @@ Geometry code should note one behavior change: `Rect.contains_point` is now excl
 
 Other useful additions include `io::read_buffer` and comparison operators for `DateTime`.
 
+Finally, the tracking allocator is now able to track cross-thread allocation.
+
 ## Fixes
 
 This release fixes a wide range of correctness issues, including generics, compile-time execution, JSON parsing, IO streams, compression, networking, AES CTR, RISC-V ABI handling, doc generation, and several compiler crashes.
