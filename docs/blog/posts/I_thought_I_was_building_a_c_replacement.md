@@ -116,3 +116,7 @@ So moving ahead, C3 will talk less about being a C-like, and more about being a 
 In other words, I spent years marketing C3 as a C replacement, but what I was really trying to build was something much broader.
 
 I just marketed that wrong.
+
+---
+
+Discuss this blog post on [Reddit](https://www.reddit.com/r/programming/s/YQLHFmUgqK), [Lobste.rs](https://lobste.rs/s/wpyhdh/i_thought_i_was_building_c_replacement_i) or [HackerNews](https://news.ycombinator.com/item?id=49320169).
