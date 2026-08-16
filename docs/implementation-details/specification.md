@@ -1608,7 +1608,7 @@ argument      ::= expression
 trailing_macro_block ::= AT_IDENT ("(" parameter_list? ")" )? compound_statement
 ```
 
-Arguments may be supplied positionally, by name (`name: expression`), or by struct-field-style designator (`.field = expression`) for arguments of aggregate type. A `...expression` spreads a slice, array, or compile-time list into the variadic part of the parameter list. Named and designated arguments may appear in any order; positional arguments must come before them.
+Arguments may be supplied positionally, by name (`name: expression`), or by struct-field-style designator (`.field = expression`) for arguments of aggregate type. A `...expression` spreads a slice, array, vector, struct or compile-time list into the variadic part of the parameter list. Named and designated arguments may appear in any order; positional arguments must come before them.
 
 Each argument is converted to the corresponding parameter's declared type using the rules described in *Assignability*.
 
@@ -2213,7 +2213,7 @@ The special form `= ...` indicates that the parameter defaults to the value of t
 
 ### Argument splatting
 
-At the call site, an argument of the form `...expression` *splats* a slice, array, or vector into the argument list, expanding it into a sequence of positional arguments. Splats may appear at any position in the argument list, including before, between, and after other positional arguments, and may also appear in the variadic portion of the parameter list. Each splat operand contributes its elements in order to the positional argument sequence; the resulting expanded sequence must match the function's parameter list according to the usual rules.
+At the call site, an argument of the form `...expression` *splats* a slice, array, vector, or struct into the argument list, expanding it into a sequence of positional arguments. A struct operand contributes its members in declaration order. Splats may appear at any position in the argument list, including before, between, and after other positional arguments, and may also appear in the variadic portion of the parameter list. Each splat operand contributes its elements in order to the positional argument sequence; the resulting expanded sequence must match the function's parameter list according to the usual rules.
 
 ### Function attributes
 
@@ -2676,6 +2676,7 @@ The accessors below are restricted to the type kinds for which they make sense; 
 * `Ty::is_substruct` — defined for struct; `true` if the struct has an `inline` member.
 * `Ty::params` — defined for function pointer types; a compile-time array of parameter descriptors (each with `.name` and `.type`).
 * `Ty::returns` — defined for function pointer types; the return type as a `typeid`.
+* `Ty::param_struct` - defined for function pointer types; a struct type whose members mirror the parameter list, or `void` if the function takes no parameters. See *Parameter structs*.
 * `Ty::cname` — the external (mangled) name of the type as a compile-time string; not defined for built-in types.
 * `Ty::from_ordinal(i)` — defined for enum and constdef; produces the value with the given ordinal.
 * `Ty::lookup_field(field, value)` — defined for enum; returns an optional containing the first value whose associated field equals `value`, or a fault if none matches.
@@ -2696,12 +2697,44 @@ The accessor `Ty::members` yields a compile-time list of *reflective references*
 
 Reflective references may be iterated using `$foreach` (see *Statements*); they are usable only at compile time.
 
+### Parameter structs
+
+The accessor `Ty::param_struct` yields a struct type whose members mirror the parameter list of a function pointer type, in declaration order. For a named function `f`, both `$Typeof(f)::param_struct` and `$reflect(f).param_struct` denote this type.
+
+For a function with at least one parameter, each parameter contributes one member: the member's name is the parameter's name, its type is the parameter's declared type, and members appear in parameter order. The name of the generated type is implementation-defined.
+
+For a function with no parameters, the result is `void`. C3 has no zero-sized struct type, so no struct is generated; compile-time code may test for this case with `== void`.
+
+The following rules govern the generated members:
+
+* A parameter without a name — possible in an external declaration — contributes a member named `__anon_N`, where `N` is the parameter's zero-based position.
+* A method's receiver contributes a leading member named `self`.
+* A typed variadic parameter `T... name` contributes a single member of slice type `T[]`; an untyped variadic parameter `name...` contributes a single member of type `any[]`.
+* A C-style variadic `...` in an external declaration contributes no member.
+* A parameter with a default value contributes a member like any other; the default is not reflected.
+
+The type is generated once per function or function pointer type and is stable: repeated access yields the identical type, so `$Typeof(f)::param_struct == $Typeof(f)::param_struct` holds. Two distinct functions yield distinct types even when their signatures are identical, because each set of members follows that function's own parameter names.
+
+The result is an ordinary struct type: it may be used to declare storage, its members may be assigned, and it may be splatted into a call to the reflected function (see *Argument splatting*).
+
+```c3
+fn void foo(int a, double b) { ... }
+
+$Typefrom($Typeof(foo)::param_struct) args;
+args.a = 123;
+args.b = 23.0;
+foo(...args);            // equivalent to foo(args.a, args.b)
+```
+
+`param_struct` is not defined for macros, which have no function type. Compile-time code may test for availability with `$defined($reflect(m).param_struct)`.
+
 ### Compile-time reflection of expressions
 
 The built-in `$reflect(expression)` yields a reflective reference describing the given expression. The set of accessors available depends on what the expression refers to:
 
 * For a variable or constant: `.name`, `.qname`, `.cname`, `.type`, `.alignment`, `.kind`, `.get_tag`/`.has_tag`.
-* For a function or macro: `.name`, `.qname`, `.cname`, `.params`, `.returns`, `.get_tag`/`.has_tag`.
+* For a function or macro: `.name`, `.qname`, `.params`, `.returns`, `.get_tag`/`.has_tag`.
+* For functions only: `.cname`, `.param_struct`.
 * For a type: the same accessors as `Type::accessor` above.
 
 A program may check whether a particular accessor is available for an expression by combining `$defined` with `$reflect`:
@@ -2939,7 +2972,18 @@ User-defined attributes may not be applied to themselves and may not be mutually
 
 ## Contracts
 
-A *contract* is a pre- or post-condition attached to a function or macro that a compiler may use for static analysis, for runtime checking, and for optimization. Contracts are written inside documentation comments delimited by `<* ... *>` (see *Lexical elements*).
+A doc comment may precede any top-level declaration, and may also appear on struct, union and bitstruct members, on enum, constdef and fault values, and on interface methods. Each clause within it begins with a contract keyword (a `@`-prefixed identifier) and may extend over one or more lines until the next clause keyword or the closing `*>`.
+
+The clauses divide into two groups. *Documentation directives* — free text, `@return` in its description form, `@deprecated`, and any unrecognised `@`-prefixed directive — are permitted wherever a doc comment is permitted. *Constraint clauses* — `@require`, `@ensure`, `@param`, `@pure` and
+`@return?` — are permitted only on:
+
+* function definitions,
+* macro declarations,
+* function pointer type aliases,
+* interface method declarations,
+* generic declarations and modules, where `@require` is the only permitted constraint clause.
+
+A constraint clause in any other position is a compile-time error.
 
 Contract analysis is **optional in the language**. A conforming compiler may ignore contracts entirely; one may evaluate them statically and reject programs at compile time; or it may insert runtime checks. Regardless of whether the compiler verifies a contract, *violating* a contract is **unspecified behaviour**: the compiler is permitted to optimize as if every contract holds. Safe builds typically lower contract conditions to runtime assertions.
 
@@ -2957,7 +3001,7 @@ contract_clause   ::= require_clause
                     | pure_clause
                     | return_clause
                     | deprecated_clause
-require_clause    ::= "@require" expression ("," expression)* (":" string_literal)?
+require_clause    ::= "@require" ("[" require_target "]")? expression ("," expression)* (":" string_literal)?
 ensure_clause     ::= "@ensure"  expression ("," expression)* (":" string_literal)?
 param_clause      ::= "@param" ("[" param_mode "]")? IDENTIFIER (":" string_literal)?
 param_mode        ::= "&"? ("in" | "out" | "inout")
@@ -2965,6 +3009,7 @@ pure_clause       ::= "@pure"
 return_clause     ::= "@return?" return_fault ("," return_fault)* (":" string_literal)?
 return_fault      ::= path? CONST_IDENT
                     | path? IDENTIFIER "!"
+require_target    ::= IDENTIFIER | CT_IDENT | CT_TYPE_IDENT | HASH_IDENT | "..."                    
 deprecated_clause ::= "@deprecated" (":" string_literal)?
 ```
 
@@ -2985,6 +3030,22 @@ fn int test_foo(int foo)
 ```
 
 Within a `@require` expression, the parameters of the function are in scope. The expression must be free of side effects.
+
+A `@require` clause may be prefixed with a single parameter name enclosed in brackets:
+
+```
+<*
+ @require [a] a > 0 : "a must be greater than zero"
+*>
+fn int scale(int a, int b)
+{
+    return a * b;
+}
+```
+
+The bracketed name is a *hint* to the compiler. It associates the clause with one parameter so that a diagnostic about the clause may be reported against the corresponding argument at the call site rather than against the call as a whole. It does not change the meaning of the clause: the expressions are evaluated exactly as they would be without the prefix, and every parameter remains in scope regardless of which one is named. A conforming compiler may ignore the hint entirely.
+
+At most one name may appear in the brackets, and it must name a parameter of the declaration. The form `[...]` names the variadic parameter slot. The prefix is accepted only on `@require` for functions, macros and function pointers, and not on `@require` clauses attached to generic declarations or modules.
 
 ### Postconditions: `@ensure`
 
