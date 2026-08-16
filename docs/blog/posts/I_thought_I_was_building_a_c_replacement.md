@@ -41,7 +41,7 @@ Step by step it dawned on me that the OO parts were superfluous: – the whole t
 
 And that got me thinking. Here it was: the development speed of Turbo Pascal, so why didn't OO give me that? I discovered an answer in OOPs requirement of up-front architecture.
 
-In OOP, you need to think about architecture from the first — what objects own what objects, what objects know of what objects. And a big part of the "best practices" in OO, such as programming to interfaces, are really ways of trying to mitigate the problem if this deep coupling.
+In OOP, you need to think about architecture from the first — what objects own what objects, what objects know of what objects. And a big part of the "best practices" in OO, such as programming to interfaces, are really ways of trying to mitigate the problem of this deep coupling.
 
 The *methods* are fundamentally linked to this problem. As soon as we write:
 
