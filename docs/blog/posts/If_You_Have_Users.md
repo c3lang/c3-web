@@ -51,3 +51,7 @@ It's the *“build it and they will come”*. Well your users arrived and you th
 Marketing is not about making your language “win”. It's not about aggrandisement. It's about fulfilling the obligation to your users, the ones who liked what you did, and had the courtesy of investing time in using it. Your language might never catch on, that is fine, but there is a difference between trying and failing, and not trying at all. If you don't do it, you can hardly expect them to fork the compiler and continue the work. You've shown the world you don't think the language is good enough to market. That's a signal too, a very strong one.
 
 So language designers: we should either make it clear that something is just a toy language which isn't going anywhere – or we should take responsibility and do the marketing as much as we can. Do or do not, there is no try.
+
+---
+
+Discuss this article on [Reddit](https://www.reddit.com/r/ProgrammingLanguages/s/5n5587RRqD).
