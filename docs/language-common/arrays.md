@@ -420,16 +420,16 @@ int[][4] array = {
 !!! note
     Accessing the multi-dimensional fixed array has inverted array index order compared to when the array was declared.
 
-    ```c3
-    // Uses: <type>[<inner-size>][<outer-size>]
-    int[2][4] array = {
-        {1, 2},
-        {3, 4},
-        {5, 6},
-        {7, 8},
-    };
+```c3
+// Uses: <type>[<inner-size>][<outer-size>]
+int[2][4] array = {
+    {1, 2},
+    {3, 4},
+    {5, 6},
+    {7, 8},
+};
 
-    // Access fixed array using: array[<outer-index>][<inner-index>]
-    int value = array[3][1]; // 8
-    ```
+// Access fixed array using: array[<outer-index>][<inner-index>]
+int value = array[3][1]; // 8
+```
 
