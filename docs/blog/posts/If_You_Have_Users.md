@@ -54,4 +54,4 @@ So language designers: we should either make it clear that something is just a t
 
 ---
 
-Discuss this article on [Reddit](https://www.reddit.com/r/ProgrammingLanguages/s/5n5587RRqD).
+Discuss this article on [Reddit](https://www.reddit.com/r/ProgrammingLanguages/s/5n5587RRqD) and [Lobste.rs](https://lobste.rs/s/rg0rlr/if_you_have_users_you_have_market_your).
