@@ -106,7 +106,7 @@ enum Foo : (int val)
     LIFF { 42 }
 }
 ...
-Foo? foo = Foo::lookup_field(val, 42); // Returns Foo.ABC
+Foo? foo = Foo::lookup_field(val, 42); // Returns Foo.LIFF
 ```
 
 #### `max` / `min`
