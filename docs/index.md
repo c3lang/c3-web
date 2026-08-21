@@ -323,7 +323,7 @@ fn void main()
     <div class="lp-evolution-section">
       <h2 style="font-weight: 800; margin-top: 0;">C3 is an evolution, not a revolution: <span class="lp-gradient-text">The speed of C, shaped for modern software.</span></h2>
        <p>C3 is a systems programming language that scales from drivers and embedded software to desktop applications, servers, and developer tools.</p>
-      <p>It builds on the syntax and semantics of the C language, with the goal of providing modern ergonomics and ease of development while being familiar to C/C++ programmers.</p>
+      <p>It builds on the syntax and semantics of the C language, with the goal of providing modern ergonomics and ease of development while being simple and familiar to C/C++ programmers.</p>
       <p style="margin: 0;">Thanks to full ABI compatibility with C, it's possible to mix C and C3 in the same project with no effort. As a demonstration, <a href="https://github.com/c3lang/vkQuake" target="_blank" style="color: var(--md-primary-fg-color); font-weight: 600;">vkQuake</a> was compiled with a small portion of the code converted to C3 and compiled with the c3c compiler.</p>
     </div>
   </div>
