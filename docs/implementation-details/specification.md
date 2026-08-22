@@ -1427,7 +1427,8 @@ The remaining alias forms introduce a new name for an ordinary identifier (a fun
 ```
 alias_decl     ::= "alias" alias_name generic_decl? attributes? "=" alias_source ";"
 alias_name     ::= IDENTIFIER | CONST_IDENT | AT_IDENT
-alias_source   ::= (path? IDENTIFIER | path? CONST_IDENT | path? AT_IDENT) generic_parameters?
+alias_source   ::= alias_target | constant_expression ("?" | "???") alias_source ":" alias_source
+alias_target   ::= (path? IDENTIFIER | path? CONST_IDENT | path? AT_IDENT) generic_parameters?
 ```
 
 The lexical kind of `alias_name` must match the lexical kind of `alias_source`:
@@ -1437,6 +1438,20 @@ The lexical kind of `alias_name` must match the lexical kind of `alias_source`:
 - An `AT_IDENT` alias refers to a macro.
 
 The optional `generic_parameters` on the right-hand side instantiates a generic target, producing a non-generic alias. The optional `generic_decl` on the left-hand side declares the alias itself as generic; its parameters are in scope on the right-hand side.
+
+#### Conditional alias sources
+
+An alias source may be a ternary expression whose condition is a compile-time constant. The compiler evaluates the condition and takes the selected branch as the alias target; the ternary may be nested, so a chain of conditions may select among several targets.
+
+```
+alias open_file = $feat(WIN32) ??? win32_open : posix_open;
+```
+
+Within an alias source, the branches of the ternary are not cast as rvalues until after the ternary is resolved. A branch may therefore name a function, macro, type, or other entity that may not be an rvalue on its own. This differs from a ternary in ordinary expressions, where the branches are implicitly converted to rvalues. 
+
+As with the regular ternary `?` will semantically check both branches, and `???` will only semantically check the branch selected by the conditional.
+
+The lexical-kind matching rule above applies to every branch: each branch of the ternary must be of the same lexical kind as `alias_name`.
 
 ### Fault value declarations
 
