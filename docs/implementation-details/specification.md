@@ -2857,6 +2857,9 @@ The first three may also appear on a module section to set the default visibilit
 * `@inline` / `@noinline` — request, respectively, that calls to this function be inlined or not.
 * `@callconv(name)` — selects a calling convention. The argument is a compile-time string; the recognized values are implementation dependent, but will at least contain `"cdecl"`. The default is `"cdecl"`. If more than one `@callconv` is applied to a function or call, the last takes precedence.
 * `@naked` — the function has no compiler-generated prologue or epilogue; typically used with inline assembly.
+* `@noredzone` - the function does not emit a redzone, regardless of target.
+* `@stackprobe` / `@nostackprobe` - control emission of stack probe on this function: 'none', 'call' or 'inline'
+* `@stackprotection` / `@nostackprotection` - control emission of stack protection: 'none', 'basic', 'strong', 'all'.
 * `@noreturn` — the function never returns to its caller; reaching its textual end is an error.
 * `@pure` — the function has no observable side effects and may be assumed safe to call in contracts.
 * `@maydiscard` / `@nodiscard` — explicitly allow or forbid discarding the return value at call sites.

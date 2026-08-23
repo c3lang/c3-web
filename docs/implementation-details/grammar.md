@@ -44,9 +44,11 @@ The following attributes are built in:
 @export       @extname    @inline     @interface
 @littleendian @local      @maydiscard @mustinit
 @naked        @nodiscard  @noinit     @noinline
+@noredzone    @nostackprobe @nostackprotection
 @noreturn     @nostrip    @obfuscate  @operator
 @overlap      @packed     @priority   @private
 @public       @pure       @reflect    @section
+@stackprotection @stackprobe
 @stdcall      @test       @unused     @used
 @veccall      @wasm       @weak       @winmain
 ```

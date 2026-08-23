@@ -182,10 +182,10 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 `@callconv`, `@cname`, `@deprecated`, `@dynamic`, `@export`, `@feat`,
 `@if`, `@inline`,
 `@littleendian`, `@local`, `@maydiscard`, `@mustinit`, `@naked`,
-`@nodiscard`, `@noinit`, `@noreturn`, `@nostrip`,
+`@nodiscard`, `@noinit`, `@noredzone`, `@noreturn`, `@nostrip`, `@nostackprobe`, `@nostackprotector`,
 `@obfuscate`, `@operator`, `@optional`, `@overlap`, `@priority`,
 `@private`, `@public`, `@pure`, `@reflect`,
-`@section`, `@test`, `@used`, `@unused`.
+`@section`, `@stackprotector`, `@stackprobe`, `@test`, `@used`, `@unused`.
 
 ## Declarations
 

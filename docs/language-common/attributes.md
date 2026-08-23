@@ -271,6 +271,12 @@ compile time error otherwise.
 
 Import the module but not sub-modules or parent-modules, see [Modules Section](../language-fundamentals/modules.md#non-recursive-imports).
 
+### `@noredzone`
+
+*Used for: function*
+
+This attribute disables redzone emission on targets that use it.
+
 ### `@noreturn`
 
 *Used for: function, macro*
@@ -282,6 +288,18 @@ Declares that the function will never return.
 *Used for: function*
 
 This prevents sanitizers from being added to this function.
+
+### `@nostackprobe` 
+
+*Used for: function*
+
+Prevent emission stack probe when it is otherwise enabled.
+
+### `@nostackprotection`
+
+*Used for: function*
+
+Prevent emission stack protection when it is otherwise enabled.
 
 ### `@nostrip`
 
@@ -371,6 +389,18 @@ Declares that a global variable or function should appear in a specific section.
 *Used for: vector types*
 
 Turns a vector type into a type matching C SIMD types for the purpose of storage and ABI lowering. Usually it will not offer any additional speed over using regular vector types, and are mostly for conforming to C functions that explicitly use SIMD types.
+
+### `@stackprobe`
+
+*Used for: function*
+
+Set the stack probe type for a function. Valid options are "none", "call" and "inline".
+
+### `@nostackprotection`
+
+*Used for: function*
+
+Set the stack protection type for a function. Valid options are "none", "basic", "strong" and "all".
 
 ### `@tag(name, value)`
 
