@@ -142,7 +142,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `size`.
 1. Operator precedence of bit operations is higher than `+` and `-`.
 2. Well defined-evaluation order: left-to-right, assignment after expression evaluation.
 3. `sizeof` is `@sizeof` and only works on expressions. Use `Type::size` on types.
-4. `alignof` is `@alignof` for expressions. Types use `Type.alignment`.
+4. `alignof` is `@alignof` for expressions. Types use `Type::alignment`.
 5. Narrowing conversions are only allowed if all sub-expressions are as small or smaller than the type.
 6. Widening conversions are only allowed on simple expressions (i.e. most binary expressions and some unary may not be widened).
 
@@ -248,10 +248,11 @@ The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
 
 1. `@feat(FLAG)` to conditionally include a struct/union field, a user-defined type, function, or global based on the compiler's feature flags.
 2. `@if(cond)` inside a generic module, to conditionally include a member of the generic based on the generic parameters.
-3. Compile time variables with `$` prefix, e.g. `$foo`.
-4. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
-5. `$for` and `$foreach` to loop over compile time variables and data.
-6. `$Typeof` determines an expression type without evaluating it.
+3. `$feat(FLAG)` to test for enabled compiler feature flags.
+4. Compile time variables with `$` prefix, e.g. `$foo`.
+5. `$if...$else...$endif` and `$switch...$endswitch` inside of functions to conditionally include code.
+6. `$for` and `$foreach` to loop over compile time variables and data.
+7. `$Typeof` determines an expression type without evaluating it.
 7. Type properties may be accessed at compile time.
 8. `$defined` returns true if the expression (variable, function, type, etc) passed to it would compile. The expression passed to `$defined` is not actually executed though and thus does not have side effects.
 9. `$error` emits an error if encountered.

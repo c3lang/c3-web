@@ -36,6 +36,18 @@ fn int test_foo(int foo)
 }
 ```
 
+A `@require` clause may also be prefixed with a parameter name in brackets as a pinpoint contract:
+
+```c3
+<*
+ @require [a] a > 0 : "a must be greater than zero"
+*>
+fn int scale(int a, int b)
+{
+    return a * b;
+}
+```
+
 If we now write the following code:
 
 ```c3

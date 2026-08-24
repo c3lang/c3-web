@@ -160,12 +160,12 @@ Conditionally includes a parameterized declaration at instantiation time based o
 ```c3
 module container <Ty>;
 
-Ty first_element @if(Ty.kindof == TypeKind.SIGNED_INT);
+Ty first_element @if(Ty::kind == TypeKind.SIGNED_INT);
 ```
 
-`@if` is not available on non-parameterized top-level declarations; use `@feat` for feature-flag-based conditional compilation.
+`@if` is restricted to generic contexts and is deprecated/not available on non-parameterized top-level declarations; use `@feat` for feature-flag-based conditional compilation.
 
-**NOTE: Previous to 0.8.3, this was available for all top-level declarations.**
+**NOTE: Previous to 0.8.3, `@if` was available for all top-level declarations.**
 
 ### `@init`
 
@@ -295,11 +295,11 @@ This prevents sanitizers from being added to this function.
 
 Prevent emission stack probe when it is otherwise enabled.
 
-### `@nostackprotection`
+### `@nostackprotector`
 
 *Used for: function*
 
-Prevent emission stack protection when it is otherwise enabled.
+Prevent emission of stack protection when it is otherwise enabled.
 
 ### `@nostrip`
 
@@ -396,7 +396,7 @@ Turns a vector type into a type matching C SIMD types for the purpose of storage
 
 Set the stack probe type for a function. Valid options are "none", "call" and "inline".
 
-### `@nostackprotection`
+### `@stackprotector`
 
 *Used for: function*
 
@@ -407,9 +407,9 @@ Set the stack protection type for a function. Valid options are "none", "basic",
 *Used for: function, macro, user-defined type, struct/union/bitstruct member, global, local variables*
 
 Adds a compile time tag to a type, function or member which can be retrieved
-at compile time using reflection: `.has_tag(..)` and `.get_tag(...)`.
-Example: `Foo.has_tag("bar")` will return true if `Foo` has a tag "bar".
-`Foo.get_tag("bar")` will return the value associated with that tag. For variables and members, access
+at compile time using reflection: `::has_tag(..)` and `::get_tag(...)`.
+Example: `Foo::has_tag("bar")` will return true if `Foo` has a tag "bar".
+`Foo::get_tag("bar")` will return the value associated with that tag. For variables and members, access
 it using `$reflect`: `$reflect(my_global).has_tag("bar")`.
 
 ### `@test`
@@ -488,7 +488,7 @@ struct Test
     int foo @MyAttr("test");
 }
 
-$echo Test.foo.tagof("foo"); // Will echo "test" at compile time
+$echo $reflect(Test.foo).get_tag("foo"); // Will echo "test" at compile time
 ```
 
 The attribute may also be completely empty:

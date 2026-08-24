@@ -48,11 +48,12 @@ The following was extracted:
 | `@param     ` | `@param [<ref>] <param> [ : <description>]`                        |
 | `@return    ` | `@return <description>`                                            |
 | `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]` |
-| `@require   ` | `@require <expr1>, <expr2>, ..., [: <description>]`                |
+| `@require   ` | `@require [<param>] <expr1>, <expr2>, ..., [: <description>]`      |
 | `@ensure    ` | `@ensure <expr1>, <expr2>, ..., [: <description>]`                 |
 | `@deprecated` | `@deprecated [<description>]`                                      |
 | `@pure      ` | `@pure`                                                            |
 
+\*`[<param>]` is an optional pinpoint parameter target e.g. `@require [a] a > 0`\
 \*`[<ref>]` is an optional mutability description e.g. `[&in]`\
 \*`[<description>]` denotes that a description is optional.
 

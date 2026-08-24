@@ -170,7 +170,7 @@ In general, contracts placed on types and identifiers will combine. However, con
 ```c3
 module foo;
 
-<* @require Test.kindof == INTEGER *>
+<* @require Test::kind == TypeKind.SIGNED_INT *>
 struct Foo <Test>
 {
     Test a;
