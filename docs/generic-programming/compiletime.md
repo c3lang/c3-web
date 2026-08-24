@@ -241,7 +241,7 @@ For generics, the `@if` attributes allow you to conditionally include a declarat
 struct Container <Ty>
 {
     Ty first;
-    Ty last @if(Ty.kindof == TypeKind.SIGNED_INT);
+    Ty last @if(Ty::kind == TypeKind.SIGNED_INT);
 }
 ```
 
@@ -249,9 +249,9 @@ Here the `last` field is present only when `Container` is instantiated with a si
 
 `@if` is *not* available on ordinary top-level declarations that carry no generic parameters; those use `@feat`.
 
-### Conditional compilation at the top level using `@if` - 0.8.2 and earlier
+### Conditional compilation at the top level using `@if` - 0.8.2 and earlier (deprecated)
 
-At the top level (where globals are declared; such as functions, variables, etc), conditional compilation is controlled by appending `@if` attributes onto declarations:
+In C3 0.8.2 and earlier, conditional compilation at the top level was controlled by appending `@if` attributes onto declarations. Note that in 0.8.3+, top-level `@if` on non-parameterized declarations is deprecated in favor of `@feat`, and `@if` is restricted to generic contexts.
 
 ```c3
 fn void foo_win32() @if(env::WIN32)

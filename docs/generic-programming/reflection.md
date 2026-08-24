@@ -25,7 +25,12 @@ The following type properties and functions are available:
 
 - `alignment` (all runtime types)
 - `from_ordinal` (constdef and enum only)
+- `generic_args` (generic types)
+- `generic_qname` (generic types)
 - `has_equals`
+- `is_anonymous` (struct, union)
+- `is_generic` (generic types)
+- `is_nested` (struct, union)
 - `is_ordered`
 - `is_substruct` (struct only)
 - `len` (array, vector, enum, constdef - runtime available)
@@ -37,6 +42,7 @@ The following type properties and functions are available:
 - `inner` (runtime types except int, float, struct and union types)
 - `kind` (runtime available)
 - `name` / `qname` / `cname` (cname is limited to all user-defined types)
+- `param_struct` (function types)
 - `params` (function types)
 - `parent` (constdef, struct, typedef - runtime available)
 - `returns` (function types)
@@ -56,7 +62,7 @@ struct Foo @align(8)
     int a;
 }
 
-uint a = Foo::alignment; // 8
+sz a = Foo::alignment; // 8
 ```
 
 #### `from_ordinal`
@@ -90,7 +96,7 @@ enum Foo
     BAZ
 }
 sz len = int[4]::len; // 4
-int foo_values = Foo::len; // 2
+sz foo_values = Foo::len; // 2
 ```
 
 #### `lookup_field`
@@ -162,7 +168,7 @@ This returns a typeid to an "inner" type. What this means is different for each 
 
 - Array -> the array base type.
 - Bitstruct -> underlying base type.
-- Distinct -> the underlying type.
+- Typedef -> the underlying type.
 - Enum -> underlying enum base type.
 - Pointer -> the type being pointed to.
 - Vector -> the vector base type.
@@ -181,15 +187,70 @@ TypeKind kind = int::kind; // TypeKind.SIGNED_INT
 
 Returns the name of the type: `qname` is the qualified name, so adds the module path before the name. `cname` returns the external name, and as such isn't available for built-in types.
 
+#### `generic_args`
+
+*Only available for generic type instantiations.*
+
+Returns a compile-time list of typeids representing the generic arguments used to instantiate the generic type:
+
+```c3
+typeid t = List{String}::generic_args[0]; // String.typeid
+```
+
+#### `generic_qname`
+
+*Only available for generic type instantiations.*
+
+Returns the qualified name of the generic template:
+
+```c3
+String name = List{int}::generic_qname; // "std::collections::list::List"
+```
+
+#### `is_anonymous`
+
+*Only available for structs and unions.*
+
+Returns `true` if the type is an anonymous inner struct or union.
+
+#### `is_generic`
+
+*Only available for generic type instantiations.*
+
+Takes a generic type template and returns `true` if the type was instantiated from that template:
+
+```c3
+bool x = List{int}::is_generic(List); // true
+bool y = int::is_generic(List);       // false
+```
+
+#### `is_nested`
+
+*Only available for structs and unions.*
+
+Returns `true` if the type is declared as an inner/nested type within another type.
+
 #### `params`
 
 *Only available for function pointer types.*
-Returns a ReflectedParam struct for all function pointer parameters.
+Returns a compile-time list of parameter reflection references for all function pointer parameters. Each parameter provides `.name`, `.type`, `.default_value`, `.get_tag(...)`, and `.has_tag(...)`.
 
 ```c3
-alias TestFunc = fn int(int x, double f);
-String s = TestFunc::params[1].name; // "f"
-typeid t = TestFunc::params[1].type; // double.typeid
+alias TestFunc = fn int(int x, double f = 1.0);
+String s = TestFunc::params[1].name;          // "f"
+typeid t = TestFunc::params[1].type;          // double.typeid
+$echo TestFunc::params[1].default_value;       // 1.0
+bool tagged = TestFunc::params[0].has_tag("foo");
+```
+
+#### `param_struct`
+
+*Only available for function pointer types.*
+Returns a struct type whose members mirror the parameter list of the function or function pointer type. For a named function `foo`, it is also accessible via `$reflect(foo).param_struct`:
+
+```c3
+alias Callback = fn void(int count, String name);
+typeid ps = Callback::param_struct;
 ```
 
 #### `parent`
@@ -429,6 +490,22 @@ On Windows, you can try `dumpbin /SYMBOLS` for debug builds, `dumpbin /EXPORTS` 
 On Mac, try `otool`, `nm`, or `objdump`. Running `brew install binutils` before may help.
 
 
+### `bitoffset`
+
+Get the bit offset of a bitstruct member within its backing integer type.
+
+```c3
+sz offset = $reflect(MyBitstruct.field).bitoffset;
+```
+
+### `bitsize`
+
+Get the size in bits of a bitstruct member.
+
+```c3
+sz size = $reflect(MyBitstruct.field).bitsize;
+```
+
 ### `name`
 
 Get the local name of a symbol. Local names (a.k.a. unqualified names) are the "leaf nodes" (the very last item) of the full namespace path to a symbol.
@@ -438,6 +515,14 @@ For example, `$reflect(io::printn).name` is `printn`.
 ### `offset`
 
 Get the offset of a member.
+
+### `param_struct`
+
+Returns the parameter struct type for a function.
+
+```c3
+typeid ps = $reflect(my_function).param_struct;
+```
 
 ### `qname`
 

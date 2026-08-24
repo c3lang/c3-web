@@ -826,7 +826,7 @@ fn int main()
             String? s = io::treadline();
             if (catch s) return 1;
 
-            if (try current_guess = Action.lookup_field(abbrev, s))
+            if (try current_guess = Action::lookup_field(abbrev, s))
             {
                 guess = current_guess;
                 break;
@@ -836,7 +836,7 @@ fn int main()
 
         io::printfn("Player: %s", guess.full);
 
-        Action comp = Action.from_ordinal(rand(3));
+        Action comp = Action::from_ordinal(rand(3));
         io::printfn("Computer: %s", comp.full);
 
         switch

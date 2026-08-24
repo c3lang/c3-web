@@ -123,7 +123,16 @@ Pair{int} coords = { 10, 20 };
 Pair{double} point = { 1.5, 2.5 };
 ```
 
-For more information, see the chapter on [generics](../generic-programming/generics.md).
+## Conditional aliases
+
+An alias may use a compile-time ternary expression to conditionally select its target (for example, based on `$feat(...)`):
+
+```c3
+alias FileHandle = $feat(WIN32) ? Win32Handle : PosixHandle;
+alias open_file = $feat(WIN32) ? win32_open : posix_open;
+```
+
+The ternary condition is evaluated at compile time, and the selected branch becomes the alias target.
 
 ## Function pointer default arguments and named parameters
 

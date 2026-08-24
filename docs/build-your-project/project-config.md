@@ -88,6 +88,12 @@ This is a description of the configuration options in `project.json`:
   "soft-float": false,
   // Strip unused code and globals from the output.
   "strip-unused": true,
+  // Set the stack argument probing mode: "none", "call", "inline".
+  "stack-probe": "call",
+  // Set the stack size threshold for argument probing in bytes.
+  "stack-probe-size": 4096,
+  // Set the stack protection level: "none", "basic", "strong", "all".
+  "stack-protector": "basic",
   // The size of the symtab, which limits the amount
   // of symbols that can be used. Should usually not be changed.
   "symtab": 1048576,
@@ -191,6 +197,18 @@ List of warnings to enable during compilation.
 #### `opt`
 
 Optimization setting: O0, O1, O2, O3, O4, O5, Os, Oz.
+
+#### `stack-probe`
+
+Set the stack argument probing mode: `"none"`, `"call"`, or `"inline"`.
+
+#### `stack-probe-size`
+
+Set the stack size threshold for argument probing in bytes (default: `4096`).
+
+#### `stack-protector`
+
+Set the stack protection level: `"none"`, `"basic"`, `"strong"`, or `"all"`.
 
 ## Target options
 

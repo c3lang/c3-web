@@ -474,12 +474,22 @@ will make it treated as a compile time constant. The constant does not need to b
 
 ```c3
 const A = false;
-// Compile time
-$if A:
-  // This will not be compiled
-$else
-  // This will be compiled
-$endif
+
+fn void example()
+{
+    // Compile-time branching uses $if:
+    $if A:
+        // This will not be compiled
+    $else
+        // This will be compiled
+    $endif
+}
+
+// Top-level conditional compilation of declarations uses @feat:
+fn void foo() @feat(MY_FEATURE)
+{
+    // ...
+}
 ```
 
 `volatile` is replaced by macros for volatile load and store.

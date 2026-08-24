@@ -272,17 +272,17 @@ We can now create a macro method on `Obj` which compiles to different calls depe
 macro void Obj.func(&self, ...)
 {
     // Does it have a single argument of type 'Foo*'?
-    $if $vacount == 1 &&& @typeis($vaarg[0], Foo*):
+    $if $vaarg.len == 1 &&& $Typeof($vaarg[0]) == Foo*:
         // If so, dispatch to func2
         return self.func2($vaarg[0]);
     $else
         // Otherwise, dispatch all vaargs to func1
-        return self.func1($vasplat);
+        return self.func1(...$vaarg);
     $endif
 }
 ```
 
-The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`. (The use of `&&&` is the same as `&&` except that the right hand side is lazily evaluated. In this case, it only is checked if `$vacount` is `1`.)
+The above would make it possible to use both `obj.func("Abc", "Def")` and `obj.func(&my_foo)`. (The use of `&&&` is the same as `&&` except that the right hand side is lazily evaluated. In this case, it only is checked if `$vaarg.len` is `1`.)
 
 ## Platform support
 
@@ -312,7 +312,7 @@ help you get things working.
 
 **A:** You can pass *feature flags* on the command line using `-D SOME_FLAG` or using the `features` key in the project file.
 
-**NOTE: On 0.8.2 and earlier, use `$feature` as the name.
+**NOTE: In 0.8.2 and earlier, use `$feature` instead.**
 
 You can then test for them using `$feat(FLAG_NAME)` or with `@feat`:
 
