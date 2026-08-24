@@ -28,9 +28,7 @@ The following type properties and functions are available:
 - `generic_args` (generic types)
 - `generic_qname` (generic types)
 - `has_equals`
-- `is_anonymous` (struct, union)
 - `is_generic` (generic types)
-- `is_nested` (struct, union)
 - `is_ordered`
 - `is_substruct` (struct only)
 - `len` (array, vector, enum, constdef - runtime available)
@@ -96,7 +94,7 @@ enum Foo
     BAZ
 }
 sz len = int[4]::len; // 4
-sz foo_values = Foo::len; // 2
+int foo_values = Foo::len; // 2
 ```
 
 #### `lookup_field`
@@ -207,12 +205,6 @@ Returns the qualified name of the generic template:
 String name = List{int}::generic_qname; // "std::collections::list::List"
 ```
 
-#### `is_anonymous`
-
-*Only available for structs and unions.*
-
-Returns `true` if the type is an anonymous inner struct or union.
-
 #### `is_generic`
 
 *Only available for generic type instantiations.*
@@ -223,12 +215,6 @@ Takes a generic type template and returns `true` if the type was instantiated fr
 bool x = List{int}::is_generic(List); // true
 bool y = int::is_generic(List);       // false
 ```
-
-#### `is_nested`
-
-*Only available for structs and unions.*
-
-Returns `true` if the type is declared as an inner/nested type within another type.
 
 #### `params`
 
