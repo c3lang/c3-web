@@ -404,7 +404,7 @@ Set the stack protection type for a function. Valid options are "none", "basic",
 
 ### `@tag(name, value)`
 
-*Used for: function, macro, user-defined type, struct/union/bitstruct member, global, local variables*
+*Used for: function, macro, function parameters, user-defined type, struct/union/bitstruct member, global, local variables*
 
 Adds a compile time tag to a type, function or member which can be retrieved
 at compile time using reflection: `::has_tag(..)` and `::get_tag(...)`.
