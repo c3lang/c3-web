@@ -15,24 +15,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Download and extract c3c
-        run: |
-          # Fallback to "latest" is "latest-prerelease-tag" is not there
-          wget https://github.com/c3lang/c3c/releases/download/latest-prerelease-tag/c3-linux-static.tar.gz -O c3.tar.gz || \
-            wget https://github.com/c3lang/c3c/releases/latest/download/c3-linux-static.tar.gz -O c3.tar.gz
-          tar -xzf c3.tar.gz
+      - name: Setup C3 Compiler
+        id: setup-c3
+        uses: ManuLinares/setup-c3@v1
+        with:
+          version: nightly
 
       - name: Generate documentation
+        working-directory: ${{ steps.setup-c3.outputs.c3c-path }}
         run: |
-          cd c3
-          ./c3c docgen lib/std --target linux-x64 --append
-          ./c3c docgen lib/std --target windows-x64 --append
-          ./c3c docgen lib/std --target macos-aarch64 --append
+          c3c docgen lib/std --target linux-x64 --append
+          c3c docgen lib/std --target windows-x64 --append
+          c3c docgen lib/std --target macos-aarch64 --append
 
       - name: Copy documentation
         run: |
           mkdir -p docs/standard-library
-          cp c3/docs.html docs/standard-library/docs.html
+          cp "${{ steps.setup-c3.outputs.c3c-path }}/docs.html" docs/standard-library/docs.html
 
       - name: Commit and Push
         run: |
