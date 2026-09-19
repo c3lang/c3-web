@@ -1671,19 +1671,20 @@ The semantics of these forms are described in *Compile-time evaluation* and *Ref
 
 ### Unary operators
 
+
 ```
 unary_expr ::= unary_op expression
 unary_op   ::= "+" | "-" | "!" | "~" | "*" | "&" | "&&" | "++" | "--" | "(" type ")"
 ```
 
-* `+e` performs integer promotion: integer operands narrower than the platform `int` are promoted to `int` (with the corresponding signedness); operands of `int` or wider, and operands of floating-point or vector type, are returned unchanged. The operand must be of numeric or vector type. The result type may therefore differ from the operand type for narrow integers.
-* `-e` is the arithmetic negation of `e`; its operand must be of integer, floating-point, or vector type. Signed integer negation wraps on overflow (it is defined to wrap, not undefined).
-* `!e` is the logical negation of `e`; its operand must be of boolean type.
+* `+e` performs integer promotion after any permitted implicit conversion: integer operands narrower than the platform `int` are promoted to `int` (with the corresponding signedness); operands of `int` or wider, and operands of floating-point or vector type, are returned unchanged. The operand need not itself be numeric or vector typed, but must be implicitly convertible to such a type. The result type may therefore differ from the operand type.
+* `-e` is the arithmetic negation of `e`. The operand must be of, or implicitly convertible to, an integer, floating-point, or vector type. Signed integer negation wraps on overflow (it is defined to wrap, not undefined).
+* `!e` is the logical negation of `e`; it is valid whenever `e` can be converted to `bool` for use as a condition (equivalently, when `(bool)e` is valid).
 * `~e` is the bitwise complement of `e`; its operand must be of integer or vector type.
 * `*p` is the value pointed to by `p`; `p` must be of pointer type, and may not be `void*`.
 * `&v` is the address of `v`; the operand must be addressable (an lvalue), and the result has the type "pointer to the operand's type".
 * `&&e` is a *temporary address*: it materializes the value of `e` in a fresh storage location whose lifetime extends to the end of the enclosing full expression, and yields a pointer to that location. The operand need not be addressable.
-* `++lvalue` and `--lvalue` increment and decrement `lvalue` by one and yield the value after the modification. The operand must be addressable, of integer, floating-point, or pointer type.
+* `++lvalue` and `--lvalue` increment and decrement `lvalue` by one and yield the value after the modification. The operand must be addressable and of integer, floating-point, pointer, or enum type. For enum types, `++` and `--` wrap, so that incrementing from the last enum value yields the first enum value, and conversely, decrementing from the first enum value yields the last.
 * `(type) expression` is an explicit cast — see *Conversions*.
 
 The unary operators have higher precedence than any binary operator. Postfix operations (member access, subscript, call, optional propagation, postfix `++`/`--`) have higher precedence than the prefix unary operators.
