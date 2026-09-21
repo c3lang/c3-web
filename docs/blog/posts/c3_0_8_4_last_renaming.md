@@ -40,8 +40,10 @@ Note that `attrdef`, `constdef` and `faultdef` will work throughout the entire 0
 It is now possible to associate a requirement with a particular parameter by placing it in brackets after `@require`:
 
 ```c3
+<*
+ @require [a] a > 0 : "a must be greater than zero"
+*>     
 fn void example(int a)
-    @require [a] a > 0 : "a must be greater than zero"
 {
     // ...
 }
