@@ -90,7 +90,7 @@ alias foo = $feat(ABC) ? foo_1 : foo_2;
 
 ### Stack hardening and the x86 red zone
 
-C3 0.8.4 adds several controls for stack hardening. The new `--stack-probe`, `--stack-probe-size`, and `--stack-protector` options configure stack probing and stack-canary generation from the command line. Projects can use the corresponding `stack-probe` and `stack-protector` options.
+C3 0.8.4 adds several controls for stack hardening. The new `--stack-probe`, `--stack-probe-size`, and `--stack-protector` options configure stack probing and stack-canary generation from the command line.
 
 Individual functions and lambdas can override these settings with `@stackprobe(level)`, `@nostackprobe`, `@stackprotector(level)`, and `@nostackprotector`. Naked functions no longer receive stack protectors by default.
 
