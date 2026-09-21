@@ -33,7 +33,7 @@ excuse
 
 Both `cenum` and `constset` were considered. Eventually the latter won out because it established a stronger independent feature, whereas the `cenum` hints at it just being an "enum that works like in C", which isn't correct.
 
-Note that `attrdef`, `constdef` and `faultdef` will work throughout the entire 0.8.x cycle. The new keywords are considered an experiemental change, and will be evaluated until 0.9.0. It will become the standard in 0.9.0 only if it's decided that the names are an improvement.
+Note that `attrdef`, `constdef` and `faultdef` will work throughout the entire 0.8.x cycle. The new keywords are considered an experimental change, and will be evaluated until 0.9.0. It will become the standard in 0.9.0 only if it's decided that the names are an improvement.
 
 ### Pinpointing `@require` failures
 
