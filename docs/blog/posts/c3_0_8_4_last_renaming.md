@@ -159,13 +159,13 @@ Again, this release wouldn't have been possible without the C3 community. I'd li
 ### PR contributors for this release
 
 **Stdlib:**
-Archishman Nag, m0tholith, Manu Linares, Ricardo Tomasi, Senthilnathan, Velikiy Kirill
+Archishman Nag, m0tholith, Manu Linares, Ricardo Tomasi, Senthilnathan, Velikiy Kirill.
 
 **Compiler & toolchain:**
-Alexandru Paniș, Darvisim, Manu Linares, neerajnangireddy, rickyadastra, ssimb, Vyacheslav Denisov
+Alexandru Paniș, Darvisim, Manu Linares, neerajnangireddy, rickyadastra, ssimb, Vyacheslav Denisov.
 
 **CI/Infrastructure:**
-Darvisim, Fernando López Guevara, Manu Linares
+Darvisim, Fernando López Guevara, Manu Linares.
 
 ### Change Log
 
