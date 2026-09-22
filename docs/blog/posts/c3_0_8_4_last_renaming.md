@@ -255,4 +255,4 @@ Check out the [documentation](../../getting-started/introduction.md) or [downloa
 https://news.ycombinator.com/item?id=49798843
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
 
-Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=49798843).
+Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=49798843) or [Reddit](https://www.reddit.com/r/programming/s/v0KRCS5QFl).
