@@ -4,16 +4,22 @@ date: 2026-09-18
 tags: ["release", "language-features", "compiler"]
 authors:
   - lerno
-slug: c3_0_8_4_parameter_reflection_stack_protection_ios
+slug: c3_0_8_4_last_renaming
 ---
 
 C3 0.8.4 is now available. This release expands parameter reflection and contracts, adds configurable stack probing and stack protection, introduces iOS support, and brings a new collection type and stream utilities to the standard library.
 
+This release is titled “The Last Renaming” because it very likely contains the final adjustments to C3’s keyword set – and I think we’ve finally got them right.
+
+Changing keywords is hardly the best way to convey stability, but sometimes it is necessary. In C3's case 0.9.0 means syntactic freeze of the language, so getting the choice right in the 0.8.x cycle is vital.
+
+Of course, as usual the old keywords will still work as part of the backwards compatibility with 0.8.3 and earlier, but moving to the new ones are recommended.
+
 ## Language changes & improvements
 
-### Renaming preview for 0.9 – changing the -def family.
+### Renaming preview for 0.9 – changing the -def family
 
-`faultdef` and `attrdef` was introduced in 0.7.0 and `constdef` in 0.7.10. The idea was to unify them under an easy-to-remember "def" suffix. Unfortunately a downside is that this pushes them to retain a similar syntactic shape. After much discussion, we're experimentally introducing new names:
+`faultdef` and `attrdef` were introduced in 0.7.0 and `constdef` in 0.7.10. The idea was to unify them under an easy-to-remember "def" suffix. Unfortunately a downside is that this pushes them to retain a similar syntactic shape. After much discussion, we're experimentally introducing new names:
 
 * `faultdef` -> `excuse`
 * `attrdef` -> `attrmacro`
@@ -31,7 +37,7 @@ excuse
 
 `attrmacro` was chosen because `attrdef` takes parameters and in general acts closer to a macro than an alias.
 
-Both `cenum` and `constset` were considered. Eventually the latter won out because it established a stronger independent feature, whereas the `cenum` hints at it just being an "enum that works like in C", which isn't correct.
+Both `cenum` and `constset` were considered. Eventually the latter won out because it establishes a stronger independent feature, whereas the `cenum` hints at it just being an "enum that works like in C", which isn't correct.
 
 Note that `attrdef`, `constdef` and `faultdef` will work throughout the entire 0.8.x cycle. The new keywords are considered an experimental change, and will be evaluated until 0.9.0. It will become the standard in 0.9.0 only if it's decided that the names are an improvement.
 
@@ -102,7 +108,7 @@ The `--implicit-float` setting provides control over the emission of floating-po
 
 This release adds support for targeting iOS. LLVM compilation scheduling has also been adjusted so the largest modules are built first, helping make better use of parallel compilation.
 
-Project targets types `benchmark` and `test` now work correctly with `c3c benchmark` and `c3c test`, including targeted benchmark functions. Project names passed to `c3c init` may now contain `-`, and the new `--keep-obj` option preserves object files after building and linking.
+Project target types `benchmark` and `test` now work correctly with `c3c benchmark` and `c3c test`, including targeted benchmark functions. Project names passed to `c3c init` may now contain `-`, and the new `--keep-obj` option preserves object files after building and linking.
 
 The compiler can now warn about unused locals and parameters with `--warn-unusedlocal` and `--warn-unusedparam`. Diagnostics have been improved for incorrect panic-function names, excessively long source lines or underlines, and build options incorrectly written with `=`.
 
@@ -128,7 +134,7 @@ Sockets can now report both ends of a connection through `Socket.peer_address`, 
 
 ### Thread pool changes
 
-The old deprecated `pool::ThreadPool` is now disabled by default, and the new `thread::ThreadPool` is enabled by default. The old implementation is exposed as `ThreadPoolOld`, with `-D OLD_THREADPOOL` available for restoring the old name, for projects that do not want to change name to `ThreadPoolOld`.
+The old deprecated `pool::ThreadPool` is now disabled by default, and the new `thread::ThreadPool` is enabled by default. The old implementation is exposed as `ThreadPoolOld`, with `-D OLD_THREADPOOL` available for restoring the old name, for projects that do not want to change the name to `ThreadPoolOld`.
 
 ## Fixes
 
