@@ -252,4 +252,7 @@ Darvisim, Fernando López Guevara, Manu Linares.
 
 Check out the [documentation](../../getting-started/introduction.md) or [download it and try it out](../../getting-started/prebuilt-binaries.md).
 
+https://news.ycombinator.com/item?id=49798843
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
+
+Discuss this article on [Hacker News](https://news.ycombinator.com/item?id=49798843).
