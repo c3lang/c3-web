@@ -2235,7 +2235,7 @@ At the call site, an argument of the form `...expression` *splats* a slice, arra
 
 A function declaration may carry attributes that affect linkage, inlining, calling convention, or visible properties of the function. Some commonly used attributes are:
 
-* `@extern` — declares an externally linked function with no body.
+* `@cname` — declares an externally linked function with no body.
 * `@export` — exports the function from a static or dynamic library.
 * `@inline` / `@noinline` — request, respectively, that the function be inlined or not inlined at call sites.
 * `@noreturn` — declares that the function never returns to its caller.
