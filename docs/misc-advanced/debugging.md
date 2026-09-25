@@ -78,12 +78,12 @@ fn void main() {
 ### Allocation Tracking Macros
 For convenience, C3 provides macros to automatically wrap a block of code with a tracking allocator.
 
-#### `@report_heap_allocs_in_scope`
+#### `mem::@report_heap_allocs_in_scope`
 This macro runs the enclosed code and automatically prints a full memory report at the end of the scope.
 
 ```c3
 fn void main() {
-    @report_heap_allocs_in_scope()
+    mem::@report_heap_allocs_in_scope()
     {
         void* p = mem::malloc(100);
         // ...
