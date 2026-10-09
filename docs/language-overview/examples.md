@@ -327,7 +327,7 @@ Errors are handled using optional results, denoted with a '?' suffix. A variable
 result type may either contain the regular value or a `fault` value.
 
 ```c3
-faultdef DIVISION_BY_ZERO;
+excuse DIVISION_BY_ZERO;
 
 fn double? divide(int a, int b)
 {

@@ -114,7 +114,7 @@ even when they had the same `Excuse` originally.
 ```c3
 import std::io;
 
-faultdef DOG_ATE_HOMEWORK, TEXTBOOK_ON_FIRE;
+excuse DOG_ATE_HOMEWORK, TEXTBOOK_ON_FIRE;
 
 fn int? test()
 {

@@ -157,10 +157,10 @@ Identifiers are limited to 127 characters.
 The following identifiers are reserved as keywords and may not be used otherwise.
 
 ```
-alias      asm        assert     attrdef    bitstruct
-break      case       catch      const      constdef
+alias      asm        assert     attrmacro  bitstruct
+break      case       catch      const      constset
 continue   default    defer      do         else
-enum       extern     false      faultdef   fn
+enum       excuse     extern     false      fn
 for        foreach    foreach_r  if         import
 inline     interface  lengthof   macro      module
 nextcase   null       return     static     struct
@@ -542,7 +542,7 @@ Attributes may not be applied to a compile-time variable. A compile-time variabl
 
 A type determines a set of values together with the operations applicable to those values. A type is either *named* or expressed as a *type literal*.
 
-The built-in types — booleans, integer types, floating-point types, `void`, `any`, `typeid`, and `fault` — are predeclared. Named user-defined types are introduced by `struct`, `union`, `bitstruct`, `enum`, `constdef`, `interface`, `typedef`, and `alias` declarations, each described below. A type literal constructs a type from existing types: pointers, arrays, slices, vectors, optionals, and function types.
+The built-in types — booleans, integer types, floating-point types, `void`, `any`, `typeid`, and `fault` — are predeclared. Named user-defined types are introduced by `struct`, `union`, `bitstruct`, `enum`, `constset`, `interface`, `typedef`, and `alias` declarations, each described below. A type literal constructs a type from existing types: pointers, arrays, slices, vectors, optionals, and function types.
 
 ```
 type      ::= type_name | type_literal
@@ -851,24 +851,24 @@ An enum is converted to and from its ordinal via the properties `.ordinal` and `
 
 ### Constdef types
 
-A `constdef` declaration introduces a *constdef type*: a set of named constants of a backing type, with explicitly chosen values that need not be consecutive.
+A `constset` declaration introduces a *constset type*: a set of named constants of a backing type, with explicitly chosen values that need not be consecutive.
 
 ```
-constdef_decl ::= "constdef" TYPE_IDENT ("(" type ("," type)* ")")? (":" "inline"? type)? attributes? "{" constdef_body "}"
+constset_decl ::= "constset" TYPE_IDENT ("(" type ("," type)* ")")? (":" "inline"? type)? attributes? "{" constset_body "}"
 ```
 
 If the backing type is omitted, it is taken to be `int`. Values that are not explicitly assigned take the value of the previous value plus one.
 
-Unlike `enum`, a constdef has no ordinal: its values are those of its constants. Constdef values do not implicitly convert to or from the backing type; conversions are made by explicit cast unless `inline` is given on the backing type, in which case values convert implicitly *to* the backing type.
+Unlike `enum`, a constset has no ordinal: its values are those of its constants. Constdef values do not implicitly convert to or from the backing type; conversions are made by explicit cast unless `inline` is given on the backing type, in which case values convert implicitly *to* the backing type.
 
-A `constdef` declaration may carry the attribute `@constinit` to permit literals of the backing type to implicitly convert *to* the constdef type.
+A `constset` declaration may carry the attribute `@constinit` to permit literals of the backing type to implicitly convert *to* the constset type.
 
 ### Fault types
 
-The type `fault` is the type of fault values. Fault values are declared with `faultdef`:
+The type `fault` is the type of fault values. Fault values are declared with `excuse`:
 
 ```
-fault_decl ::= "faultdef" CONST_IDENT ("," CONST_IDENT)* attributes? ";"
+fault_decl ::= "excuse" CONST_IDENT ("," CONST_IDENT)* attributes? ";"
 ```
 
 Each declared name is a value of type `fault`. Fault values are used as the *excuse* of an empty optional and are described further under *Optionals and faults*.
@@ -943,7 +943,7 @@ Each entry in the body is a method signature giving a name, return type, and par
 
 An interface value has the same representation as `any`: a pointer paired with a `typeid`. Its size is twice the pointer width; its alignment is the pointer alignment. An implementing type must satisfy the method requirements of the interface and all interfaces it extends.
 
-Any user-defined type — struct, union, bitstruct, enum, constdef, or typedef — may implement one or more interfaces. The interface list is given in parentheses after the type name in the type declaration, and each non-optional method must be provided as a `@dynamic` method. Aliases may not implement interfaces, as they introduce no new type. A value of an implementing type implicitly converts to the interface type. Conversion from an interface to a concrete type, or from `any` to an interface, is explicit and may fail at runtime.
+Any user-defined type — struct, union, bitstruct, enum, constset, or typedef — may implement one or more interfaces. The interface list is given in parentheses after the type name in the type declaration, and each non-optional method must be provided as a `@dynamic` method. Aliases may not implement interfaces, as they introduce no new type. A value of an implementing type implicitly converts to the interface type. Conversion from an interface to a concrete type, or from `any` to an interface, is explicit and may fail at runtime.
 
 #### Implementation limits
 
@@ -985,7 +985,7 @@ The same syntax is used to instantiate generic functions, macros, and global var
 Every type has an *underlying type*.
 
 * For a predeclared type or a type literal, the underlying type is the type itself.
-* For a struct, union, bitstruct, enum, constdef, fault, or interface type, the underlying type is the declared type itself.
+* For a struct, union, bitstruct, enum, constset, fault, or interface type, the underlying type is the declared type itself.
 * For a type alias, the underlying type is the underlying type of the aliased type.
 * For a `typedef`, the underlying type is the underlying type of the type from which it derives.
 
@@ -996,7 +996,7 @@ For some types, an *inner type* is defined.
 * The inner type of a pointer is the pointed-to type.
 * The inner type of an array, slice, or vector is its element type.
 * The inner type of an `enum` is its backing integer type.
-* The inner type of a `constdef` is its backing type.
+* The inner type of a `constset` is its backing type.
 * The inner type of a `bitstruct` is its backing type.
 * The inner type of a `typedef` is the type from which it derives.
 
@@ -1004,7 +1004,7 @@ Other types have no inner type.
 
 ### Type identity
 
-Two types are *identical* if they have the same name (for named types) or the same structure (for type literals). Two distinct declarations of `struct`, `union`, `bitstruct`, `enum`, `constdef`, `interface`, or `typedef` produce distinct types, even when their bodies are textually identical. A type alias is identical to the type it names.
+Two types are *identical* if they have the same name (for named types) or the same structure (for type literals). Two distinct declarations of `struct`, `union`, `bitstruct`, `enum`, `constset`, `interface`, or `typedef` produce distinct types, even when their bodies are textually identical. A type alias is identical to the type it names.
 
 Two `typedef` types with the same underlying type are nevertheless distinct.
 
@@ -1026,7 +1026,7 @@ Alignment depends on the platform and the ABI compiled for. However, some types 
 * **Struct types**: the maximum alignment of any field. Fields are laid out in declaration order with padding inserted between adjacent fields as needed; trailing padding is added after the last field so that the total size is a multiple of the struct's alignment.
 * **Union types**: the maximum alignment of any field. The size of a union is the size of its largest field, rounded up to the nearest multiple of the union's alignment. Fields share storage at the same address with no inter-field padding.
 * **Bitstruct types**: the alignment of the backing type, unless overridden by `@align`.
-* **Enum and constdef types**: the alignment of the backing integer type.
+* **Enum and constset types**: the alignment of the backing integer type.
 * **Optional types (`T?`)**: the alignment of `T`. An optional type has the same size as `T`; the optional status is tracked separately and does not affect storage.
 * **Typedef and alias types**: the alignment of the underlying or aliased type.
 
@@ -1037,7 +1037,7 @@ The `@align(n)` attribute raises the alignment of a struct, union, bitstruct, va
 A value of type Va is *assignable* to a target of type Ty — for example, the right-hand side of an assignment, the initializer of a variable, an argument in a function call, or a value returned from a function — when any of the following holds:
 
 1. Va is identical to Ty.
-2. Va is a numeric literal whose value is representable in Ty, where Ty is a numeric type or a `typedef` or `constdef` of a numeric type with `@constinit` declared.
+2. Va is a numeric literal whose value is representable in Ty, where Ty is a numeric type or a `typedef` or `constset` of a numeric type with `@constinit` declared.
 3. Va is the literal `null` and Ty is a pointer type.
 4. Va is `void*` and Ty is any pointer type, or vice versa.
 5. Va is any non-`void*` pointer and Ty is `void*`.
@@ -1049,7 +1049,7 @@ A value of type Va is *assignable* to a target of type Ty — for example, the r
 11. Va is a pointer to a value whose type implements interface Ty.
 12. Va is an interface type that extends Ty (Ty is a parent interface of Va).
 13. Va is a `typedef` declared `inline` and Ty is its underlying type.
-14. Va is a `constdef` with a backing type declared `inline` and Ty is that backing type.
+14. Va is a `constset` with a backing type declared `inline` and Ty is that backing type.
 15. Va is a vector type and Ty is the corresponding array type with the same element type and length, or vice versa.
 16. Va is a slice type and Ty is `void*` or a pointer to the element type of Va.
 
@@ -1064,9 +1064,9 @@ Before arithmetic, the operands of an arithmetic operation are *promoted* accord
 
 The arithmetic promotion width is the width of a C `int` on the target platform. This is currently 32 bits on all supported target platforms.
 
-#### Operators on typedef and constdef types
+#### Operators on typedef and constset types
 
-A `typedef` or `constdef` declares a named type that is distinct from its underlying type. Operator resolution for such a type proceeds in this order:
+A `typedef` or `constset` declares a named type that is distinct from its underlying type. Operator resolution for such a type proceeds in this order:
 
 1. Check for an overload declared on the top-level operand type.
 2. If no overload applies, check whether the type may be flattened to its inner type for this operator.
@@ -1074,7 +1074,7 @@ A `typedef` or `constdef` declares a named type that is distinct from its underl
 
 ##### Overload lookup is not transitive
 
-Operator overload lookup is performed only for the top-level operand type. Overloads declared on an inner typedef or constdef are not considered after flattening.
+Operator overload lookup is performed only for the top-level operand type. Overloads declared on an inner typedef or constset are not considered after flattening.
 
 For example:
 
@@ -1089,7 +1089,7 @@ For `outer1 + outer2`, where both operands have type `Outer`, the compiler first
 
 ##### Non-assignment binary operators
 
-For a non-assignment binary operator with no applicable overload, typedef and constdef operands are recursively flattened to their inner types when checking whether the built-in operator exists.
+For a non-assignment binary operator with no applicable overload, typedef and constset operands are recursively flattened to their inner types when checking whether the built-in operator exists.
 
 This flattening does not require `inline`.
 
@@ -1110,7 +1110,7 @@ For a compound assignment operator:
 += -= *= /= %= &= |= ^= <<= >>=
 ```
 
-with no applicable overload, fallback flattening is more restrictive. The left-hand type may be flattened only through typedef or constdef declarations whose inner or backing type is declared `inline`.
+with no applicable overload, fallback flattening is more restrictive. The left-hand type may be flattened only through typedef or constset declarations whose inner or backing type is declared `inline`.
 
 ```c3
 typedef Foo = inline int;
@@ -1121,7 +1121,7 @@ typedef Bar = int;
 
 `Bar += 1` is ill-formed unless `Bar` declares a suitable overload.
 
-The `inline` marker therefore controls whether a named typedef or constdef participates implicitly in mutating arithmetic. A non-inline typedef or constdef may still be used in non-assignment binary expressions through flattening, but is not mutated through compound assignment without an overload or explicit conversion.
+The `inline` marker therefore controls whether a named typedef or constset participates implicitly in mutating arithmetic. A non-inline typedef or constset may still be used in non-assignment binary expressions through flattening, but is not mutated through compound assignment without an overload or explicit conversion.
 
 ##### Struct inline members
 
@@ -1318,7 +1318,7 @@ A module section may carry attributes that apply as defaults to every declaratio
 * `@local` — declarations are `@local` by default; visible only within the same file.
 * `@public` — declarations are `@public` by default; used to restore public visibility within a file whose other sections declare a more restrictive default.
 * `@feat(features)` — the section is compiled only when the feature-list is satisfied by the compiler's active feature set (see *Top-level conditional compilation*).
-* `<Ty>`, `<Ty, Tu>`, `<Ty, VALUE>`, ... — a shorthand adding the listed parameter list to every declaration in the section that supports parameterization. A type parameter is a `TYPE_IDENT`; a compile-time value parameter is a `CONST_IDENT`. Declaration kinds that cannot be parameterized, such as `faultdef`, are permitted in the section but are unaffected by the parameter list. See *Generics*.
+* `<Ty>`, `<Ty, Tu>`, `<Ty, VALUE>`, ... — a shorthand adding the listed parameter list to every declaration in the section that supports parameterization. A type parameter is a `TYPE_IDENT`; a compile-time value parameter is a `CONST_IDENT`. Declaration kinds that cannot be parameterized, such as `excuse`, are permitted in the section but are unaffected by the parameter list. See *Generics*.
 
 Multiple attributes may be combined on a single section. Within a section, an individual declaration may override the section default — for example, `@public` on a declaration reverses a section default of `@private`.
 
@@ -1378,7 +1378,7 @@ A *declaration* binds an identifier to an entity such as a variable, a constant,
 
 - *Variable declarations* — globals, extern globals, thread-local globals, local variables, static local variables, and compile-time variables. See *Variables*.
 - *Constant declarations* — typed and untyped named constants. See *Constants*.
-- *Type declarations* — struct, union, bitstruct, enum, constdef, typedef, and interface declarations. See *Types*.
+- *Type declarations* — struct, union, bitstruct, enum, constset, typedef, and interface declarations. See *Types*.
 - *Function declarations* and *method declarations*. See *Functions and methods*.
 - *Macro declarations*. See *Macros*.
 - *Import declarations* — bringing the entities of another module into the current section. See *Modules*.
@@ -1455,16 +1455,16 @@ The lexical-kind matching rule above applies to every branch: each branch of the
 
 ### Fault value declarations
 
-A *faultdef* declaration introduces one or more named values of the built-in type `fault`.
+An *excuse* declaration introduces one or more named values of the built-in type `fault`.
 
 ```
-faultdef_decl    ::= "faultdef" fault_definition ("," fault_definition)* ","? ";"
+faultdef_decl    ::= "excuse" fault_definition ("," fault_definition)* ","? ";"
 fault_definition ::= CONST_IDENT attributes?
 ```
 
 Each `fault_definition` introduces a distinct value of type `fault`. The values are visible at module scope and obey the standard visibility rules. Each fault value may carry its own attributes. A trailing comma after the last `fault_definition` is permitted.
 
-A faultdef does not introduce a new type — all values declared by `faultdef` have type `fault`, and any fault value from any module is comparable and assignable to a `fault`-typed variable.
+A excuse does not introduce a new type — all values declared by `excuse` have type `fault`, and any fault value from any module is comparable and assignable to a `fault`-typed variable.
 
 
 ## Expressions
@@ -1777,7 +1777,7 @@ Both operators short-circuit; `b` is evaluated only when needed.
 
 #### Relational operators
 
-The operators `<`, `<=`, `>`, `>=`, `==`, `!=` compare two operands and produce a value of type `bool`. They share a single precedence level. Comparison is defined for: numeric types (after arithmetic promotion), pointer types (with the usual address ordering), boolean types (with `false < true`), enum types (by ordinal), constdef and typedef types (per their underlying type), `fault` (by identity, for `==`/`!=` only), `typeid` (by identity, for `==`/`!=` only), and vector types (elementwise, yielding a vector of `bool`).
+The operators `<`, `<=`, `>`, `>=`, `==`, `!=` compare two operands and produce a value of type `bool`. They share a single precedence level. Comparison is defined for: numeric types (after arithmetic promotion), pointer types (with the usual address ordering), boolean types (with `false < true`), enum types (by ordinal), constset and typedef types (per their underlying type), `fault` (by identity, for `==`/`!=` only), `typeid` (by identity, for `==`/`!=` only), and vector types (elementwise, yielding a vector of `bool`).
 
 Two pointer values are equal if they point to the same object or are both `null`. Two slices are not directly comparable; use `slice.ptr` and `slice.len` if needed.
 
@@ -2679,7 +2679,7 @@ The accessors below are restricted to the type kinds for which they make sense; 
 
 * `Ty::min` / `Ty::max` — the minimum and maximum representable values; defined for integer and floating-point types.
 * `Ty::nan` / `Ty::inf` — NaN and infinity values; defined for floating-point types.
-* `Ty::len` — the length of an array, vector, or enum-like type. For arrays and vectors it is the number of elements; for enums and constdefs it is the number of declared constants.
+* `Ty::len` — the length of an array, vector, or enum-like type. For arrays and vectors it is the number of elements; for enums and constsets it is the number of declared constants.
 * `Ty::members` — a compile-time list of member descriptors. Defined for struct, union, bitstruct, and enum types. Each element is a reflective reference equivalent to `$reflect` applied to that member. Because the list is untyped at runtime, it may be iterated only at compile time.
 * `Ty::inner` — the inner `typeid` of a composite type:
   * Array — the element type.
@@ -2688,15 +2688,15 @@ The accessors below are restricted to the type kinds for which they make sense; 
   * Bitstruct — the backing type.
   * Enum — the backing integer type.
   * Typedef — the underlying type.
-* `Ty::parent` — for typedef, constdef, bitstruct, and struct types, the typeid of the `inline` member; for struct, the typeid of the inlined substruct member, if any.
+* `Ty::parent` — for typedef, constset, bitstruct, and struct types, the typeid of the `inline` member; for struct, the typeid of the inlined substruct member, if any.
 * `Ty::is_substruct` — defined for struct; `true` if the struct has an `inline` member.
 * `Ty::params` — defined for function pointer types; a compile-time array of parameter descriptors (each with `.name` and `.type`).
 * `Ty::returns` — defined for function pointer types; the return type as a `typeid`.
 * `Ty::param_struct` - defined for function pointer types; a struct type whose members mirror the parameter list, or `void` if the function takes no parameters. See *Parameter structs*.
 * `Ty::cname` — the external (mangled) name of the type as a compile-time string; not defined for built-in types.
-* `Ty::from_ordinal(i)` — defined for enum and constdef; produces the value with the given ordinal.
+* `Ty::from_ordinal(i)` — defined for enum and constset; produces the value with the given ordinal.
 * `Ty::lookup_field(field, value)` — defined for enum; returns an optional containing the first value whose associated field equals `value`, or a fault if none matches.
-* `Ty::values` — defined for enum and constdef; a compile-time array of the declared values.
+* `Ty::values` — defined for enum and constset; a compile-time array of the declared values.
 * `Ty::get_tag(name)` / `Ty::has_tag(name)` — query user-defined tags attached to the type.
 
 ### Reflective references and member queries
@@ -2965,17 +2965,17 @@ A small subset of attributes appears on `import` declarations rather than on ent
 An *attribute definition* introduces a user-defined attribute that expands to one or more built-in attributes. It is a top-level declaration:
 
 ```
-attrdef_decl ::= "attrdef" AT_TYPE_IDENT ("(" parameter_list? ")")? attribute_list? ("=" attribute_list)? ";" 
+attrmacro_decl ::= "attrmacro" AT_TYPE_IDENT ("(" parameter_list? ")")? attribute_list? ("=" attribute_list)? ";" 
 attribute_list ::= attribute ("," attribute)*
 ```
 
-An attribute defined by `attrdef` may have parameters; the parameters are substituted into the expansion when the attribute is applied at a use site.
+An attribute defined by `attrmacro` may have parameters; the parameters are substituted into the expansion when the attribute is applied at a use site.
 
 ```
-attrdef @MyAttribute       = @noreturn, @inline;
-attrdef @MyCname(x)        = @cname(x);
-attrdef @TagFoo(value)     = @tag("foo", value);
-attrdef @MyAttributeEmpty;
+attrmacro @MyAttribute       = @noreturn, @inline;
+attrmacro @MyCname(x)        = @cname(x);
+attrmacro @TagFoo(value)     = @tag("foo", value);
+attrmacro @MyAttributeEmpty;
 ```
 
 A use of a user-defined attribute is equivalent to the textual substitution of its expansion at the use site. The two function declarations below are equivalent:
@@ -2991,7 +2991,7 @@ User-defined attributes may not be applied to themselves and may not be mutually
 
 ## Contracts
 
-A doc comment may precede any top-level declaration, and may also appear on struct, union and bitstruct members, on enum, constdef and fault values, and on interface methods. Each clause within it begins with a contract keyword (a `@`-prefixed identifier) and may extend over one or more lines until the next clause keyword or the closing `*>`.
+A doc comment may precede any top-level declaration, and may also appear on struct, union and bitstruct members, on enum, constset and fault values, and on interface methods. Each clause within it begins with a contract keyword (a `@`-prefixed identifier) and may extend over one or more lines until the next clause keyword or the closing `*>`.
 
 The clauses divide into two groups. *Documentation directives* — free text, `@return` in its description form, `@deprecated`, and any unrecognised `@`-prefixed directive — are permitted wherever a doc comment is permitted. *Constraint clauses* — `@require`, `@ensure`, `@param`, `@pure` and
 `@return?` — are permitted only on:
@@ -3440,13 +3440,13 @@ C3 represents recoverable error conditions through *optional* types — types of
 
 ### Faults
 
-A *fault* is a value of the built-in type `fault`. Fault values are introduced into a module by `faultdef` declarations:
+A *fault* is a value of the built-in type `fault`. Fault values are introduced into a module by `excuse` declarations:
 
 ```
-faultdef IO_ERROR, NOT_FOUND, ACCESS_DENIED;
+excuse IO_ERROR, NOT_FOUND, ACCESS_DENIED;
 ```
 
-Each `faultdef` introduces one or more named fault values. Two fault values compare equal under `==` and `!=` if and only if they are the same declared fault. Faults have no inherent ordering and no associated payload; a program that needs to attach data to a fault typically wraps the fault in a richer return type.
+Each `excuse` introduces one or more named fault values. Two fault values compare equal under `==` and `!=` if and only if they are the same declared fault. Faults have no inherent ordering and no associated payload; a program that needs to attach data to a fault typically wraps the fault in a richer return type.
 
 The literal `null` denotes "no fault" — the absence-of-fault value carried by a successful optional. The literal may be used in fault comparisons (`@catch(x) == null`) and as a fault assignment.
 

@@ -163,7 +163,7 @@ bitstruct Implicit : int
 It is possible to use bitstructs to implement bitmasks without using the explicit masking values, see the following example:
 
 ```c3
-constdef BitMaskEnum : uint
+constset BitMaskEnum : uint
 {
     ABC = 1 << 0,
     DEF = 1 << 1,

@@ -57,7 +57,7 @@ const int A_VALUE = 12;
 
 ### Enum members / Faults
 
-`enum` members and faults defined with `faultdef` follow the same naming standard as global constants.
+`enum` members and faults defined with `excuse` follow the same naming standard as global constants.
 
 ```c3
 enum Baz
@@ -66,7 +66,7 @@ enum Baz
     VALUE_2
 }
 
-faultdef OOPS, LOTS_OF_OOPS;
+excuse OOPS, LOTS_OF_OOPS;
 ```
 
 ### Struct / union members

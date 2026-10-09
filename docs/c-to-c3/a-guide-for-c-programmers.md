@@ -341,9 +341,9 @@ fn void test()
 }
 ```
 
-### Changes To `enum` and introducing `constdef`
+### Changes To `enum` and introducing `constset`
 
-C3 enums give new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constdef` instead:
+C3 enums give new features, such as returning the name of the enum value at runtime. Their underlying representation always starts at 0 without gaps. For C enums with gaps, C3 uses `constset` instead:
 
 <div class="lp-grid-2" style="gap: 1.5rem;" markdown="1">
 
@@ -386,7 +386,7 @@ enum Foo
     DEF,
     GHI
 }
-constdef Bar
+constset Bar
 {
     OOPS = 4,
     HELLO,

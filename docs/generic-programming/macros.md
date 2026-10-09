@@ -163,7 +163,7 @@ int foo(int x) DEPRECATED_INLINE { ... }
 
 ```c3
 // C3 Macro
-attrdef @DeprecatedInline = @deprecated, @inline;
+attrmacro @DeprecatedInline = @deprecated, @inline;
 fn int foo(int) @DeprecatedInline { ... }
 ```
 

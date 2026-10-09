@@ -175,7 +175,7 @@ Runtime type methods: `inner`, `kind`, `len`, `names`, `size`.
 ## Attributes
 
 C3 adds a long range of attributes in the form `@name(...)`. It is possible to create custom
-attribute groups using `attrdef` (e.g. `attrdef MyAttribute(usz align) = { @aligned(align) @weak };`) which
+attribute groups using `attrmacro` (e.g. `attrmacro MyAttribute(usz align) = { @aligned(align) @weak };`) which
 groups certain attributes. Empty attribute groups are permitted.
 
 The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,

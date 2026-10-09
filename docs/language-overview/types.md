@@ -251,7 +251,7 @@ Result or an Empty, which also carries a [fault](#the-fault-type) type.
 Once extracted, a `fault` can be converted to another `fault`.
 
 ```c3
-faultdef MISSING;   // define a fault
+excuse MISSING;   // define a fault
 
 int? i;
 i = 5;              // Assigning a real value to i.
@@ -288,14 +288,14 @@ fault y = IO_ERROR; // Here IO_ERROR is just a regular
                     // value, since it isn't followed by '~'
 ```
 
-A new `fault` value can only be defined using the `faultdef` statement:
+A new `fault` value can only be defined using the `excuse` statement:
 
 ```c3
-faultdef IO_ERROR, PARSE_ERROR, NOT_FOUND;
+excuse IO_ERROR, PARSE_ERROR, NOT_FOUND;
 ```
 
 Like the [typeid type](#the-typeid-type), a `fault` is pointer sized
-and each value defined by `faultdef` is globally unique. This is true even when faults are separately compiled.
+and each value defined by `excuse` is globally unique. This is true even when faults are separately compiled.
 
 !!! note
     The underlying unique value assigned to a fault may vary each time a program is run.
@@ -616,9 +616,9 @@ fn void main()
 ```
 Find out more about [generic types](../generic-programming/generics.md).
 
-### Enum and constdefs
+### Enum and constsets
 
-These correspond to C's enum. See [enums and constdefs](../language-common/enums.md).
+These correspond to C's enum. See [enums and constsets](../language-common/enums.md).
 
 
 ### Struct types

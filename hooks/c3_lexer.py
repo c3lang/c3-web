@@ -27,9 +27,9 @@ class C3Lexer(RegexLexer):
             ), suffix=r'\b'), Keyword.Type),
 
             (words((
-                'alias', 'assert', 'asm', 'attrdef', 'bitstruct', 'break',
+                'alias', 'assert', 'asm', 'attrmacro', 'bitstruct', 'break',
                 'case', 'catch', 'const', 'continue', 'default', 'defer',
-                'do', 'else', 'enum', 'extern', 'false', 'faultdef', 'fn',
+                'do', 'else', 'enum', 'extern', 'false', 'excuse', 'fn',
                 'for', 'tlocal', 'if', 'inline', 'import', 'macro', 'module',
                 'nextcase', 'null', 'interface', 'return', 'static', 'struct',
                 'switch', 'true', 'try', 'typedef', 'union', 'var', 'while',

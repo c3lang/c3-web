@@ -24,14 +24,14 @@ The exception is `$Typeof(<value>)`, which creates a type from the type of the v
 The following type properties and functions are available:
 
 - `alignment` (all runtime types)
-- `from_ordinal` (constdef and enum only)
+- `from_ordinal` (constset and enum only)
 - `generic_args` (generic types)
 - `generic_qname` (generic types)
 - `has_equals`
 - `is_generic` (generic types)
 - `is_ordered`
 - `is_substruct` (struct only)
-- `len` (array, vector, enum, constdef - runtime available)
+- `len` (array, vector, enum, constset - runtime available)
 - `lookup_field` (enum)
 - `max` / `min` (int and float types)
 - `members` (struct, union, enum, bitstruct)
@@ -42,12 +42,12 @@ The following type properties and functions are available:
 - `name` / `qname` / `cname` (cname is limited to all user-defined types)
 - `param_struct` (function types)
 - `params` (function types)
-- `parent` (constdef, struct, typedef - runtime available)
+- `parent` (constset, struct, typedef - runtime available)
 - `returns` (function types)
 - `size` (runtime available)
 - `typeid` (all runtime types + untypedlist)
 - `get_tag` / `has_tag` (user-defined types)
-- `values` (constdef, enum)
+- `values` (constset, enum)
 
 
 #### `alignment`
@@ -65,8 +65,8 @@ sz a = Foo::alignment; // 8
 
 #### `from_ordinal`
 
-*Only available for constdef and enum.*
-Converts an integer value to the enum/constdef of that ordinal. In the case of constdef
+*Only available for constset and enum.*
+Converts an integer value to the enum/constset of that ordinal. In the case of constset
 it might be different from the actual value.
 
 #### `has_equals`
@@ -85,7 +85,7 @@ True if a struct has an inline member.
 
 #### `len`
 
-Returns the length of the array or vector. For enums and constdefs, it will return the number of constants.
+Returns the length of the array or vector. For enums and constsets, it will return the number of constants.
 
 ```c3
 enum Foo
@@ -241,7 +241,7 @@ typeid ps = Callback::param_struct;
 
 #### `parent`
 
-*Only available for typedef, constdef, bitstruct and struct types.*
+*Only available for typedef, constset, bitstruct and struct types.*
 
 Returns the typeid of the inline field.
 
@@ -291,7 +291,7 @@ typeid x = Foo::typeid;
 
 #### `values`
 
-Returns a slice containing the values of an enum or constdef.
+Returns a slice containing the values of an enum or constset.
 
 ```c3
 enum FooEnum

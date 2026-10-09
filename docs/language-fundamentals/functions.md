@@ -248,7 +248,7 @@ function might either return an Optional with a result, or an Optional with an E
 For example, this function might return `BAD_JOSS_ERROR` or `BAD_LUCK_ERROR` if it fails to produce a valid value.
 
 ```c3
-faultdef BAD_LUCK_ERROR, BAD_JOSS_ERROR;
+excuse BAD_LUCK_ERROR, BAD_JOSS_ERROR;
 
 fn double? test_error()
 {

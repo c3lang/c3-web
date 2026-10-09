@@ -22,7 +22,7 @@ State current_state = WAITING; // or '= State.WAITING'
 The access requires referencing the `enum`'s name as `State.WAITING` because
 an enum like `State` is a separate namespace by default, just like C++'s class `enum`.
 
-Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constdef](#constdef). To create enums that implement a bit-mask, you can also consider using [bitstructs](bitstructs.md#bitstructs-as-bit-masks).
+Standard enums are always backed by an ordinal value running from zero and up, without any gaps. For enums for non-consecutive values, see [constset](#constset). To create enums that implement a bit-mask, you can also consider using [bitstructs](bitstructs.md#bitstructs-as-bit-masks).
 
 ### Enum associated values
 
@@ -139,12 +139,12 @@ user-defined types:
 
 ## Constdef
 
-When interfacing with C code, you may encounter enums that are not sequential. For situations like this, you can use a constdef in C3:
+When interfacing with C code, you may encounter enums that are not sequential. For situations like this, you can use a constset in C3:
 
 ```c3
 extern fn KeyCode get_key_code();
 
-constdef KeyCode
+constset KeyCode
 {
     UNKNOWN   = 0,
     RETURN    = 13,
@@ -160,7 +160,7 @@ constdef KeyCode
 fn void main()
 {
     int a = (int)KeyCode.SPACE; // assigns 32 to a
-    // constdef behave like typedef and will not enforce 
+    // constset behave like typedef and will not enforce 
     // that every value has been declared beforehand
     KeyCode b = (KeyCode)2; 
     // can safely interact with a C function that returns the same enum
@@ -170,11 +170,11 @@ fn void main()
 }
 ```
 
-### Inline constdef and @constinit
+### Inline constset and @constinit
 
-If you need a `constdef` to be converted to its assigned value without using a cast, `inline` can be used:
+If you need a `constset` to be converted to its assigned value without using a cast, `inline` can be used:
 ```c3
-constdef ConstInline : inline String
+constset ConstInline : inline String
 {
     A = "Hello",
     B = "World",
@@ -191,9 +191,9 @@ fn void main()
 }
 ```
 
-We can use `@constinit` to allow the constdef to implicitly convert from a literal:
+We can use `@constinit` to allow the constset to implicitly convert from a literal:
 ```c3
-constdef ConstInline2 : String @constinit
+constset ConstInline2 : String @constinit
 {
     A = "Hello",
     B = "World",

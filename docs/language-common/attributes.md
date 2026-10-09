@@ -67,7 +67,7 @@ Valid arguments are `"veccall"`, `"cdecl"`, `"stdcall"`. Any function without an
 
 ### `@cname`
 
-*Used for: function, global, const, enum, union, struct, faultdef*
+*Used for: function, global, const, enum, union, struct, excuse*
 
 Sets the external (linkage) name of this declaration.
 
@@ -91,9 +91,9 @@ be issued.
 
 ### `@constinit`
 
-*Used for: constdef, typedef*
+*Used for: constset, typedef*
 
-This attribute allows a typedef or constdef to be initialized from a literal without an explicit cast.
+This attribute allows a typedef or constset to be initialized from a literal without an explicit cast.
 
 ### `@deprecated`
 
@@ -110,7 +110,7 @@ to be invoked through interfaces.
 
 ### `@export`
 
-*Used for: function, global, const, enum, union, struct, faultdef*
+*Used for: function, global, const, enum, union, struct, excuse*
 
 Marks this declaration as an export, this ensures it is never removed and exposes it as public when linking.
 The attribute takes an optional string value, which is the external name. This acts as if `@cname` had been
@@ -471,8 +471,8 @@ Emits a weak symbol rather than a global.
 User defined attributes are intended for conditional application of built-in attributes.
 
 ```c3
-attrdef @MyAttribute = @noreturn, @inline;
-attrdef @MyCname(x) = @cname(x);
+attrmacro @MyAttribute = @noreturn, @inline;
+attrmacro @MyCname(x) = @cname(x);
 // The following two are equivalent:
 fn void foo() @MyAttribute { /* */ }
 fn void foo() @noreturn @inline { /* */ }
@@ -481,7 +481,7 @@ fn void foo() @noreturn @inline { /* */ }
 An attribute may also take parameters:
 
 ```c3
-attrdef @MyAttr(val) = @tag("foo", val);
+attrmacro @MyAttr(val) = @tag("foo", val);
 
 struct Test
 {
@@ -494,5 +494,5 @@ $echo $reflect(Test.foo).get_tag("foo"); // Will echo "test" at compile time
 The attribute may also be completely empty:
 
 ```c3
-attrdef @MyAttributeEmpty;
+attrmacro @MyAttributeEmpty;
 ```

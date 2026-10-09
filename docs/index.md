@@ -155,7 +155,7 @@ fn void main()
 ```c3
 import std::io;
 
-faultdef DIVISION_BY_ZERO;
+excuse DIVISION_BY_ZERO;
 
 fn int? divide_int(int x, int y)
 {
