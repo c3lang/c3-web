@@ -422,11 +422,11 @@ See [this issue](https://github.com/c3lang/c3c/issues/829) for more details.
 Indexing or dereferencing will peel off the rightmost part.
 
 C uses a different way to do this: we place `*` and `[]` not on the type but on the variable, in the order it must be unpacked.
-So given `int (*foo) x[4]` we first dereference it (from inside) int[4], then index from the right.
+So given `int (*foo) x[4]` we first dereference it (from inside) `int[4]`, then index from the right.
 If we wanted to extract a standalone type from this, we'd have `int(*)[4]` for a pointer to an array of 4 integers.
 For "left is innermost", the declaration would instead be `int[4]*`. If left-is-innermost we can easily describe a pointer
-to an array of int pointers (which happens in C3 since arrays don't implicitly decay) int*[4]*. In C that would be "int*(*)[4]",
-which is generally regarded as less easy to read, not the least because you need to think of which of * or [] has priority.
+to an array of int pointers (which happens in C3 since arrays don't implicitly decay) `int*[4]*`. In C that would be `int*(*)[4]`,
+which is generally regarded as less easy to read, not the least because you need to think of which of `*` or `[]` has priority.
 
 In C3, we can have a variable `List{int}[3] x`, which is an array of 3 `List{int}`. If we do `x[1]` we will get an element of
 `List{int}`, from the middle element in the array. If we then further index this with [5], like `x[1][5]` we will get
