@@ -263,4 +263,6 @@ Darvisim, Manu Linares.
 
 Check out the [documentation](../../getting-started/introduction.md) or [download it and try it out](../../getting-started/prebuilt-binaries.md).
 
+Discuss this post on [Hacker News](https://news.ycombinator.com/item?id=50056961).
+
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
