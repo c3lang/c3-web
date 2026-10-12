@@ -137,7 +137,7 @@ user-defined types:
 6. `from_ordinal(value)` convert an integer to an enum.
 7. `values` return a list containing all the enum values of an enum.
 
-## Constdef
+## Constset
 
 When interfacing with C code, you may encounter enums that are not sequential. For situations like this, you can use a constset in C3:
 
