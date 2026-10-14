@@ -7,8 +7,8 @@ Statements largely work like in C, but with some additions.
 
 ## Labelled break and continue
 
-Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `if`, 
-`switch`, `while` and `do` statements.
+Labelled `break` and `continue` lets you break out of an outer scope. Labels can be put on `for`,
+`foreach`, `if`, `switch`, `while` and `do` statements.
 
 ```c3
 fn void test(int i)
@@ -20,6 +20,23 @@ fn void test(int i)
             io::printfn("%d", i);
             // Break out of the top if statement.
             if (i++ > 10) break FOO;
+        }
+    }
+}
+```
+
+This is especially useful for breaking out of nested loops:
+
+```c3
+fn void main()
+{
+    for OUTER: (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            // This breaks out of both loops.
+            if (i == 1 && j == 1) break OUTER;
+            io::printfn("%d, %d", i, j);
         }
     }
 }
