@@ -95,7 +95,7 @@ To build using the LLVM installed via MacPorts:
     git clone https://github.com/c3lang/c3c.git
     cd c3c
     ```
-4. Configure and build the compiler:
+4. Open Developer Command Prompt for VS (or run `vsvarsall.bat`), then configure and build:
     ```bash
     cmake --preset windows-vs-2022-release -D C3_FETCH_LLVM=ON
     cmake --build --preset windows-vs-2022-release
