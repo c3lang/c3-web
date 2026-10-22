@@ -32,8 +32,10 @@ fn void bar(int num_foo)
 }
 ```
 
-### Doc Contracts Are Parsed
+#### Doc Contracts Are Parsed
+
 The following was extracted:
+
 - The function description: *"Here are some docs."*
 - The `num_foo` parameter has the description: *"The number of foos"*.
 - A [Contract](../language-common/contracts.md) annotation for the compiler: `@require num_foo > 4` which tells the compiler and a user of the function that a precondition is that `num_foo` must be greater than 4.
@@ -43,33 +45,18 @@ The following was extracted:
 
 ### Available annotations
 
-| Name          | format                                                             |
-|---------------|:-------------------------------------------------------------------|
-| `@param     ` | `@param [<ref>] <param> [ : <description>]`                        |
-| `@return    ` | `@return <description>`                                            |
-| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]` |
-| `@require   ` | `@require [<param>] <expr1>, <expr2>, ..., [: <description>]`      |
-| `@ensure    ` | `@ensure <expr1>, <expr2>, ..., [: <description>]`                 |
-| `@deprecated` | `@deprecated [<description>]`                                      |
-| `@pure      ` | `@pure`                                                            |
+| Name          | Format                                                                         |
+|---------------|:-------------------------------------------------------------------------------|
+| `@param     ` | `@param [<ref>]`[^1] `<param> [ : <description>]`[^3]                          |
+| `@return    ` | `@return <description>`                                                        |
+| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]`[^3]         |
+| `@require   ` | `@require [<param>]`[^2] `<expr1>, <expr2>, ..., [: <description>]`[^3]        |
+| `@ensure    ` | `@ensure <expr1>, <expr2>, ..., [: <description>]`[^3]                         |
+| `@deprecated` | `@deprecated [<description>]`[^3]                                              |
+| `@pure      ` | `@pure`                                                                        |
 
-\*`[<param>]` is an optional pinpoint parameter target e.g. `@require [a] a > 0`\
-\*`[<ref>]` is an optional mutability description e.g. `[&in]`\
-\*`[<description>]` denotes that a description is optional.
+[^1]: `[<ref>]` is an optional mutability description e.g. `[&in]`
+[^2]: `[<param>]` is an optional pinpoint parameter target e.g. `@require [a] a > 0`
+[^3]: `[<description>]` denotes that a description is optional
 
-### Fault inheritance
-
-It is possible to reference the faults of another function or macro by using the syntax `@return? some_func!`. This will include all faults returned by `some_func`. This can be combined with other faults.
-
-```c3
-<*
- @return? check_triangle!, io::EOF
-*>
-fn TriangleKind? get_triangle_kind(Triangle* triangle)
-{
-    check_triangle(triangle)!;
-    // ...
-}
-```
-
-See [Contracts](../language-common/contracts.md) for information regarding `@require`, `@ensure`, `@const`, `@pure`.
+See [Contracts](../language-common/contracts.md) for information regarding `@require`, `@ensure`, `@return?`, `@const`, `@pure`.

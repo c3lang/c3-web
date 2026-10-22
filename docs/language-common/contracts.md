@@ -79,6 +79,40 @@ fn uint check_foo(Foo* foo)
 }
 ```
 
+# Return value documentation
+
+The `@return` annotation documents the return value of a function:
+
+```c3
+<*
+ @return `The scaled value of foo.`
+*>
+fn int scale_foo(int foo)
+{
+    return foo * 10;
+}
+```
+
+## Fault documentation
+
+The `@return?` annotation documents the faults that a function may return.
+Specific faults can be listed, faults from another function can be referenced
+using the `<func>!` syntax, or both can be combined:
+
+```c3
+<*
+ @return? check_triangle!, io::EOF
+*>
+fn TriangleKind? get_triangle_kind(Triangle* triangle)
+{
+    check_triangle(triangle)!;
+    // ...
+}
+```
+
+Using `@return? some_func!` will include all faults returned by `some_func`.
+This can be combined with additional fault values.
+
 ## Parameter annotations
 
 `@param` supports `[in]`, `[out]`, `[inout]`, `[own]`, `[drop]` and `[init]`.
@@ -208,3 +242,19 @@ A C3 compiler may have different levels of contract use:
 | 4     | Static analysis is extended beyond compile time folding |
 
 The c3c compiler currently does level 3 checking.
+
+# Annotations quick reference
+
+| Name          | Format                                                                         |
+|---------------|:-------------------------------------------------------------------------------|
+| `@param     ` | `@param [<ref>]`[^1] `<param> [ : <description>]`[^3]                          |
+| `@return    ` | `@return <description>`                                                        |
+| `@return?   ` | `@return? [<func>!], [<fault1>, <fault2>, ..., [: <description>]]`[^3]         |
+| `@require   ` | `@require [<param>]`[^2] `<expr1>, <expr2>, ..., [: <description>]`[^3]        |
+| `@ensure    ` | `@ensure <expr1>, <expr2>, ..., [: <description>]`[^3]                         |
+| `@deprecated` | `@deprecated [<description>]`[^3]                                              |
+| `@pure      ` | `@pure`                                                                        |
+
+[^1]: `[<ref>]` is an optional mutability description e.g. `[&in]`
+[^2]: `[<param>]` is an optional pinpoint parameter target e.g. `@require [a] a > 0`
+[^3]: `[<description>]` denotes that a description is optional
