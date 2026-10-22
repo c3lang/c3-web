@@ -32,6 +32,22 @@ and then `@align`.
 
 This attribute suppresses detection of `@deprecated` for the function's parameters and body.
 
+### `@asmname`
+
+*Used for: function, global, const*
+
+Sets the external (linkage) name of this declaration to exactly the given string, like [`@cname`](#cname), but
+without the platform's usual symbol decoration. For example, on macOS the linker name for a C symbol `foo` is `_foo`:
+`@cname("foo")` refers to `_foo`, whereas `@asmname("foo")` refers to a symbol that is literally `foo`.
+This is useful for symbols that are defined in assembly or with names that are not following the platform's C conventions.
+
+```c3
+// Refers to the symbol "asm_helper" on all platforms.
+extern fn int asm_helper(int) @asmname("asm_helper");
+```
+
+The attribute requires a string argument and cannot be used on generic declarations.
+
 ### `@benchmark`
 
 *Used for: function*

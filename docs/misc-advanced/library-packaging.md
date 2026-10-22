@@ -39,6 +39,19 @@ In the top of the library resides the `manifest.json` file which has the followi
 
 In the example above, this library supports two targets: **macos-x64** and **windows-x64**. If we tried to use it with any other target, the compiler would give an error.
 
+The `targets` key is optional. A manifest without `targets` works for all platforms, which is typical for libraries that only consist of sources.
+Such a manifest may also have the keys `version`, `authors` and `langrev` (the C3 language version the library is written for):
+
+```json
+{
+  "provides" : "my_lib",
+  "version" : "0.1.0",
+  "authors" : [ "John Doe <john.doe@example.com>" ],
+  "langrev" : "1",
+  "sources" : [ "src/**" ]
+}
+```
+
 We see that if we use the **windows-x64** target it will also load the **ms_my_extra** library. We also see that the linker would have a special argument on that platform.
 
 Both targets expect `my_lib_static` to be available for linking. If this library provides this static or dynamic library it will be in the target sub-directories, so it likely has the path `windows-x64/my_lib_static.lib` or `macos-x64/libmy_lib_static.a`.
@@ -55,6 +68,55 @@ how `.h` files are used in C.
 invoked when a library is used. This requires running the compiler at **full trust level** using the 
 `--trust=full` option.
 
+## Source libraries
+
+A *source library* contains the C3 sources (and optionally C sources and headers) of a project, and no precompiled binaries. It is therefore usable on every platform.
+There are two ways to create one.
+
+From a project, add a target with the type `"source-lib"` and build it:
+
+```json
+{
+  "version": "0.1.0",
+  "authors": [ "John Doe <john.doe@example.com>" ],
+  "langrev": "1",
+  "sources": [ "src/**" ],
+  "c-sources": [ "csource/*" ],
+  "c-include-dirs": [ "csource/include" ],
+  "targets": {
+    "my_lib": {
+      "type": "source-lib"
+    }
+  }
+}
+```
+
+```bash
+c3c build my_lib
+```
+
+Without a project, files can be packed directly:
+
+```bash
+c3c source-lib src/my_lib.c3 src/extra.c3 -o my_lib
+```
+
+The library is written to the output directory as `<name>.c3l`, where the name is the target name (which can be changed using the target's `name`), or the name given with `-o`.
+The name may only contain lowercase letters, digits and `_`.
+
+The library contains:
+
+- All C3 `sources` of the target. It is an error if there are none.
+- The `c-sources`, together with the header files (`.h`, `.hh`, `.hpp`, `.hxx` and `.inc`) in the same directories, and all headers found in `c-include-dirs`.
+- A `LICENSE`, `LICENSE.md`, `LICENSE.txt` or `README.md` in the project directory, if present (projects only).
+- A generated `manifest.json` with `provides`, the `dependencies`, `sources`, `c-sources`, `c-include-dirs`, `cc` and `cflags` of the target. For a project also `version`, `authors` and `langrev` are included.
+
+All files must be inside the project directory, as paths are stored relative to it.
+
+`linked-libraries` and `link-args` are not stored in source libraries (the compiler warns if they are set). Use the `@link` attribute in the source instead.
+
+By default the library is a single compressed file. Use `"compress": false` in the target, or `--no-compress` on the command line, to get an uncompressed `<name>.c3l` directory instead.
+
 ## How to – automatically – export libraries
 
 *This feature is not implemented yet. The documentation for this feature will materialize once it is finished.*
@@ -68,7 +130,10 @@ The full list of supported keys can be viewed in your terminal at any time by ru
     | Property | Type | Description |
     | :--- | :--- | :--- |
     | `provides` | String | The library name. |
-    | `targets` | Object | The map of supported platforms. |
+    | `version` | String | The version of the library. |
+    | `authors` | Array | Authors of the library. |
+    | `langrev` | String | The version of the C3 language used. |
+    | `targets` | Object | The map of supported platforms, if missing the library supports all platforms. |
     | `dependencies` | Array | List of C3 libraries to also include. |
     | `sources` | Array | Paths to library sources for targets, such as interface files. |
     | `c-sources` | Array | Set the C sources to be compiled. |

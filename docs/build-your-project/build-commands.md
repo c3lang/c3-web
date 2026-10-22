@@ -22,6 +22,12 @@ c3c compile <file1> <file2> <file3>
 
 Alternatively, libraries can be compiled via `c3c static-lib` or `c3c dynamic-lib` or by creating a project configured as such and built via `c3c build` and `c3c run` and so on.
 
+To pack C3 files into a [source library](../misc-advanced/library-packaging.md#source-libraries) use `c3c source-lib`:
+
+```bash
+c3c source-lib <file1> <file2> -o <library_name>
+```
+
 ## Run
 
 When starting out with C3, it's natural to use `compile-run` to try things out. For larger projects, the built-in build system is recommended instead.

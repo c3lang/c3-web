@@ -29,6 +29,9 @@ fn void main()
 }
 ```
 
+If the exact symbol name is needed, without the platform's usual symbol decoration (like the leading underscore on macOS), use
+[`@asmname`](attributes.md#asmname) instead of `@cname`.
+
 While C3 functions are available from C using their external name, it's often useful to
 define an external name using `@cname` or `@export` with a name to match C usage.
 

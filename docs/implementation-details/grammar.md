@@ -39,18 +39,17 @@ $switch     $vaarg      $Typefrom   $Typeof
 
 The following attributes are built in:
 ```c3
-@align        @benchmark  @bigendian  @builtin
-@cdecl        @cname      @deprecated @dynamic
-@export       @extname    @inline     @interface
-@littleendian @local      @maydiscard @mustinit
-@naked        @nodiscard  @noinit     @noinline
-@noredzone    @nostackprobe @nostackprotection
-@noreturn     @nostrip    @obfuscate  @operator
-@overlap      @packed     @priority   @private
-@public       @pure       @reflect    @section
-@stackprotection @stackprobe
-@stdcall      @test       @unused     @used
-@veccall      @wasm       @weak       @winmain
+@align           @asmname      @benchmark    @bigendian  
+@builtin         @cdecl        @cname        @deprecated 
+@dynamic         @export       @extname      @inline     
+@interface       @littleendian @local        @maydiscard 
+@mustinit        @naked        @nodiscard    @noinit     
+@noinline        @noredzone    @nostackprobe @nostackprotection
+@noreturn        @nostrip      @obfuscate    @operator
+@overlap         @packed       @priority     @private
+@public          @pure         @reflect      @section
+@stackprotection @stackprobe   @test         @unused          
+@used            @wasm         @weak         @winmain
 ```
 
 The following constants are defined:

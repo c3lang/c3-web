@@ -136,6 +136,8 @@ List of C3 libraries (".c3l") to use when compiling the target.
 
 List of source files to compile.
 
+Besides C3 files, object files (`.o`, `.obj`) and LLVM IR (`.ll`) or bitcode (`.bc`) files can be listed. They must be listed by file name, as wildcards like `src/**` only match C3 files. They are linked together with the compiled C3 code, and the LLVM files are first compiled to object files by the compiler's LLVM backend.
+
 #### `test-sources`
 
 List of additional source files to compile when running tests.
@@ -223,6 +225,11 @@ This mandatory option should be one of:
 5. "test" - target that only runs tests.
 6. "object-files" - compile to object files, but does not perform any linking.
 7. "prepare" - target that does not perform any compilation, but may do things like invoking other scripts using "exec".
+8. "source-lib" - packs the C3 sources, C sources and headers into a `.c3l` [source library](../misc-advanced/library-packaging.md#source-libraries).
+
+#### `compress`
+
+For `"source-lib"` targets. If `true` (the default), the library is written as a single compressed `.c3l` file, otherwise as an uncompressed `.c3l` directory.
 
 #### `depends-on`
 

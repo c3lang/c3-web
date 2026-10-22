@@ -2235,12 +2235,12 @@ At the call site, an argument of the form `...expression` *splats* a slice, arra
 
 A function declaration may carry attributes that affect linkage, inlining, calling convention, or visible properties of the function. Some commonly used attributes are:
 
-* `@cname` — declares an externally linked function with no body.
-* `@export` — exports the function from a static or dynamic library.
+* `@cname(name)` — sets the external (linkage) name of the function. Combined with `extern`, it names the foreign function that is referred to.
+* `@asmname(name)` — like `@cname`, but the name is used exactly as given, without the platform's symbol decoration.
+* `@export` — exports the function from a static or dynamic library. An optional string argument sets the external name.
 * `@inline` / `@noinline` — request, respectively, that the function be inlined or not inlined at call sites.
 * `@noreturn` — declares that the function never returns to its caller.
 * `@naked` — declares that the function body is a bare sequence of instructions, with no compiler-generated prologue or epilogue; typically used together with inline assembly.
-* `@pure` — declares that the function has no observable side effects (and may be assumed to be safely callable in contracts).
 * `@deprecated` — emits a diagnostic at use sites.
 * `@callconv("name")` — selects an alternative calling convention provided by the target.
 
@@ -2851,6 +2851,7 @@ The first three may also appear on a module section to set the default visibilit
 * `@link(library)` — adds the named library to the link command.
 * `@section(name)` — places the declaration in the named object-file section.
 * `@cname(name)` — overrides the symbol's external name with the given string.
+* `@asmname(name)` — like `@cname`, but the name is used exactly as given, without the platform's usual symbol decoration (such as the leading underscore added to C symbols on macOS). It may be applied to functions, global variables and constants.
 * `@nostrip` — prevents the symbol from being removed by dead-code stripping.
 
 #### Inlining, calling, and control flow
@@ -2862,7 +2863,7 @@ The first three may also appear on a module section to set the default visibilit
 * `@stackprobe` / `@nostackprobe` - control emission of stack probe on this function: 'none', 'call' or 'inline'
 * `@stackprotection` / `@nostackprotection` - control emission of stack protection: 'none', 'basic', 'strong', 'all'.
 * `@noreturn` — the function never returns to its caller; reaching its textual end is an error.
-* `@pure` — the function has no observable side effects and may be assumed safe to call in contracts.
+* `@pure` — applied to a call, asserts that the call is pure for the purposes of an enclosing `@pure` contract (see *Purity*). The purity of a function itself is declared with the `@pure` contract clause, not with an attribute.
 * `@maydiscard` / `@nodiscard` — explicitly allow or forbid discarding the return value at call sites.
 * `@finalizer` / `@finalizer(priority)` — registers the function to be called at program shutdown. The optional priority argument is an integer; lower values run earlier than higher values.
 * `@init` / `@init(priority)` — registers the function to be called at program startup, before main. The optional priority argument has the same convention as @finalizer.
@@ -3354,7 +3355,7 @@ A declaration's visibility may be overridden at an importer's request: writing `
 
 ### Linker visibility and exports
 
-Visibility (`@public`, `@private`, `@local`) controls source-level access. *Linker visibility* — whether a symbol is exposed to other translation units and to external linkers — is a separate concern controlled by the attributes `@export`, `@weak`, `@weaklink`, and `@cname`, described in *Attributes*. By default, source-level public declarations have linker linkage suitable for use within the C3 program but are not exported as library symbols; `@export` opts a declaration into being a library export.
+Visibility (`@public`, `@private`, `@local`) controls source-level access. *Linker visibility* — whether a symbol is exposed to other translation units and to external linkers — is a separate concern controlled by the attributes `@export`, `@weak`, `@weaklink`, `@cname` and `@asmname`, described in *Attributes*. By default, source-level public declarations have linker linkage suitable for use within the C3 program but are not exported as library symbols; `@export` opts a declaration into being a library export.
 
 ### Imports
 
@@ -3754,6 +3755,8 @@ fn void main()
 ```
 
 `@cname` may be applied to extern declarations, to exported C3-side definitions, or to any declaration whose external linker name should differ from the source-level identifier. The argument must be a compile-time string and must form a valid identifier for the target's symbol table.
+
+`@asmname` is used like `@cname`, but the string is taken as the exact symbol name, without the platform's symbol decoration. This is intended for symbols defined in assembly, or whose names do not follow the platform's C naming. Unlike `@cname`, it may only be applied to functions, global variables and constants.
 
 ### Exporting C3 functions to C
 

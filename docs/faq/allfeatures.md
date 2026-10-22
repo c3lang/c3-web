@@ -178,7 +178,7 @@ C3 adds a long range of attributes in the form `@name(...)`. It is possible to c
 attribute groups using `attrmacro` (e.g. `attrmacro MyAttribute(usz align) = { @aligned(align) @weak };`) which
 groups certain attributes. Empty attribute groups are permitted.
 
-The complete list: `@align`, `@benchmark`, `@bigendian`, `@builtin`,
+The complete list: `@align`, `@asmname`, `@benchmark`, `@bigendian`, `@builtin`,
 `@callconv`, `@cname`, `@deprecated`, `@dynamic`, `@export`, `@feat`,
 `@if`, `@inline`,
 `@littleendian`, `@local`, `@maydiscard`, `@mustinit`, `@naked`,
