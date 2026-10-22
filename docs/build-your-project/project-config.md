@@ -224,13 +224,133 @@ This mandatory option should be one of:
 6. "object-files" - compile to object files, but does not perform any linking.
 7. "prepare" - target that does not perform any compilation, but may do things like invoking other scripts using "exec".
 
+#### `depends-on`
+
+Target only. A list of other targets in the project that are built before this target, in the listed order.
+
+```json
+{
+  "targets": {
+    "generate": {
+      "type": "prepare",
+      "exec": [ "./generate_sources.sh" ]
+    },
+    "my_lib": {
+      "type": "static-lib",
+      "depends-on": [ "generate" ]
+    },
+    "my_app": {
+      "type": "executable",
+      "depends-on": [ "my_lib" ]
+    }
+  }
+}
+```
+
+Building `my_app` above first builds `generate`, then `my_lib`, and finally `my_app`.
+The dependencies of a dependency are built first, and a target is only built once even if it's listed several times.
+It is an error to depend on a target that doesn't exist, or to have targets that depend on each other in a cycle.
+
+Each dependency is built by a separate `c3c` invocation, which gets the command line options given to the original build (except those that only make sense for the selected target).
+Use `--no-deps` to build only the selected target. The `clean` command does not clean the dependencies.
+
+## Running scripts
+
+#### `exec`
+
+A list of commands run before the target is compiled. For a `"prepare"` target, the scripts are all that is run.
+Running scripts requires **full trust level**, which is enabled with `--trust=full` from the command line.
+
+```json
+{
+  "exec": [ "./generate_version.sh", "gen_bindings.c3 --verbose" ],
+  "targets": {
+    "my_target": {
+      "type": "executable",
+      "exec": [ "./target_specific.sh" ]
+    }
+  }
+}
+```
+
+There are two kinds of entries:
+
+- If the first word ends with `.c3`, the C3 file is compiled on the fly and run, with the rest of the entry as its command line arguments.
+  Several files can be compiled together by separating them with `;`, as in `"foo.c3;bar.c3 arg"`.
+- Otherwise the entry is run as a shell command.
+
+Entries are run in the listed order, but the `exec` entries of a target are run *before* the top level `exec` entries.
+Any output from the scripts is printed, unless `-q` / `--quiet` is used. If a script fails, the build stops.
+
+`exec` entries are not expanded by `c3c` (see [using environment variables](#using-environment-variables)),
+the shell handles any `$VAR` in them, and sees the variables set by `env`.
+
+#### `exec-override`
+
+Target only. A list of scripts that replaces the top level `exec` for the target, instead of being added to it.
+
+#### `script-dir`
+
+The directory where `.c3` scripts are found. It is relative to the project file. Default: `"scripts"`.
+
+#### `exec-dir`
+
+The directory where the `exec` entries are run, relative to the project file. Default: the same as `script-dir`.
+
+These are the same directories that the `$exec` compile time directive uses (see [Modules](../language-fundamentals/modules.md)),
+and may also be set with the `--script-dir` and `--exec-dir` command line options.
+
 ## Using environment variables
 
-*Not supported yet.*
+Environment variables can be used in `project.json` strings with `${NAME}`. The variable is replaced by its value when the project is loaded:
 
-In addition to constants, any values starting with `$` will be assumed to be environment variables.
+```json
+{
+  "targets": {
+    "my_target": {
+      "type": "executable",
+      "cc": "${CC}",
+      "sources": [ "${HOME}/my_sources/**" ],
+      "linker-search-paths": [ "${SDK_PATH}/lib" ]
+    }
+  }
+}
+```
 
-For example `"$HOME"` would on Unix-like systems (e.g. Linux, the BSDs, Mac) return the home directory. For strings that start with `$` but *should not* be interpreted as an environment variable you need to escape it with a backslash (`\`). For example, the string `"\$HOME"` would be interpreted as the plain string `"$HOME"`.
+The expansion works in all strings, including those in lists, with these exceptions:
+
+- `exec` and `exec-override` are not expanded by `c3c`, they are run by the shell, which expands them itself.
+- `type`, `targets`, `vendor` and `$schema` are not expanded.
+
+Only the `${NAME}` form is expanded: `$NAME`, `$1` or a lone `$` are left unchanged. A name may contain letters, digits and `_`, but it can't start with a digit.
+
+To write a literal `${`, use `$${`. For example `"$${HOME}"` becomes the plain string `"${HOME}"`.
+
+If a variable is not defined, it is an error. This is only reported if the target using it is selected (or is built as a dependency through `depends-on`), so a target needing a variable only available on some platforms doesn't prevent building other targets. An error in the top level settings (outside of `targets`) is always reported.
+
+### `env`
+
+Environment variables can be set for the scripts run by `exec`, using a list of `"NAME=value"` strings:
+
+```json
+{
+  "env": [ "MODE=release" ],
+  "targets": {
+    "my_target": {
+      "type": "prepare",
+      "env": [ "OUTPUT=${HOME}/out", "EXTRA=1" ],
+      "exec": [ "./build.sh" ]
+    }
+  }
+}
+```
+
+The `env` entries are expanded like other strings, using the environment `c3c` was started with.
+The variables only exist while the `exec` scripts of the target run, afterwards the previous values are restored.
+They are not set for `$exec` in the source code.
+
+`env` at the top level is used by all targets. The `env` of a target is added to the top level `env`. If the same name appears more than once, the last entry is used,
+so a target `env` takes precedence over the top level `env`. Use `env-override` to replace the top level `env` completely for a target.
 
 !!! tip "JSON5 Support"
     `project.json5` is also supported if comments are needed.
