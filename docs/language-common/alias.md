@@ -115,6 +115,10 @@ fn void main()
 
 A module alias may be used wherever a module path is expected in qualified-name expressions.
 
+!!! note
+    Unlike other aliases, module aliases have `@local` visibility by default — they are only visible
+    within the current module section.
+
 ## Using `alias` to create generic types, functions and variables
 
 It is recommended to favour using alias to create aliases for parameterized types, but it can also be used for parameterized functions and variables:
