@@ -3139,7 +3139,7 @@ A `@deprecated` clause within a contract block is an alternative to the `@deprec
 
 ```
 <*
- @deprecated : "Use parse_v2 instead"
+ @deprecated "Use parse_v2 instead"
 *>
 fn String parse(String input) { ... }
 ```
