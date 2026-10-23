@@ -5,7 +5,7 @@ description: The `alias` statement
 
 # The `alias` statement
 
-The `alias` statement in C3 is intended for making new names for function pointers, identifiers and types.
+The `alias` statement in C3 is intended for making new names for function pointers, identifiers, types and modules.
 
 ## Defining a type alias
 
@@ -93,6 +93,27 @@ fn void test()
   int y = bar_var;
 }
 ```
+
+#### Module aliases
+
+`alias` can create an alternate name for a module, providing a custom shorthand for qualified access:
+
+```c3
+import std::math::geometry::bounding_box;
+
+alias bb = module std::math::geometry::bounding_box;
+
+fn void main()
+{
+    // Without the alias, path-shortening already allows:
+    bounding_box::BoundingBox{int} a;
+
+    // The alias provides an even shorter custom name:
+    bb::BoundingBox{int} b;
+}
+```
+
+A module alias may be used wherever a module path is expected in qualified-name expressions.
 
 ## Using `alias` to create generic types, functions and variables
 
