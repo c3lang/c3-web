@@ -552,3 +552,25 @@ fn void main()
     import lib1 @norecurse, lib2;
     ```
     Here only `lib1` is imported non-recursively and `lib2` is imported normally, recursively.
+
+## Module Aliasing
+
+When working with deeply nested module paths, `alias` can create a custom short name for qualified access:
+
+```c3
+module myapp;
+import std::math::geometry::bounding_box;
+
+alias bb = module std::math::geometry::bounding_box;
+
+fn void main()
+{
+    // Without the alias, path-shortening already allows:
+    bounding_box::BoundingBox{int} a;
+
+    // The alias provides an even shorter custom name:
+    bb::BoundingBox{int} b;
+}
+```
+
+A module alias may be used wherever a module path is expected in qualified-name expressions.
