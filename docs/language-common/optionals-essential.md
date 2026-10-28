@@ -55,9 +55,9 @@ fn void main(String[] args)
 {
     // If the Optional is empty, assign the
     // Excuse to a variable:
-    if (catch excuse = test())
+    if (catch err = test())
     {
-        io::printfn("test() gave an Excuse: %s", excuse);
+        io::printfn("test() gave an Excuse: %s", err);
     }
 }
 ```
@@ -71,10 +71,10 @@ then the variable is automatically [unwrapped](#unwrapping-optional) to a non-Op
 fn void? test()
 {
     int? foo = unreliable_function();
-    if (catch excuse = foo)
+    if (catch err = foo)
     {
         // Return the excuse with `~` operator
-        return excuse~;
+        return err~;
     }
     // Because the compiler knows 'foo' cannot
     // be empty here, it is unwrapped to non-Optional
@@ -103,7 +103,7 @@ fn void? test()
     int bar = maybe_function()!;
     // ✅ The above is equivalent to:
     // int? temp = maybe_function();
-    // if (catch excuse = temp) return excuse~;
+    // if (catch err = temp) return err~;
 
     // Now temp is unwrapped to a non-Optional
     int bar = temp; // ✅ This is OK
@@ -172,10 +172,10 @@ fn void main(String[] args)
 
     // Return first excuse we find
     int? third_optional = test(first_optional, second_optional);
-    if (catch excuse = third_optional)
+    if (catch err = third_optional)
     {
         // excuse == io::FILE_NOT_FOUND
-        io::printfn("third_optional's Excuse: %s", excuse);
+        io::printfn("third_optional's Excuse: %s", err);
     }
 }
 ```
