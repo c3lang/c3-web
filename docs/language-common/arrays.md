@@ -178,8 +178,6 @@ int[3] b = { 2, 4, 5 };
 a[1..2] = b[0..1]; // a = { 1, 2, 4 }
 ```
 
-Copying between two overlapping ranges, e.g. `a[1..2] = a[0..1]` is unspecified behaviour.
-
 ### Conversion List
 
 | | `int[4]` | `int[]` | `int[4]*` | `int*` |
