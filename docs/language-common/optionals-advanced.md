@@ -51,11 +51,11 @@ fn void? test_read()
     char[]? read_buffer = read_file("file_to_open.txt", buffer);
     // Catch the empty Optional and assign the Excuse
     // to `excuse`
-    if (catch excuse = read_buffer)
+    if (catch err = read_buffer)
     {
-        io::printfn("Excuse found: %s", excuse);
+        io::printfn("Excuse found: %s", err);
         // Returning Excuse using the `~` suffix
-        return excuse~;
+        return err~;
     }
 
     // `read_buffer` behaves like a normal variable here
@@ -265,10 +265,10 @@ fn void main(String[] args)
 {
     int? optional_value = io::FILE_NOT_FOUND~;
 
-    fault excuse = @catch(optional_value);
-    if (excuse)
+    fault err = @catch(optional_value);
+    if (err)
     {
-        io::printfn("Excuse found: %s", excuse);
+        io::printfn("Excuse found: %s", err);
     }
 }
 ```
@@ -306,5 +306,5 @@ fn void? test()
     return io::FILE_NOT_FOUND~;
 }
 
-fault excuse = @catch(test());
+fault err = @catch(test());
 ```
