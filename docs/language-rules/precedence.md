@@ -6,7 +6,7 @@ description: Precedence
 Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3, listed from highest (1) to lowest (12):
 
 
-1. `()`, `[]`, `.`, `!!` postfix `!`, `!!`, `~`, `++` and `--`
+1. `()`, `[]`, `.`, postfix `!`, `!!`, `~`, `++` and `--`
 2. prefix `-`, `~`, `!`, `!!`, `*`, `&`, `++`, `--`
 3. infix `*`, `/`, `%`
 4. `<<`, `>>`
@@ -19,8 +19,14 @@ Precedence rules in C3 differs from C/C++. Here are all precedence levels in C3,
 11. `?`
 12. `=`, `*=`, `/=`, `%=`, `+=`, `-=`, `<<=`, `>>=`, `&=`, `^=`, `|=`
 
+The postfix operators `!` (rethrow) and `!!` (force unwrap) work on Optionals, while postfix `~` turns a fault into an empty Optional, as in `return NOT_FOUND~;`.
 
-The main difference is that bitwise operations and shift has higher precedence than addition/subtraction and multiplication/division in C3. Bitwise operations also have higher precedence than the relational operators. Also, there is no difference in precedence between the bitwise operators.
+Prefix `!!` is listed separately because `!!` is a single token. It has the same meaning as `! !a`.
+
+`?:` (Elvis) is also a single token, so it must be written without whitespace: `a ?: b`. Written as `a ? : b`, it is parsed as an incomplete ternary.
+
+
+The main difference is that bitwise operations and shift have higher precedence than addition/subtraction in C3, but still lower than multiplication/division. Bitwise operations also have higher precedence than the relational operators. Also, there is no difference in precedence between the bitwise operators.
 
 Examples:
 

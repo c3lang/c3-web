@@ -1698,22 +1698,23 @@ Binary operators combine two operands and produce a value of a determined type. 
 ```
 Precedence     Category               Operators
 -------------- ---------------------- ------------------------------------
-14 (highest)   Primary                literals, names, parenthesised expr
-13             Postfix                . () [] ++ -- !! ! ~
-12             Unary (prefix)         ! - + ~ * & && ++ -- (type)
-11             Multiplicative         *   /   %
-10             Shift                  <<  >>
- 9             Bitwise                &   |   ^
- 8             Or-else / Elvis        ?:  ??
- 7             Additive               +   -   +++
- 6             Relational             <  <=  >  >=  ==  !=
- 5             Logical AND            &&  &&&
- 4             Logical OR             ||  |||
- 3             Ternary                ? :                      (right-assoc)
- 2             Assignment             =  +=  -=  *=  /=  %=
+13 (highest)   Primary                literals, names, parenthesised expr
+12             Postfix                . () [] ++ -- !! ! ~
+11             Unary (prefix)         ! - + ~ * & && ++ -- (type)
+10             Multiplicative         *   /   %
+ 9             Shift                  <<  >>
+ 8             Bitwise                &   |   ^
+ 7             Or-else / Elvis        ?:  ??
+ 6             Additive               +   -   +++
+ 5             Relational             <  <=  >  >=  ==  !=
+ 4             Logical AND            &&  &&&
+ 3             Logical OR             ||  |||
+ 2             Ternary                ? :                      (right-assoc)
+ 1 (lowest)    Assignment             =  +=  -=  *=  /=  %=
                                       &=  |=  ^=  <<=  >>=    (right-assoc)
- 1 (lowest)
 ```
+
+`?:` (Elvis) is a single token; `a ? : b`, with whitespace between `?` and `:`, is an incomplete ternary and is rejected. Likewise `!!` is a single token, both as the postfix force-unwrap operator and as prefix double negation, where `!!a` means the same as `! !a`.
 
 The compile-time variants `+++`, `&&&`, and `|||` sit at the same precedence levels as their runtime counterparts; they operate on compile-time-known operands (see *Compile-time evaluation*).
 
