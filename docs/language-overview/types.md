@@ -113,8 +113,6 @@ Integers may be written in decimal, but also
 - in octal with the prefix 0o e.g. `0o0770`, `0o12345670`
 - in hexadecimal with the prefix 0x e.g. `0xdeadbeef` `0x7f7f7f`
 
-In the case of binary, octal and hexadecimal, the type is assumed to be *unsigned*.
-
 Furthermore, underscore `_` may be used to add space between digits to improve readability e.g. `0xFFFF_1234_4511_0000`, `123_000_101_100`
 
 #### Integer literal suffix and type
@@ -123,20 +121,19 @@ Integer literals follow C's rules:
 
 1. A decimal literal is by default `int`. If it does not fit in an `int`, the type is `long` or `int128`. Picking the smallest type that fits the literal.
 2. If the literal is suffixed by `u` or `U` it is instead assumed to be an `uint`, but will be `ulong` or `uint128` if it doesn't fit, like in (1).
-3. Binary, octal and hexadecimal will implicitly be unsigned.
-4. If an `l` or `L` suffix is given, the type is assumed to be `long`. If `ll` or `LL` is given, it is assumed to be `int128`.
-5. If the `ul` or `UL` is given, the type is assumed to be `ulong`. If `ull` or `ULL`, then it assumed to be `uint128`.
-6. If a binary, octal or hexadecimal starts with zeros, infer the type size from the number of bits that would be needed if all digits were the maximum for the base.
+3. A binary, octal or hexadecimal literal is also `int` by default. If it does not fit, the type is the first of `uint`, `long`, `ulong`, `int128` and `uint128` that fits.
+4. If an `l` or `L` suffix is given, the type is at least `long`. If `ll` or `LL` is given, it is at least `int128`. As in C, a binary, octal or hexadecimal literal may still become unsigned: `0xFFFFFFFFFFFFFFFFL` is `ulong`.
+5. If the `ul` or `UL` is given, the type is `ulong`, or `uint128` if it doesn't fit. If `ull` or `ULL`, then it is `uint128`.
 
 ```c3
 $Typeof(1);              // int
 $Typeof(1u);             // uint
 $Typeof(1L);             // long
-$Typeof(0x11);           // uint, hex is unsigned by default
+$Typeof(0x11);           // int
+$Typeof(0x80000000);     // uint, since it exceeds int.max but fits in a uint
 $Typeof(0x1ULL);         // uint128
 $Typeof(4000000000);     // long, since the number exceeds int.max
-$Typeof(0x000000000000); // ulong: 12 hex chars indicate a 48 bit value
-$Typeof(0b000000000000); // uint: 12 binary chars indicate a 12 bit value
+$Typeof(0x000000000000); // int: leading zeros do not affect the type
 ```
 
 ### TwoCC, FourCC and EightCC literals

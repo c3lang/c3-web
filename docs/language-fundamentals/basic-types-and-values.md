@@ -51,7 +51,9 @@ c = 0x7f7f7f;
 For decimal numbers, the value is assumed to be a signed `int`, unless the number doesn't fit in an
 `int`, in which case it is assumed to be the smallest signed type it *does* fit in (`long` or `int128`).
 
-For hexadecimal, octal and binary, the type is assumed to be unsigned.
+For hexadecimal, octal and binary, the value is also assumed to be an `int`. If it doesn't fit, it is assumed
+to be the smallest type it fits in, trying `uint`, `long`, `ulong`, `int128` and `uint128` in that order, as in C.
+So `0x7FFFFFFF` is an `int`, while `0x80000000` is a `uint`.
 
 An integer literal can *implicitly* convert to a floating point literal, or an integer of
 a different type provided the number fits in the type.
@@ -61,7 +63,9 @@ a different type provided the number fits in the type.
 If you want to ensure that a constant is of a certain type, you can either add an explicit cast
 like: `(ulong)345`, or use an integer suffix: `345ul`.
 
-The following integer suffixes are available:
+The following integer suffixes are available. As in C, a suffix gives the smallest type the
+literal can have; if the value doesn't fit, the next wider type is used (and for hexadecimal,
+octal and binary, the unsigned type of the same width is tried first).
 
 | suffix |    type |
 |--------|:--------|

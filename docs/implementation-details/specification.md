@@ -215,7 +215,7 @@ The sequence `$$` introduces a compile-time built-in identifier, as described un
 
 ### Integer literals
 
-An integer literal denotes an integer constant. It is written in decimal, binary, octal, or hexadecimal, and may carry a suffix fixing its type.
+An integer literal denotes an integer constant. It is written in decimal, binary, octal, or hexadecimal, and may carry a suffix constraining its type.
 
 ```
 INTEGER         ::= (DECIMAL_LIT | BINARY_LIT | OCTAL_LIT | HEX_LIT) INTEGER_SUFFIX?
@@ -229,7 +229,9 @@ INTEGER_SUFFIX  ::= ("l" | "L") ("l" | "L")?
 
 An underscore may appear between two digits and is insignificant; it may not appear at the start or end of the digit sequence, nor immediately after the base prefix. Underscores may be repeated.
 
-The suffix is case-insensitive. A single `l` group selects a 64-bit literal, and a doubled `ll` group selects a 128-bit literal; a leading `u` selects the unsigned form. These widths are fixed on every platform.
+The suffix is case-insensitive. A single `l` group requires at least 64 bits, and a doubled `ll` group requires 128 bits; a leading `u` requires an unsigned type. These widths are the same on every platform.
+
+As in C, the type of an integer literal is the first type in a candidate list that can represent its value. Without a suffix, a decimal literal tries `int`, `long`, `int128`, and a binary, octal or hexadecimal literal tries `int`, `uint`, `long`, `ulong`, `int128`, `uint128`. A suffix sets a minimum: an `l` group drops the candidates narrower than 64 bits, an `ll` group those narrower than 128 bits, and a `u` drops the signed candidates (so `u` gives `uint`, `ulong`, `uint128`). For example `0xFFFF_FFFF_FFFF_FFFFL` is `ulong`. Leading zeros do not affect the type. A literal wider than 128 bits is an error.
 
 ### Floating-point literals
 
