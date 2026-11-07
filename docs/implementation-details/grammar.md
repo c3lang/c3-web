@@ -7,56 +7,77 @@ search:
 
 ## Keywords
 
-The following are reserved keywords used by C3:
+The following names of built-in types are reserved keywords:
 
 ```c3
-void        bool        char        double
-float       float16     int128      ichar
-int         iptr        sz          long
-short       uint128     uint        ulong
-uptr        ushort      usz         float128
-any         fault    	typeid      assert
-asm         bitstruct   break       case
-catch       const       continue    alias
-default     defer       typedef     do
-else        enum        extern      false
-for         foreach     foreach_r 	fn
-tlocal      if          inline      import
-macro       module      nextcase	null
-return      static      struct      switch
-true        try         union       var
-while       attrmacro
+any          bfloat       bool         char
+double       fault        float        float16
+float128     ichar        int          int128
+iptr         long         short        sz
+typeid       uint         uint128      ulong
+untypedlist  uptr         ushort       usz
+void
 ```
 
+The following are also reserved keywords:
+
+```c3
+alias      asm        assert     attrmacro
+bitstruct  break      case       catch
+const      constset   continue   default
+defer      do         else       enum
+excuse     extern     false      fn
+for        foreach    foreach_r  if
+import     inline     interface  lengthof
+macro      module     nextcase   null
+return     static     struct     switch
+tlocal     true       try        typedef
+union      var        while
 ```
-$assert     $case       $default    $defined
-$echo       $else       $embed      $exec       
-$expand     $endfor     $endforeach $endif
-$endswitch  $eval       $error      $for        
-$foreach    $if         $include    $stringify  
-$switch     $vaarg      $Typefrom   $Typeof     
+
+### Compile-time keywords
+
+```c3
+$assert      $case        $default     $defined
+$echo        $else        $embed       $endfor
+$endforeach  $endif       $endswitch   $error
+$eval        $exec        $expand      $feat
+$for         $foreach     $if          $include
+$reflect     $stringify   $switch      $Typefrom
+$Typeof      $vaarg
 ```
+
+## Attributes
 
 The following attributes are built in:
+
 ```c3
-@align           @asmname      @benchmark    @bigendian  
-@builtin         @cdecl        @cname        @deprecated 
-@dynamic         @export       @extname      @inline     
-@interface       @littleendian @local        @maydiscard 
-@mustinit        @naked        @nodiscard    @noinit     
-@noinline        @noredzone    @nostackprobe @nostackprotection
-@noreturn        @nostrip      @obfuscate    @operator
-@overlap         @packed       @priority     @private
-@public          @pure         @reflect      @section
-@stackprotection @stackprobe   @test         @unused          
-@used            @wasm         @weak         @winmain
+@align             @allow_deprecated  @asmname           @benchmark
+@bigendian         @builtin           @callconv          @cname
+@compact           @const             @constinit         @deprecated
+@dynamic           @export            @feat              @finalizer
+@format            @if                @init              @inline
+@jump              @link              @littleendian      @local
+@maydiscard        @mustinit          @naked             @noalias
+@nodiscard         @noinit            @noinline          @nopadding
+@norecurse         @noredzone         @noreturn          @nosanitize
+@nostackprobe      @nostackprotector  @nostrip           @obfuscate
+@operator          @operator_r        @operator_s        @optional
+@overlap           @packed            @private           @public
+@pure              @reflect           @safeinfer         @safemacro
+@section           @simd              @stackprobe        @stackprotector
+@tag               @test              @unused            @used
+@wasm              @weak              @weaklink          @winmain
 ```
 
+## Constants
+
 The following constants are defined:
+
 ```c3
-$$BENCHMARK_FNS  $$BENCHMARK_NAMES $$DATE
-$$FILE           $$FILEPATH        $$FUNC
-$$FUNCTION       $$LINE            $$LINE_RAW
-$$MODULE         $$TEST_FNS        $$TEST_NAMES
-$$TIME
+$$BENCHMARK_FNS    $$BENCHMARK_NAMES  $$DATE
+$$FILE             $$FILEPATH         $$FUNC
+$$FUNCTION         $$LINE             $$LINE_RAW
+$$MODULE           $$PANIC_FN         $$TEST_FNS
+$$TEST_NAMES       $$TIME
 ```
