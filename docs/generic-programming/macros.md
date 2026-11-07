@@ -216,7 +216,7 @@ Macros that use any expression parameters (`#`) or trailing macro bodies (`@body
 
 The `@` warns the reader of a macro call of the possibility that the call may be doing more "magic" or may be more prone to bugs than if the macro lacked the `@`. Thus, unlike most languages, C3 enables the programmer to choose between more safe or more expressive macros and to make that choice immediately clear to the reader.
 
-Note that `$` parameters (unlike `#` and `@body` parameters) do *not* cause a macro to need a `@` prefix.
+Note that `$` parameters (unlike `#` and `@body` parameters) do *not* cause a macro to need a `@` prefix. The same goes for raw macro vaargs (`...`), even though their arguments are unevaluated expressions like `#` parameters (see [Macro vaargs](#macro-vaargs)).
 
 For example, here's a basic swap written as a macro instead of using pointers, which makes it potentially more efficient by avoiding pointer indirection overhead:
 
@@ -410,7 +410,15 @@ Returns the number of arguments passed into the macro's vaarg list.
 #### `$vaarg[idx]`
 
 Returns the argument at index `idx` as an unevaluated expression. Multiple uses will
-evaluate the expression multiple times. This corresponds to `#` parameters.
+evaluate the expression multiple times. This corresponds to `#` parameters, but unlike
+`#` parameters, using raw vaargs does not require the macro name to start with `@`.
+
+```c3
+macro twice(...) => $vaarg[0] + $vaarg[0];
+
+int i = 0;
+int x = twice(i++); // x = 1, i = 2: i++ is evaluated twice
+```
 
 #### `$stringify($vaarg[idx])`
 

@@ -31,7 +31,7 @@ The left hand side of an assignment, or the parameter type in a call is known as
 Like C, C3 uses implicit arithmetic promotion of integer and floating point variables before arithmetic operations:
 
 1. For any floating point type with a bitwidth smaller than 32 bits, widen to `float`. For example, in C3 `float16` converts to `float` before arithmetic is performed.
-2. For an integer type smaller than the *minimum arithmetic width*, promote the value to a same-signed integer of the *minimum arithmetic width*. This usually corresponds to a C `int` or `unsigned int`. For example, in C3 `ushort` converts to `uint` before arithmetic is performed.
+2. For an integer type smaller than the *minimum arithmetic width*, promote the value to a signed integer of the *minimum arithmetic width*. This usually corresponds to a C `int`. For example, in C3 both `short` and `ushort` convert to `int` before arithmetic is performed. Integer types at or above the minimum arithmetic width keep their type, so `uint + uint` is `uint`.
 
 ### Implicit narrowing
 
@@ -231,8 +231,9 @@ These operations are only valid for integers.
 
 1. Resolve the inner operand.
 2. If the inner type is not a number, then this is an error.
-3. If the inner type is an unsigned integer, cast it to the same signed type.
-4. The type is the type of the result from (3).
+3. If the inner operand is an integer literal with an unsigned suffix, such as `-3u`, then this is an error. Write `-(3u)` instead.
+4. Apply the *common arithmetic promotion* to the inner operand.
+5. The type is the type of the result from (4). Negation does not change signedness: negating a `uint` gives a `uint` with a wrapped value, while negating a `ushort` gives an `int`, since `ushort` is promoted first.
 
 #### 4. `&` and `&&`
 

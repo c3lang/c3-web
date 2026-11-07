@@ -1060,7 +1060,7 @@ Outside these cases, conversion requires an explicit cast.
 Before arithmetic, the operands of an arithmetic operation are *promoted* according to the following rules:
 
 * A floating-point operand of width less than 32 bits is promoted to `float`.
-* An integer operand narrower than the *arithmetic promotion width* is promoted to an integer of the same signedness with that width.
+* An integer operand narrower than the *arithmetic promotion width* is promoted to the signed integer of that width (`int`), whether the operand is signed or unsigned. Integer operands at or above that width are not promoted.
 
 The arithmetic promotion width is the width of a C `int` on the target platform. This is currently 32 bits on all supported target platforms.
 
@@ -1677,8 +1677,8 @@ unary_expr ::= unary_op expression
 unary_op   ::= "+" | "-" | "!" | "~" | "*" | "&" | "&&" | "++" | "--" | "(" type ")"
 ```
 
-* `+e` performs integer promotion after any permitted implicit conversion: integer operands narrower than the platform `int` are promoted to `int` (with the corresponding signedness); operands of `int` or wider, and operands of floating-point or vector type, are returned unchanged. The operand need not itself be numeric or vector typed, but must be implicitly convertible to such a type. The result type may therefore differ from the operand type.
-* `-e` is the arithmetic negation of `e`. The operand must be of, or implicitly convertible to, an integer, floating-point, or vector type. Signed integer negation wraps on overflow (it is defined to wrap, not undefined).
+* `+e` performs integer promotion after any permitted implicit conversion: integer operands narrower than the platform `int` are promoted to `int`, whether signed or unsigned; operands of `int` or wider, and operands of floating-point or vector type, are returned unchanged. The operand need not itself be numeric or vector typed, but must be implicitly convertible to such a type. The result type may therefore differ from the operand type.
+* `-e` is the arithmetic negation of `e`. The operand must be of, or implicitly convertible to, an integer, floating-point, or vector type. The operand undergoes the same promotion as `+e`, and the result has the promoted type; negation does not change signedness, so negating a `uint` yields a `uint` (the value wraps). Negating an integer literal with an unsigned suffix (e.g. `-3u`) is an error. Signed integer negation wraps on overflow (it is defined to wrap, not undefined).
 * `!e` is the logical negation of `e`; it is valid whenever `e` can be converted to `bool` for use as a condition (equivalently, when `(bool)e` is valid).
 * `~e` is the bitwise complement of `e`; its operand must be of integer or vector type.
 * `*p` is the value pointed to by `p`; `p` must be of pointer type, and may not be `void*`.
@@ -1830,13 +1830,13 @@ A lambda may capture compile-time values from the enclosing scope but not runtim
 
 ### Order of evaluation
 
-Evaluation of an expression is fully sequenced. Every operand is evaluated and its side effects are complete before any operand whose source position lies to its right, except where short-circuiting suppresses evaluation.
+Evaluation of an expression is fully sequenced. Every operand is evaluated and its side effects are complete before any operand whose source position lies to its right, except where short-circuiting suppresses evaluation and for simple assignment (rule 3).
 
 The rules are:
 
 1. In a call, the called function, method, or macro expression is evaluated first; arguments are then evaluated in left-to-right source order.
 2. In a binary operator, the left operand is evaluated and its side effects are complete before the right operand is evaluated. The short-circuiting operators (`&&`, `||`, `??`, `?:`) evaluate the right operand only when required.
-3. In an assignment, the left-hand lvalue (including any subexpressions used to compute its address) is evaluated, and its address is fixed, before the right-hand operand is evaluated; the converted right-hand value is then stored.
+3. In a simple assignment `a = b`, the right-hand operand is evaluated first; the left-hand lvalue (including any subexpressions used to compute its address) is then evaluated, and the converted right-hand value is stored. In `arr[f()] = g()`, `g()` is evaluated before `f()`. In a compound assignment such as `a += b`, the left-hand lvalue is evaluated, its address fixed and its value read, before the right-hand operand is evaluated; in `arr[f()] += g()`, `f()` is evaluated before `g()`.
 4. In a compound literal, elements are evaluated in source order regardless of the position they initialize.
 5. The postfix operators `++` and `--` read the operand, fix the expression's value as the value before modification, and write back the new value before the next operand of the surrounding expression is evaluated.
 6. The ternary expression `c ? a : b` evaluates `c` first; depending on its value, exactly one of `a` and `b` is then evaluated.
@@ -2349,7 +2349,7 @@ A macro may declare a single variadic parameter as its last positional parameter
 * `name...` — an *untyped slice variadic*. The arguments are collected into a slice of `any[]`; each element preserves its original type when accessed through `$Typefrom` and related forms.
 * `...` — a *raw variadic*. The arguments are not collected into a slice; instead, they are accessible only through the compile-time accessors below.
 
-The typed and untyped slice forms are also available for ordinary functions. The raw form is unique to macros, and its use requires an `AT_IDENT` macro name (unless overridden by `@safemacro`).
+The typed and untyped slice forms are also available for ordinary functions. The raw form is unique to macros. Its arguments are unevaluated like `#` parameters, but its use does not require an `AT_IDENT` macro name.
 
 ### Compile-time access to variadic arguments
 
@@ -3996,7 +3996,7 @@ The following operations have fully defined run-time behaviour in every build mo
 
 * **Signed integer overflow.** Arithmetic on signed integers wraps modulo `2ⁿ`, where `n` is the operand width. This contrasts with C, where signed overflow is UB.
 * **Unsigned integer overflow.** Arithmetic on unsigned integers wraps in the natural way (no value is invalid for an unsigned type).
-* **Order of evaluation.** Sub-expressions evaluate strictly left-to-right with all side effects completed before the next operand is evaluated (see *Expressions*). C-style "unsequenced side effect" UB does not arise.
+* **Order of evaluation.** Sub-expressions evaluate strictly left-to-right with all side effects completed before the next operand is evaluated, except that simple assignment evaluates its right-hand side first (see *Expressions*). C-style "unsequenced side effect" UB does not arise.
 * **Default initialization.** A variable without an explicit initializer is zero-initialized unless it carries `@noinit`. A zero-initialized object has the bit pattern all-zero in every byte.
 * **Pointer comparison.** Two pointers may always be compared for equality with `==` and `!=`. Two pointers to the same allocation may be compared for ordering with `<`, `<=`, `>`, `>=`.
 * **Optional propagation.** A faulty optional propagates through any expression that does not handle it, in left-to-right order (see *Optionals and faults*). When multiple subexpressions could supply a fault, the propagation point is determined by the order in which the language requires the subexpressions to be evaluated.
