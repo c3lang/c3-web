@@ -1409,7 +1409,7 @@ A type alias may itself be generic, by including a `generic_decl` parameter list
 
 ```
 alias IntList = List{int};
-alias Stack {Ty} = List{Ty};
+alias Stack <Ty> = List{Ty};
 ```
 
 #### Module aliases
@@ -3391,7 +3391,7 @@ It is a compile-time error if the compiler cannot locate an imported module, or 
 Every section implicitly imports:
 
 * The standard-library module `std::core` and its submodules. The names declared there are available without any explicit `import`.
-* Every other module whose path shares the same top-level component as the current module. Within a module `foo::abc`, the modules `foo`, `foo::cde`, and so on are implicitly imported.
+* Every ancestor and every descendant of the current module. Within a module `foo::abc`, the modules `foo` and `foo::abc::x` are implicitly imported, but sibling modules such as `foo::cde` are not and require an explicit `import`.
 
 Implicit imports may be supplemented with explicit ones; an explicit `import` of an implicitly-imported module is permitted and harmless.
 

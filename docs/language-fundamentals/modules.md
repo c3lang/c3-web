@@ -48,7 +48,7 @@ Some details about the C3 module system:
 ## Importing Modules
 
 Modules are imported using the `import` statement. Imports always *recursively import* sub-modules. Any module
-will automatically import all other modules with the same parent module.
+will automatically import its parent modules and its own sub-modules (see [Implicit Imports](#implicit-imports)).
 
 `foo.c3`
 
@@ -106,7 +106,7 @@ abc::Context c = {};
 The module system will also implicitly import:
 
 1. The `std::core` module (and sub modules).
-2. Any other module sharing the same top module. E.g. the module `foo::abc` will implicitly also import modules `foo` and `foo::cde` if they exist.
+2. Its parent modules and its sub-modules. E.g. the module `foo::abc` will implicitly also import the modules `foo` and `foo::abc::x` if they exist. Sibling modules are *not* implicitly imported: `foo::abc` must use `import foo::cde;` to use `foo::cde`.
 
 ## Visibility
 
