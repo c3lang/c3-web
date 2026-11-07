@@ -190,7 +190,7 @@ macro print_fields($Type)
 {
     $foreach $field : $Type::members:
         io::printfn("Field %s, offset: %s, size: %s",
-                $field::name, $field::offset, $field::size);
+                $field.name, $field.offset, $field.size);
     $endforeach
 }
 

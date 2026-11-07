@@ -110,13 +110,13 @@ A type may implement multiple interfaces by placing them all inside of `()`, e.g
 A limitation is that only user-defined types may declare they are implementing interfaces. To make existing types
 implement interfaces is possible but does not provide compile time checks.
 
-One of the interfaces available in the standard library is Printable, which contains `to_format` and `to_new_string`.
+One of the interfaces available in the standard library is Printable, which contains `to_format` and `to_constant_string`.
 If we implemented it for our struct above it might look like this:
 
 ```c3
-fn String Baz.to_new_string(Baz* baz, Allocator allocator) @dynamic
+fn sz? Baz.to_format(&self, Formatter* f) @dynamic
 {
-    return string::printf("Baz(%d)", baz.x, allocator: allocator);
+    return f.printf("Baz(%d)", self.x);
 }
 ```
 
@@ -150,7 +150,7 @@ MyName a = &b;          // Valid, Baz implements MyName.
 // MyName c = &d;       // Error, double does not implement MyName.
 MyName c = (MyName)&d;  // Would break at runtime as double doesn't implement MyName
 // MyName z = &i;       // Error, implicit conversion because int doesn't explicitly implement it.
-MyName* z = (MyName)&i; // Explicit conversion works and is safe at runtime if int implements "myname"
+MyName z = (MyName)&i;  // Explicit conversion works and is safe at runtime if int implements "myname"
 ```
 
 ### Calling dynamic methods
@@ -245,7 +245,7 @@ It is possible to retrieve any `@dynamic` function by name and invoke it:
 ```c3
 alias VoidMethodFn = fn void(void*);
 
-fn void* int.test_something(&self) @dynamic
+fn void int.test_something(&self) @dynamic
 {
     io::printfn("Testing: %d", *self);
 }

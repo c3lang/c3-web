@@ -128,7 +128,7 @@ ichar min_ichar = ichar::min; // -128
 
 *Only available for enum, bitstruct, struct and union types.*
 
-Returns a *compile time* list containing the fields in a bitstruct, struct or union. For enums it's the associated value declarations. The elements are of type `reflected_ref`, as if you had done `$reflect` on the element.
+Returns a *compile time* list containing the fields in a bitstruct, struct or union. For enums it's the associated value declarations. The elements are of type `reflection_ref`, as if you had done `$reflect` on the element.
 
 *Note: As the list is an "untyped" list, you are limited to iterating and accessing it at
 compile time.*
@@ -410,7 +410,7 @@ fn void test()
 
 Returns a `reflection_ref` of the expression. It can be queried for properties such as name, size, offset, alignment etc.
 
-More information is forthcoming.
+See [Expression values through `$reflect`](#expression-values-through-reflect) for the full list.
 
 #### `$stringify`
 
@@ -430,7 +430,7 @@ fn void main()
 {
 	@describe(sz::size);
   //Prints:
-  //  The value of `sz.size` is `8`.
+  //  The value of `sz::size` is `8`.
 }
 ```
 
@@ -454,7 +454,7 @@ $Typefrom(int::typeid) i = 12;
 
 ## Expression values through `$reflect`
 
-`$reflect` gives access to different properties depending on the expression. To determine at compile time that some information is available use `$define($reflect(x).some_property)`.
+`$reflect` gives access to different properties depending on the expression. To determine at compile time that some information is available use `$defined($reflect(x).some_property)`.
 
 ### `alignment`
 

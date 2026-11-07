@@ -55,7 +55,7 @@ This operator, the assignment counterpart of `[]`, allows setting an element usi
 ```c3
 fn void Foo.set(&self, sz i, double new_val) @operator([]=)
 {
-    return self.x[i] = new_val;
+    self.x[i] = new_val;
 }
 ```
 
@@ -108,7 +108,7 @@ defining `+` between a Complex number and a double can look like this:
 ```c3
 macro Complex Complex.add_double(self, double d) @operator_s(+)
 {
-    return self.add(self, complex_from_real(d));
+    return self.add(complex_from_real(d));
 }
 ```
 

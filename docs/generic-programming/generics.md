@@ -76,7 +76,7 @@ struct Foo
    Type1 a;
 }
 
-fn Type2 test(Type2 b, Foo* foo)
+fn Type1 test(Type1 b, Foo* foo)
 {
    return foo.a + b + MY_CONST;
 }
@@ -89,18 +89,18 @@ To use a generic function or type, we can either define an alias for it, or invo
 ```c3
 import foo_test;
 
-alias FooFloat = Foo {float, double};
-alias test_float = foo_test::test {float, double};
+alias FooFloat = Foo {float, 3};
+alias test_float = foo_test::test {float, 3};
 
 ...
 
 FooFloat f;
-Foo{int, double} g;
+Foo{int, 3} g;
 
 ...
 
 test_float(1.0, &f);
-foo_test::test{int, double} (1.0, &g);
+foo_test::test{int, 3} (1, &g);
 ```
 
 ### Generics are grouped

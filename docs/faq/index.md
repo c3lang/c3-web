@@ -193,7 +193,7 @@ Regardless of how they are allocated, they can be freed using `free()`
 // Temporary allocations are automatically freed here.
 ```
 
-Similar to the heap allocator, there is also `mem::tnew`, `mem::temp_alloc`, `mem::temp_array` and `mem::temp_alloc_array`,
+Similar to the heap allocator, there is also `mem::tnew`, `mem::talloc`, `mem::temp_array` and `mem::talloc_array`,
 which all work like their heap counterparts.
 
 **Q:** How can I return a temporarily allocated object from inside a temporary allocation scope?

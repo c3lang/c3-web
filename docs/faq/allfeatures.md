@@ -303,7 +303,7 @@ Some features are [provided by "builtins" in the standard library](../misc-advan
 and appear like normal functions and macros in the standard library, but nonetheless provide unique functionality:
 
 1. `@likely(...)` / `@unlikely(...)` on branches affects compilation optimization.
-2. `@anycast(...)` casts an `any` with an optional result.
+2. `anycast(...)` casts an `any` with an optional result.
 3. `unreachable(...)` marks a path as unreachable with a panic in safe mode.
 4. `unsupported(...)` similar to unreachable but for functionality not implemented.
 5. `@expect(...)` expect a certain value with an optional probability for the optimizer.
