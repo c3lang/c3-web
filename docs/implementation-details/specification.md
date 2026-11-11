@@ -277,6 +277,10 @@ The same character and escape rules apply as for character literals: no raw cont
 
 Adjacent string literals are concatenated into a single string constant; a character literal participates in the same concatenation.
 
+A string literal designates a constant array of characters followed by a zero terminator. Converting a string literal to a slice or pointer type (such as `String`, `char[]`, `ZString` or `char*`) yields a slice or pointer referring to that constant array. Whether identical string literals share storage is unspecified, and the storage may be read-only. Modifying the elements of a string literal through such a slice or pointer is undefined behaviour.
+
+An array object initialized from a string literal receives its own copy of the characters and is modifiable, unless it is itself declared `const`. With an explicit length, elements beyond the characters of the literal are zero, so `char[4] a = "AAA";` holds a zero terminator. With an inferred length, as in `char[*] b = "AAA";`, the length is the number of characters, excluding the zero terminator.
+
 ### Raw string literals
 
 A raw string literal is enclosed in backticks. No escape processing is performed on its contents: every character stands for itself, and the literal may span multiple lines. A literal backtick is written by doubling it (`` `` ``).
@@ -4023,6 +4027,7 @@ The following operations are undefined behaviour in every build mode; no impleme
 * **Concurrent unsynchronized access** to the same memory location from multiple threads where at least one access is a write (a *data race*; see *Concurrency* below).
 * **Reaching `$$unreachable()`** or any other declared-unreachable program point.
 * **Returning from a `@noreturn` function.**
+* **Modifying a string literal** through a slice or pointer referring to it (see *String literals*).
 * **Violating the `@noalias` contract on a parameter.** The compiler treats `@noalias`-marked pointer parameters as designating disjoint memory regions and may reorder, fuse, or eliminate accesses on that basis. If two such parameters in fact alias, the resulting behaviour typically manifests as silent data corruption, stale reads, or skipped writes; no diagnostic is required.
 * **Calling a `void`-returning function through a function pointer typed to return a value, or vice versa.**
 

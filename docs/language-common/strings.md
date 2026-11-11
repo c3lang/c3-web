@@ -13,6 +13,11 @@ typedef String = inline char[];
 - `String`s are usually the typical type to use, they can be sliced, compared etc ...
 It is possible to access the length of a `String` instance through the  ` .len  `  operator.
 
+!!! caution
+    A `String` or `ZString` created from a string literal, e.g. `String s = "abc";`, refers to constant data.
+    Writing to it is undefined behaviour. Use an array, e.g. `char[4] s = "abc";`, to get a modifiable copy.
+    See [Modifying string literals](../language-fundamentals/basic-types-and-values.md#modifying-string-literals).
+
 
 ### `ZString`
 

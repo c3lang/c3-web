@@ -447,6 +447,16 @@ fn void main()
   </div>
 </div>
 
+<div class="lp-max-w" style="text-align: center; margin-top: 2rem;">
+  <div style="padding: 2rem; border-top: 1px solid var(--md-default-fg-color--lightest);">
+    <p style="font-size: 0.875rem; color: var(--md-default-fg-color--light); margin: 0 0 1rem 0; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Sponsored by</p>
+    <a href="https://github.com/konimarti" style="display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--md-primary-fg-color); font-weight: 600; transition: opacity 0.2s;">
+      <img src="https://github.com/konimarti.png" alt="konimarti" style="width: 48px; height: 48px; border-radius: 50%; display: block;">
+      <span>konimarti</span>
+    </a>
+  </div>
+</div>
+
 <script>
 	function setupDownloads() {
 		var mainBtn = document.getElementById("main-download-btn");

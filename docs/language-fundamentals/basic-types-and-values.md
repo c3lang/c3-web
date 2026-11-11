@@ -223,6 +223,33 @@ String foo = "C:\\foo\\bar.dll";
 String bar = "\"Say `hello`\"";
 ```
 
+### Modifying string literals
+
+As in C, a string literal is stored as a constant, zero terminated array of characters.
+When a string literal is assigned to a slice (`String`, `char[]`) or a pointer (`ZString`, `char*`),
+the slice or pointer refers to that constant data, which may be placed in read-only memory and may be
+shared between identical literals. Writing to it is *undefined behaviour*:
+
+```c3
+String s = "AAA";
+s[0] = 'B';      // Undefined behaviour
+ZString z = "AAA";
+z[0] = 'B';      // Undefined behaviour
+```
+
+An array initialized from a string literal is different: it gets its own copy of the characters,
+and can be modified like any other array, unless the array itself is constant:
+
+```c3
+char[4] a = "AAA"; // { 'A', 'A', 'A', 0 }
+a[0] = 'B';        // Ok, a is now "BAA"
+char[*] b = "AAA"; // { 'A', 'A', 'A' }
+b[0] = 'B';        // Ok
+```
+
+An array with an inferred size, like `b` above, has the length of the string *without* the zero terminator.
+To get a zero terminated array, give it an explicit size: any elements beyond the string are zero.
+
 `String` is a
 [typedef inline](../language-common/alias.md#typedef-inline) `char[]`, which can implicitly convert to `char[]` when required.
 

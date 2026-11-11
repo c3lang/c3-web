@@ -48,6 +48,7 @@ The following operations cause undefined behaviour in release builds of C3:
 | violating pre or post conditions | Yes |
 | violating asserts | Yes |
 | reaching `unreachable()` code | Yes |
+| modifying a string literal through a slice or pointer | Possible\* |
 
 \* "Possible" indicates trapping is implementation dependent.
 
@@ -64,7 +65,6 @@ Some behaviour is allowed to differ between implementations and platforms.
 | conversion floating point <-> integer type is out of range | Optional | Any result |
 | conversion between pointer types produces one with incorrect alignment | Optional | Any result / Error  |
 | calling a function through a function pointer that does not match the function | Optional | Any result / Error |
-| attempt to modify a string literal | Optional | Partial modification / Error |
 | modifying a `const` variable | Optional | Partial modification / Error |
 
 ## List of undefined behaviour in C, which is defined in C3
