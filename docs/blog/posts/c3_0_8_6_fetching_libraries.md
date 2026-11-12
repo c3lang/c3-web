@@ -467,4 +467,6 @@ Manu Linares.
 
 Check out the [documentation](../../getting-started/introduction.md) or [download it and try it out](../../getting-started/prebuilt-binaries.md).
 
+Discuss this post on [Reddit](https://www.reddit.com/r/programming/s/QyipCHh7s6).
+
 Have questions? Come and chat with us on [Discord](https://discord.gg/qN76R87).
