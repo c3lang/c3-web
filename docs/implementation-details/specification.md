@@ -2464,6 +2464,8 @@ The following expressions are constant:
 * A `$vaarg` access, when the corresponding macro argument is itself a constant expression.
 * Type-access expressions of the form `Type::typeid`, `Type::alignment`, `Type::size`, and similar (see *Properties of types and values*).
 
+Floating-point constant expressions are folded in double precision, whatever their floating-point type. A `float` literal or named constant keeps its double precision value, and intermediate results are not rounded to `float`. The value is rounded to its type only when it is used at runtime. A folded expression can therefore differ from the same expression evaluated at runtime: `0.1f == 0.1` folds to `true`, while comparing a `float` variable holding `0.1f` with `0.1` gives `false`.
+
 A constant expression is required in the following contexts:
 
 * The size of an array type (`T[N]`).
