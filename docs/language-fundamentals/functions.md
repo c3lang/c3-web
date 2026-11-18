@@ -376,17 +376,23 @@ fn void test()
 
 Because the type of the first argument is known, it may be left out. To indicate a non-null pointer, `&` is used.
 
-```c3
-fn int Foo.test(&self) { /* ... */ }
-// (almost) equivalent to
-fn int Foo.test(Foo* self) { /* ... */ }
+The four variants:
 
-fn int Bar.test(self) { /* ... */ }
-// equivalent to
-fn int Bar.test(Bar self) { /* ... */ }
+```c3
+fn void MyStruct.foo(MyStruct* self) {} // self by ref, may be null
+fn void MyStruct.foo(MyStruct self) {}  // self by value
+fn void MyStruct.foo(&self) {}          // self by ref, may not be null
+fn void MyStruct.foo(self) {}           // self by value
 ```
 
-This means that in order to express a nullable first parameter, one must use the explicit form (e.g. `Foo* self`) rather than the untyped `&self` form.
+`&self` is roughly equivalent to:
+
+```c3
+<* @param [&inout] self *> // ensures non-null
+fn void MyStruct.foo(MyStruct* self) {}
+```
+
+This means that in order to express a nullable first parameter, one must use the explicit form (e.g. `MyStruct* self`) rather than the untyped `&self` form.
 
 It is customary to use `self` as the name of the first parameter, but it is not required.
 

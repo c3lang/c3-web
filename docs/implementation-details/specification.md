@@ -2201,6 +2201,13 @@ Methods may extend any user-defined type and any built-in numeric, pointer, slic
 
 The first parameter of a method declaration is the receiver. By convention it is named `self`; the language imposes no specific name. Its declared type must be either the receiver type or a pointer to the receiver type.
 
+The receiver's type may be omitted:
+
+* `self` declares a receiver of the receiver type, passed by value. `fn void Foo.f(self)` is equivalent to `fn void Foo.f(Foo self)`.
+* `&self` declares a receiver of pointer-to-receiver type that must be non-null. `fn void Foo.f(&self)` is roughly equivalent to `fn void Foo.f(Foo* self)` annotated with `@param [&inout] self`.
+
+A receiver that may be null must use the explicit pointer form.
+
 ### Parameters
 
 ```
@@ -4018,8 +4025,9 @@ The following operations are *checked* in safe mode (they trap the program with 
 * **Array and slice indexing out of bounds.** An index `i` for an array or slice of length `n` is in bounds when `0 <= i < n`. An out-of-bounds index traps in safe mode and is UB in fast mode.
 * **Pointer dereference of a null pointer.** `*p` or `p[i]` when `p == null` traps in safe mode and is UB in fast mode.
 * **Integer division and remainder by zero.** `a / 0` and `a % 0` on integer operands trap in safe mode and are UB in fast mode.
-* **Contract violations.** A failed `@require`, `@ensure`, or other contract clause traps in safe mode and is UB in fast mode (see *Contracts*).
 * **`assert` failure.** A failed `assert` statement traps in safe mode. In fast mode, the compiler may treat the asserted condition as a hint and optimize accordingly; reaching a program point where the asserted condition is false is UB.
+
+Contract violations are unspecified behaviour (see *Contracts*). Implementations typically trap in safe mode.
 
 ### Operations that are always undefined
 
