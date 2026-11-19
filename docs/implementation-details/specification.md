@@ -851,9 +851,9 @@ enum_decl ::= "enum" TYPE_IDENT ("(" type ("," type)* ")")? (":" type? enum_para
 
 Each enum value has an *ordinal*: its position in the declaration, beginning at zero. Ordinals are consecutive; an enum type defines no gaps.
 
-If a parameter list follows the backing type, each declared value supplies a value for each associated parameter; these are accessed through the value as if they were fields.
+If a parameter list follows the backing type, each declared value supplies a value for each associated parameter; these are accessed through the value as if they were fields. Associated values are constant: they may be read and their address taken, but they may not be assigned to (see *Assignment expressions*).
 
-An enum is converted to and from its ordinal via the properties `.ordinal` and `from_ordinal`; explicit casts to and from the backing integer type are also permitted.
+An enum is converted to and from its ordinal via the properties `.ordinal` and `from_ordinal`; explicit casts to and from the backing integer type are also permitted. `.ordinal` yields a value: it may not be assigned to and its address may not be taken.
 
 ### Constdef types
 
@@ -1631,6 +1631,8 @@ trailing_macro_block ::= AT_IDENT ("(" parameter_list? ")" )? compound_statement
 
 Arguments may be supplied positionally, by name (`name: expression`), or by struct-field-style designator (`.field = expression`) for arguments of aggregate type. A `...expression` spreads a slice, array, vector, struct or compile-time list into the variadic part of the parameter list. Named and designated arguments may appear in any order; positional arguments must come before them.
 
+Named arguments are only permitted in calls to functions, methods, and macros. Calls to compiler built-ins, including `$$` intrinsics and type-property calls such as `Ty::has_tag(...)` or `Ty::from_ordinal(...)`, take positional arguments only; a named argument is a compile-time error.
+
 Each argument is converted to the corresponding parameter's declared type using the rules described in *Assignability*.
 
 A macro call may carry a *trailing macro block* — a function-literal-like body attached after the parenthesized argument list. The trailing block becomes available inside the macro under the parameter name introduced after the closing parenthesis. The detailed rules are given in *Macros*.
@@ -1688,7 +1690,7 @@ unary_op   ::= "+" | "-" | "!" | "~" | "*" | "&" | "&&" | "++" | "--" | "(" type
 * `!e` is the logical negation of `e`; it is valid whenever `e` can be converted to `bool` for use as a condition (equivalently, when `(bool)e` is valid).
 * `~e` is the bitwise complement of `e`; its operand must be of integer or vector type.
 * `*p` is the value pointed to by `p`; `p` must be of pointer type, and may not be `void*`.
-* `&v` is the address of `v`; the operand must be addressable (an lvalue), and the result has the type "pointer to the operand's type".
+* `&v` is the address of `v`; the operand must be addressable (an lvalue), and the result has the type "pointer to the operand's type". The `.ordinal` of an enum value is not addressable. An associated value of an enum value is addressable, like a typed constant, but its storage may be read-only; modifying it through the resulting pointer is undefined behaviour.
 * `&&e` is a *temporary address*: it materializes the value of `e` in a fresh storage location whose lifetime extends to the end of the enclosing full expression, and yields a pointer to that location. The operand need not be addressable.
 * `++lvalue` and `--lvalue` increment and decrement `lvalue` by one and yield the value after the modification. The operand must be addressable and of integer, floating-point, pointer, or enum type. For enum types, `++` and `--` wrap, so that incrementing from the last enum value yields the first enum value, and conversely, decrementing from the first enum value yields the last.
 * `(type) expression` is an explicit cast — see *Conversions*.
@@ -1808,6 +1810,12 @@ assign_op   ::= "=" | "+=" | "-=" | "*=" | "/=" | "%=" | "&=" | "|=" | "^=" | "<
 ```
 
 An assignment stores the right-hand value into the left-hand lvalue. The right-hand operand is converted to the type of the lvalue according to the *Assignability* rules. The result of the assignment is the new value of the lvalue. The lvalue must be addressable.
+
+The following are not lvalues, and are also rejected as the operand of `++` and `--`:
+
+* a method or macro named through a value, such as `v.method` or `x.hash`;
+* the `.ordinal` of an enum value;
+* an associated value of an enum value, or any element, member, or vector component of one, such as `c.val`, `c.arr[0]` or `c.pt.x`.
 
 A compound assignment `lvalue op= expression` is equivalent in effect to `lvalue = lvalue op expression`, except that the lvalue is evaluated only once.
 
@@ -2086,6 +2094,8 @@ Variants:
 Deferred statements may not `return`, `break`, `continue`, or `nextcase` out of the function, but may execute their own internal control flow.
 
 A defer body may not itself be a `defer` statement. However, if the body is a compound statement, that compound may contain any number of inner defer statements.
+
+A `defer` statement may not be the body of an `if`, `while`, `for`, `foreach`, or `foreach_r` statement. This also applies when that body is a compile-time statement (`$if`, `$switch`, `$for`, `$foreach`) whose expansion places a `defer` directly in the body. A `defer` inside a block statement used as the body is permitted.
 
 A defer body may not contain a `break`, `continue`, `return`, or rethrow that would exit the defer body itself. Such constructs are valid only when fully contained within the defer body (for example, a `break` inside a loop introduced by the defer body).
 
