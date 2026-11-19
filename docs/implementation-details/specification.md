@@ -426,7 +426,15 @@ There are three storage durations:
 
 A global variable has static storage duration by default. A local variable has automatic storage duration by default. The modifiers `static` and `tlocal` change a local variable's storage duration to static or thread-local, respectively.
 
-A variable without an initializer is implicitly zero-initialized. The `@noinit` attribute may be used to leave a variable uninitialized; a variable whose type is marked `@mustinit` may not use `@noinit`.
+A variable without an initializer is implicitly zero-initialized. The `@noinit` attribute may be used to leave a variable uninitialized, unless the variable's type *requires initialization*. A type requires initialization if it is:
+
+* a struct, union, bitstruct, or typedef declared with `@mustinit`;
+* a struct, union, or bitstruct with a member whose type requires initialization (for a union, any member counts, not only the one in use);
+* an array, vector, or flexible array whose element type requires initialization;
+* an optional whose value type requires initialization;
+* an alias of a type that requires initialization.
+
+A slice or a pointer does not require initialization, whatever its element type, since it does not contain its elements. A typedef that is not itself declared `@mustinit` does not require initialization, even if its underlying type does. `@mustinit` may not be applied to an alias.
 
 Variables and constants are mutually exclusive. A constant is declared with `const` and bound to a `CONST_IDENT`; a variable is declared without `const` and bound to an `IDENTIFIER`.
 
@@ -2897,7 +2905,7 @@ The first three may also appear on a module section to set the default visibilit
 #### Initialization and layout
 
 * `@noinit` — suppresses default zero-initialization of a variable; the variable's initial value is indeterminate.
-* `@mustinit` — applied to a type; declares that variables of the type may not opt out of initialization.
+* `@mustinit` — applied to a struct, union, bitstruct, or typedef; variables of the type, and of types that contain it, may not use `@noinit` (see *Variables* for which types propagate the requirement).
 * `@constinit` — applied to a typedef; permits implicit conversion of literal values to the typedef's name.
 * `@safeinfer` — applied to a local variable declared with `var`; opts into type inference for a runtime local. The `var` form is otherwise reserved for compile-time variables and macro parameters; `var x @safeinfer = expression;` permits its use for a runtime local whose type is inferred from the initializer.
 * `@align(n)` — raises the alignment of a type, variable, or function to at least `n` (a power of two).
