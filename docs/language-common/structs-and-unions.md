@@ -127,8 +127,10 @@ fn void test()
 {
     Integral i;
     i.as_byte = 40; // Setting the active member to as_byte
+    i = { 40 }; // Same as above
 
     i.as_int = 500; // Changing the active member to as_int
+    i = { .as_int = 500 }; // Same as above
 
     // Undefined behaviour: as_byte is not the active member,
     // so this will probably print garbage.

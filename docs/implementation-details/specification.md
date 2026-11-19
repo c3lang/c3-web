@@ -1558,7 +1558,7 @@ A designator may appear without `= expression`, in which case the designated tar
 
 Designators may appear in any order. Positions not initialized by any element are zero-initialized. If two elements initialize the same position, the one appearing later in the literal supersedes the earlier one.
 
-A union literal contains exactly one designated initializer naming the active member.
+A union literal may either initialize its first member with a positional value, or name the active member with a single designated initializer.
 
 #### Splat
 
