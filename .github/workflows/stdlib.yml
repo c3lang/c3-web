@@ -24,7 +24,7 @@ jobs:
       - name: Generate documentation
         working-directory: ${{ steps.setup-c3.outputs.c3c-path }}
         run: |
-          c3c docgen lib/std --target linux-x64 --append
+          c3c docgen lib/std --target linux-x64 --append -D WAYLAND
           c3c docgen lib/std --target windows-x64 --append
           c3c docgen lib/std --target macos-aarch64 --append
 
