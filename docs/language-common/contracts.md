@@ -221,7 +221,7 @@ function which returns true if the code inside would pass semantic checking.
 <*
  @require $defined(resource.open, resource.open()) : `Expected resource to have an "open" function`
  @require resource != null
- @require $assignable(resource.open(), void*)
+ @require $defined(void* p = resource.open())
 *>
 macro open_resource(resource)
 {

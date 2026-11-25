@@ -149,8 +149,8 @@ Just like for macros, optional constraints may be added to improve compile error
 
 ```c3
 <*
- @require $assignable(1, TypeB) && $assignable(1, TypeC)
- @require $assignable((TypeB)1, TypeA) && $assignable((TypeC)1, TypeA)
+ @require $defined(TypeB b = 1, TypeC c = 1)
+ @require $defined(TypeA a = (TypeB)1, TypeA a2 = (TypeC)1)
 *>
 module vector <TypeA, TypeB, TypeC>;
 
@@ -162,7 +162,7 @@ alias test_function = vector::test_func {Bar, float, int};
 
 // This would give the error
 // --> Parameter(s) failed validation:
-//     @require "$assignable((TypeB)1, TypeA) && $assignable((TypeC)1, TypeA)" violated.
+//     @require "$defined(TypeA a = (TypeB)1, TypeA a2 = (TypeC)1)" violated.
 ```
 
 In general, contracts placed on types and identifiers will combine. However, contracts on generic functions and macros do not carry over to the aggregated generic contract:
